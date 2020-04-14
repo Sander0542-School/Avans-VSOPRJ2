@@ -14,9 +14,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-      - name: Setup Environment
-        run: |
-          mkdir outputs/logs -p
       - name: Compile
         run: ant -noinput -buildfile build.xml compile
       - uses: actions/upload-artifact@v1
