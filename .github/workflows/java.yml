@@ -18,7 +18,7 @@ jobs:
       run: |
         mkdir outputs/logs -p
     - name: Compile
-      run: javac -sourcepath src -d bin src/*.java > outputs/logs/compile.txt
+      run: javac -sourcepath src -d bin *.java > outputs/logs/compile.txt
     - uses: actions/upload-artifact@v1
       name: Upload Logs
       if: always()
