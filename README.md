@@ -4,7 +4,7 @@
 
 ### Software
 
-- Java 11.0.6 [download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- Java JDK 11.0.6 [download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 
 ### IDE
 
