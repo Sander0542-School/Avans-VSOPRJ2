@@ -14,9 +14,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.11
+    - name: Setup Environment
+      run: |
+        mkdir outputs/logs
     - name: Compile
       run: javac -sourcepath src -d bin src/*.java > outputs/logs/compile.txt
     - uses: actions/upload-artifact@v1
+      name: Upload Logs
+      if: always()
       with:
         name: Logs
         path: outputs/logs
