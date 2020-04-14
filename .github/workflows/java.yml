@@ -21,4 +21,4 @@ jobs:
         if: always()
         with:
           name: Logs
-          path: outputs/logs
+          path: output/logs
