@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Avans-VSOPRJ2.iml" filepath="$PROJECT_DIR$/Avans-VSOPRJ2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wordcrex.iml" filepath="$PROJECT_DIR$/wordcrex.iml" />
     </modules>
   </component>
 </project>

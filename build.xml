@@ -1,8 +1,0 @@
-<project default="compile">
-    <target name="compile">
-        <mkdir dir="bin"/>
-        <mkdir dir="output/logs"/>
-        <record name="output/logs/compile.log"/>
-        <javac srcdir="src" destdir="bin"/>
-    </target>
-</project>
