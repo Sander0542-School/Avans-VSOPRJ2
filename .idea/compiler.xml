@@ -11,7 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Avans-VSOPRJ2" target="1.11" />
-      <module name="Wordcrex" target="1.11" />
+      <module name="Wordcrex" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
