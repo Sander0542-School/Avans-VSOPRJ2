@@ -22,11 +22,12 @@ jobs:
         run: mvn -B compile --file pom.xml
       - name: Run Tests
         run: mvn -B site --file pom.xml
-      - uses: SamKirkland/FTP-Deploy-Action@3.0.0
+      - uses: sebastianpopp/ftp-action@releases/v2
         name: Upload Report to Server
         if: always()
         with:
-          ftp-server: ftp://tommyhosewol.com:21/${{ github.run_id }}/
-          ftp-username: github_actions
-          ftp-password: ${{ secrets.FTP_PASS }}
-          local-dir: target/site
+          ftp-server: tommyhosewol.com
+          user: github_actions
+          password: ${{ secrets.FTP_PASS }}
+          localDir: target/site
+          remoteDir: ${{ github.run_id }}
