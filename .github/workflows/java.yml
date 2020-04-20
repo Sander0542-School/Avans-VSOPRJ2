@@ -30,3 +30,4 @@ jobs:
           ftp-username: github_actions
           ftp-password: ${{ secrets.FTP_PASS }}
           local-dir: target/site
+          git-ftp-args: --insecure
