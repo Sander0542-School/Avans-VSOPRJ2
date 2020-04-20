@@ -7,8 +7,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class WordCrexTest
-        extends TestCase {
+public class WordCrexTest extends TestCase {
     /**
      * Create the test case
      *
