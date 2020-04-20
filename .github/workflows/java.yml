@@ -26,7 +26,7 @@ jobs:
         name: Upload Report to Server
         if: always()
         with:
-          ftp-server: tommyhosewol.com
+          host: tommyhosewol.com
           user: github_actions
           password: ${{ secrets.FTP_PASS }}
           localDir: target/site
