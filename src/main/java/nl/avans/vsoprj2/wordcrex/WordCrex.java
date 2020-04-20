@@ -16,7 +16,7 @@ public class WordCrex extends Application {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
 
-        stage.getIcons().add(new Image("/icon.png"));
+        stage.getIcons().add(new Image("/images/icon.png"));
 
         Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
         Scene scene = new Scene(new StackPane(l), 640, 480);
