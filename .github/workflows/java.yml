@@ -15,12 +15,23 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.11
+          java-version: '11.0.6'
+          architecture: x64
       - name: Compile
-        run: ant -noinput -buildfile build.xml compile
+        run: mvn -B compile --file pom.xml
+      - name: Run Tests
+        run: mvn -B site --file pom.xml
       - uses: actions/upload-artifact@v1
-        name: Upload Logs
+        name: Upload Report to Artifact
         if: always()
         with:
-          name: Logs
-          path: output/logs
+          name: Report
+          path: target/site
+      - uses: SamKirkland/FTP-Deploy-Action@3.0.0
+        name: Upload Report to Server
+        if: always()
+        with:
+          ftp-server: ftp://tommyhosewol.com/${{ github.run_id }}
+          ftp-username: github_actions
+          ftp-password: ${{ secrets.FTP_PASS }}
+          local-dir: target/site
