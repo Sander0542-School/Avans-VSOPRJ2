@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 <fx:root prefHeight="64.0" style="-fx-background-color: #201b53;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <ImageView fx:id="backButton" fitHeight="24.0" fitWidth="24.0" visible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
-       <image>
-           <Image url="@/images/drawables/arrow_back.png" />
-       </image>
-   </ImageView>
-    <Label fx:id="titleLabel" text="Title" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="0.0">
-        <font>
-            <Font name="Roboto Black" size="24.0" />
-        </font>
-    </Label>
+    <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <ImageView fx:id="backButton" fitHeight="24.0" fitWidth="24.0" visible="true">
+                <image>
+                    <Image url="@/images/drawables/arrow_back.png" />
+                </image>
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </ImageView>
+            <Label fx:id="titleLabel" text="Title" textFill="WHITE">
+                <font>
+                    <Font name="Roboto Black" size="24.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </Label>
+        </children>
+    </HBox>
+
+    <ImageView fx:id="optionsButton" fitHeight="24.0" fitWidth="24.0" visible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <image>
+            <Image url="@/images/drawables/more_vert.png" />
+        </image>
+    </ImageView>
 </fx:root>
