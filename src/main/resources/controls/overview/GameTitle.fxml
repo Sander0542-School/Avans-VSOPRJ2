@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<fx:root prefHeight="32.0" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="titleLabel" text="Title" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0"
+           AnchorPane.bottomAnchor="10.0">
+        <font>
+            <Font name="Roboto Black" size="12.0"/>
+        </font>
+        <HBox.margin>
+            <Insets left="20.0"/>
+        </HBox.margin>
+    </Label></fx:root>
