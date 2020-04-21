@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundItem?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.AnchorPane"
+         xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex">
+    <children>
+        <SplitPane dividerPositions="0.5" prefHeight="380.0" prefWidth="1280.0" style="-fx-background-color: #201b53;">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <RoundItem name="${playerOneName}"/>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <RoundItem/>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+
+</fx:root>
