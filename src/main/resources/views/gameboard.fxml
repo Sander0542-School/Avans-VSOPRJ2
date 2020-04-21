@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import nl.avans.vsoprj2.wordcrex.controls.gameboard.*?>
+
+<BorderPane style="-fx-background-color: #201b53" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.GameBoardController">
+
+    <top>
+        <AnchorPane prefHeight="64.0" style="-fx-background-color: #1b1744;">
+            <ImageView fitHeight="24.0" fitWidth="24.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                <image>
+                    <Image url="@/images/drawables/arrow_back.png" />
+                </image>
+            </ImageView>
+            <HBox alignment="CENTER" spacing="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+                <Label text="Speler 1" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+
+                <HBox alignment="CENTER" maxHeight="-Infinity" spacing="14.0" style="-fx-background-radius: 6; -fx-background-color: fff;">
+
+                    <Label text="0" textFill="black">
+                        <font>
+                            <Font name="Roboto Black" size="16.0" />
+                        </font>
+                    </Label>
+                    <Label text="-" textFill="black">
+                        <font>
+                            <Font name="Roboto Black" size="16.0" />
+                        </font>
+                    </Label>
+                    <Label text="0" textFill="black">
+                        <font>
+                            <Font name="Roboto Black" size="16.0" />
+                        </font>
+                    </Label>
+               <padding>
+                  <Insets bottom="4.0" left="12.0" right="12.0" top="4.0" />
+               </padding>
+
+                </HBox>
+
+                <Label text="Speler 2" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+
+            </HBox>
+        </AnchorPane>
+    </top>
+
+    <center>
+
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="64.0" spacing="64.0" style="-fx-background-color: #1b1744;">
+            <children>
+                <HBox alignment="CENTER_RIGHT" prefWidth="136.0" spacing="32.0">
+
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/play_arrow.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/shuffle.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/block.png" />
+                        </image>
+                    </ImageView>
+
+                </HBox>
+                <HBox alignment="CENTER" spacing="6.0">
+                    <children>
+                        <LetterTile />
+                        <LetterTile />
+                        <LetterTile />
+                        <LetterTile />
+                        <LetterTile />
+                        <LetterTile />
+                        <LetterTile />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefWidth="136.0" spacing="32.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/chat_bubble_outline.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/more_horiz.png" />
+                        </image>
+                    </ImageView>
+                </HBox>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

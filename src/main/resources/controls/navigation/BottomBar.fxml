@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="64.0" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox fx:id="bottomBar" alignment="CENTER" spacing="32.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <VBox fx:id="gamesTab" alignment="CENTER">
+                <children>
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/view_list.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Spellen" textFill="WHITE" />
+                </children>
+            </VBox>
+
+            <VBox fx:id="statisticsTab" alignment="CENTER">
+                <children>
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <image>
+                            <Image url="@/images/drawables/show_chart.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Statistieken" textFill="WHITE" />
+                </children>
+            </VBox>
+        </children>
+    </HBox>
+
+</fx:root>
