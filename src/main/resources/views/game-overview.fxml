@@ -4,12 +4,95 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.LoginController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.ColorInput?>
+<?import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem?>
+<?import nl.avans.vsoprj2.wordcrex.controls.overview.GameTitle?>
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.LoginController">
     <top>
-        <VBox>
-            <AppBar title="Games" backButton="false" optionsButton="true"/>
-            
-        </VBox>
+        <AppBar title="Spellen" backButton="false" optionsButton="true"/>
     </top>
+
+    <center>
+        <VBox style="-fx-background-color: #201b53">
+            <AnchorPane minHeight="64.0" prefHeight="64.0" style="-fx-background-color: #ffbb00;">
+                <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.topAnchor="0.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@/images/drawables/add_circle.png"/>
+                        <HBox.margin>
+                            <Insets left="20.0"/>
+                        </HBox.margin>
+                        <effect>
+                        </effect>
+                    </ImageView>
+                    <Label text="Nieuw spel starten" style="-fx-font-weight: bold;" textFill="#1b1744">
+                        <font>
+                            <Font name="Roboto Black" size="18.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets left="20.0"/>
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+            </AnchorPane>
+
+            <ScrollPane fitToWidth="true"  style="-fx-background-color: #201b53">
+                <VBox>
+                    <GameTitle title="Uitnodigingen" />
+                    <VBox> <!-- Game items - Invites -->
+                        <GameItem title="Sander0542 - Nederlands" timeLeft="64h" message="Wacht tot Sander0542 de uitnodiging accepteerd!" />
+
+                        <Separator>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" />
+                            </VBox.margin>
+                        </Separator>
+
+                        <GameItem title="daanh - Nederlands" timeLeft="12h" message="Wacht tot daanh de uitnodiging accepteerd!" />
+                    </VBox>
+
+                    <GameTitle title="Jouw beurt" />
+                    <VBox> <!-- Game items - Your turn -->
+                        <GameItem title="Rutte - Nederlands" timeLeft="26h" message="Speel nu!" />
+
+                        <Separator>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" />
+                            </VBox.margin>
+                        </Separator>
+
+                        <GameItem title="Klaver - Nederlands" timeLeft="71h" message="Speel nu!" />
+                    </VBox>
+
+                    <GameTitle title="Hun beurt" />
+                    <VBox> <!-- Game items - Their turn -->
+                        <GameItem title="Harry - Nederlands" timeLeft="5h" message="Wacht tot Harry gespeeld heeft!" />
+
+                        <Separator>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" />
+                            </VBox.margin>
+                        </Separator>
+
+                        <GameItem title="Joris - Nederlands" timeLeft="1h" message="Wacht tot Joris gespeeld heeft!" />
+                    </VBox>
+
+                    <GameTitle title="Afgesloten spellen" />
+                    <VBox> <!-- Game items - Finished games -->
+                        <GameItem title="Henry - Nederlands" timeLeft="8h" message="Je hebt verloren van Henry!" />
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+    </center>
+
+    <bottom>
+        <BottomBar active="gamesTab"/>
+    </bottom>
 </BorderPane>
