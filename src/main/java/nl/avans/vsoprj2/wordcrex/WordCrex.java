@@ -20,7 +20,7 @@ public class WordCrex extends Application {
 
         Parent sceneBox = new FXMLLoader(getClass().getResource("/views/scoreboard.fxml")).load();
         Scene scene = new Scene(sceneBox);
-        scene.getStylesheets().add(String.valueOf(getClass().getResource("/views/scoreboard.css")));
+        scene.getStylesheets().add(String.valueOf(getClass().getResource("/styles/scoreboard.css")));
 
 //        if (DEBUG_MODE) {
 //            stage.setTitle(String.format("WordCrex - Java: %s - JavaFX: %s", System.getProperty("java.version"), System.getProperty("javafx.version")));
