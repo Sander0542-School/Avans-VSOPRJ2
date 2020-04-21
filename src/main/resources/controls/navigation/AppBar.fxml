@@ -16,4 +16,9 @@
             <Font name="Roboto Black" size="24.0" />
         </font>
     </Label>
+    <ImageView fx:id="optionsButton" fitHeight="24.0" fitWidth="24.0" visible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <image>
+            <Image url="@/images/drawables/more_vert.png" />
+        </image>
+    </ImageView>
 </fx:root>
