@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #ffbb00" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.SettingsController">
+    <top>
+        <AppBar title="Instellingen - Accountgegevens aanpassen"/>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER">
+            <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 100 0 0 0;">
+                <Label textAlignment="LEFT" prefWidth="600" text="Gebruikersnaam" textFill="#201b53">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+                <TextField editable="false" text="John Doe">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </TextField>
+            </VBox>
+            <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 20 0 0 0;">
+                <Label textAlignment="LEFT" prefWidth="600" text="Wachtwoord" textFill="#201b53">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+                <PasswordField>
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </PasswordField>
+            </VBox>
+            <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 20 0 0 0;">
+                <Label textAlignment="LEFT" prefWidth="600" text="Herhaal wachtwoord" textFill="#201b53">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+                <PasswordField>
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </PasswordField>
+            </VBox>
+            <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 50 0 0 0;">
+                <Button prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Gegevens opslaan">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Button>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
