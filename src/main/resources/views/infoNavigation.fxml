@@ -10,6 +10,7 @@
     <top>
         <AppBar backButton="true" optionsButton="false" title="Informatie" />
     </top>
+    
     <center>
         <VBox BorderPane.alignment="CENTER">
             <padding>
