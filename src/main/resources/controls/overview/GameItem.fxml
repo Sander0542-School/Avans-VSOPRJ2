@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<fx:root prefHeight="64.0" style="-fx-background-color: #201b53;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER_LEFT">
+        <Label fx:id="gameTitleLabel" text="Username - Language" textFill="WHITE" style="-fx-font-weight: bold" />
+        <Label fx:id="messageLabel" text="Message" textFill="WHITE" />
+    </VBox>
+
+    <Label fx:id="timeLeftLabel" text="0h" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER_RIGHT" textFill="WHITE" style="-fx-background-color: #1b1744; -fx-background-radius: 6; -fx-padding: 5" />
+</fx:root>
