@@ -49,7 +49,7 @@ public class BottomBar extends AnchorPane implements Initializable {
 
         ObservableList<Node> children = bottomBar.getChildren();
 
-        for (Node child:children) {
+        for (Node child : children) {
             if (child.getId().equals(value)) {
                 child.setEffect(ca);
                 this.active = child.getId();
