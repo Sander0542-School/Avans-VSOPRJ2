@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -19,8 +18,9 @@ public class WordCrex extends Application {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
-        Parent sceneBox = new FXMLLoader(getClass().getResource("/views/login.fxml")).load();
+        Parent sceneBox = new FXMLLoader(getClass().getResource("/views/scoreboard.fxml")).load();
         Scene scene = new Scene(sceneBox);
+        scene.getStylesheets().add(String.valueOf(getClass().getResource("/views/scoreboard.css")));
 
 //        if (DEBUG_MODE) {
 //            stage.setTitle(String.format("WordCrex - Java: %s - JavaFX: %s", System.getProperty("java.version"), System.getProperty("javafx.version")));
