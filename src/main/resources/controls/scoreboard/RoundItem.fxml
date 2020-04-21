@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal">
     <VBox style="-fx-background-color: transparent;">
-        <SplitPane dividerPositions="0.5" prefWidth="640.0" style="-fx-background-color: transparent;">
+        <SplitPane mouseTransparent="true" prefWidth="640.0" style="-fx-background-color: transparent;">
             <AnchorPane style="-fx-background-color: transparent;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

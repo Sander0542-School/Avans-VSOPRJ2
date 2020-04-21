@@ -13,7 +13,7 @@
     </top>
     <center>
         <Pane style="-fx-background-color: #201b53;" BorderPane.alignment="CENTER">
-            <SplitPane prefWidth="1280.0" style="-fx-background-color: transparent;" layoutY="40.0">
+            <SplitPane mouseTransparent="true" prefWidth="1280.0" style="-fx-background-color: transparent;" layoutY="40.0">
                 <AnchorPane>
                     <VBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
