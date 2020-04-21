@@ -10,7 +10,7 @@
         <children>
             <VBox fx:id="gamesTab" alignment="CENTER">
                 <children>
-                    <ImageView fx:id="gamesTabImage" fitHeight="24.0" fitWidth="24.0" visible="true">
+                    <ImageView fx:id="gamesTabImage" fitHeight="24.0" fitWidth="24.0">
                         <image>
                             <Image url="@/images/drawables/view_list.png" />
                         </image>
@@ -21,7 +21,7 @@
 
             <VBox fx:id="statisticsTab" alignment="CENTER">
                 <children>
-                    <ImageView fx:id="statisticsTabImage" fitHeight="24.0" fitWidth="24.0" visible="true">
+                    <ImageView fx:id="statisticsTabImage" fitHeight="24.0" fitWidth="24.0">
                         <image>
                             <Image url="@/images/drawables/show_chart.png" />
                         </image>
