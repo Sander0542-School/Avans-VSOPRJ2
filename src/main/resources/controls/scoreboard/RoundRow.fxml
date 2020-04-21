@@ -27,7 +27,7 @@
                 <RoundItem fx:id="playerOne"/>
             </VBox>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;">
+        <AnchorPane style="-fx-background-color: #201b53;">
             <VBox spacing="10.0">
                 <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

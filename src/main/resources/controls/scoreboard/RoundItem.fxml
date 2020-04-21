@@ -7,7 +7,7 @@
          xmlns="http://javafx.com/javafx/10.0.2-internal">
     <VBox style="-fx-background-color: #201b53;">
         <SplitPane dividerPositions="0.5" prefWidth="640.0" style="-fx-background-color: #201b53;">
-            <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+            <AnchorPane style="-fx-background-color: #201b53;"
                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
@@ -30,7 +30,7 @@
                     </HBox>
                 </VBox>
             </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+            <AnchorPane style="-fx-background-color: #201b53;"
                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
