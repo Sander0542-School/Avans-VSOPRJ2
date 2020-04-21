@@ -44,11 +44,7 @@
                     <VBox> <!-- Game items - Invites -->
                         <GameItem title="Sander0542 - Nederlands" timeLeft="64h" message="Wacht tot Sander0542 de uitnodiging accepteerd!" />
 
-                        <Separator>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Separator>
+                        <Separator />
 
                         <GameItem title="daanh - Nederlands" timeLeft="12h" message="Wacht tot daanh de uitnodiging accepteerd!" />
                     </VBox>
@@ -57,11 +53,7 @@
                     <VBox> <!-- Game items - Your turn -->
                         <GameItem title="Rutte - Nederlands" timeLeft="26h" message="Speel nu!" />
 
-                        <Separator>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Separator>
+                        <Separator />
 
                         <GameItem title="Klaver - Nederlands" timeLeft="71h" message="Speel nu!" />
                     </VBox>
@@ -70,11 +62,7 @@
                     <VBox> <!-- Game items - Their turn -->
                         <GameItem title="Harry - Nederlands" timeLeft="5h" message="Wacht tot Harry gespeeld heeft!" />
 
-                        <Separator>
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Separator>
+                        <Separator />
 
                         <GameItem title="Joris - Nederlands" timeLeft="1h" message="Wacht tot Joris gespeeld heeft!" />
                     </VBox>
