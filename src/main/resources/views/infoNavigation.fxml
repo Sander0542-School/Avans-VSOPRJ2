@@ -11,7 +11,7 @@
         <AppBar backButton="true" optionsButton="false" title="Informatie" />
     </top>
     <center>
-        <GridPane BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="25" left="25" right="25" top="25" />
             </padding>
@@ -22,9 +22,9 @@
                 </font>
             </Label>
 
-            <Separator GridPane.rowIndex="1" />
+            <Separator/>
 
-            <HBox GridPane.rowIndex="2" spacing="25">
+            <HBox spacing="25">
                 <padding>
                     <Insets bottom="15" right="5" top="10" />
                 </padding>
@@ -34,21 +34,21 @@
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Woordenboek</Button>
             </HBox>
 
-            <Label GridPane.rowIndex="3" alignment="CENTER" prefHeight="25" text="Wettelijk" textFill="#201b53">
+            <Label alignment="CENTER" prefHeight="25" text="Wettelijk" textFill="#201b53">
                 <font>
                     <Font size="18" />
                 </font>
             </Label>
 
-            <Separator GridPane.rowIndex="4" />
+            <Separator/>
 
-            <HBox GridPane.rowIndex="5" spacing="25">
+            <HBox spacing="25">
                 <padding>
                     <Insets bottom="15" right="5" top="10" />
                 </padding>
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Privacyverklaring</Button>
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Servicevoorwaarden</Button>
             </HBox>
-        </GridPane>
+        </VBox>
     </center>
 </BorderPane>
