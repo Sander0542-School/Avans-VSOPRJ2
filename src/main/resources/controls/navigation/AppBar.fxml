@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root prefHeight="64.0" style="-fx-background-color: #201b53;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fx:id="backButton" fitHeight="24.0" fitWidth="24.0" visible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+       <image>
+           <Image url="@/images/drawables/arrow_back.png" />
+       </image>
+   </ImageView>
+    <Label fx:id="titleLabel" text="Title" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="0.0">
+        <font>
+            <Font name="Roboto Black" size="24.0" />
+        </font>
+    </Label>
+</fx:root>
