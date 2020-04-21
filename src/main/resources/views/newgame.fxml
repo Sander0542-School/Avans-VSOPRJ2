@@ -57,10 +57,4 @@
             </VBox>
         </VBox>
     </center>
-
-    <!--<bottom>
-        <AnchorPane prefHeight="440.0" prefWidth="994.0">
-
-        </AnchorPane>
-    </bottom>-->
 </BorderPane>
