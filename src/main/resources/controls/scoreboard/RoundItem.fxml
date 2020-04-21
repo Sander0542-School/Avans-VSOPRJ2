@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/10.0.2-internal">
     <children>
-        <HBox style="-fx-background-color: #201b53;">
-            <children>
-                <VBox>
-                    <children>
-                        <HBox>
-                            <Label textFill="white" fx:id="nameLabel"/>
-                            <Label textFill="white" fx:id="wordLabel"/>
+        <VBox style="-fx-background-color: #201b53;">
+            <SplitPane dividerPositions="0.5" prefWidth="640.0" style="-fx-background-color: #201b53;">
+                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <Label textFill="white" fx:id="nameLabel" alignment="CENTER"/>
                         </HBox>
-                        <HBox>
-                            <Label textFill="white" fx:id="timeLabel"/>
-                            <Label textFill="white" fx:id="scoreLabel"/>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <Label textFill="white" fx:id="timeLabel" alignment="CENTER"/>
                         </HBox>
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
+                    </VBox>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <Label textFill="white" fx:id="wordLabel" alignment="CENTER"/>
+                        </HBox>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <Label textFill="white" maxWidth="800.0" fx:id="scoreLabel" alignment="CENTER"/>
+                        </HBox>
+                    </VBox>
+                </AnchorPane>
+            </SplitPane>
+        </VBox>
     </children>
 </fx:root>
 
