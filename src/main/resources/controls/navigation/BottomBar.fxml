@@ -10,23 +10,23 @@
         <children>
             <VBox fx:id="gamesTab" alignment="CENTER">
                 <children>
-                    <ImageView fx:id="gamesTabImage" fitHeight="24.0" fitWidth="24.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
                         <image>
                             <Image url="@/images/drawables/view_list.png" />
                         </image>
                     </ImageView>
-                    <Label fx:id="gamesTabLabel" text="Spellen" textFill="WHITE" />
+                    <Label text="Spellen" textFill="WHITE" />
                 </children>
             </VBox>
 
             <VBox fx:id="statisticsTab" alignment="CENTER">
                 <children>
-                    <ImageView fx:id="statisticsTabImage" fitHeight="24.0" fitWidth="24.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
                         <image>
                             <Image url="@/images/drawables/show_chart.png" />
                         </image>
                     </ImageView>
-                    <Label fx:id="statisticsTabLabel" text="Statistieken" textFill="WHITE" />
+                    <Label text="Statistieken" textFill="WHITE" />
                 </children>
             </VBox>
         </children>
