@@ -18,10 +18,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BottomBar extends AnchorPane implements Initializable {
+    private String active;
+    
     @FXML
     private HBox bottomBar;
-
-    private String active;
 
 
     public BottomBar() {
