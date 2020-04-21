@@ -11,7 +11,7 @@
         <AppBar backButton="true" optionsButton="false" title="Informatie" />
     </top>
     <center>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER">
             <padding>
                 <Insets bottom="25" left="25" right="25" top="25" />
             </padding>
