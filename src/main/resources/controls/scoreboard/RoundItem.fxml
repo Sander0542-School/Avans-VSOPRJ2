@@ -5,57 +5,55 @@
 <?import javafx.scene.text.Font?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/10.0.2-internal">
-    <children>
-        <VBox style="-fx-background-color: #201b53;">
-            <SplitPane dividerPositions="0.5" prefWidth="640.0" style="-fx-background-color: #201b53;">
-                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
-                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                              AnchorPane.topAnchor="0.0">
-                            <Label textFill="white" fx:id="nameLabel" alignment="CENTER">
-                                <font>
-                                    <Font name="Roboto Black" size="16.0"/>
-                                </font>
-                            </Label>
-                        </HBox>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                              AnchorPane.topAnchor="0.0">
-                            <Label textFill="white" fx:id="timeLabel" alignment="CENTER" style="-fx-opacity: 50%;">
-                                <font>
-                                    <Font name="Roboto Black" size="14.0"/>
-                                </font>
-                            </Label>
-                        </HBox>
-                    </VBox>
-                </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
-                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                              AnchorPane.topAnchor="0.0">
-                            <Label textFill="white" fx:id="wordLabel" alignment="CENTER">
-                                <font>
-                                    <Font name="Roboto Black" size="16.0"/>
-                                </font>
-                            </Label>
-                        </HBox>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                              AnchorPane.topAnchor="0.0">
-                            <Label textFill="white" fx:id="scoreLabel" alignment="CENTER" style="-fx-opacity: 50%;">
-                                <font>
-                                    <Font name="Roboto Black" size="14.0"/>
-                                </font>
-                            </Label>
-                        </HBox>
-                    </VBox>
-                </AnchorPane>
-            </SplitPane>
-        </VBox>
-    </children>
+    <VBox style="-fx-background-color: #201b53;">
+        <SplitPane dividerPositions="0.5" prefWidth="640.0" style="-fx-background-color: #201b53;">
+            <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <Label textFill="white" fx:id="nameLabel" alignment="CENTER">
+                            <font>
+                                <Font name="Roboto Black" size="16.0"/>
+                            </font>
+                        </Label>
+                    </HBox>
+                    <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <Label textFill="white" fx:id="timeLabel" alignment="CENTER" style="-fx-opacity: 50%;">
+                            <font>
+                                <Font name="Roboto Black" size="14.0"/>
+                            </font>
+                        </Label>
+                    </HBox>
+                </VBox>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;"
+                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <Label textFill="white" fx:id="wordLabel" alignment="CENTER">
+                            <font>
+                                <Font name="Roboto Black" size="16.0"/>
+                            </font>
+                        </Label>
+                    </HBox>
+                    <HBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <Label textFill="white" fx:id="scoreLabel" alignment="CENTER" style="-fx-opacity: 50%;">
+                            <font>
+                                <Font name="Roboto Black" size="14.0"/>
+                            </font>
+                        </Label>
+                    </HBox>
+                </VBox>
+            </AnchorPane>
+        </SplitPane>
+    </VBox>
 </fx:root>
 
