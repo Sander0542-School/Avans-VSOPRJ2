@@ -99,7 +99,11 @@
                 </ScrollPane>
             </center>
             <bottom>
-                <TextArea prefHeight="100.0" style="-fx-background-color: transparent;"></TextArea>
+                <TextArea prefHeight="100.0" style="-fx-background-color: transparent;">
+                    <padding>
+                        <Insets left="400.0" right="400.0" top="20.0"/>
+                    </padding>
+                </TextArea>
             </bottom>
         </BorderPane>
     </center>
