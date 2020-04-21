@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controls.scoreboard;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
@@ -12,14 +13,12 @@ public class RoundRow extends AnchorPane implements Initializable {
     //TODO Make a model for this ugly code
     private String round;
     private String letterSet;
-    private String playerOneName;
-    private String playerTwoName;
-    private String playerOneTime;
-    private String playerTwoTime;
-    private String playerOneWord;
-    private String playerTwoWord;
-    private String playerOneScore;
-    private String playerTwoScore;
+
+    @FXML
+    private RoundItem playerOne;
+
+    @FXML
+    private RoundItem playerTwo;
 
     public RoundRow() {
         super();
@@ -57,66 +56,66 @@ public class RoundRow extends AnchorPane implements Initializable {
     }
 
     public String getPlayerOneName() {
-        return playerOneName;
+        return this.playerOne.getName();
     }
 
     public void setPlayerOneName(String playerOneName) {
-        this.playerOneName = playerOneName;
+        this.playerOne.setName(playerOneName);
     }
 
     public String getPlayerTwoName() {
-        return playerTwoName;
+        return this.playerTwo.getName();
     }
 
     public void setPlayerTwoName(String playerTwoName) {
-        this.playerTwoName = playerTwoName;
+        this.playerTwo.setName(playerTwoName);
     }
 
     public String getPlayerOneTime() {
-        return playerOneTime;
+        return this.playerOne.getTime();
     }
 
     public void setPlayerOneTime(String playerOneTime) {
-        this.playerOneTime = playerOneTime;
+        this.playerOne.setTime(playerOneTime);
     }
 
     public String getPlayerTwoTime() {
-        return playerTwoTime;
+        return this.playerTwo.getTime();
     }
 
     public void setPlayerTwoTime(String playerTwoTime) {
-        this.playerTwoTime = playerTwoTime;
+        this.playerTwo.setTime(playerTwoTime);
     }
 
     public String getPlayerOneWord() {
-        return playerOneWord;
+        return this.playerOne.getWord();
     }
 
     public void setPlayerOneWord(String playerOneWord) {
-        this.playerOneWord = playerOneWord;
+        this.playerOne.setWord(playerOneWord);
     }
 
     public String getPlayerTwoWord() {
-        return playerTwoWord;
+        return this.playerTwo.getWord();
     }
 
     public void setPlayerTwoWord(String playerTwoWord) {
-        this.playerTwoWord = playerTwoWord;
+        this.playerTwo.setWord(playerTwoWord);
     }
 
     public String getPlayerOneScore() {
-        return playerOneScore;
+        return this.playerOne.getScore();
     }
 
     public void setPlayerOneScore(String playerOneScore) {
-        this.playerOneScore = playerOneScore;
+        this.playerOne.setScore(playerOneScore);
     }
 
     public String getPlayerTwoScore() {
-        return playerTwoScore;
+        return this.playerTwo.getScore();
     }
 
     public void setPlayerTwoScore(String playerTwoScore) {
-        this.playerTwoScore = playerTwoScore;
+        playerTwo.setScore(playerTwoScore);
     }
 }

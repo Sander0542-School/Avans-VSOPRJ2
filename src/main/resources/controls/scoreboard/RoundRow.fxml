@@ -4,15 +4,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundItem?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.AnchorPane"
-         xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex">
+         xmlns="http://javafx.com/javafx/10.0.2-internal" prefWidth="1280.0">
     <children>
-        <SplitPane dividerPositions="0.5" prefHeight="380.0" prefWidth="1280.0" style="-fx-background-color: #201b53;">
+        <SplitPane dividerPositions="0.5" prefWidth="1280.0" style="-fx-background-color: #201b53;">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0">
-                    <RoundItem name="${playerOneName}"/>
+                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;">
+                    <RoundItem fx:id="playerOne"/>
                 </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0">
-                    <RoundItem/>
+                <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #201b53;">
+                    <RoundItem fx:id="playerTwo"/>
                 </AnchorPane>
             </items>
         </SplitPane>

@@ -1,7 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controls.scoreboard;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -9,11 +11,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RoundItem extends AnchorPane implements Initializable {
-    //TODO Make a model for this ugly code
-    private String name;
-    private String time;
-    private String word;
-    private String score;
+    @FXML
+    private Label nameLabel;
+
+    @FXML
+    private Label timeLabel;
+
+    @FXML
+    private Label wordLabel;
+
+    @FXML
+    private Label scoreLabel;
+
 
     public RoundItem() {
         super();
@@ -35,34 +44,34 @@ public class RoundItem extends AnchorPane implements Initializable {
     }
 
     public String getName() {
-        return name;
+        return this.nameLabel.getText();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.nameLabel.setText(name);
     }
 
     public String getTime() {
-        return time;
+        return this.timeLabel.getText();
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.timeLabel.setText(time);
     }
 
     public String getWord() {
-        return word;
+        return this.wordLabel.getText();
     }
 
     public void setWord(String word) {
-        this.word = word;
+        this.wordLabel.setText(word);
     }
 
     public String getScore() {
-        return score;
+        return this.scoreLabel.getText();
     }
 
     public void setScore(String score) {
-        this.score = score;
+        this.scoreLabel.setText(score);
     }
 }
