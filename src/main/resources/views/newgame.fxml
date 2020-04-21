@@ -42,8 +42,7 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="448.0" prefWidth="1280.0" spacing="20"
                   style="-fx-background-color: #FFBB00;">
-                <Button alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;"
-                        text="Nodig een vriend uit" textFill="WHITE">
+                <Button alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Nodig een vriend uit" textFill="WHITE">
                     <font>
                         <Font name="Roboto Black" size="16"/>
                     </font>
