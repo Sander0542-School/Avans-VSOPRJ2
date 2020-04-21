@@ -38,7 +38,7 @@
                 </HBox>
             </AnchorPane>
 
-            <ScrollPane fitToWidth="true"  style="-fx-background-color: #201b53">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: #201b53">
                 <VBox>
                     <GameTitle title="Uitnodigingen" />
                     <VBox> <!-- Game items - Invites -->
@@ -86,7 +86,6 @@
                 </VBox>
             </ScrollPane>
         </VBox>
-
     </center>
 
     <bottom>
