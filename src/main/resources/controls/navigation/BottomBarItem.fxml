@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root alignment="CENTER" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="image" fitHeight="24.0" fitWidth="24.0">
+        <Image url="@/images/drawables/block.png"/>
+        <clip>
+            <ImageView fitHeight="24.0" fitWidth="24.0">
+                <Image url="@/images/drawables/block.png"/>
+            </ImageView>
+        </clip>
+    </ImageView>
+    <Label fx:id="label" text="Spellen" textFill="WHITE"/>
+</fx:root>
