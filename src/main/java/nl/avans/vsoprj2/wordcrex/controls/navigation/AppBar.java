@@ -47,6 +47,7 @@ public class AppBar extends AnchorPane implements Initializable {
 
     public void setBackButton(boolean visible) {
         backButton.setVisible(visible);
+        backButton.setManaged(visible);
     }
 
     public boolean getOptionsButton() {
