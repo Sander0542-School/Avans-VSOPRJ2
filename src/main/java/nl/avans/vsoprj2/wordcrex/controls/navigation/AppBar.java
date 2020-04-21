@@ -42,7 +42,7 @@ public class AppBar extends AnchorPane implements Initializable {
     }
 
     public boolean getBackButton() {
-        return titleLabel.isVisible();
+        return backButton.isVisible();
     }
 
     public void setBackButton(boolean visible) {
