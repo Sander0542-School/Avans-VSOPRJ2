@@ -16,6 +16,8 @@ public class AppBar extends AnchorPane implements Initializable {
     private Label titleLabel;
     @FXML
     private ImageView backButton;
+    @FXML
+    private ImageView optionsButton;
 
     public AppBar() {
         super();
@@ -45,6 +47,14 @@ public class AppBar extends AnchorPane implements Initializable {
 
     public void setBackButton(boolean visible) {
         backButton.setVisible(visible);
+    }
+
+    public boolean getOptionsButton() {
+        return optionsButton.isVisible();
+    }
+
+    public void setOptionsButton(boolean visible) {
+        optionsButton.setVisible(visible);
     }
 
     @Override
