@@ -2,9 +2,8 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <?import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow?>
@@ -16,20 +15,40 @@
     </top>
     <center>
         <Pane style="-fx-background-color: #201b53;" BorderPane.alignment="CENTER">
-            <Circle fill="DODGERBLUE" layoutX="380.0" layoutY="108.0" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
-            <Circle fill="DODGERBLUE" layoutX="860.0" layoutY="108.0" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
-            <Label layoutX="369.0" layoutY="205.0" textFill="white">Pieter</Label>
-            <Label layoutX="846.0" layoutY="205.0" textFill="white">Klaas</Label>
+            <SplitPane prefWidth="1280.0" style="-fx-background-color: transparent;" layoutY="40.0">
+                <AnchorPane>
+                    <VBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK"
+                                    strokeType="INSIDE"/>
+                            <Label textFill="white">Pieter</Label>
+                        </children>
+                    </VBox>
+                </AnchorPane>
+                <AnchorPane>
+                    <VBox alignment="CENTER" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK"
+                                    strokeType="INSIDE"/>
+                            <Label textFill="white">Klaas</Label>
+                        </children>
+                    </VBox>
+                </AnchorPane>
+            </SplitPane>
 
-            <ScrollPane layoutY="278.0" prefWidth="1280.0" prefHeight="380.0"
-                        style="-fx-background-color: #201b53;">
-                <VBox prefWidth="1280.0">
+            <ScrollPane layoutY="248.0" prefWidth="1280.0" prefHeight="410.0"
+                        style="-fx-background-color: transparent;">
+                <VBox prefWidth="1280.0" spacing="20.0">
                     <children>
-                        <RoundRow round="3" letterSet="ABCDEFG"
+                        <RoundRow round="2" letterSet="ABCDEFG"
                                   playerOneName="Pieter" playerTwoName="Klaas" playerOneScore="+16 (320)"
                                   playerTwoScore="+10 (300)" playerOneWord="kaas" playerTwoWord="piet"
                                   playerOneTime="0 h, 3 m, 12 s" playerTwoTime="0 h, 5 m, 10 s"/>
-                        <RoundRow round="3" letterSet="ABCDEFG"
+                        <RoundRow round="1" letterSet="ABCDEFG"
                                   playerOneName="Pieter" playerTwoName="Klaas" playerOneScore="+18 (320)"
                                   playerTwoScore="+12 (300)" playerOneWord="kaas" playerTwoWord="piet"
                                   playerOneTime="0 h, 2 m, 32 s" playerTwoTime="0 h, 8 m, 50 s"/>

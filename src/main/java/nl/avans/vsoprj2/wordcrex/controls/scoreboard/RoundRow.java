@@ -3,6 +3,7 @@ package nl.avans.vsoprj2.wordcrex.controls.scoreboard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -10,9 +11,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RoundRow extends AnchorPane implements Initializable {
-    //TODO Make a model for this ugly code
-    private String round;
-    private String letterSet;
+    @FXML
+    private Label roundLabel;
+
+    @FXML
+    private Label letterSetLabel;
 
     @FXML
     private RoundItem playerOne;
@@ -40,19 +43,19 @@ public class RoundRow extends AnchorPane implements Initializable {
     }
 
     public String getRound() {
-        return round;
+        return this.roundLabel.getText();
     }
 
     public void setRound(String round) {
-        this.round = round;
+        this.roundLabel.setText(round);
     }
 
     public String getLetterSet() {
-        return letterSet;
+        return this.letterSetLabel.getText();
     }
 
     public void setLetterSet(String letterSet) {
-        this.letterSet = letterSet;
+        this.letterSetLabel.setText(letterSet);
     }
 
     public String getPlayerOneName() {
