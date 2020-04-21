@@ -6,12 +6,12 @@
 <?import javafx.scene.text.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.*?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.LoginController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.InfoNavigationController">
     <top>
         <AppBar backButton="true" optionsButton="false" title="Informatie" />
     </top>
     <center>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER">
             <padding>
                 <Insets bottom="25" left="25" right="25" top="25" />
             </padding>
@@ -28,13 +28,13 @@
                 <padding>
                     <Insets bottom="15" right="5" top="10" />
                 </padding>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Handleiding</Button>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Spelregels</Button>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">FAQ</Button>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Woordenboek</Button>
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Handleiding" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Spelregels" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="FAQ" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Woordenboek" />
             </HBox>
 
-            <Label alignment="CENTER" prefHeight="25" text="Wettelijk" textFill="#201b53">
+            <Label alignment="CENTER" prefHeight="25" text="Wettelijke documenten" textFill="#201b53">/
                 <font>
                     <Font size="18" />
                 </font>
@@ -46,8 +46,8 @@
                 <padding>
                     <Insets bottom="15" right="5" top="10" />
                 </padding>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Privacyverklaring</Button>
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE">Servicevoorwaarden</Button>
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Privacyverklaring" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Servicevoorwaarden" />
             </HBox>
         </VBox>
     </center>
