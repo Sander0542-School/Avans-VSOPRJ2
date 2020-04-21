@@ -53,6 +53,8 @@ public class BottomBar extends AnchorPane implements Initializable {
             if (child.getId().equals(value)) {
                 child.setEffect(ca);
                 this.active = child.getId();
+            } else {
+                child.setEffect(null);
             }
         }
     }
