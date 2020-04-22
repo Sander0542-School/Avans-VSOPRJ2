@@ -3,7 +3,8 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.HBox?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="64.0" alignment="CENTER" spacing="32" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/10.0.2-internal">
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.2-internal" prefHeight="64.0" alignment="CENTER" spacing="32" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.HBox">
     <BottomBarItem fx:id="games" label="Spellen">
         <image>
             <Image url="@/images/drawables/view_list.png"/>
