@@ -11,7 +11,7 @@
     </top>
     <center>
         <VBox alignment="CENTER" fillWidth="false" spacing="10">
-            <Label prefWidth="500" text="Je email:" />
+            <Label prefWidth="500" text="Username:" />
             <TextField prefWidth="500"/>
             <Label prefWidth="500" text="Woord:" />
             <TextField prefWidth="500" />
