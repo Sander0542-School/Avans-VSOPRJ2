@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
+<?import nl.avans.vsoprj2.wordcrex.controls.gamechat.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.GameChatController">
     <top>
@@ -15,27 +14,21 @@
             <center>
                 <ScrollPane hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fitToWidth="true">
                     <VBox spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-background-color: transparent;">
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 1 van andere persoon" textFill="BLACK"/>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <padding>
-                                <Insets left="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 2 van jijzelf. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
-                        </HBox>
+                        <ChatRow left="true" text="Bericht 2 van tegenstander. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
+                        <ChatRow left="false" text="Bericht 2 van jijzelf. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
+                        <ChatRow left="false" text="Bericht 2 van jijzelf. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
+                        <ChatRow left="true" text="Bericht 2 van tegenstander. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
+                        <ChatRow left="false" text="Bericht 2 van jijzelf. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
+                        <ChatRow left="true" text="Bericht 2 van tegenstander. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
                     </VBox>
                 </ScrollPane>
             </center>
             <bottom>
-                <TextArea prefHeight="100.0" style="-fx-background-color: transparent;">
-                    <padding>
-                        <Insets left="400.0" right="400.0" top="20.0"/>
-                    </padding>
-                </TextArea>
+                <VBox BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" prefHeight="100.0">
+                    <AnchorPane maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TextArea wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: transparent;"/>
+                    </AnchorPane>
+                </VBox>
             </bottom>
         </BorderPane>
     </center>
