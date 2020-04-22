@@ -5,13 +5,119 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.LoginController">
     <top>
         <AppBar title="Statistieken" backButton="false"/>
     </top>
 
+    <center>
+        <VBox style="-fx-background-color: #ffbb00">
+
+
+
+
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+
+
+
+            <GridPane alignment="CENTER" hgap="80" vgap="5">
+                <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+
+                <Label id="name"
+                       text="John Doe"
+                       textFill="#ffffff"
+                       GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <font>
+                        <Font name="Roboto Black" size="18.0"/>
+                    </font>
+                </Label>
+
+
+                <Label text="Spellen gewonnen"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="5"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="won"
+                       text="0"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+
+                <Label text="Spellen verloren"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="6"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="lost"
+                       text="0"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="6"/>
+
+                <Label text="Spellen gelijk"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="7"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="draw"
+                       text="0"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="7"/>
+
+                <Label text="Spellen verlaten"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="8"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="left"
+                       text="0"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="8"/>
+
+                <Label text="" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                <Label text="" GridPane.columnIndex="2" GridPane.rowIndex="9"/>
+
+                <Label text="Hoogste spel score"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="10"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="game score"
+                       text="79"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="10"/>
+
+                <Label text="Hoogste woord score"
+                       style="-fx-font-weight: bold; -fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="0" GridPane.rowIndex="11"
+                       GridPane.columnSpan="2"/>
+
+                <Label id="word score"
+                       text="57"
+                       style="-fx-font-family: 'Roboto Black'; -fx-font-size: 18"
+                       textFill="#201b53"
+                       GridPane.columnIndex="2" GridPane.rowIndex="11"/>
+
+            </GridPane>
+
+        </VBox>
+    </center>
 
     <bottom>
         <BottomBar active="statistics"/>
     </bottom>
+
 </BorderPane>
