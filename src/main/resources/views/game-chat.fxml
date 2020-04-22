@@ -11,13 +11,13 @@
     <center>
         <BorderPane style="-fx-background-color: #201b53;">
             <center>
-                <ScrollPane hbarPolicy="NEVER" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fitToWidth="true">
+                <ScrollPane hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fitToWidth="true">
                     <VBox spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-background-color: transparent;">
                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
                             <padding>
                                 <Insets right="40.0"/>
                             </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 1 van andere persoon"/>
+                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 1 van andere persoon" textFill="BLACK"/>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
