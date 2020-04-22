@@ -5,23 +5,36 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RoundRow extends AnchorPane implements Initializable {
+public class RoundRow extends VBox implements Initializable {
     @FXML
-    private Label roundLabel;
+    private Text round;
+    @FXML
+    private Text letterSet;
 
     @FXML
-    private Label letterSetLabel;
+    private Label player1Name;
+    @FXML
+    private Label player1Time;
+    @FXML
+    private Label player1Word;
+    @FXML
+    private Label player1Score;
 
     @FXML
-    private RoundItem playerOne;
-
+    private Label player2Name;
     @FXML
-    private RoundItem playerTwo;
+    private Label player2Time;
+    @FXML
+    private Label player2Word;
+    @FXML
+    private Label player2Score;
 
     public RoundRow() {
         super();
@@ -40,85 +53,5 @@ public class RoundRow extends AnchorPane implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    }
-
-    public String getRound() {
-        return this.roundLabel.getText();
-    }
-
-    public void setRound(String round) {
-        this.roundLabel.setText(round);
-    }
-
-    public String getLetterSet() {
-        return this.letterSetLabel.getText();
-    }
-
-    public void setLetterSet(String letterSet) {
-        this.letterSetLabel.setText(letterSet);
-    }
-
-    public String getPlayerOneName() {
-        return this.playerOne.getName();
-    }
-
-    public void setPlayerOneName(String playerOneName) {
-        this.playerOne.setName(playerOneName);
-    }
-
-    public String getPlayerTwoName() {
-        return this.playerTwo.getName();
-    }
-
-    public void setPlayerTwoName(String playerTwoName) {
-        this.playerTwo.setName(playerTwoName);
-    }
-
-    public String getPlayerOneTime() {
-        return this.playerOne.getTime();
-    }
-
-    public void setPlayerOneTime(String playerOneTime) {
-        this.playerOne.setTime(playerOneTime);
-    }
-
-    public String getPlayerTwoTime() {
-        return this.playerTwo.getTime();
-    }
-
-    public void setPlayerTwoTime(String playerTwoTime) {
-        this.playerTwo.setTime(playerTwoTime);
-    }
-
-    public String getPlayerOneWord() {
-        return this.playerOne.getWord();
-    }
-
-    public void setPlayerOneWord(String playerOneWord) {
-        this.playerOne.setWord(playerOneWord);
-    }
-
-    public String getPlayerTwoWord() {
-        return this.playerTwo.getWord();
-    }
-
-    public void setPlayerTwoWord(String playerTwoWord) {
-        this.playerTwo.setWord(playerTwoWord);
-    }
-
-    public String getPlayerOneScore() {
-        return this.playerOne.getScore();
-    }
-
-    public void setPlayerOneScore(String playerOneScore) {
-        this.playerOne.setScore(playerOneScore);
-    }
-
-    public String getPlayerTwoScore() {
-        return this.playerTwo.getScore();
-    }
-
-    public void setPlayerTwoScore(String playerTwoScore) {
-        playerTwo.setScore(playerTwoScore);
     }
 }
