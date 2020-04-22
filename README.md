@@ -21,5 +21,5 @@
 | tommyhosewol    | Tommy Hosewol         | 2165348        |
 | Sander0542      | Sander Jochems        | 2165250        |
 | Joris914        | Joris Koevoets        | 2165669        |
-| Aremyre         | Lars Rijnen           |                |
+| Aremyre         | Lars Rijnen           | 2165096        |
 | MaxvdVossenberg | Max van de Vossenberg |                |
