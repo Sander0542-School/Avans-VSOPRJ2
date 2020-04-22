@@ -8,29 +8,36 @@
 <?import javafx.geometry.Insets?>
 <fx:root prefHeight="64.0" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <children>
-            <ImageView fx:id="backButton" fitHeight="24.0" fitWidth="24.0">
-                <image>
-                    <Image url="@/images/drawables/arrow_back.png" />
-                </image>
-                <HBox.margin>
-                    <Insets left="20.0" />
-                </HBox.margin>
-            </ImageView>
-            <Label fx:id="titleLabel" text="Title" textFill="WHITE">
-                <font>
-                    <Font name="Roboto Black" size="24.0" />
-                </font>
-                <HBox.margin>
-                    <Insets left="20.0" />
-                </HBox.margin>
-            </Label>
-        </children>
+        <ImageView fx:id="backButton" fitHeight="24.0" fitWidth="24.0">
+            <Image url="@/images/drawables/arrow_back.png" />
+            <HBox.margin>
+                <Insets left="20.0" />
+            </HBox.margin>
+        </ImageView>
+        <Label fx:id="titleLabel" text="Title" textFill="WHITE">
+            <font>
+                <Font name="Roboto Black" size="24.0" />
+            </font>
+            <HBox.margin>
+                <Insets left="20.0" />
+            </HBox.margin>
+        </Label>
     </HBox>
 
-    <ImageView fx:id="optionsButton" fitHeight="24.0" fitWidth="24.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-        <image>
+    <HBox alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+        <ImageView fx:id="deleteButton" visible="false" fitHeight="24.0" fitWidth="24.0">
+            <Image url="@/images/drawables/delete.png" />
+            <HBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </HBox.margin>
+        </ImageView>
+        <ImageView fx:id="optionsButton" fitHeight="24.0" fitWidth="24.0">
             <Image url="@/images/drawables/more_vert.png" />
-        </image>
-    </ImageView>
+            <HBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </HBox.margin>
+        </ImageView>
+    </HBox>
+
+
 </fx:root>
