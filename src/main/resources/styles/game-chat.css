@@ -1,4 +1,0 @@
-/* Hide gray color of non filled area on scroll pane viewport */
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
