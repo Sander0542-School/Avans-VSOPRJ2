@@ -16,7 +16,7 @@
 | GitHub          | Name                  | Student number |
 |-----------------|-----------------------|----------------|
 | Fnab            | Kas Brock             | 2154992        |
-| NielsGroenen2   | Niels Groenen         |                |
+| NielsGroenen2   | Niels Groenen         | 2154548        |
 | daanh432        | Daan Hendriks         | 2165653        |
 | tommyhosewol    | Tommy Hosewol         | 2165348        |
 | Sander0542      | Sander Jochems        | 2165250        |
