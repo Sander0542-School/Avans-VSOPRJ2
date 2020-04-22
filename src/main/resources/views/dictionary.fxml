@@ -11,18 +11,18 @@
     </top>
     <center>
         <VBox alignment="CENTER" fillWidth="false" spacing="10">
-            <Label prefWidth="320" text="Je email:" />
-            <TextField prefWidth="320"/>
-            <Label prefWidth="320" text="Woord:" />
-            <TextField prefWidth="320" />
-            <Label prefWidth="320" text="Toevoegen of Verwijderen:" />
-            <RadioButton prefWidth="320" text="Toevoegen" />
-            <RadioButton prefWidth="320" text="Verwijderen" />
-            <Label prefWidth="320" text="Taal:" />
-            <ComboBox prefWidth="320" promptText="Kies een taal" />
-            <Label prefWidth="320" text="Comment:" />
-            <TextField prefWidth="320"/>
-            <Button prefHeight="25.0" prefWidth="320" text="Insturen" style="-fx-background-color: #1b1744;" textFill="white"/>
+            <Label prefWidth="500" text="Je email:" />
+            <TextField prefWidth="500"/>
+            <Label prefWidth="500" text="Woord:" />
+            <TextField prefWidth="500" />
+            <Label prefWidth="500" text="Toevoegen of Verwijderen:" />
+            <RadioButton prefWidth="500" text="Toevoegen" />
+            <RadioButton prefWidth="500" text="Verwijderen" />
+            <Label prefWidth="500" text="Taal:" />
+            <ComboBox prefWidth="500" promptText="Kies een taal" />
+            <Label prefWidth="500" text="Comment:" />
+            <TextField prefWidth="500"/>
+            <Button prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
         </VBox>
     </center>
 </BorderPane>
