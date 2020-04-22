@@ -20,6 +20,6 @@
 | daanh432        | Daan Hendriks         | 2165653        |
 | tommyhosewol    | Tommy Hosewol         | 2165348        |
 | Sander0542      | Sander Jochems        | 2165250        |
-| Joris914        | Joris Koevoets        |                |
+| Joris914        | Joris Koevoets        | 2165669        |
 | Aremyre         | Lars Rijnen           |                |
 | MaxvdVossenberg | Max van de Vossenberg |                |
