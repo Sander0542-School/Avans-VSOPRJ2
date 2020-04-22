@@ -1,9 +1,0 @@
-/* Hide splitpane divider */
-.split-pane > .split-pane-divider {
-    -fx-padding: 0 0 0 0;
-}
-
-/* Hide gray color of non filled area on scroll pane viewport */
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
