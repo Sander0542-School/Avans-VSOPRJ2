@@ -11,5 +11,7 @@
     </top>
 
 
-    
+    <bottom>
+        <BottomBar active="statistics"/>
+    </bottom>
 </BorderPane>
