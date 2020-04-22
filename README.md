@@ -11,7 +11,7 @@
 - Eclipse 2019-06 [download](https://www.eclipse.org/downloads/packages/release/2019-06/r)
 - JetBrains Intellij IDEA 2020.1 [download](https://www.jetbrains.com/idea/)
 
-## Contributers
+## Contributors
 
 | GitHub          | Name                  | Student number |
 |-----------------|-----------------------|----------------|
