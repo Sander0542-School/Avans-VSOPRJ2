@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.GameChatController">
@@ -24,72 +26,6 @@
                                 <Insets left="40.0"/>
                             </padding>
                             <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 2 van jijzelf. Dit is een iets wat langer bericht waar ik graag van wil weten hoe lang die daadwerkelijk wordt in de gui. Als we nug nog iets langer gaan kunnen we in de problemen raken."/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" maxWidth="750.0">
-                            <padding>
-                                <Insets right="40.0"/>
-                            </padding>
-                            <Label wrapText="true" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15 15 15 15;" text="Bericht 3 van andere persoon. Het meest recente bericht"/>
                         </HBox>
                     </VBox>
                 </ScrollPane>
