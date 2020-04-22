@@ -18,6 +18,8 @@ public class AppBar extends AnchorPane implements Initializable {
     private ImageView backButton;
     @FXML
     private ImageView optionsButton;
+    @FXML
+    private ImageView deleteButton;
 
     public AppBar() {
         super();
@@ -56,6 +58,16 @@ public class AppBar extends AnchorPane implements Initializable {
 
     public void setOptionsButton(boolean visible) {
         optionsButton.setVisible(visible);
+        optionsButton.setManaged(visible);
+    }
+
+    public boolean getDeleteButton() {
+        return deleteButton.isVisible();
+    }
+
+    public void setDeleteButton(boolean visible) {
+        deleteButton.setVisible(visible);
+        deleteButton.setManaged(visible);
     }
 
     @Override
