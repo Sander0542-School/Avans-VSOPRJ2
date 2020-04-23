@@ -19,21 +19,16 @@
             <LogoBanner />
 
             <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
-                <children>
-                    <VBox alignment="CENTER">
-                        <VBox spacing="25" maxWidth="600" alignment="CENTER">
-                            <children>
-                                <TextField promptText="Gebruikersnaam" prefWidth="600"/>
-                                <PasswordField promptText="Wachtwoord" prefWidth="600" />
-                                <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Inloggen" />
-                            </children>
-                        </VBox>
-                    </VBox>
-                </children>
-
                 <padding>
-                    <Insets bottom="15" left="15" right="15" top="15" />
+                    <Insets bottom="15" left="15" right="15" top="15"/>
                 </padding>
+                <VBox alignment="CENTER">
+                    <VBox spacing="25" maxWidth="600" alignment="CENTER">
+                        <TextField promptText="Gebruikersnaam" prefWidth="600"/>
+                        <PasswordField promptText="Wachtwoord" prefWidth="600"/>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Inloggen"/>
+                    </VBox>
+                </VBox>
             </VBox>
         </VBox>
     </center>

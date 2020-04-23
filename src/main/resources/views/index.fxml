@@ -14,51 +14,41 @@
             <LogoBanner />
 
             <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
-                <children>
-                    <VBox spacing="35" alignment="CENTER">
-                        <children>
-                            <VBox alignment="CENTER">
-                                <children>
-                                    <Label  prefHeight="25" text="Nieuw bij WordCrex? Maak nu een account." textFill="#201b53">
-                                        <font>
-                                            <Font size="18" />
-                                        </font>
-                                    </Label>
-                                    <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Maak een accout aan" />
-                                </children>
-                            </VBox>
-
-                            <VBox alignment="CENTER">
-                                <children>
-                                    <Label prefHeight="25" text="Heb je al een account?" textFill="#201b53">
-                                        <font>
-                                            <Font size="18" />
-                                        </font>
-                                    </Label>
-                                    <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Login met je WordCrex account" />
-                                </children>
-                            </VBox>
-
-                            <VBox alignment="CENTER">
-                                <children>
-                                    <Label prefHeight="25" text="Door in te loggen, ga je akkoord met onze" textFill="#201b53">
-                                        <font>
-                                            <Font size="18" />
-                                        </font>
-                                    </Label>
-                                    <Label prefHeight="25" text="Privacy Policy en Terms of Service" textFill="#201b53">
-                                        <font>
-                                            <Font size="18" />
-                                        </font>
-                                    </Label>
-                                </children>
-                            </VBox>
-                        </children>
-                    </VBox>
-                </children>
                 <padding>
-                    <Insets bottom="15" left="15" right="15" top="15" />
+                    <Insets bottom="15" left="15" right="15" top="15"/>
                 </padding>
+                <VBox spacing="35" alignment="CENTER">
+                    <VBox alignment="CENTER">
+                        <Label prefHeight="25" text="Nieuw bij WordCrex? Maak nu een account." textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Maak een accout aan"/>
+                    </VBox>
+
+                    <VBox alignment="CENTER">
+                        <Label prefHeight="25" text="Heb je al een account?" textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Login met je WordCrex account"/>
+                    </VBox>
+
+                    <VBox alignment="CENTER">
+                        <Label prefHeight="25" text="Door in te loggen, ga je akkoord met onze" textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                        <Label prefHeight="25" text="Privacy Policy en Terms of Service" textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                    </VBox>
+                </VBox>
             </VBox>
         </VBox>
     </center>
