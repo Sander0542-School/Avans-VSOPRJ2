@@ -7,13 +7,9 @@
 
 <fx:root style="-fx-background-color: #201b53;" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="center" >
-        <children>
-            <ImageView fitHeight="200" fitWidth="200">
-                <image>
-                    <Image url="@/images/icon.png" />
-                </image>
-            </ImageView>
-        </children>
+        <ImageView fitHeight="200" fitWidth="200">
+            <Image url="@/images/icon.png" />
+        </ImageView>
 
         <padding>
             <Insets bottom="15" left="15" right="15" top="15" />
