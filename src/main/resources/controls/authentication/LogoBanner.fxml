@@ -5,20 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<fx:root style="-fx-background-color: #201b53;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-    <VBox style="-fx-background-color: #201b53;">
-        <HBox alignment="center" >
-            <children>
-                <ImageView fitHeight="200" fitWidth="200">
-                    <image>
-                        <Image url="@/images/icon.png" />
-                    </image>
-                </ImageView>
-            </children>
+<fx:root style="-fx-background-color: #201b53;" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="center" >
+        <children>
+            <ImageView fitHeight="200" fitWidth="200">
+                <image>
+                    <Image url="@/images/icon.png" />
+                </image>
+            </ImageView>
+        </children>
 
-            <padding>
-                <Insets bottom="15" left="15" right="15" top="15" />
-            </padding>
-        </HBox>
-    </VBox>
+        <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+        </padding>
+    </HBox>
 </fx:root>
