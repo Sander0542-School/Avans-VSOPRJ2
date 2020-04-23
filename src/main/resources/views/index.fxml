@@ -33,19 +33,6 @@
                         </Label>
                         <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Login met je WordCrex account"/>
                     </VBox>
-
-                    <VBox alignment="CENTER">
-                        <Label prefHeight="25" text="Door in te loggen, ga je akkoord met onze" textFill="#201b53">
-                            <font>
-                                <Font size="18"/>
-                            </font>
-                        </Label>
-                        <Label prefHeight="25" text="Privacy Policy en Terms of Service" textFill="#201b53">
-                            <font>
-                                <Font size="18"/>
-                            </font>
-                        </Label>
-                    </VBox>
                 </VBox>
             </VBox>
         </VBox>
