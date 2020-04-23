@@ -38,6 +38,5 @@
                     </VBox>
                 </ScrollPane>
             </AnchorPane>
-
     </center>
 </BorderPane>
