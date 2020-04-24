@@ -22,7 +22,7 @@
                                 <Font size="18"/>
                             </font>
                         </Label>
-                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Maak een accout aan"/>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Maak een account aan"/>
                     </VBox>
 
                     <VBox alignment="CENTER">
