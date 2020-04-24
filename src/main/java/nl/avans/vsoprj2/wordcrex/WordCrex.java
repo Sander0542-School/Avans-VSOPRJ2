@@ -18,7 +18,7 @@ public class WordCrex extends Application {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
-        Parent sceneBox = new FXMLLoader(getClass().getResource("/views/scoreboard.fxml")).load();
+        Parent sceneBox = new FXMLLoader(getClass().getResource("/views/login.fxml")).load();
         Scene scene = new Scene(sceneBox);
 
 //        if (DEBUG_MODE) {
