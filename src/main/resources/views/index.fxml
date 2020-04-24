@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import nl.avans.vsoprj2.wordcrex.controls.authentication.LogoBanner?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.IndexController">
+    <center>
+        <VBox>
+            <LogoBanner/>
+
+            <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
+                <padding>
+                    <Insets bottom="15" left="15" right="15" top="15"/>
+                </padding>
+                <VBox spacing="35" alignment="CENTER">
+                    <VBox alignment="CENTER">
+                        <Label prefHeight="25" text="Nieuw bij WordCrex? Maak nu een account." textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Maak een account aan"/>
+                    </VBox>
+
+                    <VBox alignment="CENTER">
+                        <Label prefHeight="25" text="Heb je al een account?" textFill="#201b53">
+                            <font>
+                                <Font size="18"/>
+                            </font>
+                        </Label>
+                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Login met je WordCrex account"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
