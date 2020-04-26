@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import nl.avans.vsoprj2.wordcrex.controls.scoreboard.*?>
+
+<fx:root spacing="20.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox style="-fx-background-color: #1b1744;">
+        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+
+            <TextFlow prefWidth="250" textAlignment="CENTER">
+                <Text text="Ronde #" fill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="14.0" />
+                    </font>
+                </Text>
+                <Text fx:id="round" text="7" fill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="14.0" />
+                    </font>
+                </Text>
+            </TextFlow>
+
+            <HBox style="-fx-background-color: #201b53;">
+                <Region prefHeight="20.0"/>
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Region prefHeight="20.0"/>
+                    <Label fx:id="player1Name" text="Pieter" textFill="white" alignment="CENTER">
+                        <font>
+                            <Font name="Roboto Black" size="16.0"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="player1Time" text="0 h, 2 m, 32 s" textFill="white" alignment="CENTER" style="-fx-opacity: 50%;">
+                        <font>
+                            <Font name="Roboto Black" size="14.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Region prefHeight="20.0"/>
+                    <Label fx:id="player1Word" text="Daan" textFill="white" alignment="CENTER">
+                        <font>
+                            <Font name="Roboto Black" size="16.0"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="player1Score" text="+18 (320)" textFill="white" alignment="CENTER" style="-fx-opacity: 50%;">
+                        <font>
+                            <Font name="Roboto Black" size="14.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </HBox>
+
+        </VBox>
+        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+
+            <TextFlow prefWidth="250" textAlignment="CENTER">
+                <Text text="Gebruikte letters: " fill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="14.0" />
+                    </font>
+                </Text>
+                <Text fx:id="letterSet" text="ABCDEFG" fill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="14.0" />
+                    </font>
+                </Text>
+            </TextFlow>
+
+            <HBox style="-fx-background-color: #201b53;">
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Region prefHeight="20.0"/>
+                    <Label fx:id="player2Name" text="Pieter" textFill="white" alignment="CENTER">
+                        <font>
+                            <Font name="Roboto Black" size="16.0"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="player2Time" text="0 h, 2 m, 32 s" textFill="white" alignment="CENTER" style="-fx-opacity: 50%;">
+                        <font>
+                            <Font name="Roboto Black" size="14.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Region prefHeight="20.0"/>
+                    <Label fx:id="player2Word" text="Sander" textFill="white" alignment="CENTER">
+                        <font>
+                            <Font name="Roboto Black" size="16.0"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="player2Score" text="+22 (320)" textFill="white" alignment="CENTER" style="-fx-opacity: 50%;">
+                        <font>
+                            <Font name="Roboto Black" size="14.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </HBox>
+
+        </VBox>
+    </HBox>
+</fx:root>
