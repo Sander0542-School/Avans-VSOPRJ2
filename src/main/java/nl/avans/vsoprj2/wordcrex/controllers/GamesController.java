@@ -1,4 +1,4 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-public class GameChatController {
+public class GamesController {
 }
