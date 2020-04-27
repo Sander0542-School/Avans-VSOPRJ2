@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import nl.avans.vsoprj2.wordcrex.util.ExceptionHandler;
 
 /**
  * Hello world!
@@ -15,6 +16,9 @@ public class WordCrex extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
