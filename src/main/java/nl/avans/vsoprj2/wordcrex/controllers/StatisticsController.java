@@ -13,6 +13,9 @@ public class StatisticsController extends Controller {
     @FXML
     Label gamesWon;
 
+    @FXML
+    Label gamesLost;
+
     private User user;
     Connection connection = null;
 
@@ -29,7 +32,7 @@ public class StatisticsController extends Controller {
 
         // TEMP 4 USER
         user = new User();
-        user.setUsername("jagermeester");
+        user.setUsername("Lidewij");
         user.setPassword("rrr");
 
         getTableData();
@@ -44,15 +47,27 @@ public class StatisticsController extends Controller {
     private void getTableData() {
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        String query = null;
 
         try {
-            String query = "SELECT COUNT(`game_id`) as `games_won` FROM `game` WHERE `username_winner` = ?;";
+            query = "SELECT COUNT(`game_id`) as `games_won` FROM `game` WHERE `username_winner` = ?;";
             stmt = connection.prepareStatement(query);
             stmt.setString(1, user.getUsername());
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 gamesWon.setText(rs.getString(1));
+            }
+
+            query = "SELECT COUNT(`game_id`) as `games_lost` FROM `game` WHERE `username_winner` != ? AND `username_player1` = ? OR `username_player2` = ?;";
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getUsername());
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                gamesLost.setText(rs.getString(1));
             }
 
             // Now do something with the ResultSet ....
