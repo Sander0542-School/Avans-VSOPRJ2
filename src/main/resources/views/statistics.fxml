@@ -22,7 +22,7 @@
                     <Insets top="25" right="25" bottom="10" left="25"/>
                 </padding>
 
-                <Label id="name" text="John Doe" textFill="#ffffff" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label fx:id="name" text="John Doe" textFill="#ffffff" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
@@ -34,7 +34,7 @@
                     </font>
                 </Label>
 
-                <Label id="won" text="0" textFill="#201b53" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                <Label fx:id="gamesWon" text="0" textFill="#201b53" GridPane.columnIndex="2" GridPane.rowIndex="5">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
