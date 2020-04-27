@@ -6,7 +6,7 @@ import nl.avans.vsoprj2.wordcrex.models.User;
 
 import java.sql.*;
 
-public class StatisticsController {
+public class StatisticsController extends Controller {
     @FXML
     Label name;
 

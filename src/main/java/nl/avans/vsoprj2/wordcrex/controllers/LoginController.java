@@ -1,4 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-public class LoginController {
+import javafx.event.Event;
+
+public class LoginController extends Controller {
+    public void backButton() {
+        navigateTo("/views/index.fxml");
+    }
 }

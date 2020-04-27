@@ -1,10 +1,12 @@
 package nl.avans.vsoprj2.wordcrex.controls.navigation;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -20,6 +22,8 @@ public class AppBar extends AnchorPane implements Initializable {
     private ImageView optionsButton;
     @FXML
     private ImageView deleteButton;
+
+    private EventHandler backButtonEventHandler = null;
 
     public AppBar() {
         super();
@@ -68,6 +72,20 @@ public class AppBar extends AnchorPane implements Initializable {
     public void setDeleteButton(boolean visible) {
         deleteButton.setVisible(visible);
         deleteButton.setManaged(visible);
+    }
+
+    public void backButtonClicked(MouseEvent event) {
+        if (backButtonEventHandler != null) {
+            backButtonEventHandler.handle(event);
+        }
+    }
+
+    public void setOnBackButtonEvent(EventHandler eventHandler) {
+        backButtonEventHandler = eventHandler;
+    }
+
+    public EventHandler getOnBackButtonEvent() {
+        return backButtonEventHandler;
     }
 
     @Override
