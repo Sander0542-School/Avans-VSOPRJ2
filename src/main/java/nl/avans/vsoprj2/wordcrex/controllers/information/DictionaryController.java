@@ -1,4 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
-public class DictionaryController {
+import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+
+public class DictionaryController extends Controller {
 }

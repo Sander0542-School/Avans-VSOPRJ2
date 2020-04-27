@@ -1,4 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
-public class ScoreboardController {
+import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+
+public class ScoreboardController extends Controller {
 }

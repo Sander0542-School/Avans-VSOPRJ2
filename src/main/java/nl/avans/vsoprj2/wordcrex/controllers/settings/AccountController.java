@@ -1,4 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.settings;
 
-public class AccountController {
+import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+
+public class AccountController extends Controller {
 }
