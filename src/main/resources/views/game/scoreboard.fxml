@@ -7,7 +7,7 @@
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.*?>
 
 <?import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow?>
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.ScoreboardController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController">
     <top>
         <AppBar backButton="true" title="Scorebord" />
     </top>
