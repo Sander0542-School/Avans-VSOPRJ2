@@ -46,7 +46,7 @@
                     </font>
                 </Label>
 
-                <Label id="lost" text="0" textFill="#201b53" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                <Label fx:id="gamesLost" text="0" textFill="#201b53" GridPane.columnIndex="2" GridPane.rowIndex="6">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
