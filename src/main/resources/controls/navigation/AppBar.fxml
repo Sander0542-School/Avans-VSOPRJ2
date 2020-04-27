@@ -25,5 +25,4 @@
             <Image url="@/images/drawables/more_vert.png"/>
         </ImageView>
     </HBox>
-
 </fx:root>
