@@ -37,6 +37,7 @@ public class Singleton {
             try {
                 connection = DriverManager.getConnection("jdbc:mysql://tommyhosewol.com/avans_wordcrex", "wordcrex", "EdiILXhe1fK04mvA");
             } catch (SQLException e) {
+                throw new DbConnectionException(e);
             }
         }
 
