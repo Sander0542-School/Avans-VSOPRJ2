@@ -64,7 +64,16 @@ public class ChatController extends Controller implements Initializable {
         alert.getButtonTypes().setAll(okButton, noButton);
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                //TODO Delete messages in database and arraylist
+                Connection connection = Singleton.getInstance().getConnection();
+                try {
+                    PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
+                    statement.setInt(1, this.gameId);
+                    statement.execute();
+                    this.chatMessages.clear();
+                    this.update();
+                } catch (SQLException e) {
+                    //TODO Handle error
+                }
             }
         });
     }
