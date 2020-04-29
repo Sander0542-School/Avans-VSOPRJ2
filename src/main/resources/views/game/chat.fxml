@@ -6,12 +6,12 @@
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <BorderPane fx:id="borderPane" xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController">
     <top>
-        <AppBar title="Berichten" backButton="true" deleteButton="true"/>
+        <AppBar title="Berichten" backButton="true" deleteButton="true" onDeleteButtonEvent="#deleteButton"/>
     </top>
     <center>
         <BorderPane style="-fx-background-color: #201b53;">
             <center>
-                <ScrollPane hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fitToWidth="true">
+                <ScrollPane hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" BorderPane.alignment="CENTER" maxWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fitToWidth="true" fx:id="chatScrollContainer">
                     <VBox spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-background-color: transparent;" fx:id="chatMessagesContainer"/>
                 </ScrollPane>
             </center>

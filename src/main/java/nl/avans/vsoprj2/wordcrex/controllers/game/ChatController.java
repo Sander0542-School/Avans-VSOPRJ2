@@ -55,6 +55,11 @@ public class ChatController extends Controller implements Initializable {
         chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
     }
 
+    @FXML
+    private void deleteButton() {
+        System.out.println("Clicked jaja");
+    }
+
     private void update() {
         String currentUserName = "jagermeester"; //TODO Convert to user model
         List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
