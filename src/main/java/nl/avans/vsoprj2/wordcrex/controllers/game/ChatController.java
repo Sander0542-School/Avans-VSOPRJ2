@@ -2,8 +2,7 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -57,7 +56,17 @@ public class ChatController extends Controller implements Initializable {
 
     @FXML
     private void deleteButton() {
-        System.out.println("Clicked jaja");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alle berichten verwijderen");
+        alert.setContentText("Weet je zeker dat je alle berichten wilt verwijderen?");
+        ButtonType okButton = new ButtonType("Ja", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Nee", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(okButton, noButton);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                //TODO Delete messages in database and arraylist
+            }
+        });
     }
 
     private void update() {
