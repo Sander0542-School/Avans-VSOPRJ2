@@ -12,16 +12,16 @@ import nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow;
 import nl.avans.vsoprj2.wordcrex.models.ChatMessage;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ChatController extends Controller implements Initializable {
+    private int gameId = 502; // TODO passing gameId to this class
+
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     @FXML
@@ -32,20 +32,31 @@ public class ChatController extends Controller implements Initializable {
     public ChatController() {
         Connection connection = Singleton.getInstance().getConnection();
 
-        int gameId = 502; // TODO passing gameId to this class
-
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT cl.username, cl.game_id, cl.moment, cl.message FROM chatline cl WHERE cl.game_id = ?");
-            statement.setInt(1, gameId);
+            PreparedStatement statement = connection.prepareStatement("SELECT cl.username, cl.game_id, cl.moment, cl.message FROM chatline cl WHERE cl.game_id = ? ORDER BY moment");
+            statement.setInt(1, this.gameId);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                ChatMessage chatMessage = new ChatMessage(resultSet.getString("username"), resultSet.getDate("moment"), resultSet.getString("message"));
-                chatMessages.add(chatMessage);
+                chatMessages.add(new ChatMessage(resultSet.getString("username"), resultSet.getDate("moment"), resultSet.getString("message")));
             }
         } catch (SQLException e) {
             //TODO Handle error
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.update();
+        chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
+        chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+    }
+
+    private void update() {
+        String currentUserName = "jagermeester"; //TODO Convert to user model
+        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
+        chatMessagesContainer.getChildren().clear();
+        chatMessagesContainer.getChildren().addAll(chatRows);
     }
 
     private void sendMessageHandler(KeyEvent keyEvent) {
@@ -54,21 +65,26 @@ public class ChatController extends Controller implements Initializable {
         if (keyEvent.getCode() == KeyCode.ENTER && !keyEvent.isShiftDown()) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
                 System.out.println("Enter pressed, TODO Send message");
+                ChatMessage chatMessage = new ChatMessage(currentUserName, Date.from(Instant.now()), this.chatMessageInput.getText());
+
+                Connection connection = Singleton.getInstance().getConnection();
+
+                try {
+                    PreparedStatement statement = connection.prepareStatement("INSERT INTO chatline (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
+                    statement.setString(1, chatMessage.getUsername());
+                    statement.setInt(2, this.gameId);
+                    statement.setString(3, chatMessage.getMessage());
+                    statement.setTimestamp(4, Timestamp.from(chatMessage.getDate().toInstant()));
+                    statement.execute();
+                    this.chatMessages.add(chatMessage);
+                    this.update();
+                    this.chatMessageInput.setText("");
+                } catch (SQLException e) {
+                    //TODO Handle error
+                }
             }
             keyEvent.consume();
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        String currentUserName = "jagermeester"; //TODO Convert to user model
-
-        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
-
-        chatMessagesContainer.getChildren().addAll(chatRows);
-
-        chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
     }
 }
 
