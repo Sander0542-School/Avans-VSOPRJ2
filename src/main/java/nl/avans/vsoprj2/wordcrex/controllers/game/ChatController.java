@@ -103,12 +103,13 @@ public class ChatController extends Controller implements Initializable {
                     statement.setString(3, chatMessage.getMessage());
                     statement.setTimestamp(4, Timestamp.from(chatMessage.getDate().toInstant()));
                     statement.execute();
-                } catch (SQLException e) {
-                    //TODO Handle error
-                } finally {
                     this.chatMessages.add(chatMessage);
                     this.update();
                     this.chatMessageInput.setText("");
+                } catch (SQLException e) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
+                    errorAlert.setTitle("Versturen bericht");
+                    errorAlert.showAndWait();
                 }
             }
             keyEvent.consume();
