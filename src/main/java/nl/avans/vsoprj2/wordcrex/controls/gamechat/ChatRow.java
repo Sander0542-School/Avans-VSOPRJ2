@@ -31,6 +31,12 @@ public class ChatRow extends HBox implements Initializable {
         }
     }
 
+    public ChatRow(String text, boolean left) {
+        this();
+        this.setText(text);
+        this.setLeft(left);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
