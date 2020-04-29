@@ -2,6 +2,7 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,6 +25,8 @@ public class ChatController extends Controller implements Initializable {
 
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
+    @FXML
+    private ScrollPane chatScrollContainer;
     @FXML
     private TextArea chatMessageInput;
     @FXML
@@ -55,8 +58,11 @@ public class ChatController extends Controller implements Initializable {
     private void update() {
         String currentUserName = "jagermeester"; //TODO Convert to user model
         List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
-        chatMessagesContainer.getChildren().clear();
-        chatMessagesContainer.getChildren().addAll(chatRows);
+        this.chatMessagesContainer.getChildren().clear();
+        this.chatMessagesContainer.getChildren().addAll(chatRows);
+        this.chatScrollContainer.applyCss();
+        this.chatScrollContainer.layout();
+        this.chatScrollContainer.setVvalue(1.0);
     }
 
     private void sendMessageHandler(KeyEvent keyEvent) {
@@ -64,9 +70,7 @@ public class ChatController extends Controller implements Initializable {
 
         if (keyEvent.getCode() == KeyCode.ENTER && !keyEvent.isShiftDown()) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
-                System.out.println("Enter pressed, TODO Send message");
                 ChatMessage chatMessage = new ChatMessage(currentUserName, Date.from(Instant.now()), this.chatMessageInput.getText());
-
                 Connection connection = Singleton.getInstance().getConnection();
 
                 try {
@@ -76,11 +80,12 @@ public class ChatController extends Controller implements Initializable {
                     statement.setString(3, chatMessage.getMessage());
                     statement.setTimestamp(4, Timestamp.from(chatMessage.getDate().toInstant()));
                     statement.execute();
+                } catch (SQLException e) {
+                    //TODO Handle error
+                } finally {
                     this.chatMessages.add(chatMessage);
                     this.update();
                     this.chatMessageInput.setText("");
-                } catch (SQLException e) {
-                    //TODO Handle error
                 }
             }
             keyEvent.consume();
