@@ -72,7 +72,9 @@ public class ChatController extends Controller implements Initializable {
                     this.chatMessages.clear();
                     this.update();
                 } catch (SQLException e) {
-                    //TODO Handle error
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
+                    errorAlert.setTitle("Alle berichten verwijderen");
+                    errorAlert.showAndWait();
                 }
             }
         });
