@@ -43,7 +43,9 @@ public class ChatController extends Controller implements Initializable {
                 chatMessages.add(new ChatMessage(resultSet.getString("username"), resultSet.getDate("moment"), resultSet.getString("message")));
             }
         } catch (SQLException e) {
-            //TODO Handle error
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
+            errorAlert.setTitle("Chat Geschiedenis");
+            errorAlert.showAndWait();
         }
     }
 
