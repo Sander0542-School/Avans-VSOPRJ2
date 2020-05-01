@@ -24,7 +24,7 @@
                         <Font name="Roboto Black" size="18.0" />
                     </font>
                 </Button>
-                <Button prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Uitloggen">
+                <Button onAction="#handleLogoutAction" prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Uitloggen">
                     <font>
                         <Font name="Roboto Black" size="18.0" />
                     </font>
