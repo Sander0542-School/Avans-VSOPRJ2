@@ -17,6 +17,9 @@ public abstract class Model {
         fillFields(resultSet);
     }
 
+    public Model() {
+    }
+
     public HashMap<String, Object> getOriginalValues() {
         return originalValues;
     }
