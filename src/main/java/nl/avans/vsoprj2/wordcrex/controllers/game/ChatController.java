@@ -40,7 +40,7 @@ public class ChatController extends Controller implements Initializable {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                chatMessages.add(new ChatMessage(resultSet.getString("username"), resultSet.getDate("moment"), resultSet.getString("message")));
+                this.chatMessages.add(new ChatMessage(resultSet.getString("username"), resultSet.getDate("moment"), resultSet.getString("message")));
             }
         } catch (SQLException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
