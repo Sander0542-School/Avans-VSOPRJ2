@@ -41,7 +41,7 @@ public abstract class Model {
         try {
             int columnCount = resultSet.getMetaData().getColumnCount();
 
-            for (int column = 1; column <= columnCount; columnCount++) {
+            for (int column = 1; column <= columnCount; column++) {
                 String columnName = resultSet.getMetaData().getColumnName(column);
                 originalValues.put(columnName, resultSet.getObject(column));
             }
