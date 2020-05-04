@@ -38,6 +38,8 @@ public abstract class Model {
     }
 
     protected void setOriginal(ResultSet resultSet) {
+        originalValues.clear();
+      
         try {
             int columnCount = resultSet.getMetaData().getColumnCount();
 
