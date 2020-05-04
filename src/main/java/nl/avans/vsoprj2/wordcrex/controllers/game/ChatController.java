@@ -96,7 +96,7 @@ public class ChatController extends Controller implements Initializable {
         String currentUserName = "jagermeester"; //TODO Convert to user model
 
         if (keyEvent.getCode() == KeyCode.ENTER && !keyEvent.isShiftDown()) {
-            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED) {
+            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED && this.chatMessageInput.getText().length() > 0) {
                 ChatMessage chatMessage = new ChatMessage(currentUserName, Date.from(Instant.now()), this.chatMessageInput.getText());
                 Connection connection = Singleton.getInstance().getConnection();
 
