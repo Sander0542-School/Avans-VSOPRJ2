@@ -1,28 +1,28 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
+
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Game extends Model {
 
+    @Column("game_id")
     private int gameId;
+    @Column("game_state")
     private String gameState;
+    @Column("letterset_code")
     private String lettersetCode;
+    @Column("username_player1")
     private String usernamePlayer1;
+    @Column("username_player2")
     private String usernamePlayer2;
+    @Column("answer_player2")
     private String answerPlayer2;
+    @Column("username_winner")
     private String usernameWinner;
 
-    public Game(ResultSet resultSet) throws SQLException {
+    public Game(ResultSet resultSet) {
         super(resultSet);
-
-        this.setGameId(resultSet.getInt("game_id"));
-        this.setGameState(resultSet.getString("game_state"));
-        this.setLettersetCode(resultSet.getString("letterset_code"));
-        this.setUsernamePlayer1(resultSet.getString("username_player1"));
-        this.setUsernamePlayer2(resultSet.getString("username_player2"));
-        this.setAnswerPlayer2(resultSet.getString("answer_player2"));
-        this.setUsernameWinner(resultSet.getString("username_winner"));
     }
 
     public int getGameId() {
