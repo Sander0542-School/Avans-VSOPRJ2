@@ -1,12 +1,17 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
-public class User {
-    private final String username;
-    private final String role;
+import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
-    public User(String username, String role) {
-        this.username = username;
-        this.role = role;
+import java.sql.ResultSet;
+
+public class User extends Model {
+    @Column("username")
+    private String username;
+    @Column("role")
+    private String role;
+
+    public User(ResultSet resultSet) {
+        super(resultSet);
     }
 
     public String getUsername() {

@@ -25,7 +25,7 @@ public class RegisterController extends Controller {
 
 
     @FXML
-    protected void handleRegisterAction(ActionEvent event) {
+    private void handleRegisterAction(ActionEvent event) {
         error.setVisible(false);
 
         if (username.getText().equals("") || password.getText().equals("") || repeatpassword.getText().equals("")) {
@@ -46,6 +46,8 @@ public class RegisterController extends Controller {
             ResultSet result = statement.executeQuery();
 
             if (!result.next()) {
+                connection.setAutoCommit(false);
+
                 PreparedStatement insertaccount;
                 insertaccount = connection.prepareStatement("INSERT INTO account (username, password) VALUES(?, ?)");
                 insertaccount.setString(1, username.getText());
@@ -57,18 +59,24 @@ public class RegisterController extends Controller {
 
                 int insertaccountresult = insertaccount.executeUpdate();
                 int insertroleresult = insertrole.executeUpdate();
+
                 if (insertaccountresult > 0 && insertroleresult > 0) {
+                    connection.commit();
                     navigateTo("/views/login.fxml");
                 } else {
+                    connection.rollback();
                     this.showErrorMessage("Het account kon niet worden aangemaakt.");
-                    return;
                 }
             } else {
                 this.showErrorMessage("Gebruikersnaam '" + username.getText() + "' bestaat al.");
-                return;
             }
         } catch (SQLException e) {
-            throw new DbConnectionException(e);
+            try {
+                connection.rollback();
+                this.showErrorMessage("Het account kon niet worden aangemaakt.");
+            } catch (SQLException e2) {
+                throw new DbConnectionException(e);
+            }
         }
     }
 

@@ -27,20 +27,20 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    protected void handleLoginAction(ActionEvent event) {
+    private void handleLoginAction(ActionEvent event) {
         error.setVisible(false);
 
         if (!username.getText().trim().isEmpty() && !password.getText().trim().isEmpty()) {
             Connection connection = Singleton.getInstance().getConnection();
             try {
                 PreparedStatement statement;
-                statement = connection.prepareStatement("SELECT a.username, a.password, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
+                statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
                 statement.setString(1, username.getText());
                 statement.setString(2, password.getText());
                 ResultSet result = statement.executeQuery();
 
                 if (result.next()) {
-                    User user = new User(result.getString("username"), result.getString("role"));
+                    User user = new User(result);
                     Singleton.getInstance().setUser(user);
                     navigateTo("/views/games.fxml");
                 } else {
