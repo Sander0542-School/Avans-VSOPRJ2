@@ -17,12 +17,6 @@ public class ChatMessage extends Model {
         super(resultSet);
     }
 
-    public ChatMessage(String username, Date date, String message) {
-        this.username = username;
-        this.date = date;
-        this.message = message;
-    }
-
     public String getMessage() {
         return this.message;
     }
