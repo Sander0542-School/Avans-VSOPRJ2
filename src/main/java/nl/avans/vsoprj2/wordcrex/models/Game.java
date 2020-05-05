@@ -9,7 +9,7 @@ public class Game extends Model {
     @Column("game_id")
     private int gameId;
     @Column("game_state")
-    private String gameState;
+    private gamestate gameState;
     @Column("letterset_code")
     private String lettersetCode;
     @Column("username_player1")
@@ -33,11 +33,11 @@ public class Game extends Model {
         this.gameId = gameId;
     }
 
-    public String getGameState() {
+    public gamestate getGameState() {
         return gameState;
     }
 
-    public void setGameState(String gameState) {
+    public void setGameState(gamestate gameState) {
         this.gameState = gameState;
     }
 
@@ -79,5 +79,13 @@ public class Game extends Model {
 
     public void setUsernameWinner(String usernameWinner) {
         this.usernameWinner = usernameWinner;
+    }
+
+    public enum gamestate
+    {
+        request,
+        playing,
+        finished,
+        resigned,
     }
 }
