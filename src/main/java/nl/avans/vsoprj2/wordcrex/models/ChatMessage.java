@@ -2,6 +2,7 @@ package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
+import java.sql.ResultSet;
 import java.util.Date;
 
 public class ChatMessage extends Model {
@@ -11,6 +12,10 @@ public class ChatMessage extends Model {
     private Date date;
     @Column("message")
     private String message;
+
+    public ChatMessage(ResultSet resultSet) {
+        super(resultSet);
+    }
 
     public ChatMessage(String username, Date date, String message) {
         this.username = username;
