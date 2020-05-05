@@ -28,7 +28,7 @@ public class RegisterController extends Controller {
     private void handleRegisterAction(ActionEvent event) {
         error.setVisible(false);
 
-        if (username.getText().equals("") || password.getText().equals("") || repeatpassword.getText().equals("")) {
+        if (username.getText().trim().isEmpty() || password.getText().trim().isEmpty() || repeatpassword.getText().trim().isEmpty()) {
             this.showErrorMessage("Niet alle velden zijn ingevuld.");
             return;
         } else {
