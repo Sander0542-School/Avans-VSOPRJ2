@@ -31,7 +31,7 @@ public class ChatController extends Controller implements Initializable {
     @FXML
     private VBox chatMessagesContainer;
 
-    public ChatController() {
+    public ChatController(int gameId) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -57,7 +57,7 @@ public class ChatController extends Controller implements Initializable {
     }
 
     @FXML
-    private void deleteButton() {
+    private void deleteMessagesHandler() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alle berichten verwijderen");
         alert.setContentText("Weet je zeker dat je alle berichten wilt verwijderen?");
