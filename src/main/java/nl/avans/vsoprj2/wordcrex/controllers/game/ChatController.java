@@ -20,8 +20,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ChatController extends Controller implements Initializable {
-    private int gameId = 502; // TODO passing gameId to this class
-
+    private int gameId;
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     @FXML
@@ -31,7 +30,28 @@ public class ChatController extends Controller implements Initializable {
     @FXML
     private VBox chatMessagesContainer;
 
-    public ChatController() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
+        chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+    }
+
+    /**
+     * Sets the game id and fetches + renders it.
+     *
+     * @param gameId - The game id from the database to display.
+     */
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+        this.fetch();
+        this.render();
+    }
+
+    /**
+     * Fetches and converts SQL rows to ChatMessage class instances
+     */
+    private void fetch() {
+        System.out.println(this.gameId);
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -49,13 +69,22 @@ public class ChatController extends Controller implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.update();
-        chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+    /**
+     * Collected instances of chat messages will be converted to displayable components and rendered appropriately.
+     */
+    private void render() {
+        String currentUserName = "jagermeester"; //TODO Convert to user model
+        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
+        this.chatMessagesContainer.getChildren().clear();
+        this.chatMessagesContainer.getChildren().addAll(chatRows);
+        this.chatScrollContainer.applyCss();
+        this.chatScrollContainer.layout();
+        this.chatScrollContainer.setVvalue(1.0);
     }
 
+    /**
+     * Handles the delete button event to remove all messages for this game.
+     */
     @FXML
     private void deleteMessagesHandler() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -72,7 +101,8 @@ public class ChatController extends Controller implements Initializable {
                     statement.setInt(1, this.gameId);
                     statement.execute();
                     this.chatMessages.clear();
-                    this.update();
+                    this.fetch();
+                    this.render();
                 } catch (SQLException e) {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
@@ -82,33 +112,28 @@ public class ChatController extends Controller implements Initializable {
         });
     }
 
-    private void update() {
-        String currentUserName = "jagermeester"; //TODO Convert to user model
-        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
-        this.chatMessagesContainer.getChildren().clear();
-        this.chatMessagesContainer.getChildren().addAll(chatRows);
-        this.chatScrollContainer.applyCss();
-        this.chatScrollContainer.layout();
-        this.chatScrollContainer.setVvalue(1.0);
-    }
-
+    /**
+     * If all conditions are met it will send and store a message in the database.
+     *
+     * @param keyEvent - KeyEvent send by Java FXML
+     */
     private void sendMessageHandler(KeyEvent keyEvent) {
         String currentUserName = "jagermeester"; //TODO Convert to user model
+        String messageContent = this.chatMessageInput.getText().trim();
 
         if (keyEvent.getCode() == KeyCode.ENTER && !keyEvent.isShiftDown()) {
-            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED && this.chatMessageInput.getText().length() > 0) {
-                ChatMessage chatMessage = new ChatMessage(currentUserName, Date.from(Instant.now()), this.chatMessageInput.getText());
+            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED && messageContent.length() > 0) {
                 Connection connection = Singleton.getInstance().getConnection();
 
                 try {
                     PreparedStatement statement = connection.prepareStatement("INSERT INTO chatline (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
-                    statement.setString(1, chatMessage.getUsername());
+                    statement.setString(1, currentUserName);
                     statement.setInt(2, this.gameId);
-                    statement.setString(3, chatMessage.getMessage());
-                    statement.setTimestamp(4, Timestamp.from(chatMessage.getDate().toInstant()));
+                    statement.setString(3, messageContent);
+                    statement.setTimestamp(4, Timestamp.from(Instant.now()));
                     statement.execute();
-                    this.chatMessages.add(chatMessage);
-                    this.update();
+                    this.fetch();
+                    this.render();
                     this.chatMessageInput.setText("");
                 } catch (SQLException e) {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
