@@ -19,9 +19,6 @@ public class GameItem extends AnchorPane implements Initializable {
     @FXML
     private Label messageLabel;
 
-    @FXML
-    private Label timeLeftLabel;
-
     public GameItem() {
         super();
 
@@ -47,7 +44,6 @@ public class GameItem extends AnchorPane implements Initializable {
 
         gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
         messageLabel.setText(game.getMessage());
-        timeLeftLabel.setText("72h");
     }
 
     @Override
