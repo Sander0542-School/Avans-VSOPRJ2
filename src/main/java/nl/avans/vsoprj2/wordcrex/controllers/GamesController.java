@@ -33,9 +33,9 @@ public class GamesController extends Controller {
         super.initialize(url, resourceBundle);
 
         gameInvites.managedProperty().bind(gameInvites.visibleProperty());
-        gameYours.managedProperty().bind(gameInvites.visibleProperty());
-        gameTheirs.managedProperty().bind(gameInvites.visibleProperty());
-        finishedGames.managedProperty().bind(gameInvites.visibleProperty());
+        gameYours.managedProperty().bind(gameYours.visibleProperty());
+        gameTheirs.managedProperty().bind(gameTheirs.visibleProperty());
+        finishedGames.managedProperty().bind(finishedGames.visibleProperty());
 
         loadGames((String) Singleton.getInstance().getUser()); //TODO(getUser() --> getUser().getUsername())
     }
