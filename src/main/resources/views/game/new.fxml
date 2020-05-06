@@ -39,12 +39,7 @@
                 </VBox>
             </AnchorPane>
             <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #FFBB00;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="208.0">
-                <Button alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Nodig een vriend uit" textFill="WHITE">
-                    <font>
-                        <Font name="Roboto Black" size="16" />
-                    </font>
-                </Button>
-                <Button alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
+                <Button onMouseClicked="#newGamePage" alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
                     <font>
                         <Font name="Roboto Black" size="16" />
                     </font>
