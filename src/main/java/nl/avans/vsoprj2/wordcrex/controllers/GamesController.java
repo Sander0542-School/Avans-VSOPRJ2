@@ -38,8 +38,9 @@ public class GamesController extends Controller {
         PreparedStatement statement;
 
         try {
-            statement = connection.prepareStatement("SELECT * FROM game WHERE username_player2 = ? AND game_state = 'request' AND answer_player2 = 'unknown';");
+            statement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'request' AND answer_player2 = 'unknown';");
             statement.setString(1, username);
+            statement.setString(2, username);
 
             ResultSet resultSet = statement.executeQuery();
 
