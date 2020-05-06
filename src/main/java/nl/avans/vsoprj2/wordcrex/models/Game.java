@@ -1,11 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
+import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 
 import java.sql.ResultSet;
 
 public class Game extends Model {
 
+    @PrimaryKey
     @Column("game_id")
     private int gameId;
     @Column("game_state")
@@ -23,6 +25,11 @@ public class Game extends Model {
 
     public Game(ResultSet resultSet) {
         super(resultSet);
+    }
+
+    @Override
+    public String getTable() {
+        return "game";
     }
 
     public int getGameId() {
