@@ -13,9 +13,8 @@ public class BoardController extends Controller {
 
     public boolean checkWord(String word, String letterSetCode) {
         Connection connection = Singleton.getInstance().getConnection();
-        PreparedStatement statement;
         try {
-            statement = connection.prepareStatement("SELECT EXISTS(SELECT * FROM dictionary WHERE word = ? AND letterset_code = ? AND state = 'accepted');");
+            PreparedStatement statement = connection.prepareStatement("SELECT EXISTS(SELECT * FROM dictionary WHERE word = ? AND letterset_code = ? AND state = 'accepted');");
             statement.setString(1, word);
             statement.setString(2, letterSetCode);
             ResultSet result = statement.executeQuery();
