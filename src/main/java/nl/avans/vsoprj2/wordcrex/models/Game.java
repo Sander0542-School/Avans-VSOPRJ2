@@ -75,7 +75,7 @@ public class Game extends Model {
 
     public String getMessage() {
         Object user = Singleton.getInstance().getUser();
-        switch (this.getGameState()) {
+        switch (this.getGameState()) { //TODO(Sander) replace wth Enum
             case "request":
                 if (this.getUsernamePlayer1() == user) {
                     return String.format("Waiting for %s to", this.getUsernamePlayer2());
@@ -86,8 +86,8 @@ public class Game extends Model {
             case "finished":
             case "resigned":
                 return "Game ended";
+            default:
+                return "Unknown";
         }
-
-        return "Unknown";
     }
 }
