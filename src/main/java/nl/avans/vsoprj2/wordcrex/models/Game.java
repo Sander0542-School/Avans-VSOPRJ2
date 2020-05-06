@@ -37,10 +37,6 @@ public class Game extends Model {
         return gameId;
     }
 
-    private void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
     public String getGameState() {
         return gameState;
     }
@@ -53,24 +49,12 @@ public class Game extends Model {
         return lettersetCode;
     }
 
-    public void setLettersetCode(String lettersetCode) {
-        this.lettersetCode = lettersetCode;
-    }
-
     public String getUsernamePlayer1() {
         return usernamePlayer1;
     }
 
-    public void setUsernamePlayer1(String usernamePlayer1) {
-        this.usernamePlayer1 = usernamePlayer1;
-    }
-
     public String getUsernamePlayer2() {
         return usernamePlayer2;
-    }
-
-    public void setUsernamePlayer2(String usernamePlayer2) {
-        this.usernamePlayer2 = usernamePlayer2;
     }
 
     public String getAnswerPlayer2() {
