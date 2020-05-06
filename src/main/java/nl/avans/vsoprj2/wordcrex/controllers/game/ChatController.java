@@ -38,6 +38,8 @@ public class ChatController extends Controller implements Initializable {
 
     /**
      * Sets the game id and fetches + renders it.
+     * This method needs to be called in the BeforeNavigation.
+     * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
      *
      * @param gameId - The game id from the database to display.
      */
