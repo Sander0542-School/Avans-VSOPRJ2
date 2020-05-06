@@ -1,8 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -54,8 +57,9 @@ public class GamesController extends Controller {
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                gameInvites.getChildren().add(gameItem);
+                setGameItemClick(gameItem);
 
+                gameInvites.getChildren().add(gameItem);
                 gameInvites.setVisible(true);
             }
 
@@ -88,6 +92,7 @@ public class GamesController extends Controller {
 
                 Game game = new Game(resultSet);
                 GameItem gameItem = new GameItem(game);
+                setGameItemClick(gameItem);
 
                 if ((turnplayer1 == turnplayer2) ||
                         (game.getUsernamePlayer1() == user && turnplayer1 < turnplayer2) || //TODO(user --> user.getUsername())
@@ -115,13 +120,34 @@ public class GamesController extends Controller {
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                finishedGames.getChildren().add(gameItem);
+                setGameItemClick(gameItem);
 
+                finishedGames.getChildren().add(gameItem);
                 finishedGames.setVisible(true);
             }
 
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    private void setGameItemClick(GameItem gameItem) {
+        gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                navigateTo("/views/game/board", new NavigationListener() {
+                    @Override
+                    public void beforeNavigate(Controller controller) {
+                        BoardController boardController = (BoardController) controller;
+                        boardController.setGame(gameItem.getGame());
+                    }
+
+                    @Override
+                    public void afterNavigate(Controller controller) {
+
+                    }
+                });
+            }
+        });
     }
 }
