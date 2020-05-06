@@ -19,6 +19,8 @@ public class GameItem extends AnchorPane implements Initializable {
     @FXML
     private Label messageLabel;
 
+    private Game game;
+
     public GameItem() {
         super();
 
@@ -39,7 +41,13 @@ public class GameItem extends AnchorPane implements Initializable {
         setGame(game);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     public void setGame(Game game) {
+        this.game = game;
+
         String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1(); //TODO(getUser() --> getUser().getUsername())
 
         gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
