@@ -83,6 +83,13 @@ public abstract class Model {
         }
     }
 
+    /**
+     * Fill all the fields in the class contains the Column annotation
+     *
+     * @param resultSet  record of the database
+     *
+     * @throws DbLoadException
+     */
     protected void fillFields(ResultSet resultSet) {
         for (Field field : getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(Column.class)) {
