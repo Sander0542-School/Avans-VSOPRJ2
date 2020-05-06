@@ -51,7 +51,6 @@ public class ChatController extends Controller implements Initializable {
      * Fetches and converts SQL rows to ChatMessage class instances
      */
     private void fetch() {
-        System.out.println(this.gameId);
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
