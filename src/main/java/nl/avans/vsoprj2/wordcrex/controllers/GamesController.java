@@ -42,7 +42,6 @@ public class GamesController extends Controller {
 
     private void loadGames(String username) {
         Connection connection = Singleton.getInstance().getConnection();
-        Object user = Singleton.getInstance().getUser();
         PreparedStatement statement;
 
         try {
@@ -95,8 +94,8 @@ public class GamesController extends Controller {
                 setGameItemClick(gameItem);
 
                 if ((turnplayer1 == turnplayer2) ||
-                        (game.getUsernamePlayer1() == user && turnplayer1 < turnplayer2) || //TODO(user --> user.getUsername())
-                        (game.getUsernamePlayer2() == user && turnplayer2 < turnplayer1)) { //TODO(user --> user.getUsername())
+                        (game.getUsernamePlayer1().equals(username) && turnplayer1 < turnplayer2) ||
+                        (game.getUsernamePlayer2().equals(username) && turnplayer2 < turnplayer1)) {
                     gameYours.getChildren().add(gameItem);
                     gameYours.setVisible(true);
                 } else {
