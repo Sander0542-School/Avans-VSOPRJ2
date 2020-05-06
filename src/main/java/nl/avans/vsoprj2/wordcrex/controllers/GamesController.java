@@ -42,10 +42,9 @@ public class GamesController extends Controller {
 
     private void loadGames(String username) {
         Connection connection = Singleton.getInstance().getConnection();
-        PreparedStatement statement;
 
         try {
-            statement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'request' AND answer_player2 = 'unknown';");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'request' AND answer_player2 = 'unknown';");
             statement.setString(1, username);
             statement.setString(2, username);
 
@@ -67,7 +66,7 @@ public class GamesController extends Controller {
         }
 
         try {
-            statement = connection.prepareStatement("SELECT game.*, max(turnplayer1.turn_id) as turnplayer1, max(turnplayer2.turn_id) as turnplayer2 " +
+            PreparedStatement statement = connection.prepareStatement("SELECT game.*, max(turnplayer1.turn_id) as turnplayer1, max(turnplayer2.turn_id) as turnplayer2 " +
                     "FROM game " +
                     "         LEFT JOIN turnplayer1 on game.game_id = turnplayer1.game_id " +
                     "         LEFT JOIN turnplayer2 on game.game_id = turnplayer2.game_id " +
@@ -108,7 +107,7 @@ public class GamesController extends Controller {
         }
 
         try {
-            statement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'finished';");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'finished';");
             statement.setString(1, username);
             statement.setString(2, username);
 
