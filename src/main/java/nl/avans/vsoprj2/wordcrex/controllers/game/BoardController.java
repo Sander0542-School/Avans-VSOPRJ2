@@ -3,6 +3,8 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Game;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BoardController extends Controller {
+
+    public void setGame(Game game) {
+    }
 
     public boolean checkWord(Game game, String word) {
         Connection connection = Singleton.getInstance().getConnection();

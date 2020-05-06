@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("WordCrex");
@@ -28,9 +32,5 @@ public class WordCrex extends Application {
         stage.setScene(scene);
 
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
