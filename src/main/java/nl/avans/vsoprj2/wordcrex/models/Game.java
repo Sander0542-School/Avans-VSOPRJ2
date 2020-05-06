@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 
@@ -86,5 +87,23 @@ public class Game extends Model {
 
     public void setUsernameWinner(String usernameWinner) {
         this.usernameWinner = usernameWinner;
+    }
+
+    public String getMessage() {
+        Object user = Singleton.getInstance().getUser();
+        switch (this.getGameState()) {
+            case "request":
+                if (this.getUsernamePlayer1() == user) {
+                    return String.format("Waiting for %s to", this.getUsernamePlayer2());
+                }
+                return String.format("Invited by %s", this.getUsernamePlayer1());
+            case "playing":
+                return "Playing";
+            case "finished":
+            case "resigned":
+                return "Game ended";
+        }
+
+        return "Unknown";
     }
 }
