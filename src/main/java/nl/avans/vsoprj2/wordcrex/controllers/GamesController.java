@@ -29,6 +29,11 @@ public class GamesController extends Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
+        gameInvites.managedProperty().bind(gameInvites.visibleProperty());
+        gameYours.managedProperty().bind(gameInvites.visibleProperty());
+        gameTheirs.managedProperty().bind(gameInvites.visibleProperty());
+        finishedGames.managedProperty().bind(gameInvites.visibleProperty());
+
         loadGames((String) Singleton.getInstance().getUser()); //TODO(getUser() --> getUser().getUsername())
     }
 
@@ -44,14 +49,14 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            gameInvites.setManaged(false);
+            gameInvites.setVisible(false);
             gameInvites.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
                 gameInvites.getChildren().add(gameItem);
 
-                gameInvites.setManaged(true);
+                gameInvites.setVisible(true);
             }
 
         } catch (SQLException e) {
@@ -71,10 +76,10 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            gameYours.setManaged(false);
+            gameYours.setVisible(false);
             gameYours.getChildren().removeIf(node -> node instanceof GameItem);
 
-            gameTheirs.setManaged(false);
+            gameTheirs.setVisible(false);
             gameTheirs.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
@@ -88,10 +93,10 @@ public class GamesController extends Controller {
                         (game.getUsernamePlayer1() == user && turnplayer1 < turnplayer2) || //TODO(user --> user.getUsername())
                         (game.getUsernamePlayer2() == user && turnplayer2 < turnplayer1)) { //TODO(user --> user.getUsername())
                     gameYours.getChildren().add(gameItem);
-                    gameYours.setManaged(true);
+                    gameYours.setVisible(true);
                 } else {
                     gameTheirs.getChildren().add(gameItem);
-                    gameTheirs.setManaged(true);
+                    gameTheirs.setVisible(true);
                 }
             }
         } catch (SQLException e) {
@@ -105,14 +110,14 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            finishedGames.setManaged(false);
+            finishedGames.setVisible(false);
             finishedGames.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
                 finishedGames.getChildren().add(gameItem);
 
-                finishedGames.setManaged(true);
+                finishedGames.setVisible(true);
             }
 
         } catch (SQLException e) {
