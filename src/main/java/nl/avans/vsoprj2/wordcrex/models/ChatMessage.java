@@ -17,6 +17,11 @@ public class ChatMessage extends Model {
         super(resultSet);
     }
 
+    @Override
+    public String getTable() {
+        return "chatline";
+    }
+
     public String getMessage() {
         return this.message;
     }
