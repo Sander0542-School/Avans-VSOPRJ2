@@ -1,7 +1,7 @@
 package nl.avans.vsoprj2.wordcrex;
 
 import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
-import nl.avans.vsoprj2.wordcrex.models.User;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ public class Singleton {
 
     private static Singleton INSTANCE;
 
-    private User user;
+    private Account account;
     private Connection connection;
 
     private Singleton() {
@@ -25,12 +25,12 @@ public class Singleton {
         return INSTANCE;
     }
 
-    public User getUser() {
-        return user;
+    public Account getUser() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Account account) {
+        this.account = account;
     }
 
     public Connection getConnection() {

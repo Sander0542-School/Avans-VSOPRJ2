@@ -2,12 +2,12 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
-import nl.avans.vsoprj2.wordcrex.models.User;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class LoginController extends Controller {
     @FXML
     private PasswordField password;
     @FXML
-    private Text error;
+    private Label error;
 
     public void backButton() {
         navigateTo("/views/index.fxml");
@@ -40,8 +40,8 @@ public class LoginController extends Controller {
                 ResultSet result = statement.executeQuery();
 
                 if (result.next()) {
-                    User user = new User(result);
-                    Singleton.getInstance().setUser(user);
+                    Account account = new Account(result);
+                    Singleton.getInstance().setUser(account);
                     navigateTo("/views/games.fxml");
                 } else {
                     this.showIncorrectAuthError();

@@ -2,9 +2,9 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
 
@@ -21,7 +21,7 @@ public class RegisterController extends Controller {
     @FXML
     private PasswordField repeatpassword;
     @FXML
-    private Text error;
+    private Label error;
 
 
     @FXML
@@ -75,7 +75,13 @@ public class RegisterController extends Controller {
                 connection.rollback();
                 this.showErrorMessage("Het account kon niet worden aangemaakt.");
             } catch (SQLException e2) {
-                throw new DbConnectionException(e);
+                throw new DbConnectionException(e2);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+                throw new DbConnectionException(e3);
             }
         }
     }

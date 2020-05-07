@@ -4,13 +4,13 @@ import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
 import java.sql.ResultSet;
 
-public class User extends Model {
+public class Account extends Model {
     @Column("username")
     private String username;
     @Column("role")
     private String role;
 
-    public User(ResultSet resultSet) {
+    public Account(ResultSet resultSet) {
         super(resultSet);
     }
 
