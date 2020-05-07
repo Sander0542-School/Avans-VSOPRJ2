@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="MariaDB - avans_wordcrex@tommyhosewol.com" uuid="936e002c-6dfb-4a1b-9b97-0f8636e6acf1">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://tommyhosewol.com:3306/avans_wordcrex</jdbc-url>
+    </data-source>
+  </component>
+</project>
