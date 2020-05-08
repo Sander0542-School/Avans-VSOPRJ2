@@ -4,11 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccounts;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Game;
 
-import javax.swing.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,13 +22,13 @@ public class NewController extends Controller {
     private List<String> list = new ArrayList<>();
 
     @FXML
-    private VBox suggestedAccounts;
+    private VBox suggestedAccountsContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        // suggestedAccounts.managedProperty().bind(suggestedAccounts.visibleProperty());
+        suggestedAccountsContainer.managedProperty().bind(suggestedAccountsContainer.visibleProperty());
 
         loadAccounts();
     }
@@ -42,9 +41,16 @@ public class NewController extends Controller {
             statement.setString(1, "luc"); //TODO Add your username
             ResultSet resultSet = statement.executeQuery();
 
+            suggestedAccountsContainer.setVisible(false);
+            suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof GameItem);
+
             while (resultSet.next()) {
-                String usernames = resultSet.getString("username");
-                list.add(usernames);
+                String userName = resultSet.getString("username");
+                SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
+                list.add(userName);
+
+                suggestedAccountsContainer.getChildren().add(suggestedAccounts);
+                suggestedAccountsContainer.setVisible(true);
             }
 
             System.out.println(list);
@@ -55,11 +61,11 @@ public class NewController extends Controller {
 
     public void randomGameRequest() {
         Random rand = new Random();
-        this.createGameRequest("NL",  list.get(rand.nextInt(list.size())));
+        this.createGameRequest("NL", list.get(rand.nextInt(list.size())));
     }
 
-    public void createNewGame() {
-        this.createGameRequest("NL", "ger");
+    public void createNewGame(String username) {
+        this.createGameRequest("NL", username);
     }
 
     private void createGameRequest(String letterset, String username2) {
@@ -72,6 +78,8 @@ public class NewController extends Controller {
             statement.setString(3, username2);
 
             statement.execute();
+
+            navigateTo("/views/games.fxml");
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
