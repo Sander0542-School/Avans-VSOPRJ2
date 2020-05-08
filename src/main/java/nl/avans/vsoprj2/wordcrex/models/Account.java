@@ -11,6 +11,10 @@ public class Account extends Model {
     @Column("password")
     private String password;
 
+    public String getTable() {
+        return "account";
+    }
+
     public Account(ResultSet resultSet) {
         super(resultSet);
     }
