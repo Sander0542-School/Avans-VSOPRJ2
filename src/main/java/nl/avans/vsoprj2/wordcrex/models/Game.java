@@ -4,7 +4,10 @@ import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Game extends Model {
 
@@ -92,10 +95,63 @@ public class Game extends Model {
     }
 
     public int getPlayer1Score() {
-        return 0; // TODO(Tommy): Add this score to resultSet
+        Connection connection = Singleton.getInstance().getConnection();
+        String query = "";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            query = "SELECT SUM(IFNULL(`score1`,0) + IFNULL(`bonus1`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?";
+
+            stmt = connection.prepareStatement(query);
+
+            for (int i = 1; i <= stmt.getParameterMetaData().getParameterCount(); i++) {
+                stmt.setString(i, String.valueOf(this.gameId));
+            }
+
+            rs = stmt.executeQuery();
+
+            rs.next();
+            return rs.getInt("calculated_score");
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.err.println("SQLException: " + ex.getMessage());
+            System.err.println("SQLState: " + ex.getSQLState());
+            System.err.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return 0;
     }
 
     public int getPlayer2Score() {
-        return 0; // TODO(Tommy): Add this score to resultSet
+        Connection connection = Singleton.getInstance().getConnection();
+        String query = "";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            query = "SELECT SUM(IFNULL(`score2`,0) + IFNULL(`bonus2`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?";
+
+            stmt = connection.prepareStatement(query);
+
+            for (int i = 1; i <= stmt.getParameterMetaData().getParameterCount(); i++) {
+                stmt.setString(i, String.valueOf(this.gameId));
+            }
+
+            rs = stmt.executeQuery();
+
+            rs.next();
+            return rs.getInt("calculated_score");
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.err.println("SQLException: " + ex.getMessage());
+            System.err.println("SQLState: " + ex.getSQLState());
+            System.err.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return 0;
     }
 }
+
