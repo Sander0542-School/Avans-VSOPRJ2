@@ -14,6 +14,10 @@ public class Account extends Model {
         super(resultSet);
     }
 
+    public String getTable() {
+        return "account";
+    }
+
     public String getUsername() {
         return username;
     }
