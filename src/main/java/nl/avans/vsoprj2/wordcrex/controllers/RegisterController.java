@@ -5,8 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class RegisterController extends Controller {
 
 
     @FXML
-    private void handleRegisterAction(ActionEvent event) {
+    private void handleRegisterAction(MouseEvent event) {
         error.setVisible(false);
 
         if (username.getText().trim().isEmpty() || password.getText().trim().isEmpty() || repeatpassword.getText().trim().isEmpty()) {
@@ -75,13 +76,13 @@ public class RegisterController extends Controller {
                 connection.rollback();
                 this.showErrorMessage("Het account kon niet worden aangemaakt.");
             } catch (SQLException e2) {
-                throw new DbConnectionException(e2);
+                throw new DbLoadException(e2);
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e3) {
-                throw new DbConnectionException(e3);
+                throw new DbLoadException(e3);
             }
         }
     }

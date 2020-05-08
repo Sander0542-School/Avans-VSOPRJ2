@@ -24,7 +24,7 @@
                         <TextField fx:id="username" promptText="Gebruikersnaam" prefWidth="600"/>
                         <PasswordField fx:id="password" promptText="Wachtwoord" prefWidth="600"/>
                         <PasswordField fx:id="repeatpassword" promptText="Wachtwoord (Herhaal)" prefWidth="600"/>
-                        <Button onAction="#handleRegisterAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Aanmelden"/>
+                        <Button onMouseClicked="#handleRegisterAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Aanmelden"/>
                     </VBox>
                 </VBox>
             </VBox>

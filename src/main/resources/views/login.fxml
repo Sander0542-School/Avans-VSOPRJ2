@@ -26,7 +26,7 @@
                         <Label fx:id="error" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
                         <TextField fx:id="username" promptText="Gebruikersnaam" prefWidth="600"/>
                         <PasswordField fx:id="password" promptText="Wachtwoord" prefWidth="600"/>
-                        <Button onAction="#handleLoginAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Inloggen"/>
+                        <Button onMouseClicked="#handleLoginAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Inloggen"/>
                     </VBox>
                 </VBox>
             </VBox>

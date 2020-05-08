@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -27,7 +28,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    private void handleLoginAction(ActionEvent event) {
+    private void handleLoginAction(MouseEvent event) {
         error.setVisible(false);
 
         if (!username.getText().trim().isEmpty() && !password.getText().trim().isEmpty()) {
