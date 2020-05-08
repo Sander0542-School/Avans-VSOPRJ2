@@ -90,4 +90,12 @@ public class Game extends Model {
                 return "Unknown";
         }
     }
+
+    public int getPlayer1Score() {
+        return 0;
+    }
+
+    public int getPlayer2Score() {
+        return 0;
+    }
 }
