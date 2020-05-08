@@ -46,6 +46,10 @@ public abstract class Model {
                 }
             }
 
+            if (keysMap.size() == 0) {
+                return false;
+            }
+
             List<Object> queryParams = new ArrayList<>();
 
             StringJoiner columnJoiner = new StringJoiner(", ");
