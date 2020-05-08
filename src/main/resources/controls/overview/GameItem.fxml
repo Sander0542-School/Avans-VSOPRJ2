@@ -8,6 +8,4 @@
         <Label fx:id="gameTitleLabel" text="Username - Language" textFill="WHITE" style="-fx-font-weight: bold" />
         <Label fx:id="messageLabel" text="Message" textFill="WHITE" />
     </VBox>
-
-    <Label fx:id="timeLeftLabel" text="0h" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER_RIGHT" textFill="WHITE" style="-fx-background-color: #1b1744; -fx-background-radius: 6; -fx-padding: 5" />
 </fx:root>
