@@ -2,11 +2,11 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 public class IndexController extends Controller {
 
-    public void register() {
+    public void handleRegisterClick() {
         navigateTo("/views/register.fxml");
     }
 
-    public void login() {
+    public void handleLoginClick() {
         navigateTo("/views/login.fxml");
     }
 }
