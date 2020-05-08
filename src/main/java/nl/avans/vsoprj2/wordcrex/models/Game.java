@@ -92,10 +92,10 @@ public class Game extends Model {
     }
 
     public int getPlayer1Score() {
-        return 0;
+        return 0; // TODO(Tommy): Add this score to resultSet
     }
 
     public int getPlayer2Score() {
-        return 0;
+        return 0; // TODO(Tommy): Add this score to resultSet
     }
 }
