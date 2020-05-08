@@ -25,8 +25,7 @@ public class RegisterController extends Controller {
     private Label error;
 
 
-    @FXML
-    private void handleRegisterAction(MouseEvent event) {
+    public void handleRegisterAction(MouseEvent event) {
         error.setVisible(false);
 
         if (username.getText().trim().isEmpty() || password.getText().trim().isEmpty() || repeatpassword.getText().trim().isEmpty()) {
