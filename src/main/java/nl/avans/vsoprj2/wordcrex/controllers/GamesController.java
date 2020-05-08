@@ -1,11 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
+import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -147,5 +149,13 @@ public class GamesController extends Controller {
                 });
             }
         });
+    }
+
+    public void bottomBarNavigation(Event event) {
+        BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
+
+        if (bottomBarItem.getId().equals("statistics")) {
+            navigateTo("/views/statistics.fxml");
+        }
     }
 }
