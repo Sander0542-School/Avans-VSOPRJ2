@@ -133,7 +133,7 @@ public class GamesController extends Controller {
         gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                navigateTo("/views/game/board", new NavigationListener() {
+                navigateTo("/views/game/board.fxml", new NavigationListener() {
                     @Override
                     public void beforeNavigate(Controller controller) {
                         BoardController boardController = (BoardController) controller;
