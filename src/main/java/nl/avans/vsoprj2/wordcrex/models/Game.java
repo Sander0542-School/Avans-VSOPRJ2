@@ -72,12 +72,12 @@ public class Game extends Model {
         this.usernameWinner = usernameWinner;
     }
 
-    public enum gamestate
+    public enum GameState
     {
-        request,
-        playing,
-        finished,
-        resigned,
+        REQUEST,
+        PLAYING,
+        FINISHED,
+        RESIGNED,
     }
   
     public String getMessage() {
