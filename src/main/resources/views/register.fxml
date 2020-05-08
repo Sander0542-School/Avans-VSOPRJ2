@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.RegisterController">
     <top>
-        <AppBar title="Registreren" backButton="true"/>
+        <AppBar onBackButtonEvent="#handleBackButton" title="Registreren" backButton="true"/>
     </top>
 
     <center>
@@ -27,7 +27,7 @@
                         <TextField promptText="Gebruikersnaam" prefWidth="600"/>
                         <PasswordField promptText="Wachtwoord" prefWidth="600"/>
                         <PasswordField promptText="Wachtwoord (Herhaal)" prefWidth="600"/>
-                        <Button prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Aanmelden"/>
+                        <Button onMouseClicked="#handleSignUpButton" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Aanmelden"/>
                     </VBox>
                 </VBox>
             </VBox>
