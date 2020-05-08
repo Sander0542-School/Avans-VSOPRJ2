@@ -1,8 +1,10 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -156,6 +158,19 @@ public class GamesController extends Controller {
 
         if (bottomBarItem.getId().equals("statistics")) {
             navigateTo("/views/statistics.fxml");
+        }
+    }
+
+    public void handleOptionsMenu(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+
+        switch (menuItem.getId()) {
+            case "info":
+                navigateTo("/views/information.fxml");
+                break;
+            case "settings":
+                navigateTo("/views/settings.fxml");
+                break;
         }
     }
 }
