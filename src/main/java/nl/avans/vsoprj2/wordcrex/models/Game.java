@@ -1,11 +1,18 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
+import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 
 import java.sql.ResultSet;
 
 public class Game extends Model {
 
+    @Column("game_id")
+    private int gameId;
+    @Column("game_state")
+    private gamestate gameState;
+    @PrimaryKey
     @Column("game_id")
     private int gameId;
     @Column("game_state")
@@ -25,12 +32,13 @@ public class Game extends Model {
         super(resultSet);
     }
 
+    @Override
+    public String getTable() {
+        return "game";
+    }
+  
     public int getGameId() {
         return gameId;
-    }
-
-    private void setGameId(int gameId) {
-        this.gameId = gameId;
     }
 
     public gamestate getGameState() {
@@ -45,24 +53,12 @@ public class Game extends Model {
         return lettersetCode;
     }
 
-    public void setLettersetCode(String lettersetCode) {
-        this.lettersetCode = lettersetCode;
-    }
-
     public String getUsernamePlayer1() {
         return usernamePlayer1;
     }
 
-    public void setUsernamePlayer1(String usernamePlayer1) {
-        this.usernamePlayer1 = usernamePlayer1;
-    }
-
     public String getUsernamePlayer2() {
         return usernamePlayer2;
-    }
-
-    public void setUsernamePlayer2(String usernamePlayer2) {
-        this.usernamePlayer2 = usernamePlayer2;
     }
 
     public String getAnswerPlayer2() {
@@ -87,5 +83,23 @@ public class Game extends Model {
         playing,
         finished,
         resigned,
+    }
+  
+    public String getMessage() {
+        Object user = Singleton.getInstance().getUser();
+        switch (this.getGameState()) { //TODO(Sander) replace wth Enum
+            case "request":
+                if (this.getUsernamePlayer1() == user) {
+                    return String.format("Waiting for %s to", this.getUsernamePlayer2());
+                }
+                return String.format("Invited by %s", this.getUsernamePlayer1());
+            case "playing":
+                return "Playing";
+            case "finished":
+            case "resigned":
+                return "Game ended";
+            default:
+                return "Unknown";
+        }
     }
 }
