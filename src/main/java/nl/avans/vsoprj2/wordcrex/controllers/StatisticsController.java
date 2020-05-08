@@ -59,6 +59,7 @@ public class StatisticsController extends Controller {
                     " (SELECT COUNT(`game_id`) FROM `game` WHERE `username_winner` != ? AND `game_state` = 'resigned') as games_left," +
                     " (SELECT GREATEST(IFNULL((SELECT MAX(`score1`) FROM `score` WHERE `username_player1` = ? AND `game_state` = 'finished'),0), IFNULL((SELECT MAX(`score2`) FROM `score` WHERE `username_player2` = ? AND `game_state` = 'finished'),0))) as top_game_score," +
                     " (SELECT GREATEST(IFNULL((SELECT MAX(`score` + `bonus`) FROM `turnplayer1` WHERE `username_player1` = ?),0), IFNULL((SELECT MAX(`score` + `bonus`) FROM `turnplayer2` WHERE `username_player2` = ?),0))) as top_word_score;";
+
             stmt = connection.prepareStatement(query);
 
             for (int i = 1; i <= stmt.getParameterMetaData().getParameterCount(); i++) {
@@ -81,29 +82,6 @@ public class StatisticsController extends Controller {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException sqlEx) {
-                    // ignore
-                }
-
-                rs = null;
-            }
-
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException sqlEx) {
-                    // ignore
-                }
-
-                stmt = null;
-            }
         }
-
     }
-
-
 }
