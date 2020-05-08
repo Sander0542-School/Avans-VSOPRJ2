@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import javax.swing.*;
 import java.net.URL;
@@ -12,11 +14,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    //todo 
-    //private list allnames
+    private List<String> list = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccounts;
@@ -25,35 +29,51 @@ public class NewController extends Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        suggestedAccounts.managedProperty().bind(suggestedAccounts.visibleProperty());
+        // suggestedAccounts.managedProperty().bind(suggestedAccounts.visibleProperty());
 
-        loadAccounts("luc"); //TODO Add your username
+        loadAccounts();
     }
 
-    private void loadAccounts(String Username) {
+    private void loadAccounts() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `account` WHERE username != 'luc'");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `account` WHERE username != ?");
+            statement.setString(1, "luc"); //TODO Add your username
             ResultSet resultSet = statement.executeQuery();
 
-            System.out.println(resultSet);
+            while (resultSet.next()) {
+                String usernames = resultSet.getString("username");
+                list.add(usernames);
+            }
 
-            //Singleton.getInstance().getUser();
+            System.out.println(list);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
     }
 
     public void randomGameRequest() {
-        this.createGame("NL", "Lars");
+        Random rand = new Random();
+        this.createGameRequest("NL",  list.get(rand.nextInt(list.size())));
     }
 
     public void createNewGame() {
-        this.createGame("NL", "Lars");
+        this.createGameRequest("NL", "ger");
     }
 
-    private void createGame(String letterset, String username2) {
-        Boolean gameCreated = false;
+    private void createGameRequest(String letterset, String username2) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `game`(`game_state`, `letterset_code`, `username_player1`, `username_player2`, `answer_player2`, `username_winner`) VALUES ('request', ?, ?, ?, 'unknown', NULL)");
+            statement.setString(1, letterset);
+            statement.setString(2, "luc"); //TODO Add your username
+            statement.setString(3, username2);
+
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 }
