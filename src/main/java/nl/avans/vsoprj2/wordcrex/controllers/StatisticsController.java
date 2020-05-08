@@ -3,7 +3,6 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
