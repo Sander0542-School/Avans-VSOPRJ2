@@ -27,8 +27,7 @@ public class LoginController extends Controller {
         navigateTo("/views/index.fxml");
     }
 
-    @FXML
-    private void handleLoginAction(MouseEvent event) {
+    public void handleLoginAction(MouseEvent event) {
         error.setVisible(false);
 
         if (!username.getText().trim().isEmpty() && !password.getText().trim().isEmpty()) {
