@@ -7,16 +7,11 @@ import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 import java.sql.ResultSet;
 
 public class Game extends Model {
-
-    @Column("game_id")
-    private int gameId;
-    @Column("game_state")
-    private gamestate gameState;
     @PrimaryKey
     @Column("game_id")
     private int gameId;
     @Column("game_state")
-    private gamestate gameState;
+    private String gameState;
     @Column("letterset_code")
     private String lettersetCode;
     @Column("username_player1")
@@ -41,12 +36,12 @@ public class Game extends Model {
         return gameId;
     }
 
-    public gamestate getGameState() {
+    public String getGameState() {
         return gameState;
     }
 
     public void setGameState(gamestate gameState) {
-        this.gameState = gameState;
+        this.gameState = gameState.toString();
     }
 
     public String getLettersetCode() {
