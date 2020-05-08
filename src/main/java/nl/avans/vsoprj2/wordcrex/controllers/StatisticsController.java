@@ -32,17 +32,13 @@ public class StatisticsController extends Controller {
     @FXML
     Label topWordScore;
 
-    private User user;
+    private Object user;
     Connection connection = null;
 
     public void initialize() {
         this.connection = Singleton.getInstance().getConnection();
 
-        // TEMP USER UNTILL USER MODEL IS AVAIL
-        user = new User();
-        user.setUsername("Lidewij");
-        user.setPassword("rrr");
-        // END TEMP USER
+        user = Singleton.getInstance().getUser();
 
         setUser();
         setStatistics();
