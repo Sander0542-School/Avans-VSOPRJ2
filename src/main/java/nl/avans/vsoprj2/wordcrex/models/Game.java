@@ -40,7 +40,7 @@ public class Game extends Model {
         return gameState;
     }
 
-    public void setGameState(gamestate gameState) {
+    public void setGameState(GameState gameState) {
         this.gameState = gameState.toString();
     }
 
