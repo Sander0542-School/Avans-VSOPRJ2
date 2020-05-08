@@ -1,0 +1,19 @@
+.menu-item {
+    -fx-max-height: 48px;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 12px 0;
+}
+
+.menu-item .label:hover {
+    -fx-background: #1b1744;
+}
+
+.context-menu {
+    -fx-max-width: 320px;
+    -fx-min-width: 192px;
+    -fx-background-color: #201b53;
+}

@@ -1,10 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controls.navigation;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -23,7 +26,10 @@ public class AppBar extends AnchorPane implements Initializable {
     @FXML
     private ImageView deleteButton;
 
+    private ContextMenu optionsMenu = new ContextMenu();
+
     private EventHandler backButtonEventHandler = null;
+    private EventHandler optionsMenuEventHandler = null;
 
     public AppBar() {
         super();
@@ -74,7 +80,11 @@ public class AppBar extends AnchorPane implements Initializable {
         deleteButton.setManaged(visible);
     }
 
-    public void backButtonClicked(MouseEvent event) {
+    public void handleOptionsButton(MouseEvent event) {
+        optionsMenu.show(this, event.getScreenX(), event.getScreenY());
+    }
+
+    public void handleBackButton(MouseEvent event) {
         if (backButtonEventHandler != null) {
             backButtonEventHandler.handle(event);
         }
@@ -88,8 +98,28 @@ public class AppBar extends AnchorPane implements Initializable {
         return backButtonEventHandler;
     }
 
+    public void setOnOptionsMenuEvent(EventHandler eventHandler) {
+        optionsMenuEventHandler = eventHandler;
+    }
+
+    public EventHandler getOnOptionsMenuEvent() {
+        return optionsMenuEventHandler;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
 
+        for (MenuItem item : optionsMenu.getItems()) {
+            item.setId(item.getText().toLowerCase());
+            item.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if (optionsMenuEventHandler != null) {
+                        optionsMenuEventHandler.handle(actionEvent);
+                    }
+                }
+            });
+        }
     }
 }
