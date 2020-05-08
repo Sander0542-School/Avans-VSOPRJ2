@@ -1,9 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-import javafx.event.Event;
-
 public class LoginController extends Controller {
-    public void backButton() {
+    public void handleBackButton() {
         navigateTo("/views/index.fxml");
+    }
+
+    public void handleSignInButton() {
+        navigateTo("/views/games.fxml");
     }
 }
