@@ -48,7 +48,7 @@ public class LoginController extends Controller {
                 }
 
             } catch (SQLException e) {
-                throw new DbConnectionException(e);
+                throw new DbLoadException(e);
             }
         } else {
             this.showIncorrectAuthError();
