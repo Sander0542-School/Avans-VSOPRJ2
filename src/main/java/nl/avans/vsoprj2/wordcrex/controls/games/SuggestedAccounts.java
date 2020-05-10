@@ -20,8 +20,6 @@ public class SuggestedAccounts extends VBox implements Initializable {
     @FXML
     private Button inviteButton;
 
-    private EventHandler inviteButtonEventHandler = null;
-
     public SuggestedAccounts() {
         super();
 
@@ -37,13 +35,12 @@ public class SuggestedAccounts extends VBox implements Initializable {
     }
 
     public SuggestedAccounts(String account) {
-
         this();
         usernameLabel.setText(account);
         inviteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                NewController newController = new NewController();0.
+                NewController newController = new NewController();
 
                 newController.createNewGame(account);
             }
