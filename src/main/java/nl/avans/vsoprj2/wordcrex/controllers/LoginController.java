@@ -1,13 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.sql.Connection;
@@ -27,14 +25,13 @@ public class LoginController extends Controller {
         navigateTo("/views/index.fxml");
     }
 
-    public void handleLoginAction(MouseEvent event) {
+    public void handleLoginAction() {
         error.setVisible(false);
 
         if (!username.getText().trim().isEmpty() && !password.getText().trim().isEmpty()) {
             Connection connection = Singleton.getInstance().getConnection();
             try {
-                PreparedStatement statement;
-                statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
+                PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
                 statement.setString(1, username.getText());
                 statement.setString(2, password.getText());
                 ResultSet result = statement.executeQuery();

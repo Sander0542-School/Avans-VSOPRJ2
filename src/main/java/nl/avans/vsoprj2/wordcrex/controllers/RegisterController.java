@@ -1,11 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
@@ -25,7 +23,7 @@ public class RegisterController extends Controller {
     private Label error;
 
 
-    public void handleRegisterAction(MouseEvent event) {
+    public void handleRegisterAction() {
         error.setVisible(false);
 
         if (username.getText().trim().isEmpty() || password.getText().trim().isEmpty() || repeatpassword.getText().trim().isEmpty()) {
@@ -40,21 +38,18 @@ public class RegisterController extends Controller {
 
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement statement;
-            statement = connection.prepareStatement("SELECT username FROM account where username=?");
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account where username=?");
             statement.setString(1, username.getText());
             ResultSet result = statement.executeQuery();
 
             if (!result.next()) {
                 connection.setAutoCommit(false);
 
-                PreparedStatement insertaccount;
-                insertaccount = connection.prepareStatement("INSERT INTO account (username, password) VALUES(?, ?)");
+                PreparedStatement insertaccount = connection.prepareStatement("INSERT INTO account (username, password) VALUES(?, ?)");
                 insertaccount.setString(1, username.getText());
                 insertaccount.setString(2, password.getText());
 
-                PreparedStatement insertrole;
-                insertrole = connection.prepareStatement("INSERT INTO accountrole (username, role) VALUES(?, 'player')");
+                PreparedStatement insertrole = connection.prepareStatement("INSERT INTO accountrole (username, role) VALUES(?, 'player')");
                 insertrole.setString(1, username.getText());
 
                 int insertaccountresult = insertaccount.executeUpdate();
@@ -77,6 +72,7 @@ public class RegisterController extends Controller {
             } catch (SQLException e2) {
                 throw new DbLoadException(e2);
             }
+            throw new DbLoadException(e);
         } finally {
             try {
                 connection.setAutoCommit(true);
