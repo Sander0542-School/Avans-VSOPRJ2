@@ -22,24 +22,24 @@ public class LoginController extends Controller {
     private Label error;
 
     public void backButton() {
-        navigateTo("/views/index.fxml");
+        this.navigateTo("/views/index.fxml");
     }
 
     public void handleLoginAction() {
-        error.setVisible(false);
+        this.error.setVisible(false);
 
-        if (!username.getText().trim().isEmpty() && !password.getText().trim().isEmpty()) {
+        if (!this.username.getText().trim().isEmpty() && !this.password.getText().trim().isEmpty()) {
             Connection connection = Singleton.getInstance().getConnection();
             try {
                 PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
-                statement.setString(1, username.getText());
-                statement.setString(2, password.getText());
+                statement.setString(1, this.username.getText());
+                statement.setString(2, this.password.getText());
                 ResultSet result = statement.executeQuery();
 
                 if (result.next()) {
                     Account account = new Account(result);
                     Singleton.getInstance().setUser(account);
-                    navigateTo("/views/games.fxml");
+                    this.navigateTo("/views/games.fxml");
                 } else {
                     this.showIncorrectAuthError();
                 }
@@ -53,7 +53,7 @@ public class LoginController extends Controller {
     }
 
     private void showIncorrectAuthError() {
-        error.setText("Inloggen mislukt, foute gebruikersnaam of wachtwoord.");
-        error.setVisible(true);
+        this.error.setText("Inloggen mislukt, foute gebruikersnaam of wachtwoord.");
+        this.error.setVisible(true);
     }
 }

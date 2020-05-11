@@ -26,7 +26,7 @@ public class Singleton {
     }
 
     public Account getUser() {
-        return account;
+        return this.account;
     }
 
     public void setUser(Account account) {
@@ -34,14 +34,14 @@ public class Singleton {
     }
 
     public Connection getConnection() {
-        if (connection == null) {
+        if (this.connection == null) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://tommyhosewol.com/avans_wordcrex", "wordcrex", "EdiILXhe1fK04mvA");
+                this.connection = DriverManager.getConnection("jdbc:mysql://tommyhosewol.com/avans_wordcrex", "wordcrex", "EdiILXhe1fK04mvA");
             } catch (SQLException e) {
                 throw new DbConnectionException(e);
             }
         }
 
-        return connection;
+        return this.connection;
     }
 }

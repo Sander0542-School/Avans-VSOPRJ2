@@ -6,6 +6,6 @@ public class SettingsController extends Controller {
 
     public void handleLogoutAction() {
         Singleton.getInstance().setUser(null);
-        navigateTo("/views/index.fxml");
+        this.navigateTo("/views/index.fxml");
     }
 }

@@ -17,7 +17,7 @@ public class GameTitle extends AnchorPane implements Initializable {
     public GameTitle() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/overview/GameTitle.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/overview/GameTitle.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -29,11 +29,11 @@ public class GameTitle extends AnchorPane implements Initializable {
     }
 
     public String getTitle() {
-        return titleLabel.getText();
+        return this.titleLabel.getText();
     }
 
     public void setTitle(String value) {
-        titleLabel.setText(value);
+        this.titleLabel.setText(value);
     }
 
     @Override
