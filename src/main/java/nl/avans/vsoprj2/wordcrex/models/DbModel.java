@@ -34,7 +34,7 @@ public abstract class DbModel extends Model {
             HashMap<String, Object> columnsMap = new HashMap<>();
             HashMap<String, Object> keysMap = new HashMap<>();
 
-            for (Field field : getClass().getDeclaredFields()) {
+            for (Field field : this.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Column.class)) {
                     field.setAccessible(true);
                     String column = field.getDeclaredAnnotation(Column.class).value();

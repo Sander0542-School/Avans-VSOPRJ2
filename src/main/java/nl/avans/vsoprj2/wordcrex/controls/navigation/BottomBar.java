@@ -13,7 +13,7 @@ public class BottomBar extends HBox implements Initializable {
     public BottomBar() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/navigation/BottomBar.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/navigation/BottomBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

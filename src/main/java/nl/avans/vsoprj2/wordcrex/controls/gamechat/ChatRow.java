@@ -21,7 +21,7 @@ public class ChatRow extends HBox implements Initializable {
     public ChatRow() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/gamechat/ChatRow.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gamechat/ChatRow.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

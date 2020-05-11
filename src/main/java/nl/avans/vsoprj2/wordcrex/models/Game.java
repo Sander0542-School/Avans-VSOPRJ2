@@ -38,11 +38,11 @@ public class Game extends DbModel {
     }
 
     public int getGameId() {
-        return gameId;
+        return this.gameId;
     }
 
     public String getGameState() {
-        return gameState;
+        return this.gameState;
     }
 
     public void setGameState(String gameState) {
@@ -50,19 +50,19 @@ public class Game extends DbModel {
     }
 
     public String getLettersetCode() {
-        return lettersetCode;
+        return this.lettersetCode;
     }
 
     public String getUsernamePlayer1() {
-        return usernamePlayer1;
+        return this.usernamePlayer1;
     }
 
     public String getUsernamePlayer2() {
-        return usernamePlayer2;
+        return this.usernamePlayer2;
     }
 
     public String getAnswerPlayer2() {
-        return answerPlayer2;
+        return this.answerPlayer2;
     }
 
     public void setAnswerPlayer2(String answerPlayer2) {
@@ -70,7 +70,7 @@ public class Game extends DbModel {
     }
 
     public String getUsernameWinner() {
-        return usernameWinner;
+        return this.usernameWinner;
     }
 
     public void setUsernameWinner(String usernameWinner) {
