@@ -94,7 +94,7 @@ public class Game extends Model {
                 return "Unknown";
         }
     }
-    
+
     public int getPlayerScore(boolean isPlayer1) {
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -111,7 +111,6 @@ public class Game extends Model {
 
             resultSet.next();
             return resultSet.getInt("calculated_score");
-
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }
