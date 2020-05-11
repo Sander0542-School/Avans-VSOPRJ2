@@ -21,8 +21,6 @@ public class RegisterController extends Controller {
     private PasswordField repeatpassword;
     @FXML
     private Label error;
-
-
     public void handleRegisterAction() {
         error.setVisible(false);
 
