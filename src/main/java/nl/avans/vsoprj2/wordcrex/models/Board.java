@@ -1,5 +1,15 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+enum TileType {
+    EMTPY,
+    TWOLETTER,
+    THREEWORD,
+    FOURLETTER,
+    FOURWORD,
+    SIXLETTER
+}
+
+
 public class Board {
     Tile[][] grid;
 
@@ -7,31 +17,31 @@ public class Board {
         grid = newBoard();
     }
 
-    private Tile[][] newBoard(){
+    private Tile[][] newBoard() {
         return new Tile[14][14];
     }
 
-    public Character getValue(int x, int y){
+    public Character getValue(int x, int y) {
         Character returnValue;
         returnValue = grid[x][y].getValue();
         return returnValue;
     }
 
-    public Tile[][] getGrid(){
+    public Tile[][] getGrid() {
         return grid;
     }
 
-    public void setTile(int x, int y, Character Value){
+    public void setTile(int x, int y, Character Value) {
         grid[x][y].setValue(Value);
     }
 
 }
 
-class Tile{
+class Tile {
     private Character value;
-    private int tileType;
+    private final TileType tileType;
 
-    public Tile(int type){
+    public Tile(TileType type) {
         tileType = type;
     }
 
@@ -43,7 +53,7 @@ class Tile{
         this.value = value;
     }
 
-    public int getTileType() {
+    public TileType getTileType() {
         return tileType;
     }
 }
