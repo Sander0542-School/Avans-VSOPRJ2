@@ -14,22 +14,16 @@ import java.sql.SQLException;
 public class StatisticsController extends Controller {
     @FXML
     Label name;
-
     @FXML
     Label gamesWon;
-
     @FXML
     Label gamesLost;
-
     @FXML
     Label gamesTied;
-
     @FXML
     Label gamesLeft;
-
     @FXML
     Label topGameScore;
-
     @FXML
     Label topWordScore;
 
