@@ -94,13 +94,12 @@ public class Game extends Model {
                 return "Unknown";
         }
     }
-
-
+    
     public int getPlayerScore(boolean isPlayer1) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            String query = "SELECT SUM(IFNULL(`"+ (isPlayer1 ? "score1" : "score2") +"`,0) + IFNULL(`"+ (isPlayer1 ? "bonus1" : "bonus2") +"`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?";
+            String query = "SELECT SUM(IFNULL(`" + (isPlayer1 ? "score1" : "score2") + "`,0) + IFNULL(`" + (isPlayer1 ? "bonus1" : "bonus2") + "`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -117,7 +116,5 @@ public class Game extends Model {
             throw new DbLoadException(ex);
         }
     }
-
-
 }
 
