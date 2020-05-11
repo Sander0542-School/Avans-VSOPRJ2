@@ -13,12 +13,12 @@ public abstract class Model {
     private final HashMap<String, Object> originalValues = new HashMap<>();
 
     public Model(ResultSet resultSet) {
-        setOriginal(resultSet);
-        fillFields(resultSet);
+        this.setOriginal(resultSet);
+        this.fillFields(resultSet);
     }
 
     public HashMap<String, Object> getOriginalValues() {
-        return originalValues;
+        return this.originalValues;
     }
 
     /**
@@ -29,7 +29,7 @@ public abstract class Model {
      * @throws DbLoadException
      */
     protected void fillFields(ResultSet resultSet) {
-        for (Field field : getClass().getDeclaredFields()) {
+        for (Field field : this.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(Column.class)) {
                 try {
                     String column = field.getDeclaredAnnotation(Column.class).value();
@@ -45,14 +45,14 @@ public abstract class Model {
     }
 
     protected void setOriginal(ResultSet resultSet) {
-        originalValues.clear();
+        this.originalValues.clear();
 
         try {
             int columnCount = resultSet.getMetaData().getColumnCount();
 
             for (int column = 1; column <= columnCount; column++) {
                 String columnName = resultSet.getMetaData().getColumnName(column);
-                originalValues.put(columnName, resultSet.getObject(column));
+                this.originalValues.put(columnName, resultSet.getObject(column));
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);

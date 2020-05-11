@@ -20,7 +20,7 @@ public class Account extends Model {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public Statistic getStatistic() {
@@ -51,6 +51,6 @@ public class Account extends Model {
     }
 
     public String getRole() {
-        return role;
+        return this.role;
     }
 }

@@ -23,26 +23,26 @@ public class Statistic extends Model {
     }
 
     public String getGamesWon() {
-        return gamesWon;
+        return this.gamesWon;
     }
 
     public String getGamesLost() {
-        return gamesLost;
+        return this.gamesLost;
     }
 
     public String getGamesTied() {
-        return gamesTied;
+        return this.gamesTied;
     }
 
     public String getGamesLeft() {
-        return gamesLeft;
+        return this.gamesLeft;
     }
 
     public String getTopGameScore() {
-        return topGameScore;
+        return this.topGameScore;
     }
 
     public String getTopWordScore() {
-        return topWordScore;
+        return this.topWordScore;
     }
 }

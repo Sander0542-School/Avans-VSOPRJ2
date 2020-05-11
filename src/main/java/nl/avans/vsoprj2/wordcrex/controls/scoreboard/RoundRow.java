@@ -39,7 +39,7 @@ public class RoundRow extends VBox implements Initializable {
     public RoundRow() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/scoreboard/RoundRow.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/scoreboard/RoundRow.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
