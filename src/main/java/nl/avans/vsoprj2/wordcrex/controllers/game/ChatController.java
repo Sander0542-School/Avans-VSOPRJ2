@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ChatController extends Controller implements Initializable {
+public class ChatController extends Controller {
     private Game game;
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
