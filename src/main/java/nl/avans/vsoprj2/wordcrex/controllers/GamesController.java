@@ -37,7 +37,7 @@ public class GamesController extends Controller {
         gameTheirs.managedProperty().bind(gameTheirs.visibleProperty());
         finishedGames.managedProperty().bind(finishedGames.visibleProperty());
 
-        loadGames((String) Singleton.getInstance().getUser()); //TODO(getUser() --> getUser().getUsername())
+        loadGames(Singleton.getInstance().getUser().getUsername());
     }
 
     private void loadGames(String username) {
