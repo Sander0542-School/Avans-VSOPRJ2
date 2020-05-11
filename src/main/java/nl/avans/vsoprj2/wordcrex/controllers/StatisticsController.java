@@ -33,23 +33,18 @@ public class StatisticsController extends Controller {
     @FXML
     Label topWordScore;
 
-    private Account account;
-    Connection connection = null;
-
     public void initialize() {
-        this.connection = Singleton.getInstance().getConnection();
-
-        account = Singleton.getInstance().getUser();
-
         setUser();
         setStatistics();
     }
 
     private void setUser() {
-        name.setText(account.getUsername());
+        name.setText(Singleton.getInstance().getUser().getUsername());
     }
 
     private void setStatistics() {
+        Connection connection = Singleton.getInstance().getConnection();
+        Account account = Singleton.getInstance().getUser();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String query = null;
