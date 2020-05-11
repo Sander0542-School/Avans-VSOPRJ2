@@ -27,7 +27,7 @@ public class BottomBarItem extends VBox implements Initializable {
     public BottomBarItem() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/navigation/BottomBarItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/navigation/BottomBarItem.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

@@ -22,13 +22,13 @@ public class RegisterController extends Controller {
     @FXML
     private Label error;
     public void handleRegisterAction() {
-        error.setVisible(false);
+        this.error.setVisible(false);
 
-        if (username.getText().trim().isEmpty() || password.getText().trim().isEmpty() || repeatpassword.getText().trim().isEmpty()) {
+        if (this.username.getText().trim().isEmpty() || this.password.getText().trim().isEmpty() || this.repeatpassword.getText().trim().isEmpty()) {
             this.showErrorMessage("Niet alle velden zijn ingevuld.");
             return;
         } else {
-            if (!password.getText().equals(repeatpassword.getText())) {
+            if (!this.password.getText().equals(this.repeatpassword.getText())) {
                 this.showErrorMessage("De wachtwoorden komen niet overeen.");
                 return;
             }
@@ -37,31 +37,31 @@ public class RegisterController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT username FROM account where username=?");
-            statement.setString(1, username.getText());
+            statement.setString(1, this.username.getText());
             ResultSet result = statement.executeQuery();
 
             if (!result.next()) {
                 connection.setAutoCommit(false);
 
                 PreparedStatement insertaccount = connection.prepareStatement("INSERT INTO account (username, password) VALUES(?, ?)");
-                insertaccount.setString(1, username.getText());
-                insertaccount.setString(2, password.getText());
+                insertaccount.setString(1, this.username.getText());
+                insertaccount.setString(2, this.password.getText());
 
                 PreparedStatement insertrole = connection.prepareStatement("INSERT INTO accountrole (username, role) VALUES(?, 'player')");
-                insertrole.setString(1, username.getText());
+                insertrole.setString(1, this.username.getText());
 
                 int insertaccountresult = insertaccount.executeUpdate();
                 int insertroleresult = insertrole.executeUpdate();
 
                 if (insertaccountresult > 0 && insertroleresult > 0) {
                     connection.commit();
-                    navigateTo("/views/login.fxml");
+                    this.navigateTo("/views/login.fxml");
                 } else {
                     connection.rollback();
                     this.showErrorMessage("Het account kon niet worden aangemaakt.");
                 }
             } else {
-                this.showErrorMessage("Gebruikersnaam '" + username.getText() + "' bestaat al.");
+                this.showErrorMessage("Gebruikersnaam '" + this.username.getText() + "' bestaat al.");
             }
         } catch (SQLException e) {
             try {
@@ -81,8 +81,8 @@ public class RegisterController extends Controller {
     }
 
     private void showErrorMessage(String message) {
-        error.setText(message);
-        error.setVisible(true);
+        this.error.setText(message);
+        this.error.setVisible(true);
     }
 
 }
