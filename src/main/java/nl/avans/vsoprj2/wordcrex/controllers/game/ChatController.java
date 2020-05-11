@@ -9,7 +9,9 @@ import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.ChatMessage;
+import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.net.URL;
 import java.sql.*;
@@ -20,7 +22,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ChatController extends Controller implements Initializable {
-    private int gameId;
+    private Game game;
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     @FXML
@@ -41,10 +43,10 @@ public class ChatController extends Controller implements Initializable {
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
      *
-     * @param gameId - The game id from the database to display.
+     * @param game - The game id from the database to display.
      */
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setGame(Game game) {
+        this.game = game;
         this.fetch();
         this.render();
     }
@@ -57,7 +59,7 @@ public class ChatController extends Controller implements Initializable {
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT cl.username, cl.game_id, cl.moment, cl.message FROM chatline cl WHERE cl.game_id = ? ORDER BY moment");
-            statement.setInt(1, this.gameId);
+            statement.setInt(1, this.game.getGameId());
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -74,8 +76,8 @@ public class ChatController extends Controller implements Initializable {
      * Collected instances of chat messages will be converted to displayable components and rendered appropriately.
      */
     private void render() {
-        String currentUserName = "jagermeester"; //TODO Convert to user model
-        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !currentUserName.equals(chatMessage.getUsername()))).collect(Collectors.toList());
+        Account user = Singleton.getInstance().getUser();
+        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
         this.chatMessagesContainer.getChildren().clear();
         this.chatMessagesContainer.getChildren().addAll(chatRows);
         this.chatScrollContainer.applyCss();
@@ -99,7 +101,7 @@ public class ChatController extends Controller implements Initializable {
                 Connection connection = Singleton.getInstance().getConnection();
                 try {
                     PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
-                    statement.setInt(1, this.gameId);
+                    statement.setInt(1, this.game.getGameId());
                     statement.execute();
                     this.chatMessages.clear();
                     this.fetch();
@@ -119,7 +121,7 @@ public class ChatController extends Controller implements Initializable {
      * @param keyEvent - KeyEvent send by Java FXML
      */
     private void sendMessageHandler(KeyEvent keyEvent) {
-        String currentUserName = "jagermeester"; //TODO Convert to user model
+        Account user = Singleton.getInstance().getUser();
         String messageContent = this.chatMessageInput.getText().trim();
 
         if (keyEvent.getCode() == KeyCode.ENTER && !keyEvent.isShiftDown()) {
@@ -128,8 +130,8 @@ public class ChatController extends Controller implements Initializable {
 
                 try {
                     PreparedStatement statement = connection.prepareStatement("INSERT INTO chatline (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
-                    statement.setString(1, currentUserName);
-                    statement.setInt(2, this.gameId);
+                    statement.setString(1, user.getUsername());
+                    statement.setInt(2, this.game.getGameId());
                     statement.setString(3, messageContent);
                     statement.setTimestamp(4, Timestamp.from(Instant.now()));
                     statement.execute();
