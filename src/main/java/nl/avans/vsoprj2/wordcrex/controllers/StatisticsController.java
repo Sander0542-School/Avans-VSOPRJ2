@@ -3,6 +3,8 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,20 +33,20 @@ public class StatisticsController extends Controller {
     @FXML
     Label topWordScore;
 
-    private Object user;
+    private Account account;
     Connection connection = null;
 
     public void initialize() {
         this.connection = Singleton.getInstance().getConnection();
 
-        user = Singleton.getInstance().getUser();
+        account = Singleton.getInstance().getUser();
 
         setUser();
         setStatistics();
     }
 
     private void setUser() {
-        name.setText(user.getUsername());
+        name.setText(account.getUsername());
     }
 
     private void setStatistics() {
@@ -63,7 +65,7 @@ public class StatisticsController extends Controller {
             stmt = connection.prepareStatement(query);
 
             for (int i = 1; i <= stmt.getParameterMetaData().getParameterCount(); i++) {
-                stmt.setString(i, user.getUsername());
+                stmt.setString(i, account.getUsername());
             }
 
             rs = stmt.executeQuery();
@@ -78,10 +80,7 @@ public class StatisticsController extends Controller {
             }
 
         } catch (SQLException ex) {
-            // handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
+            throw new DbLoadException(ex);
         }
     }
 }
