@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import nl.avans.vsoprj2.wordcrex.models.ChatMessage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,9 +32,9 @@ public class ChatRow extends HBox implements Initializable {
         }
     }
 
-    public ChatRow(String text, boolean left) {
+    public ChatRow(ChatMessage chatMessage, boolean left) {
         this();
-        this.setText(text);
+        this.setText(chatMessage.getMessage());
         this.setLeft(left);
     }
 

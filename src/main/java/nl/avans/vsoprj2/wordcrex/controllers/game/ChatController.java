@@ -1,7 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -78,7 +77,7 @@ public class ChatController extends Controller {
      */
     private void render() {
         Account user = Singleton.getInstance().getUser();
-        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage.getMessage(), !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
+        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage, !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
         this.chatMessagesContainer.getChildren().clear();
         this.chatMessagesContainer.getChildren().addAll(chatRows);
         this.chatScrollContainer.applyCss();
