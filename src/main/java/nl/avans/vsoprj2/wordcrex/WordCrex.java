@@ -7,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-/**
- * Hello world!
- */
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
 
