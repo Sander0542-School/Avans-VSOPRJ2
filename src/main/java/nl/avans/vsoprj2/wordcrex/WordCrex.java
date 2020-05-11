@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import nl.avans.vsoprj2.wordcrex.models.Board;
 
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
@@ -18,9 +19,10 @@ public class WordCrex extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
-
         Parent parent = new FXMLLoader(this.getClass().getResource("/views/index.fxml")).load();
+
         Scene scene = new Scene(parent);
+        Board testboard = new Board();
 
 //        if (DEBUG_MODE) {
 //            stage.setTitle(String.format("WordCrex - Java: %s - JavaFX: %s", System.getProperty("java.version"), System.getProperty("javafx.version")));
