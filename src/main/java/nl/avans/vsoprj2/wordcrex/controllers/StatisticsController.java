@@ -39,8 +39,18 @@ public class StatisticsController extends Controller {
         render();
     }
 
-    private void setUser() {
+    /**
+     * Rendering the given information to the stage.
+     */
+    private void render() {
         name.setText(Singleton.getInstance().getUser().getUsername());
+
+        gamesWonLabel.setText(this.gamesWon);
+        gamesLostLabel.setText(this.gamesLost);
+        gamesTiedLabel.setText(this.gamesTied);
+        gamesLeftLabel.setText(this.gamesLeft);
+        topGameScoreLabel.setText(this.topGameScore);
+        topWordScoreLabel.setText(this.topWordScore);
     }
 
     /**
