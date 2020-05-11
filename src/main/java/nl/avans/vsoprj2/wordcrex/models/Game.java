@@ -99,8 +99,7 @@ public class Game extends Model {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            String query = "SELECT SUM(IFNULL(`" + (isPlayer1 ? "score1" : "score2") + "`,0) + IFNULL(`" + (isPlayer1 ? "bonus1" : "bonus2") + "`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?";
-
+            String query = String.format("SELECT SUM(IFNULL(`%s`,0) + IFNULL(`%s`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?", (isPlayer1 ? "score1" : "score2"), (isPlayer1 ? "bonus1" : "bonus2"));
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             for (int i = 1; i <= preparedStatement.getParameterMetaData().getParameterCount(); i++) {
