@@ -5,9 +5,9 @@ import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import java.sql.ResultSet;
 import java.util.Date;
 
-public class ChatMessage extends Model {
+public class ChatMessage extends DbModel {
     @Column("username")
-    private String username; // TODO Change to user model instead of just username
+    private String username;
     @Column("moment")
     private Date date;
     @Column("message")
