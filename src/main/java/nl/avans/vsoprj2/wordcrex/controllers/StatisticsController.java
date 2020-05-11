@@ -28,8 +28,8 @@ public class StatisticsController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.statistic = getStatistic();
-        render();
+        this.statistic = this.getStatistic();
+        this.render();
     }
 
     /**
@@ -38,12 +38,12 @@ public class StatisticsController extends Controller {
     private void render() {
         this.name.setText(Singleton.getInstance().getUser().getUsername());
 
-        this.gamesWon.setText(statistic.getGamesWon());
-        this.gamesLost.setText(statistic.getGamesLost());
-        this.gamesTied.setText(statistic.getGamesTied());
-        this.gamesLeft.setText(statistic.getGamesLeft());
-        this.topGameScore.setText(statistic.getTopGameScore());
-        this.topWordScore.setText(statistic.getTopWordScore());
+        this.gamesWon.setText(this.statistic.getGamesWon());
+        this.gamesLost.setText(this.statistic.getGamesLost());
+        this.gamesTied.setText(this.statistic.getGamesTied());
+        this.gamesLeft.setText(this.statistic.getGamesLeft());
+        this.topGameScore.setText(this.statistic.getTopGameScore());
+        this.topWordScore.setText(this.statistic.getTopWordScore());
     }
 
     /**
