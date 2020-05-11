@@ -58,6 +58,6 @@ public class LoginController extends Controller {
     }
 
     public void handleSignInButton() {
-        navigateTo("/views/games.fxml");
+        this.navigateTo("/views/games.fxml");
     }
 }
