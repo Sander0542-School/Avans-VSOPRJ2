@@ -35,8 +35,8 @@ public class StatisticsController extends Controller {
     private String topWordScore;
 
     public void initialize() {
-        setUser();
-        setStatistics();
+        getStatistics();
+        render();
     }
 
     private void setUser() {
