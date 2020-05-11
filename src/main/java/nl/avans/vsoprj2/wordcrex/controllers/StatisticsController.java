@@ -67,12 +67,12 @@ public class StatisticsController extends Controller {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                gamesWon.setText(resultSet.getString("games_won"));
-                gamesLost.setText(resultSet.getString("games_lost"));
-                gamesTied.setText(resultSet.getString("games_tied"));
-                gamesLeft.setText(resultSet.getString("games_left"));
-                topGameScore.setText(resultSet.getString("top_game_score"));
-                topWordScore.setText(resultSet.getString("top_word_score"));
+                this.gamesWon = resultSet.getString("games_won");
+                this.gamesLost = resultSet.getString("games_lost");
+                this.gamesTied = resultSet.getString("games_tied");
+                this.gamesLeft = resultSet.getString("games_left");
+                this.topGameScore = resultSet.getString("top_game_score");
+                this.topWordScore = resultSet.getString("top_word_score");
             }
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
