@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Game extends Model {
+public class Game extends DbModel {
 
     @PrimaryKey
     @Column("game_id")
