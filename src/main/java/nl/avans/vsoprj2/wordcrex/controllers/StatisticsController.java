@@ -56,7 +56,7 @@ public class StatisticsController extends Controller {
                     " (SELECT COUNT(`game_id`) FROM `game` WHERE `username_player1` = ? OR `username_player2` = ? AND `game_state` = 'finished' AND `username_winner` IS NULL) as games_tied," +
                     " (SELECT COUNT(`game_id`) FROM `game` WHERE `username_winner` != ? AND `game_state` = 'resigned') as games_left," +
                     " (SELECT GREATEST(IFNULL((SELECT MAX(`score1`) FROM `score` WHERE `username_player1` = ? AND `game_state` = 'finished'),0), IFNULL((SELECT MAX(`score2`) FROM `score` WHERE `username_player2` = ? AND `game_state` = 'finished'),0))) as top_game_score," +
-                    " (SELECT GREATEST(IFNULL((SELECT MAX(`score` + `bonus`) FROM `turnplayer1` WHERE `username_player1` = ?),0), IFNULL((SELECT MAX(`score` + `bonus`) FROM `turnplayer2` WHERE `username_player2` = ?),0))) as top_word_score;";
+                    " (SELECT GREATEST(IFNULL((SELECT MAX(`score`) FROM `turnplayer1` WHERE `username_player1` = ?),0), IFNULL((SELECT MAX(`score`) FROM `turnplayer2` WHERE `username_player2` = ?),0))) as top_word_score;";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
