@@ -46,6 +46,7 @@ public class ChatController extends Controller implements Initializable {
      * @param game - The game id from the database to display.
      */
     public void setGame(Game game) {
+        if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
         this.fetch();
         this.render();
