@@ -5,6 +5,9 @@ import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.models.Statistic;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class StatisticsController extends Controller {
     @FXML
     private Label name;
