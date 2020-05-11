@@ -23,7 +23,8 @@ public class StatisticsController extends Controller {
 
     private Statistic statistic;
 
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         this.statistic = getStatistic();
         render();
     }
