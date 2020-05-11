@@ -29,7 +29,7 @@ public class AppBar extends AnchorPane implements Initializable {
     public AppBar() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/navigation/AppBar.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/navigation/AppBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -41,52 +41,52 @@ public class AppBar extends AnchorPane implements Initializable {
     }
 
     public String getTitle() {
-        return titleLabel.getText();
+        return this.titleLabel.getText();
     }
 
     public void setTitle(String value) {
-        titleLabel.setText(value);
+        this.titleLabel.setText(value);
     }
 
     public boolean getBackButton() {
-        return backButton.isVisible();
+        return this.backButton.isVisible();
     }
 
     public void setBackButton(boolean visible) {
-        backButton.setVisible(visible);
-        backButton.setManaged(visible);
+        this.backButton.setVisible(visible);
+        this.backButton.setManaged(visible);
     }
 
     public boolean getOptionsButton() {
-        return optionsButton.isVisible();
+        return this.optionsButton.isVisible();
     }
 
     public void setOptionsButton(boolean visible) {
-        optionsButton.setVisible(visible);
-        optionsButton.setManaged(visible);
+        this.optionsButton.setVisible(visible);
+        this.optionsButton.setManaged(visible);
     }
 
     public boolean getDeleteButton() {
-        return deleteButton.isVisible();
+        return this.deleteButton.isVisible();
     }
 
     public void setDeleteButton(boolean visible) {
-        deleteButton.setVisible(visible);
-        deleteButton.setManaged(visible);
+        this.deleteButton.setVisible(visible);
+        this.deleteButton.setManaged(visible);
     }
 
     public void backButtonClicked(MouseEvent event) {
-        if (backButtonEventHandler != null) {
-            backButtonEventHandler.handle(event);
+        if (this.backButtonEventHandler != null) {
+            this.backButtonEventHandler.handle(event);
         }
     }
 
     public void setOnBackButtonEvent(EventHandler eventHandler) {
-        backButtonEventHandler = eventHandler;
+        this.backButtonEventHandler = eventHandler;
     }
 
     public EventHandler getOnBackButtonEvent() {
-        return backButtonEventHandler;
+        return this.backButtonEventHandler;
     }
 
     public void deleteButtonClicked(MouseEvent event) {

@@ -15,10 +15,10 @@ public class Account extends Model {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String getRole() {
-        return role;
+        return this.role;
     }
 }
