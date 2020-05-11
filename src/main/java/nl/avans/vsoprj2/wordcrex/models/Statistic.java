@@ -22,11 +22,6 @@ public class Statistic extends Model {
         super(resultSet);
     }
 
-    @Override
-    public String getTable() {
-        return null;
-    }
-
     public String getGamesWon() {
         return gamesWon;
     }
