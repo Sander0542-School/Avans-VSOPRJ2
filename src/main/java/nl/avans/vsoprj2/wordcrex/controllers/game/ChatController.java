@@ -80,7 +80,7 @@ public class ChatController extends Controller {
         List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage, !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
         this.chatMessagesContainer.getChildren().clear();
         this.chatMessagesContainer.getChildren().addAll(chatRows);
-        this.chatScrollContainer.applyCss();
+        chatScrollContainer.applyCss();
         this.chatScrollContainer.layout();
         this.chatScrollContainer.setVvalue(1.0);
     }
@@ -107,7 +107,7 @@ public class ChatController extends Controller {
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
                 }
