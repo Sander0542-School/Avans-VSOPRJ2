@@ -27,6 +27,13 @@ public class StatisticsController extends Controller {
     @FXML
     private Label topWordScoreLabel;
 
+    private String gamesWon;
+    private String gamesLost;
+    private String gamesTied;
+    private String gamesLeft;
+    private String topGameScore;
+    private String topWordScore;
+
     public void initialize() {
         setUser();
         setStatistics();
