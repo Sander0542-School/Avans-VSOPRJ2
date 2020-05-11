@@ -48,9 +48,3 @@ public class Account extends Model {
             throw new DbLoadException(ex);
         }
         return null;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-}
