@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,13 +19,12 @@ public class GameItem extends AnchorPane implements Initializable {
     @FXML
     private Label messageLabel;
 
-    @FXML
-    private Label timeLeftLabel;
+    private Game game;
 
     public GameItem() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/overview/GameItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/overview/GameItem.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -34,28 +35,23 @@ public class GameItem extends AnchorPane implements Initializable {
         }
     }
 
-    public String getTitle() {
-        return gameTitleLabel.getText();
+    public GameItem(Game game) {
+        this();
+
+        this.setGame(game);
     }
 
-    public void setTitle(String value) {
-        gameTitleLabel.setText(value);
+    public Game getGame() {
+        return this.game;
     }
 
-    public String getMessage() {
-        return messageLabel.getText();
-    }
+    public void setGame(Game game) {
+        this.game = game;
 
-    public void setMessage(String value) {
-        messageLabel.setText(value);
-    }
+        String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1(); //TODO(getUser() --> getUser().getUsername())
 
-    public String getTimeLeft() {
-        return messageLabel.getText();
-    }
-
-    public void setTimeLeft(String value) {
-        timeLeftLabel.setText(value);
+        this.gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
+        this.messageLabel.setText(game.getMessage());
     }
 
     @Override

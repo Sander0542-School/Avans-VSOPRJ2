@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -39,7 +38,7 @@ public class RoundRow extends VBox implements Initializable {
     public RoundRow() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/scoreboard/RoundRow.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/scoreboard/RoundRow.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

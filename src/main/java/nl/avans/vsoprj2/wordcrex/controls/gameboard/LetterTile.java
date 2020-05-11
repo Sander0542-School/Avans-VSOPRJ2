@@ -13,7 +13,7 @@ public class LetterTile extends AnchorPane implements Initializable {
     public LetterTile() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/gameboard/LetterTile.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/LetterTile.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

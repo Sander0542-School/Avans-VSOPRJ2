@@ -14,6 +14,10 @@ import nl.avans.vsoprj2.wordcrex.util.ExceptionHandler;
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -22,7 +26,7 @@ public class WordCrex extends Application {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
-        Parent parent = new FXMLLoader(getClass().getResource("/views/index.fxml")).load();
+        Parent parent = new FXMLLoader(this.getClass().getResource("/views/index.fxml")).load();
         Scene scene = new Scene(parent);
 
 //        if (DEBUG_MODE) {
@@ -32,9 +36,5 @@ public class WordCrex extends Application {
         stage.setScene(scene);
 
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
