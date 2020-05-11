@@ -12,7 +12,7 @@ public class LogoBanner extends VBox implements Initializable {
     public LogoBanner() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/authentication/LogoBanner.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/authentication/LogoBanner.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

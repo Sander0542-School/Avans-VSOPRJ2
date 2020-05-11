@@ -1,12 +1,16 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class Game extends Model {
+public class Game extends DbModel {
 
     @PrimaryKey
     @Column("game_id")
@@ -34,11 +38,11 @@ public class Game extends Model {
     }
 
     public int getGameId() {
-        return gameId;
+        return this.gameId;
     }
 
     public String getGameState() {
-        return gameState;
+        return this.gameState;
     }
 
     public void setGameState(String gameState) {
@@ -46,19 +50,19 @@ public class Game extends Model {
     }
 
     public String getLettersetCode() {
-        return lettersetCode;
+        return this.lettersetCode;
     }
 
     public String getUsernamePlayer1() {
-        return usernamePlayer1;
+        return this.usernamePlayer1;
     }
 
     public String getUsernamePlayer2() {
-        return usernamePlayer2;
+        return this.usernamePlayer2;
     }
 
     public String getAnswerPlayer2() {
-        return answerPlayer2;
+        return this.answerPlayer2;
     }
 
     public void setAnswerPlayer2(String answerPlayer2) {
@@ -66,7 +70,7 @@ public class Game extends Model {
     }
 
     public String getUsernameWinner() {
-        return usernameWinner;
+        return this.usernameWinner;
     }
 
     public void setUsernameWinner(String usernameWinner) {
@@ -90,4 +94,25 @@ public class Game extends Model {
                 return "Unknown";
         }
     }
+
+    public int getPlayerScore(boolean isPlayer1) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            String query = String.format("SELECT SUM(IFNULL(`%s`,0) + IFNULL(`%s`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?", (isPlayer1 ? "score1" : "score2"), (isPlayer1 ? "bonus1" : "bonus2"));
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            for (int i = 1; i <= preparedStatement.getParameterMetaData().getParameterCount(); i++) {
+                preparedStatement.setString(i, String.valueOf(this.gameId));
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("calculated_score");
+        } catch (SQLException ex) {
+            throw new DbLoadException(ex);
+        }
+    }
 }
+
