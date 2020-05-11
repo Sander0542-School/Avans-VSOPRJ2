@@ -33,8 +33,8 @@ public class ChatController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
     }
 
     /**
@@ -77,10 +77,10 @@ public class ChatController extends Controller {
      */
     private void render() {
         Account user = Singleton.getInstance().getUser();
-        List<ChatRow> chatRows = chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage, !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
+        List<ChatRow> chatRows = this.chatMessages.stream().map(chatMessage -> new ChatRow(chatMessage, !user.getUsername().equals(chatMessage.getUsername()))).collect(Collectors.toList());
         this.chatMessagesContainer.getChildren().clear();
         this.chatMessagesContainer.getChildren().addAll(chatRows);
-        chatScrollContainer.applyCss();
+        this.chatScrollContainer.applyCss();
         this.chatScrollContainer.layout();
         this.chatScrollContainer.setVvalue(1.0);
     }

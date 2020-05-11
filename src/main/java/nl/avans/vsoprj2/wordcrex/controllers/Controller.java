@@ -18,15 +18,15 @@ public abstract class Controller implements Initializable {
     private BorderPane borderPane;
 
     public Stage getStage() {
-        return (Stage) borderPane.getScene().getWindow();
+        return (Stage) this.borderPane.getScene().getWindow();
     }
 
     public void navigateTo(String resource) {
-        navigateTo(resource, null);
+        this.navigateTo(resource, null);
     }
 
     public void navigateTo(String resource, NavigationListener navigationListener) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(resource));
 
         try {
             Parent parent = loader.load();
