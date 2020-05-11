@@ -13,19 +13,19 @@ import java.sql.SQLException;
 
 public class StatisticsController extends Controller {
     @FXML
-    Label name;
+    private Label name;
     @FXML
-    Label gamesWon;
+    private Label gamesWonLabel;
     @FXML
-    Label gamesLost;
+    private Label gamesLostLabel;
     @FXML
-    Label gamesTied;
+    private Label gamesTiedLabel;
     @FXML
-    Label gamesLeft;
+    private Label gamesLeftLabel;
     @FXML
-    Label topGameScore;
+    private Label topGameScoreLabel;
     @FXML
-    Label topWordScore;
+    private Label topWordScoreLabel;
 
     public void initialize() {
         setUser();
