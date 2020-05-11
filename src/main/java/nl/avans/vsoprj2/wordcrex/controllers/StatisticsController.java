@@ -46,7 +46,7 @@ public class StatisticsController extends Controller {
     /**
      * Gathering all the statistics from a player.
      */
-    private void setStatistics() {
+    private void getStatistics() {
         Connection connection = Singleton.getInstance().getConnection();
         Account account = Singleton.getInstance().getUser();
 
