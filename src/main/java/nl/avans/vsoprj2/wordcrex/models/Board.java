@@ -63,7 +63,7 @@ public class Board {
         return newGrid;
     }
 
-    private TileType getTileTye(int x, int y) {
+    private TileType getTileType(int x, int y) {
         return predefinedTileTypes.containsKey(x + "," + y) ? predefinedTileTypes.get(x + "," + y) : TileType.EMTPY;
     }
 
