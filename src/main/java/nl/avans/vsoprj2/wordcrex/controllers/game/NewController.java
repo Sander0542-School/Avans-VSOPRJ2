@@ -78,10 +78,11 @@ public class NewController extends Controller {
             statement.setString(3, username2);
 
             statement.execute();
-
-            navigateTo("/views/games.fxml");
         } catch (SQLException e) {
             throw new DbLoadException(e);
+        } finally {
+            // navigateTo("/views/games.fxml");
+            System.out.println("Created New game");
         }
     }
 }
