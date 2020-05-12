@@ -2,7 +2,6 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -38,11 +37,11 @@ public class BoardController extends Controller {
             preparedStatement.setInt(3, this.game.getGameId());
             preparedStatement.executeUpdate();
 
-        } catch (Exception ex) {
-            throw new DbConnectionException(ex);
+        } catch (Exception e) {
+            throw new DbLoadException(e);
         }
     }
-    
+
     public boolean checkWord(Game game, String word) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
