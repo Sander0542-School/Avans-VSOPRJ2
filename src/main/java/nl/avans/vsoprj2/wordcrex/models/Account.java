@@ -5,18 +5,18 @@ import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import java.sql.ResultSet;
 
 public class Account extends Model {
-
     @Column("username")
     private String username;
-    @Column("password")
-    private String password;
-
-    public String getTable() {
-        return "account";
-    }
+    @Column("role")
+    private String role;
 
     public Account(ResultSet resultSet) {
         super(resultSet);
+    }
+
+    @Override
+    public String getTable() {
+        return null;
     }
 
     public String getUsername() {
@@ -27,11 +27,7 @@ public class Account extends Model {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public String getRole() {
+        return this.role;
     }
 }

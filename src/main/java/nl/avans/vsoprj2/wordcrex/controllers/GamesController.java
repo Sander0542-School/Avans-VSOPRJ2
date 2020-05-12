@@ -32,12 +32,12 @@ public class GamesController extends Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        gameInvites.managedProperty().bind(gameInvites.visibleProperty());
-        gameYours.managedProperty().bind(gameYours.visibleProperty());
-        gameTheirs.managedProperty().bind(gameTheirs.visibleProperty());
-        finishedGames.managedProperty().bind(finishedGames.visibleProperty());
+        this.gameInvites.managedProperty().bind(this.gameInvites.visibleProperty());
+        this.gameYours.managedProperty().bind(this.gameYours.visibleProperty());
+        this.gameTheirs.managedProperty().bind(this.gameTheirs.visibleProperty());
+        this.finishedGames.managedProperty().bind(this.finishedGames.visibleProperty());
 
-        loadGames((String) Singleton.getInstance().getUser()); //TODO(getUser() --> getUser().getUsername())
+        this.loadGames(Singleton.getInstance().getUser().getUsername());
     }
 
     private void loadGames(String username) {
@@ -50,15 +50,15 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            gameInvites.setVisible(false);
-            gameInvites.getChildren().removeIf(node -> node instanceof GameItem);
+            this.gameInvites.setVisible(false);
+            this.gameInvites.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                setGameItemClick(gameItem);
+                this.setGameItemClick(gameItem);
 
-                gameInvites.getChildren().add(gameItem);
-                gameInvites.setVisible(true);
+                this.gameInvites.getChildren().add(gameItem);
+                this.gameInvites.setVisible(true);
             }
 
         } catch (SQLException e) {
@@ -78,11 +78,11 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            gameYours.setVisible(false);
-            gameYours.getChildren().removeIf(node -> node instanceof GameItem);
+            this.gameYours.setVisible(false);
+            this.gameYours.getChildren().removeIf(node -> node instanceof GameItem);
 
-            gameTheirs.setVisible(false);
-            gameTheirs.getChildren().removeIf(node -> node instanceof GameItem);
+            this.gameTheirs.setVisible(false);
+            this.gameTheirs.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 int turnplayer1 = resultSet.getInt("turnplayer1");
@@ -90,16 +90,16 @@ public class GamesController extends Controller {
 
                 Game game = new Game(resultSet);
                 GameItem gameItem = new GameItem(game);
-                setGameItemClick(gameItem);
+                this.setGameItemClick(gameItem);
 
                 if ((turnplayer1 == turnplayer2) ||
                         (game.getUsernamePlayer1().equals(username) && turnplayer1 < turnplayer2) ||
                         (game.getUsernamePlayer2().equals(username) && turnplayer2 < turnplayer1)) {
-                    gameYours.getChildren().add(gameItem);
-                    gameYours.setVisible(true);
+                    this.gameYours.getChildren().add(gameItem);
+                    this.gameYours.setVisible(true);
                 } else {
-                    gameTheirs.getChildren().add(gameItem);
-                    gameTheirs.setVisible(true);
+                    this.gameTheirs.getChildren().add(gameItem);
+                    this.gameTheirs.setVisible(true);
                 }
             }
         } catch (SQLException e) {
@@ -113,15 +113,15 @@ public class GamesController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            finishedGames.setVisible(false);
-            finishedGames.getChildren().removeIf(node -> node instanceof GameItem);
+            this.finishedGames.setVisible(false);
+            this.finishedGames.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                setGameItemClick(gameItem);
+                this.setGameItemClick(gameItem);
 
-                finishedGames.getChildren().add(gameItem);
-                finishedGames.setVisible(true);
+                this.finishedGames.getChildren().add(gameItem);
+                this.finishedGames.setVisible(true);
             }
 
         } catch (SQLException e) {
@@ -133,7 +133,7 @@ public class GamesController extends Controller {
         gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                navigateTo("/views/game/board.fxml", new NavigationListener() {
+                GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
                     @Override
                     public void beforeNavigate(Controller controller) {
                         BoardController boardController = (BoardController) controller;
