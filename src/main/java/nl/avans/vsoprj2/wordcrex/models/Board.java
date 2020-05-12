@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 enum TileType {
-    EMTPY,
+    NORMAL,
     START,
     TWOLETTER,
     THREEWORD,
@@ -29,6 +29,8 @@ public class Board {
         String[] FOURLETTER = {"7,0", "3,2", "11,2", "5,3", "9,3", "1,4", "13,4", "7,5", "7,9", "1,10", "13,10", "5,11", "9,11", "3,12", "11,12", "7,14"};
         String[] FOURWORD = {"0,7", "14,7"};
         String[] SIXLETTER = {"0,0", "14,0", "4,5", "10,5", "1,6", "13,6", "1,8", "13,8", "4,9", "10,9", "14,14", "0,14"};
+
+        predefinedTileTypes.put("6,6", TileType.START);
 
         for (String key : TWOLETTER) {
             predefinedTileTypes.put(key, TileType.TWOLETTER);
@@ -57,14 +59,14 @@ public class Board {
 
         for (int x = 0; x < gridSize; x++) {
             for (int y = 0; y < gridSize; y++) {
-                newGrid[x][y] = new Tile(getTileTye(x, y));
+                newGrid[x][y] = new Tile(getTileType(x, y));
             }
         }
         return newGrid;
     }
 
     private TileType getTileType(int x, int y) {
-        return predefinedTileTypes.containsKey(x + "," + y) ? predefinedTileTypes.get(x + "," + y) : TileType.EMTPY;
+        return predefinedTileTypes.containsKey(x + "," + y) ? predefinedTileTypes.get(x + "," + y) : TileType.NORMAL;
     }
 
 
