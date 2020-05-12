@@ -7,14 +7,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.controllers.game.NewController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SuggestedAccounts extends VBox implements Initializable {
+public class SuggestedAccounts extends HBox implements Initializable {
     @FXML
     private Label usernameLabel;
     @FXML

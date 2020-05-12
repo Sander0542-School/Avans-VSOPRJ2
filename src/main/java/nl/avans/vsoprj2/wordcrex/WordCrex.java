@@ -22,7 +22,7 @@ public class WordCrex extends Application {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
-        Parent parent = new FXMLLoader(this.getClass().getResource("/views/index.fxml")).load();
+        Parent parent = new FXMLLoader(this.getClass().getResource("/views/game/new.fxml")).load();
         Scene scene = new Scene(parent);
 
 //        if (DEBUG_MODE) {

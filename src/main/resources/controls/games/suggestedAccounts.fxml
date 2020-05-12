@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <Label fx:id="usernameLabel" />
     <Button fx:id="inviteButton" alignment="CENTER" prefWidth="250" style="-fx-background-color: #008000;" text="Invite player" textFill="WHITE">
         <font>
