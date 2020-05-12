@@ -24,7 +24,7 @@ public class GameItem extends AnchorPane implements Initializable {
     public GameItem() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/overview/GameItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/overview/GameItem.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -38,11 +38,11 @@ public class GameItem extends AnchorPane implements Initializable {
     public GameItem(Game game) {
         this();
 
-        setGame(game);
+        this.setGame(game);
     }
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(Game game) {
@@ -50,8 +50,8 @@ public class GameItem extends AnchorPane implements Initializable {
 
         String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1(); //TODO(getUser() --> getUser().getUsername())
 
-        gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
-        messageLabel.setText(game.getMessage());
+        this.gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
+        this.messageLabel.setText(game.getMessage());
     }
 
     @Override
