@@ -14,13 +14,8 @@ public class Account extends Model {
         super(resultSet);
     }
 
-    @Override
-    public String getTable() {
-        return null;
-    }
-
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {

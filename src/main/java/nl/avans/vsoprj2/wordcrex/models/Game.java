@@ -41,8 +41,8 @@ public class Game extends DbModel {
         return this.gameId;
     }
 
-    public String getGameState() {
-        return this.gameState;
+    public GameState getGameState() {
+        return GameState.valueOf(this.gameState.toUpperCase());
     }
 
     public void setGameState(GameState gameState) {
@@ -77,30 +77,29 @@ public class Game extends DbModel {
         this.usernameWinner = usernameWinner;
     }
 
-    public enum GameState
-    {
-        REQUEST,
-        PLAYING,
-        FINISHED,
-        RESIGNED,
-    }
-
     public String getMessage() {
         Object user = Singleton.getInstance().getUser();
-        switch (this.getGameState()) { //TODO(Sander) replace wth Enum
-            case "request":
+        switch (this.getGameState()) {
+            case REQUEST:
                 if (this.getUsernamePlayer1() == user) {
                     return String.format("Waiting for %s to", this.getUsernamePlayer2());
                 }
                 return String.format("Invited by %s", this.getUsernamePlayer1());
-            case "playing":
+            case PLAYING:
                 return "Playing";
-            case "finished":
-            case "resigned":
+            case FINISHED:
+            case RESIGNED:
                 return "Game ended";
             default:
                 return "Unknown";
         }
+    }
+
+    public enum GameState {
+        REQUEST,
+        PLAYING,
+        FINISHED,
+        RESIGNED,
     }
 
     public int getPlayerScore(boolean isPlayer1) {
