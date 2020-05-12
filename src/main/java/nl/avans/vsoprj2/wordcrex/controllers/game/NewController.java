@@ -1,5 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -20,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class NewController extends Controller {
     private List<String> list = new ArrayList<>();
+    private String globalUserName = null;
 
     @FXML
     private VBox suggestedAccountsContainer;
@@ -30,7 +33,7 @@ public class NewController extends Controller {
 
         suggestedAccountsContainer.managedProperty().bind(suggestedAccountsContainer.visibleProperty());
 
-        loadAccounts();
+        this.loadAccounts();
     }
 
     private void loadAccounts() {
@@ -47,6 +50,8 @@ public class NewController extends Controller {
             while (resultSet.next()) {
                 String userName = resultSet.getString("username");
                 SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
+                this.globalUserName = userName;
+                suggestedAccounts.setOnSuggestedAccountsEvent(newGameClickEventHandler);
                 list.add(userName);
 
                 suggestedAccountsContainer.getChildren().add(suggestedAccounts);
@@ -58,6 +63,13 @@ public class NewController extends Controller {
             throw new DbLoadException(e);
         }
     }
+
+    private EventHandler newGameClickEventHandler = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            createNewGame(globalUserName);
+        }
+    };
 
     public void randomGameRequest() {
         Random rand = new Random();
@@ -81,7 +93,7 @@ public class NewController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         } finally {
-            // navigateTo("/views/games.fxml");
+            navigateTo("/views/games.fxml");
             System.out.println("Created New game");
         }
     }

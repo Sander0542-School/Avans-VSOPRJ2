@@ -20,6 +20,8 @@ public class SuggestedAccounts extends HBox implements Initializable {
     @FXML
     private Button inviteButton;
 
+    private EventHandler SuggestedAccountsEventHandler = null;
+
     public SuggestedAccounts() {
         super();
 
@@ -37,14 +39,28 @@ public class SuggestedAccounts extends HBox implements Initializable {
     public SuggestedAccounts(String account) {
         this();
         usernameLabel.setText(account);
-        inviteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                NewController newController = new NewController();
+//        inviteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                NewController newController = new NewController();
+//
+//                newController.createNewGame(account);
+//            }
+//        });
+    }
 
-                newController.createNewGame(account);
-            }
-        });
+    public void SuggestedAccountsClicked(MouseEvent event) {
+        if (this.SuggestedAccountsEventHandler != null) {
+            this.SuggestedAccountsEventHandler.handle(event);
+        }
+    }
+
+    public void setOnSuggestedAccountsEvent(EventHandler eventHandler) {
+        this.SuggestedAccountsEventHandler = eventHandler;
+    }
+
+    public EventHandler getOnSuggestedAccountsEvent() {
+        return this.SuggestedAccountsEventHandler;
     }
 
     @Override

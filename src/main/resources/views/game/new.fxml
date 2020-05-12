@@ -52,7 +52,7 @@
             <VBox alignment="CENTER">
                 <ScrollPane style="-fx-background-color:transparent;" fitToWidth="true">
                     <VBox style="-fx-background-color: #FFBB00;" fx:id="suggestedAccountsContainer">
-                        <SuggestedAccounts />
+
                     </VBox>
                 </ScrollPane>
             </VBox>

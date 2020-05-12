@@ -42,7 +42,6 @@ public class GamesController extends Controller {
         this.finishedGames.managedProperty().bind(this.finishedGames.visibleProperty());
 
         this.loadGames("luc"); //Singleton.getInstance().getUser().getUsername()
-        this.gameRequest(532);
     }
 
     public void newGamePage() {
@@ -118,7 +117,15 @@ public class GamesController extends Controller {
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                this.setGameItemClick(gameItem);
+                int gameId = resultSet.getInt("game_id");
+
+                gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        GamesController gamesController = new GamesController();
+                        gamesController.gameRequest(gameId);
+                    }
+                });
 
                 this.gameInvites.getChildren().add(gameItem);
                 this.gameInvites.setVisible(true);
