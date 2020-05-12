@@ -70,8 +70,7 @@ public class Board {
 
 
     public Character getValue(int x, int y) {
-        Character returnValue;
-        returnValue = grid[x][y].getValue();
+        Character returnValue = grid[x][y].getValue();
         return returnValue;
     }
 
