@@ -3,10 +3,9 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException;
-import nl.avans.vsoprj2.wordcrex.models.Account;
-
-import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
+import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BoardController extends Controller {
-    private Game model;
+    private Game game;
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -23,7 +22,7 @@ public class BoardController extends Controller {
      * @param game - Game model
      */
     public void setGame(Game game) {
-        model = game;
+        this.game = game;
     }
 
     /**
@@ -34,9 +33,9 @@ public class BoardController extends Controller {
             Connection connection = Singleton.getInstance().getConnection();
 
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE game SET game_state = ?, username_winner = ? WHERE game_id = ?");
-            preparedStatement.setString(1, model.getGameState().toString());
+            preparedStatement.setString(1, this.game.getGameState());
             preparedStatement.setString(2, winner.getUsername());
-            preparedStatement.setInt(3, model.getGameId());
+            preparedStatement.setInt(3, this.game.getGameId());
             preparedStatement.executeUpdate();
 
         } catch (Exception ex) {
