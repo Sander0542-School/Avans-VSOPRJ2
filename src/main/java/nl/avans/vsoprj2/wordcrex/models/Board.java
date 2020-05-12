@@ -3,20 +3,19 @@ package nl.avans.vsoprj2.wordcrex.models;
 import java.util.HashMap;
 import java.util.Map;
 
-enum TileType {
-    NORMAL,
-    START,
-    TWOLETTER,
-    THREEWORD,
-    FOURLETTER,
-    FOURWORD,
-    SIXLETTER
-}
-
-
 public class Board {
-    Tile[][] grid;
-    Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
+    public enum TileType {
+        NORMAL,
+        START,
+        TWOLETTER,
+        THREEWORD,
+        FOURLETTER,
+        FOURWORD,
+        SIXLETTER
+    }
+
+    private Tile[][] grid;
+    private Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
 
     public Board() {
         populatePredefinedTileTypes();
@@ -84,25 +83,4 @@ public class Board {
         grid[x][y].setValue(Value);
     }
 
-}
-
-class Tile {
-    private Character value;
-    private final TileType tileType;
-
-    public Tile(TileType type) {
-        tileType = type;
-    }
-
-    public Character getValue() {
-        return value;
-    }
-
-    public void setValue(Character value) {
-        this.value = value;
-    }
-
-    public TileType getTileType() {
-        return tileType;
-    }
 }
