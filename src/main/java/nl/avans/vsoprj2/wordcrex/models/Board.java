@@ -5,6 +5,7 @@ import java.util.Map;
 
 enum TileType {
     EMTPY,
+    START,
     TWOLETTER,
     THREEWORD,
     FOURLETTER,
