@@ -39,14 +39,6 @@ public class SuggestedAccounts extends HBox implements Initializable {
     public SuggestedAccounts(String account) {
         this();
         this.usernameLabel.setText(account);
-//        inviteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                NewController newController = new NewController();
-//
-//                newController.createNewGame(account);
-//            }
-//        });
     }
 
     public void SuggestedAccountsClicked(MouseEvent event) {
