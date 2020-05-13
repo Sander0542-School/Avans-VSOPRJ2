@@ -56,8 +56,4 @@ public class LoginController extends Controller {
         this.error.setText("Inloggen mislukt, foute gebruikersnaam of wachtwoord.");
         this.error.setVisible(true);
     }
-
-    public void handleSignInButton() {
-        this.navigateTo("/views/games.fxml");
-    }
 }
