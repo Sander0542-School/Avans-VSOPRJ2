@@ -41,7 +41,7 @@ public class NewController extends Controller {
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM `account` WHERE username != ?");
-            statement.setString(1, "luc"); //TODO Add your username
+            statement.setString(1, Singleton.getInstance().getUser().getUsername());
             ResultSet resultSet = statement.executeQuery();
 
             this.suggestedAccountsContainer.setVisible(false);
