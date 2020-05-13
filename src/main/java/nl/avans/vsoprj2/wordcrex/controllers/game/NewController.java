@@ -31,7 +31,7 @@ public class NewController extends Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        suggestedAccountsContainer.managedProperty().bind(suggestedAccountsContainer.visibleProperty());
+        this.suggestedAccountsContainer.managedProperty().bind(this.suggestedAccountsContainer.visibleProperty());
 
         this.loadAccounts();
     }
