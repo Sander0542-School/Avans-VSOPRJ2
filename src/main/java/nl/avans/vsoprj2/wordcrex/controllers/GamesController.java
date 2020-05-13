@@ -124,8 +124,7 @@ public class GamesController extends Controller {
                 gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        GamesController gamesController = new GamesController();
-                        gamesController.gameRequest(gameId);
+                        GamesController.this.gameRequest(gameId);
                     }
                 });
 
