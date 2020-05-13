@@ -102,7 +102,8 @@ public class GamesController extends Controller {
         return challenger;
     }
 
-    private void loadGames(String username) {
+    private void loadGames(Account user) {
+        final String username = user.getUsername();
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
