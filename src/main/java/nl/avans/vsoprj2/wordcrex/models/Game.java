@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
@@ -111,6 +112,8 @@ public class Game extends DbModel {
             resultSet.next();
             return resultSet.getInt("calculated_score");
         } catch (SQLException ex) {
+            WordCrex.handleException(ex);
+
             throw new DbLoadException(ex);
         }
     }
