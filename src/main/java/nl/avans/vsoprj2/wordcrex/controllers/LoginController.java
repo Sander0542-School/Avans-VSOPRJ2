@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 
@@ -45,6 +46,8 @@ public class LoginController extends Controller {
                 }
 
             } catch (SQLException e) {
+                WordCrex.handleException(e);
+
                 throw new DbLoadException(e);
             }
         } else {
