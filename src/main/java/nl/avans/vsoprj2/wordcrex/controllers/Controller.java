@@ -28,19 +28,19 @@ public abstract class Controller implements Initializable {
     public void navigateTo(String resource, NavigationListener navigationListener) {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource(resource));
 
-        Controller controller = loader.getController();
-
-        if (navigationListener != null) {
-            navigationListener.beforeNavigate(controller);
-        }
-
         try {
             Parent parent = loader.load();
-            Scene scene = new Scene(parent);
+            Controller controller = loader.getController();
 
+            if (navigationListener != null) {
+                navigationListener.beforeNavigate(controller);
+            }
+
+            Scene scene = new Scene(parent);
+            
             controller.borderPane.setPrefWidth(this.getStage().getScene().getWidth());
             controller.borderPane.setPrefHeight(this.getStage().getScene().getHeight());
-
+            
             this.getStage().setScene(scene);
 
             if (navigationListener != null) {
@@ -52,9 +52,9 @@ public abstract class Controller implements Initializable {
     }
 
     public interface NavigationListener {
-        public void beforeNavigate(Controller controller);
+        void beforeNavigate(Controller controller);
 
-        public void afterNavigate(Controller controller);
+        void afterNavigate(Controller controller);
     }
 
     @Override

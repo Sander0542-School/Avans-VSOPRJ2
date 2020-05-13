@@ -28,8 +28,8 @@ public class AppBar extends AnchorPane implements Initializable {
 
     private ContextMenu optionsMenu = new ContextMenu();
 
-    private EventHandler backButtonEventHandler = null;
-    private EventHandler optionsMenuEventHandler = null;
+    private EventHandler backButtonEventHandler;
+    private EventHandler optionsMenuEventHandler;
 
     public AppBar() {
         super();
@@ -104,6 +104,20 @@ public class AppBar extends AnchorPane implements Initializable {
 
     public EventHandler getOnOptionsMenuEvent() {
         return optionsMenuEventHandler;
+    }
+
+    public void deleteButtonClicked(MouseEvent event) {
+        if (deleteButtonEventHandler != null) {
+            deleteButtonEventHandler.handle(event);
+        }
+    }
+
+    public EventHandler getOnDeleteButtonEvent() {
+        return deleteButtonEventHandler;
+    }
+
+    public void setOnDeleteButtonEvent(EventHandler eventHandler) {
+        deleteButtonEventHandler = eventHandler;
     }
 
     @Override
