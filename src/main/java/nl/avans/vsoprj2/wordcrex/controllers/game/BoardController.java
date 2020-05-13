@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -25,6 +26,8 @@ public class BoardController extends Controller {
             result.next();
             return result.getBoolean(1);
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
