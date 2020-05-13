@@ -29,6 +29,7 @@ public class AppBar extends AnchorPane implements Initializable {
     private ContextMenu optionsMenu = new ContextMenu();
 
     private EventHandler backButtonEventHandler;
+    private EventHandler deleteButtonEventHandler;
     private EventHandler optionsMenuEventHandler;
 
     public AppBar() {
@@ -90,6 +91,12 @@ public class AppBar extends AnchorPane implements Initializable {
         }
     }
 
+    public void handleDeleteButton(MouseEvent event) {
+        if (this.deleteButtonEventHandler != null) {
+            this.deleteButtonEventHandler.handle(event);
+        }
+    }
+
     public void setOnBackButtonEvent(EventHandler eventHandler) {
         this.backButtonEventHandler = eventHandler;
     }
@@ -99,30 +106,24 @@ public class AppBar extends AnchorPane implements Initializable {
     }
 
     public void setOnOptionsMenuEvent(EventHandler eventHandler) {
-        optionsMenuEventHandler = eventHandler;
+        this.optionsMenuEventHandler = eventHandler;
     }
 
     public EventHandler getOnOptionsMenuEvent() {
-        return optionsMenuEventHandler;
-    }
-
-    public void deleteButtonClicked(MouseEvent event) {
-        if (deleteButtonEventHandler != null) {
-            deleteButtonEventHandler.handle(event);
-        }
-    }
-
-    public EventHandler getOnDeleteButtonEvent() {
-        return deleteButtonEventHandler;
+        return this.optionsMenuEventHandler;
     }
 
     public void setOnDeleteButtonEvent(EventHandler eventHandler) {
-        deleteButtonEventHandler = eventHandler;
+        this.deleteButtonEventHandler = eventHandler;
+    }
+
+    public EventHandler getOnDeleteButtonEvent() {
+        return this.deleteButtonEventHandler;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
+        this.optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
 
         for (MenuItem item : this.optionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());
