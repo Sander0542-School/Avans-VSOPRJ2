@@ -44,8 +44,8 @@ public class NewController extends Controller {
             statement.setString(1, "luc"); //TODO Add your username
             ResultSet resultSet = statement.executeQuery();
 
-            suggestedAccountsContainer.setVisible(false);
-            suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof GameItem);
+            this.suggestedAccountsContainer.setVisible(false);
+            this.suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof GameItem);
 
             while (resultSet.next()) {
                 String userName = resultSet.getString("username");
