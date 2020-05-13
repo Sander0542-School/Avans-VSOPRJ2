@@ -21,7 +21,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    private List<String> list = new ArrayList<>();
+    private List<String> userNamesList = new ArrayList<>();
     private String globalUserName = null;
 
     @FXML
@@ -52,7 +52,7 @@ public class NewController extends Controller {
                 SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
                 this.globalUserName = userName;
                 suggestedAccounts.setOnSuggestedAccountsEvent(this.newGameClickEventHandler);
-                this.list.add(userName);
+                this.userNamesList.add(userName);
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccounts);
                 this.suggestedAccountsContainer.setVisible(true);
@@ -71,7 +71,7 @@ public class NewController extends Controller {
 
     public void randomGameRequest() {
         Random rand = new Random();
-        this.createGameRequest("NL", this.list.get(rand.nextInt(this.list.size())));
+        this.createGameRequest("NL", this.userNamesList.get(rand.nextInt(this.userNamesList.size())));
     }
 
     public void createNewGame(String username) {
@@ -92,7 +92,6 @@ public class NewController extends Controller {
             throw new DbLoadException(e);
         } finally {
             this.navigateTo("/views/games.fxml");
-            System.out.println("Created New game");
         }
     }
 }
