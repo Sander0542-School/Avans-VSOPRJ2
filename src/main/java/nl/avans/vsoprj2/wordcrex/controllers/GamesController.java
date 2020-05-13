@@ -49,10 +49,12 @@ public class GamesController extends Controller {
         this.navigateTo("/views/game/new.fxml");
     }
 
-    private void gameRequest(int gameId) {
+    private void gameRequest(GameItem gameItem) {
+        Game game = gameItem.getGame();
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Game request");
-        alert.setHeaderText("Je kunt een nieuw spel starten met " + this.getGameChallenger(gameId));
+        alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer2());
 
         ButtonType buttonTypeDecline = new ButtonType("Decline");
         ButtonType buttonTypeAccept = new ButtonType("Accept");
@@ -62,45 +64,13 @@ public class GamesController extends Controller {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == buttonTypeDecline) {
-            this.updateGameState("resigned", gameId);
+            game.setAnswerPlayer2("rejected");
         } else if (result.get() == buttonTypeAccept) {
-            this.updateGameState("playing", gameId);
-        }
-    }
-
-    private void updateGameState(String gameState, int gameId) {
-        Connection connection = Singleton.getInstance().getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE game SET game_state= ? WHERE game_id = ?");
-            statement.setString(1, gameState);
-            statement.setInt(2, gameId);
-
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
-        } finally {
-            System.out.println(gameState + " game request");
-        }
-    }
-
-    private String getGameChallenger(int gameId) {
-        Connection connection = Singleton.getInstance().getConnection();
-        String challenger = "test";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT username_player1 FROM `game` WHERE game_id = ?");
-            statement.setInt(1, gameId);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                challenger = resultSet.getString("username_player1");
-            }
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+            game.setGameState("playing");
+            game.setAnswerPlayer2("accepted");
         }
 
-        return challenger;
+        game.save();
     }
 
     private void loadGames(Account user) {
@@ -119,14 +89,17 @@ public class GamesController extends Controller {
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                int gameId = resultSet.getInt("game_id");
 
-                gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        GamesController.this.gameRequest(gameId);
-                    }
-                });
+                if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
+                    this.setGameItemClick(gameItem);
+                } else {
+                    gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            GamesController.this.gameRequest(gameItem);
+                        }
+                    });
+                }
 
                 this.gameInvites.getChildren().add(gameItem);
                 this.gameInvites.setVisible(true);
