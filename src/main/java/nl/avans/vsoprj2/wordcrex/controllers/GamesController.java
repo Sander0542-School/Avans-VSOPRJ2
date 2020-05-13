@@ -45,7 +45,7 @@ public class GamesController extends Controller {
     }
 
     public void newGamePage() {
-        navigateTo("/views/game/new.fxml");
+        this.navigateTo("/views/game/new.fxml");
     }
 
     private void gameRequest(int gameId) {
