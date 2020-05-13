@@ -1,23 +1,24 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import nl.avans.vsoprj2.wordcrex.models.Board.TileType;
+
 class Tile {
     private Character value;
-    private final Board.TileType tileType;
+    private final TileType tileType;
 
-    public Tile(Board.TileType type) {
-        tileType = type;
+    public Tile(TileType type) {
+        this.tileType = type;
     }
 
     public Character getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(Character value) {
         this.value = value;
     }
 
-    public Board.TileType getTileType() {
-        return tileType;
+    public TileType getTileType() {
+        return this.tileType;
     }
 }
-
