@@ -25,7 +25,7 @@ public class SuggestedAccounts extends HBox implements Initializable {
     public SuggestedAccounts() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controls/games/suggestedAccounts.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/games/suggestedAccounts.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
