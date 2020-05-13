@@ -51,11 +51,11 @@ public class NewController extends Controller {
                 String userName = resultSet.getString("username");
                 SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
                 this.globalUserName = userName;
-                suggestedAccounts.setOnSuggestedAccountsEvent(newGameClickEventHandler);
-                list.add(userName);
+                suggestedAccounts.setOnSuggestedAccountsEvent(this.newGameClickEventHandler);
+                this.list.add(userName);
 
-                suggestedAccountsContainer.getChildren().add(suggestedAccounts);
-                suggestedAccountsContainer.setVisible(true);
+                this.suggestedAccountsContainer.getChildren().add(suggestedAccounts);
+                this.suggestedAccountsContainer.setVisible(true);
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
