@@ -29,26 +29,26 @@ public class Board {
         String[] FOURWORD = {"0,7", "14,7"};
         String[] SIXLETTER = {"0,0", "14,0", "4,5", "10,5", "1,6", "13,6", "1,8", "13,8", "4,9", "10,9", "14,14", "0,14"};
 
-        predefinedTileTypes.put("6,6", TileType.START);
+        this.predefinedTileTypes.put("6,6", TileType.START);
 
         for (String key : TWOLETTER) {
-            predefinedTileTypes.put(key, TileType.TWOLETTER);
+            this.predefinedTileTypes.put(key, TileType.TWOLETTER);
         }
 
         for (String key : THREEWORD) {
-            predefinedTileTypes.put(key, TileType.THREEWORD);
+            this.predefinedTileTypes.put(key, TileType.THREEWORD);
         }
 
         for (String key : FOURLETTER) {
-            predefinedTileTypes.put(key, TileType.FOURLETTER);
+            this.predefinedTileTypes.put(key, TileType.FOURLETTER);
         }
 
         for (String key : FOURWORD) {
-            predefinedTileTypes.put(key, TileType.FOURWORD);
+            this.predefinedTileTypes.put(key, TileType.FOURWORD);
         }
 
         for (String key : SIXLETTER) {
-            predefinedTileTypes.put(key, TileType.SIXLETTER);
+            this.predefinedTileTypes.put(key, TileType.SIXLETTER);
         }
     }
 
