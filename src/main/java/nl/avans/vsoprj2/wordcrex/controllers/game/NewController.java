@@ -65,7 +65,7 @@ public class NewController extends Controller {
     private EventHandler newGameClickEventHandler = new EventHandler() {
         @Override
         public void handle(Event event) {
-            createNewGame(globalUserName);
+            NewController.this.createNewGame(NewController.this.globalUserName);
         }
     };
 
