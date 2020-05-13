@@ -71,7 +71,7 @@ public class GamesController extends Controller {
     private void updateGameState(String gameState, int gameId) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE `game` SET `game_state`= ? WHERE game_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE game SET game_state= ? WHERE game_id = ?");
             statement.setString(1, gameState);
             statement.setInt(2, gameId);
 
