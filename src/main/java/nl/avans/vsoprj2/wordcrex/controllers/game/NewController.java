@@ -71,7 +71,7 @@ public class NewController extends Controller {
 
     public void randomGameRequest() {
         Random rand = new Random();
-        this.createGameRequest("NL", list.get(rand.nextInt(list.size())));
+        this.createGameRequest("NL", this.list.get(rand.nextInt(this.list.size())));
     }
 
     public void createNewGame(String username) {
