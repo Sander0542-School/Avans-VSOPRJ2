@@ -65,7 +65,7 @@ public class Board {
     }
 
     private TileType getTileType(int x, int y) {
-        return predefinedTileTypes.containsKey(x + "," + y) ? predefinedTileTypes.get(x + "," + y) : TileType.NORMAL;
+        return this.predefinedTileTypes.getOrDefault(x + "," + y, TileType.NORMAL);
     }
 
 
