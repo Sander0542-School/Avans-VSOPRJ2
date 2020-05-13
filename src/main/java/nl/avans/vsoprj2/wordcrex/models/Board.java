@@ -58,7 +58,7 @@ public class Board {
 
         for (int x = 0; x < gridSize; x++) {
             for (int y = 0; y < gridSize; y++) {
-                newGrid[x][y] = new Tile(getTileType(x, y));
+                newGrid[x][y] = new Tile(this.getTileType(x, y));
             }
         }
         return newGrid;
