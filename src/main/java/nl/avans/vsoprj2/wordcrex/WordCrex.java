@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
 
+    public static void handleException(Throwable e) {
+        if (WordCrex.DEBUG_MODE) throw new RuntimeException(e);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

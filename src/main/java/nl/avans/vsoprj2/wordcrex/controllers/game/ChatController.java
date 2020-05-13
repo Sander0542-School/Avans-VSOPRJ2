@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -66,6 +67,8 @@ public class ChatController extends Controller {
                 this.chatMessages.add(new ChatMessage(resultSet));
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
@@ -107,6 +110,8 @@ public class ChatController extends Controller {
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
@@ -139,6 +144,8 @@ public class ChatController extends Controller {
                     this.render();
                     this.chatMessageInput.setText("");
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
