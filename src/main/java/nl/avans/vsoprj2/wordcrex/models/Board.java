@@ -70,8 +70,7 @@ public class Board {
 
 
     public Character getValue(int x, int y) {
-        Character returnValue = grid[x][y].getValue();
-        return returnValue;
+        return this.grid[x][y].getValue();
     }
 
     public Tile[][] getGrid() {
