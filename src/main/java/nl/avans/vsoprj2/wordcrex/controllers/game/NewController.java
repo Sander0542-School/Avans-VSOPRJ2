@@ -57,8 +57,6 @@ public class NewController extends Controller {
                 suggestedAccountsContainer.getChildren().add(suggestedAccounts);
                 suggestedAccountsContainer.setVisible(true);
             }
-
-            System.out.println(list);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
