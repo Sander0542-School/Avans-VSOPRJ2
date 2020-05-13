@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.sql.Connection;
@@ -64,6 +65,8 @@ public class RegisterController extends Controller {
                 this.showErrorMessage("Gebruikersnaam '" + this.username.getText() + "' bestaat al.");
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             try {
                 connection.rollback();
                 this.showErrorMessage("Het account kon niet worden aangemaakt.");
