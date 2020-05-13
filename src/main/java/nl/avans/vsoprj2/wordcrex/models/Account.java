@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
@@ -45,6 +46,8 @@ public class Account extends Model {
             if (resultSet.next()) return new Statistic(resultSet);
 
         } catch (SQLException ex) {
+            WordCrex.handleException(ex);
+
             throw new DbLoadException(ex);
         }
         return null;
