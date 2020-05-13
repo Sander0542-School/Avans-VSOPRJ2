@@ -41,7 +41,7 @@ public class GamesController extends Controller {
         this.gameTheirs.managedProperty().bind(this.gameTheirs.visibleProperty());
         this.finishedGames.managedProperty().bind(this.finishedGames.visibleProperty());
 
-        this.loadGames("luc"); //Singleton.getInstance().getUser().getUsername()
+        this.loadGames(Singleton.getInstance().getUser());
     }
 
     public void newGamePage() {
