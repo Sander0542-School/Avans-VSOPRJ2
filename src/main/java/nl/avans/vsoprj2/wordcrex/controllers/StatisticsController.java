@@ -54,7 +54,7 @@ public class StatisticsController extends Controller {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
         if (bottomBarItem.getId().equals("games")) {
-            navigateTo("/views/games.fxml");
+            this.navigateTo("/views/games.fxml");
         }
     }
 
@@ -63,10 +63,10 @@ public class StatisticsController extends Controller {
 
         switch (menuItem.getId()) {
             case "info":
-                navigateTo("/views/information.fxml");
+                this.navigateTo("/views/information.fxml");
                 break;
             case "settings":
-                navigateTo("/views/settings.fxml");
+                this.navigateTo("/views/settings.fxml");
                 break;
         }
     }

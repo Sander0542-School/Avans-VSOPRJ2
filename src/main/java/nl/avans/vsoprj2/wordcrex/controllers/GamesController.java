@@ -157,7 +157,7 @@ public class GamesController extends Controller {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
         if (bottomBarItem.getId().equals("statistics")) {
-            navigateTo("/views/statistics.fxml");
+            this.navigateTo("/views/statistics.fxml");
         }
     }
 
@@ -166,10 +166,10 @@ public class GamesController extends Controller {
 
         switch (menuItem.getId()) {
             case "info":
-                navigateTo("/views/information.fxml");
+                this.navigateTo("/views/information.fxml");
                 break;
             case "settings":
-                navigateTo("/views/settings.fxml");
+                this.navigateTo("/views/settings.fxml");
                 break;
         }
     }

@@ -82,7 +82,7 @@ public class RegisterController extends Controller {
     }
 
     public void handleBackButton() {
-        navigateTo("/views/index.fxml");
+        this.navigateTo("/views/index.fxml");
     }
 
     private void showErrorMessage(String message) {

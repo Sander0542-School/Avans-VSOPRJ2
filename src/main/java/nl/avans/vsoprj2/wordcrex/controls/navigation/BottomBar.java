@@ -33,7 +33,7 @@ public class BottomBar extends HBox implements Initializable {
                 child.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        barItemClicked(event);
+                        BottomBar.this.barItemClicked(event);
                     }
                 });
             }
@@ -57,17 +57,17 @@ public class BottomBar extends HBox implements Initializable {
     }
 
     public void barItemClicked(MouseEvent event) {
-        if (barItemEventHandler != null) {
-            barItemEventHandler.handle(event);
+        if (this.barItemEventHandler != null) {
+            this.barItemEventHandler.handle(event);
         }
     }
 
     public void setOnBarItemClicked(EventHandler eventHandler) {
-        barItemEventHandler = eventHandler;
+        this.barItemEventHandler = eventHandler;
     }
 
     public EventHandler getOnBarItemClicked() {
-        return barItemEventHandler;
+        return this.barItemEventHandler;
     }
 
     @Override

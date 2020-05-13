@@ -124,13 +124,13 @@ public class AppBar extends AnchorPane implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
 
-        for (MenuItem item : optionsMenu.getItems()) {
+        for (MenuItem item : this.optionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());
             item.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    if (optionsMenuEventHandler != null) {
-                        optionsMenuEventHandler.handle(actionEvent);
+                    if (AppBar.this.optionsMenuEventHandler != null) {
+                        AppBar.this.optionsMenuEventHandler.handle(actionEvent);
                     }
                 }
             });
