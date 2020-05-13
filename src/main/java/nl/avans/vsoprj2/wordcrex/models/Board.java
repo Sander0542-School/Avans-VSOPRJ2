@@ -18,8 +18,8 @@ public class Board {
     private Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
 
     public Board() {
-        populatePredefinedTileTypes();
-        grid = newBoard();
+        this.populatePredefinedTileTypes();
+        this.grid = this.newBoard();
     }
 
     private void populatePredefinedTileTypes() {
