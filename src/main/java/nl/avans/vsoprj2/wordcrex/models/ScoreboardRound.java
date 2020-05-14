@@ -45,8 +45,12 @@ public class ScoreboardRound extends Model {
         return this.turnId;
     }
 
-    public String getHandContent() {
+    public String getHandContentPart() {
         return this.handContent;
+    }
+
+    public String getHandContent() {
+        return this.commaSeparatedToString(this.getHandContentPart());
     }
 
     public String getUsernamePlayerOne() {
