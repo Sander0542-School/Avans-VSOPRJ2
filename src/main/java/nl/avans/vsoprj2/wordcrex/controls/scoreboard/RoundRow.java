@@ -56,6 +56,7 @@ public class RoundRow extends VBox {
         int totalScorePlayerOne = scoreboardRound.getScorePlayerOne() + scoreboardRound.getBonusPlayerOne();
         int totalScorePlayerTwo = scoreboardRound.getScorePlayerTwo() + scoreboardRound.getBonusPlayerTwo();
         this.round.setText(String.valueOf(scoreboardRound.getTurnId()));
+        this.letterSet.setText(scoreboardRound.getHandContent());
         this.player1Name.setText(scoreboardRound.getUsernamePlayerOne());
         this.player2Name.setText(scoreboardRound.getUsernamePlayerTwo());
         this.player1Score.setText(String.valueOf(totalScorePlayerOne));
