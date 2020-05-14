@@ -3,6 +3,7 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.ScoreboardRound;
 
@@ -10,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ScoreboardController extends Controller {
     private Game game;
@@ -34,6 +36,15 @@ public class ScoreboardController extends Controller {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    /**
+     * Collected instances of scoreboard rounds will be converted to displayable components and rendered appropriately.
+     */
+    private void render() {
+        List<RoundRow> roundRows = this.scoreboardRounds.stream().map(RoundRow::new).collect(Collectors.toList());
+        this.roundRowContainer.getChildren().clear();
+        this.roundRowContainer.getChildren().addAll(roundRows);
     }
 
     @FXML
