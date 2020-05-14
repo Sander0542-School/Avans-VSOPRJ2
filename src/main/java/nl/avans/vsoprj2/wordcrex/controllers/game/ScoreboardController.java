@@ -106,6 +106,8 @@ public class ScoreboardController extends Controller {
         List<RoundRow> roundRows = this.scoreboardRounds.stream().map(RoundRow::new).collect(Collectors.toList());
         this.roundRowContainer.getChildren().clear();
         this.roundRowContainer.getChildren().addAll(roundRows);
+        this.usernamePlayerOne.setText(this.game.getUsernamePlayer1());
+        this.usernamePlayerTwo.setText(this.game.getUsernamePlayer2());
     }
 
     @FXML
