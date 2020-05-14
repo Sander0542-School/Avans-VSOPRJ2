@@ -13,9 +13,9 @@
                         <Font name="Roboto Black" size="14.0" />
                     </font>
                 </Text>
-                <Text fx:id="round" text="7" fill="WHITE">
+                <Text fx:id="round" fill="WHITE">
                     <font>
-                        <Font name="Roboto Black" size="14.0" />
+                        <Font name="Roboto Black" size="14.0"/>
                     </font>
                 </Text>
             </TextFlow>
