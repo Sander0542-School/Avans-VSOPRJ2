@@ -101,7 +101,7 @@ public class ChatController extends Controller {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                 Connection connection = Singleton.getInstance().getConnection();
                 try {
-                    PreparedStatement statement = connection.prepareStatement("DELETE FROM chatlinee WHERE game_id = ?");
+                    PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
                     statement.setInt(1, this.game.getGameId());
                     statement.execute();
                     this.chatMessages.clear();
@@ -131,7 +131,7 @@ public class ChatController extends Controller {
                 Connection connection = Singleton.getInstance().getConnection();
 
                 try {
-                    PreparedStatement statement = connection.prepareStatement("INSERT INTO chatlinee (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
+                    PreparedStatement statement = connection.prepareStatement("INSERT INTO chatline (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
                     statement.setString(1, user.getUsername());
                     statement.setInt(2, this.game.getGameId());
                     statement.setString(3, messageContent);
