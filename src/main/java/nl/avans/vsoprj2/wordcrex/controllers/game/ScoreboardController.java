@@ -35,6 +35,7 @@ public class ScoreboardController extends Controller {
     public void setGame(Game game) {
         if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
+        this.fetch();
         this.render();
     }
 
