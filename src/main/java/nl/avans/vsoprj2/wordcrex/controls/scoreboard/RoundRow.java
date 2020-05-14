@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.avans.vsoprj2.wordcrex.models.ScoreboardRound;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +47,28 @@ public class RoundRow extends VBox implements Initializable {
             loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public RoundRow(ScoreboardRound scoreboardRound) {
+        this();
+        int totalScorePlayerOne = scoreboardRound.getScorePlayerOne() + scoreboardRound.getBonusPlayerOne();
+        int totalScorePlayerTwo = scoreboardRound.getScorePlayerTwo() + scoreboardRound.getBonusPlayerTwo();
+        this.player1Name.setText(scoreboardRound.getUsernamePlayerOne());
+        this.player2Name.setText(scoreboardRound.getUsernamePlayerTwo());
+        this.player1Score.setText(String.valueOf(totalScorePlayerOne));
+        this.player2Score.setText(String.valueOf(totalScorePlayerTwo));
+        this.player1Word.setText(scoreboardRound.getWordPlayerOne());
+        this.player2Word.setText(scoreboardRound.getWordPlayerTwo());
+        this.player1Time.setText(""); // Time isn't present in the database?
+        this.player2Time.setText(""); // Time isn't present in the database?
+
+        if (totalScorePlayerOne > totalScorePlayerTwo) {
+            this.player1Name.setStyle("-fx-font-weight: bold");
+            this.player2Name.setStyle("-fx-font-weight: normal");
+        } else {
+            this.player1Name.setStyle("-fx-font-weight: normal");
+            this.player2Name.setStyle("-fx-font-weight: bold");
         }
     }
 
