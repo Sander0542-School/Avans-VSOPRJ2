@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.fxml.FXML;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -11,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BoardController extends Controller {
+    private Game game;
 
     public void setGame(Game game) {
+        this.game = game;
     }
 
     public boolean checkWord(Game game, String word) {
@@ -27,5 +30,38 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    @FXML
+    private void viewScoreboard() {
+        this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ScoreboardController scoreboardController = (ScoreboardController) controller;
+                scoreboardController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+
+    @FXML
+    private void viewChat() {
+        System.out.println("Test");
+        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ChatController chatController = (ChatController) controller;
+                chatController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
     }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.gameboard.*?>
-
 <BorderPane fx:id="borderPane" style="-fx-background-color: #201b53" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
 
     <top>
@@ -24,16 +23,16 @@
                     </font>
                 </Label>
 
-                <HBox alignment="CENTER" maxHeight="-Infinity" spacing="14.0" style="-fx-background-radius: 6; -fx-background-color: fff;">
+                <HBox alignment="CENTER" maxHeight="-Infinity" spacing="14.0" style="-fx-background-radius: 6; -fx-background-color: fff;" onMouseClicked="#viewScoreboard">
 
                     <Label text="0" textFill="black">
                         <font>
-                            <Font name="Roboto Black" size="16.0" />
+                            <Font name="Roboto Black" size="16.0"/>
                         </font>
                     </Label>
                     <Label text="-" textFill="black">
                         <font>
-                            <Font name="Roboto Black" size="16.0" />
+                            <Font name="Roboto Black" size="16.0"/>
                         </font>
                     </Label>
                     <Label text="0" textFill="black">
@@ -95,9 +94,9 @@
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefWidth="136.0" spacing="32.0">
-                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#viewChat">
                         <image>
-                            <Image url="@/images/drawables/chat_bubble_outline.png" />
+                            <Image url="@/images/drawables/chat_bubble_outline.png"/>
                         </image>
                     </ImageView>
                     <ImageView fitHeight="24.0" fitWidth="24.0">
