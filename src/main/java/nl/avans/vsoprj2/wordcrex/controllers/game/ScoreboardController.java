@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.ScoreboardRound;
 
@@ -53,6 +54,12 @@ public class ScoreboardController extends Controller {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 this.setGame(new Game(resultSet));
+            }
+
+            PreparedStatement statement1 = connection.prepareStatement("SELECT * FROM account WHERE username='luc';");
+            ResultSet resultSet1 = statement1.executeQuery();
+            while (resultSet1.next()) {
+                Singleton.getInstance().setUser(new Account(resultSet1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +119,7 @@ public class ScoreboardController extends Controller {
 
     @FXML
     private void backToGameScreen() {
-        this.navigateTo(String.valueOf(this.getClass().getResource("/views/game/board.fxml")), new NavigationListener() {
+        this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
                 BoardController boardController = (BoardController) controller;
