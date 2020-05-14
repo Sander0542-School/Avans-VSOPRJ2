@@ -69,6 +69,7 @@ public class ChatController extends Controller {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
+            //TODO(Daan) navigate back to board
         }
     }
 
@@ -100,7 +101,7 @@ public class ChatController extends Controller {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                 Connection connection = Singleton.getInstance().getConnection();
                 try {
-                    PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
+                    PreparedStatement statement = connection.prepareStatement("DELETE FROM chatlinee WHERE game_id = ?");
                     statement.setInt(1, this.game.getGameId());
                     statement.execute();
                     this.chatMessages.clear();
@@ -110,6 +111,7 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
+                    this.navigateBackToGame();
                 }
             }
         });
@@ -129,7 +131,7 @@ public class ChatController extends Controller {
                 Connection connection = Singleton.getInstance().getConnection();
 
                 try {
-                    PreparedStatement statement = connection.prepareStatement("INSERT INTO chatline (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
+                    PreparedStatement statement = connection.prepareStatement("INSERT INTO chatlinee (username, game_id, message, moment) VALUES (?, ?, ?, ?)");
                     statement.setString(1, user.getUsername());
                     statement.setInt(2, this.game.getGameId());
                     statement.setString(3, messageContent);
@@ -142,10 +144,26 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
+                    this.navigateBackToGame();
                 }
             }
             keyEvent.consume();
         }
     }
-}
 
+    @FXML
+    private void navigateBackToGame() {
+        this.navigateTo("/views/game/board.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                BoardController boardController = (BoardController) controller;
+                boardController.setGame(ChatController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+}
