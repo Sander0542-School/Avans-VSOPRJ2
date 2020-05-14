@@ -90,17 +90,17 @@ public class AppBar extends AnchorPane implements Initializable {
     }
 
     public void deleteButtonClicked(MouseEvent event) {
-        if (deleteButtonEventHandler != null) {
-            deleteButtonEventHandler.handle(event);
+        if (this.deleteButtonEventHandler != null) {
+            this.deleteButtonEventHandler.handle(event);
         }
     }
 
     public EventHandler getOnDeleteButtonEvent() {
-        return deleteButtonEventHandler;
+        return this.deleteButtonEventHandler;
     }
 
     public void setOnDeleteButtonEvent(EventHandler eventHandler) {
-        deleteButtonEventHandler = eventHandler;
+        this.deleteButtonEventHandler = eventHandler;
     }
 
     @Override
