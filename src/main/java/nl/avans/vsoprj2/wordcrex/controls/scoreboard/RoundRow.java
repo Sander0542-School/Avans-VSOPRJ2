@@ -70,8 +70,8 @@ public class RoundRow extends VBox {
         this.player2Score.setText(String.valueOf(totalScorePlayerTwo));
         this.player1Word.setText(this.scoreboardRound.getWordPlayerOne());
         this.player2Word.setText(this.scoreboardRound.getWordPlayerTwo());
-        this.player1Time.setText("--:--"); // Time isn't present in the database?
-        this.player2Time.setText("--:--"); // Time isn't present in the database?
+        this.player1Time.setText(""); // Time isn't present in the database?
+        this.player2Time.setText(""); // Time isn't present in the database?
 
         if (totalScorePlayerOne > totalScorePlayerTwo) {
             this.player1Name.setFont(new Font(16.0));
