@@ -61,7 +61,7 @@ public class ScoreboardController extends Controller {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT `t`.`game_id`, `t`.`turn_id`, `h`.`inhoud` as hand_inhoud, `tp1`.`username_player1`, `gp1`.`woorddeel` as woorddeel1, `tp1`.`bonus`     as bonus1, `tp1`.`score`     as score1, `tp1`.`turnaction_type`, `tp2`.`username_player2`, `gp2`.`woorddeel` as woorddeel2, `tp2`.`bonus`     as bonus2, `tp2`.`score`     as score2, `tp2`.`turnaction_type` FROM `turn` t INNER JOIN `hand` h ON `t`.`game_id` = `h`.`game_id` AND `t`.`turn_id` = `h`.`turn_id` INNER JOIN `turnplayer1` tp1 ON `tp1`.`game_id` = `t`.`game_id` AND `tp1`.`turn_id` = `t`.`turn_id` INNER JOIN `gelegdplayer1` gp1 ON `gp1`.`game_id` = `tp1`.`game_id` AND `gp1`.`turn_id` = `tp1`.`turn_id` INNER JOIN `turnplayer2` tp2 ON `tp2`.`game_id` = `t`.`game_id` AND `tp2`.`turn_id` = `t`.`turn_id` INNER JOIN `gelegdplayer2` gp2 ON `gp2`.`game_id` = `tp2`.`game_id` AND `gp2`.`turn_id` = `tp2`.`turn_id` WHERE `t`.`game_id` = ? ORDER BY `t`.`turn_id` DESC");
 
-            statement.setInt(1, 502);
+            statement.setInt(1, this.game.getGameId());
 
             ResultSet resultSet = statement.executeQuery();
 
