@@ -10,21 +10,21 @@
         <AppBar backButton="true" title="Scorebord" onBackButtonEvent="#backToGameScreen"/>
     </top>
     <center>
-            <AnchorPane style="-fx-background-color: #201b53;">
-                <HBox prefHeight="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label textFill="white">Pieter</Label>
-                    </VBox>
-                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label textFill="white">Klaas</Label>
-                    </VBox>
-                </HBox>
+        <AnchorPane style="-fx-background-color: #201b53;">
+            <HBox prefHeight="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
+                    <Label textFill="white" fx:id="usernamePlayerOne"/>
+                </VBox>
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
+                    <Label textFill="white" fx:id="usernamePlayerTwo"/>
+                </VBox>
+            </HBox>
 
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
-                    <VBox spacing="20.0" style="-fx-background-color: #201b53;" fx:id="roundRowContainer"/>
-                </ScrollPane>
-            </AnchorPane>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
+                <VBox spacing="20.0" style="-fx-background-color: #201b53;" fx:id="roundRowContainer"/>
+            </ScrollPane>
+        </AnchorPane>
     </center>
 </BorderPane>
