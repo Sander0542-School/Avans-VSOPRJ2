@@ -8,6 +8,8 @@ import java.util.StringJoiner;
 public class ScoreboardRound extends Model {
     @Column("game_id")
     private int gameId;
+    @Column("turn_id")
+    private int turnId;
     @Column("hand_inhoud")
     private String handContent;
     @Column("username_player1")
@@ -37,6 +39,10 @@ public class ScoreboardRound extends Model {
 
     public int getGameId() {
         return this.gameId;
+    }
+
+    public int getTurnId() {
+        return this.turnId;
     }
 
     public String getHandContent() {
