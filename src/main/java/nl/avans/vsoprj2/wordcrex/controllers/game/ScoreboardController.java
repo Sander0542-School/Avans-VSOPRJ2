@@ -48,6 +48,7 @@ public class ScoreboardController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //region TODO Remove this region when testing is finished.
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM game WHERE game_id = 502");
@@ -64,6 +65,7 @@ public class ScoreboardController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //endregion
     }
 
     /**
