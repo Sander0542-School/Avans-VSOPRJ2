@@ -50,8 +50,13 @@ public class NewController extends Controller {
                 String userName = resultSet.getString("username");
                 this.userNamesList.add(userName);
 
-                SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
-                suggestedAccount.setOnSuggestedAccountsEvent(this.newGameClickEventHandler(suggestedAccount));
+                final SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
+                suggestedAccount.setOnSuggestedAccountsEvent(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        NewController.this.createNewGame(suggestedAccount.getUserName());
+                    }
+                });
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccount);
                 this.suggestedAccountsContainer.setVisible(true);
@@ -59,15 +64,6 @@ public class NewController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
-    }
-
-    private EventHandler<Event> newGameClickEventHandler(SuggestedAccount theSuggestedAccount) {
-        return new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                NewController.this.createNewGame(theSuggestedAccount.getUserName());
-            }
-        };
     }
 
     public void handleRequestAction() {
