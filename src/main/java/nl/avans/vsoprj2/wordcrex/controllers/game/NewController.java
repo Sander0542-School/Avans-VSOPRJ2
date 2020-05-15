@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccounts;
+import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
@@ -50,10 +50,10 @@ public class NewController extends Controller {
                 String userName = resultSet.getString("username");
                 this.userNamesList.add(userName);
 
-                SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
-                suggestedAccounts.setOnSuggestedAccountsEvent(this.newGameClickEventHandler(suggestedAccounts));
+                SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
+                suggestedAccount.setOnSuggestedAccountsEvent(this.newGameClickEventHandler(suggestedAccount));
 
-                this.suggestedAccountsContainer.getChildren().add(suggestedAccounts);
+                this.suggestedAccountsContainer.getChildren().add(suggestedAccount);
                 this.suggestedAccountsContainer.setVisible(true);
             }
         } catch (SQLException e) {
@@ -61,7 +61,7 @@ public class NewController extends Controller {
         }
     }
 
-    private EventHandler<Event> newGameClickEventHandler(SuggestedAccounts theSuggestedAccount) {
+    private EventHandler<Event> newGameClickEventHandler(SuggestedAccount theSuggestedAccount) {
         return new EventHandler<Event>() {
             @Override
             public void handle(Event event) {

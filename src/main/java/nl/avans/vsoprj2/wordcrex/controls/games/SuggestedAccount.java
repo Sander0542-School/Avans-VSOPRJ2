@@ -8,13 +8,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import nl.avans.vsoprj2.wordcrex.controllers.game.NewController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SuggestedAccounts extends HBox implements Initializable {
+public class SuggestedAccount extends HBox implements Initializable {
     @FXML
     private Label usernameLabel;
     @FXML
@@ -23,10 +22,10 @@ public class SuggestedAccounts extends HBox implements Initializable {
 
     private EventHandler SuggestedAccountsEventHandler = null;
 
-    public SuggestedAccounts() {
+    public SuggestedAccount() {
         super();
 
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/games/suggestedAccounts.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/games/SuggestedAccount.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -41,7 +40,7 @@ public class SuggestedAccounts extends HBox implements Initializable {
         return this.userName;
     }
 
-    public SuggestedAccounts(String account) {
+    public SuggestedAccount(String account) {
         this();
         this.userName = account;
         this.usernameLabel.setText(account);
