@@ -45,7 +45,7 @@ public class GamesController extends Controller {
         this.loadGames(Singleton.getInstance().getUser());
     }
 
-    public void newGamePage() {
+    public void handleNewGameAction() {
         this.navigateTo("/views/game/new.fxml");
     }
 

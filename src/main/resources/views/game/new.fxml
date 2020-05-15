@@ -42,7 +42,7 @@
     <center>
         <VBox spacing="20" style="-fx-background-color: #FFBB00;">
             <VBox alignment="CENTER" style="-fx-background-color: #FFBB00; -fx-padding: 10 20 10 20;">
-                <Button onMouseClicked="#randomGameRequest" alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
+                <Button onMouseClicked="#handleRequestAction" alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
                     <font>
                         <Font name="Roboto Black" size="16" />
                     </font>

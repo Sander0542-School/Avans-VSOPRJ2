@@ -70,7 +70,7 @@ public class NewController extends Controller {
         };
     };
 
-    public void randomGameRequest() {
+    public void handleRequestAction() {
         Random rand = new Random();
         this.createGameRequest("NL", this.userNamesList.get(rand.nextInt(this.userNamesList.size())));
     }

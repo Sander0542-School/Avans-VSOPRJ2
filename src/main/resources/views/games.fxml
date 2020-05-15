@@ -18,7 +18,7 @@
     <center>
         <VBox style="-fx-background-color: #201b53">
             <AnchorPane minHeight="64.0" prefHeight="64.0" style="-fx-background-color: #ffbb00;">
-                <HBox onMouseClicked="#newGamePage" alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox onMouseClicked="#handleNewGameAction" alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <ImageView fitHeight="24.0" fitWidth="24.0">
                         <Image url="@/images/drawables/add_circle.png"/>
                         <HBox.margin>
