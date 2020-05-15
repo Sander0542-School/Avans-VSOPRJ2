@@ -7,7 +7,6 @@ import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
-import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.net.URL;
@@ -51,7 +50,7 @@ public class NewController extends Controller {
                 this.userNamesList.add(userName);
 
                 final SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
-                suggestedAccount.setOnSuggestedAccountsEvent(new EventHandler() {
+                suggestedAccount.setOnInviteEvent(new EventHandler() {
                     @Override
                     public void handle(Event event) {
                         NewController.this.createNewGame(suggestedAccount.getUserName());
