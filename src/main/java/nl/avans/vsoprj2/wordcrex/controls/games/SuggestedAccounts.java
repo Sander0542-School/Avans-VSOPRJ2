@@ -19,6 +19,7 @@ public class SuggestedAccounts extends HBox implements Initializable {
     private Label usernameLabel;
     @FXML
     private Button inviteButton;
+    private String userName;
 
     private EventHandler SuggestedAccountsEventHandler = null;
 
@@ -36,8 +37,13 @@ public class SuggestedAccounts extends HBox implements Initializable {
         }
     }
 
+    public String getUserName() {
+        return this.userName;
+    }
+
     public SuggestedAccounts(String account) {
         this();
+        this.userName = account;
         this.usernameLabel.setText(account);
     }
 

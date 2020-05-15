@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 
 public class NewController extends Controller {
     private List<String> userNamesList = new ArrayList<>();
-    private String globalUserName = null;
 
     @FXML
     private VBox suggestedAccountsContainer;
@@ -49,10 +48,10 @@ public class NewController extends Controller {
 
             while (resultSet.next()) {
                 String userName = resultSet.getString("username");
-                SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
-                this.globalUserName = userName;
-                suggestedAccounts.setOnSuggestedAccountsEvent(this.newGameClickEventHandler);
                 this.userNamesList.add(userName);
+
+                SuggestedAccounts suggestedAccounts = new SuggestedAccounts(userName);
+                suggestedAccounts.setOnSuggestedAccountsEvent(this.newGameClickEventHandler(suggestedAccounts));
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccounts);
                 this.suggestedAccountsContainer.setVisible(true);
@@ -62,11 +61,13 @@ public class NewController extends Controller {
         }
     }
 
-    private EventHandler newGameClickEventHandler = new EventHandler() {
-        @Override
-        public void handle(Event event) {
-            NewController.this.createNewGame(NewController.this.globalUserName);
-        }
+    private EventHandler<Event> newGameClickEventHandler(SuggestedAccounts theSuggestedAccount) {
+        return new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                NewController.this.createNewGame(theSuggestedAccount.getUserName());
+            }
+        };
     };
 
     public void randomGameRequest() {
