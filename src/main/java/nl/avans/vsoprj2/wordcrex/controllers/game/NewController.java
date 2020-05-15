@@ -44,7 +44,7 @@ public class NewController extends Controller {
             ResultSet resultSet = statement.executeQuery();
 
             this.suggestedAccountsContainer.setVisible(false);
-            this.suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof GameItem);
+            this.suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof SuggestedAccount);
 
             while (resultSet.next()) {
                 String userName = resultSet.getString("username");
