@@ -68,7 +68,7 @@ public class NewController extends Controller {
                 NewController.this.createNewGame(theSuggestedAccount.getUserName());
             }
         };
-    };
+    }
 
     public void handleRequestAction() {
         Random rand = new Random();
