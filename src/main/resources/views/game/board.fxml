@@ -66,7 +66,7 @@
             <children>
                 <HBox alignment="CENTER_RIGHT" prefWidth="136.0" spacing="32.0">
 
-                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                    <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#confirmLettersButtonClicked">
                         <image>
                             <Image url="@/images/drawables/play_arrow.png" />
                         </image>

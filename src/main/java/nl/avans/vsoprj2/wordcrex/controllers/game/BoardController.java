@@ -1,5 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -11,6 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BoardController extends Controller {
+    @FXML
+    private void confirmLettersButtonClicked() {
+        Alert testAlert = new Alert(Alert.AlertType.INFORMATION, "confirmLetterButtonClicked()");
+        testAlert.setTitle("TEST");
+        testAlert.show();
+    }
 
     public void setGame(Game game) {
     }
