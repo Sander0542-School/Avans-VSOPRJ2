@@ -46,7 +46,7 @@ public class Game extends DbModel {
     }
 
     public void setGameState(GameState gameState) {
-        this.gameState = gameState.toString();
+        this.gameState = gameState.toString().toLowerCase();
     }
 
     public String getLettersetCode() {
@@ -66,7 +66,7 @@ public class Game extends DbModel {
     }
 
     public void setAnswerPlayer2(Answer answerPlayer2) {
-        this.answerPlayer2 = answerPlayer2.toString();
+        this.answerPlayer2 = answerPlayer2.toString().toLowerCase();
     }
 
     public String getUsernameWinner() {
