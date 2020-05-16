@@ -61,8 +61,8 @@ public class Game extends DbModel {
         return this.usernamePlayer2;
     }
 
-    public String getAnswerPlayer2() {
-        return this.answerPlayer2;
+    public Answer getAnswerPlayer2() {
+        return Answer.valueOf(this.answerPlayer2.toUpperCase());
     }
 
     public void setAnswerPlayer2(Answer answerPlayer2) {
