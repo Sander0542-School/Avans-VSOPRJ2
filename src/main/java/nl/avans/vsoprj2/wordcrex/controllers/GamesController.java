@@ -64,10 +64,10 @@ public class GamesController extends Controller {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == buttonTypeDecline) {
-            game.setAnswerPlayer2("rejected");
+            game.setAnswerPlayer2(Game.Answer.REJECTED);
         } else if (result.get() == buttonTypeAccept) {
-            game.setGameState("playing");
-            game.setAnswerPlayer2("accepted");
+            game.setGameState(Game.GameState.PLAYING);
+            game.setAnswerPlayer2(Game.Answer.ACCEPTED);
         }
 
         game.save();

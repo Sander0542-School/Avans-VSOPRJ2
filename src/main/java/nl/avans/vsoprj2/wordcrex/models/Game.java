@@ -65,8 +65,8 @@ public class Game extends DbModel {
         return this.answerPlayer2;
     }
 
-    public void setAnswerPlayer2(String answerPlayer2) {
-        this.answerPlayer2 = answerPlayer2;
+    public void setAnswerPlayer2(Answer answerPlayer2) {
+        this.answerPlayer2 = answerPlayer2.toString();
     }
 
     public String getUsernameWinner() {
@@ -100,6 +100,12 @@ public class Game extends DbModel {
         PLAYING,
         FINISHED,
         RESIGNED,
+    }
+
+    public enum Answer {
+        ACCEPTED,
+        REJECTED,
+        UNKNOWN,
     }
 
     public int getPlayerScore(boolean isPlayer1) {
