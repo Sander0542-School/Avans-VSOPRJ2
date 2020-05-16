@@ -2,12 +2,16 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.net.URL;
@@ -15,6 +19,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GamesController extends Controller {
@@ -37,10 +42,39 @@ public class GamesController extends Controller {
         this.gameTheirs.managedProperty().bind(this.gameTheirs.visibleProperty());
         this.finishedGames.managedProperty().bind(this.finishedGames.visibleProperty());
 
-        this.loadGames(Singleton.getInstance().getUser().getUsername());
+        this.loadGames(Singleton.getInstance().getUser());
     }
 
-    private void loadGames(String username) {
+    public void handleNewGameAction() {
+        this.navigateTo("/views/game/new.fxml");
+    }
+
+    private void gameRequest(GameItem gameItem) {
+        Game game = gameItem.getGame();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Game request");
+        alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer2());
+
+        ButtonType buttonTypeDecline = new ButtonType("Decline");
+        ButtonType buttonTypeAccept = new ButtonType("Accept");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeDecline, buttonTypeAccept, buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == buttonTypeDecline) {
+            game.setAnswerPlayer2("rejected");
+        } else if (result.get() == buttonTypeAccept) {
+            game.setGameState("playing");
+            game.setAnswerPlayer2("accepted");
+        }
+
+        game.save();
+    }
+
+    private void loadGames(Account user) {
+        final String username = user.getUsername();
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -55,7 +89,17 @@ public class GamesController extends Controller {
 
             while (resultSet.next()) {
                 GameItem gameItem = new GameItem(new Game(resultSet));
-                this.setGameItemClick(gameItem);
+
+                if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
+                    this.setGameItemClick(gameItem);
+                } else {
+                    gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            GamesController.this.gameRequest(gameItem);
+                        }
+                    });
+                }
 
                 this.gameInvites.getChildren().add(gameItem);
                 this.gameInvites.setVisible(true);
