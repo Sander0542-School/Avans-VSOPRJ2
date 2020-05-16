@@ -28,17 +28,10 @@ public class BoardController extends Controller {
      * @param winner - Account model
      */
     public void endGame(Account winner) {
-        Connection connection = Singleton.getInstance().getConnection();
+        this.game.setGameState(Game.GameState.FINISHED);
+        this.game.setWinner(winner);
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE game SET game_state = ?, username_winner = ? WHERE game_id = ?");
-            preparedStatement.setString(1, this.game.getGameState().toString());
-            preparedStatement.setString(2, winner.getUsername());
-            preparedStatement.setInt(3, this.game.getGameId());
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new DbLoadException(e);
-        }
+        this.game.save();
     }
 
     public boolean isExistingWord(String word) {
