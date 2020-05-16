@@ -23,10 +23,6 @@ public class Account extends Model {
         return this.username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getRole() {
         return this.role;
     }
@@ -55,6 +51,7 @@ public class Account extends Model {
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }
+
         return null;
     }
 }
