@@ -66,8 +66,8 @@ public class RoundRow extends VBox {
         this.letterSet.setText(this.scoreboardRound.getHandContent());
         this.player1Name.setText(this.scoreboardRound.getUsernamePlayerOne());
         this.player2Name.setText(this.scoreboardRound.getUsernamePlayerTwo());
-        this.player1Score.setText(String.valueOf(totalScorePlayerOne));
-        this.player2Score.setText(String.valueOf(totalScorePlayerTwo));
+        this.player1Score.setText(String.format("+%s (%s)", this.scoreboardRound.getScorePlayerOne() + this.scoreboardRound.getBonusPlayerOne(), this.scoreboardRound.getTotalScorePlayerOne()));
+        this.player2Score.setText(String.format("+%s (%s)", this.scoreboardRound.getScorePlayerTwo() + this.scoreboardRound.getBonusPlayerTwo(), this.scoreboardRound.getTotalScorePlayerTwo()));
         this.player1Word.setText(this.scoreboardRound.getWordPlayerOne());
         this.player2Word.setText(this.scoreboardRound.getWordPlayerTwo());
         this.player1Time.setText(""); // Time isn't present in the database?

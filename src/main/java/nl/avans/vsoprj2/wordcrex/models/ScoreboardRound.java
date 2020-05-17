@@ -2,6 +2,7 @@ package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.StringJoiner;
 
@@ -20,6 +21,8 @@ public class ScoreboardRound extends Model {
     private int bonusPlayerOne;
     @Column("score1")
     private int scorePlayerOne;
+    @Column("totaal_score1")
+    private BigDecimal totalScorePlayerOne;
     @Column("turntype1")
     private String turnActionTypeOne;
     @Column("username_player2")
@@ -30,6 +33,8 @@ public class ScoreboardRound extends Model {
     private int bonusPlayerTwo;
     @Column("score2")
     private int scorePlayerTwo;
+    @Column("totaal_score2")
+    private BigDecimal totalScorePlayerTwo;
     @Column("turntype2")
     private String turnActionTypeTwo;
 
@@ -89,8 +94,16 @@ public class ScoreboardRound extends Model {
         return this.scorePlayerOne;
     }
 
+    public BigDecimal getTotalScorePlayerOne() {
+        return this.totalScorePlayerOne;
+    }
+
     public int getScorePlayerTwo() {
         return this.scorePlayerTwo;
+    }
+
+    public BigDecimal getTotalScorePlayerTwo() {
+        return this.totalScorePlayerTwo;
     }
 
     public String getWordPlayerOne() {

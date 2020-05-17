@@ -81,11 +81,13 @@ public class ScoreboardController extends Controller {
                     "`gp1`.`woorddeel` as woorddeel1," +
                     "`tp1`.`bonus`     as bonus1," +
                     "`tp1`.`score`     as score1," +
+                    "(SELECT SUM(`score`) + SUM(`bonus`) FROM `turnplayer1` WHERE `game_id` = `t`.`game_id` AND `turn_id` <= `t`.turn_id) as totaal_score1," +
                     "`tp1`.`turnaction_type` as turntype1," +
                     "`tp2`.`username_player2`," +
                     "`gp2`.`woorddeel` as woorddeel2," +
                     "`tp2`.`bonus`     as bonus2," +
                     "`tp2`.`score`     as score2," +
+                    "(SELECT SUM(`score`) + SUM(`bonus`) FROM `turnplayer2` WHERE `game_id` = `t`.`game_id` AND `turn_id` <= `t`.turn_id) as totaal_score2," +
                     "`tp2`.`turnaction_type` as turntype2 " +
                     "FROM `turn` t " +
                     "INNER JOIN `hand` h ON `t`.`game_id` = `h`.`game_id` AND `t`.`turn_id` = `h`.`turn_id` " +
