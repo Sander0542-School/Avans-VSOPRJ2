@@ -14,7 +14,7 @@
         <AnchorPane style="-fx-background-color: #201b53;">
             <HBox prefHeight="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
+                    <Circle radius="67.0" fx:id="imagePlayerOne"/>
                     <Label textFill="white" fx:id="usernamePlayerOne">
                         <font>
                             <Font name="Roboto Black" size="18.0"/>
@@ -22,7 +22,7 @@
                     </Label>
                 </VBox>
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <Circle fill="DODGERBLUE" radius="67.0" stroke="BLACK" strokeType="INSIDE"/>
+                    <Circle radius="67.0" fx:id="imagePlayerTwo"/>
                     <Label textFill="white" fx:id="usernamePlayerTwo">
                         <font>
                             <Font name="Roboto Black" size="18.0"/>

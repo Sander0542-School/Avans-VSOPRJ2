@@ -2,7 +2,10 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
@@ -23,6 +26,11 @@ import java.util.stream.Collectors;
 public class ScoreboardController extends Controller {
     private Game game;
     private List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
+
+    @FXML
+    private Circle imagePlayerOne;
+    @FXML
+    private Circle imagePlayerTwo;
 
     @FXML
     public Label usernamePlayerOne;
@@ -48,6 +56,10 @@ public class ScoreboardController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image profileImage = new Image(String.valueOf(this.getClass().getResource("/images/profile.png")));
+        this.imagePlayerOne.setFill(new ImagePattern(profileImage));
+        this.imagePlayerTwo.setFill(new ImagePattern(profileImage));
+
         //region TODO Remove this region when testing is finished.
         Connection connection = Singleton.getInstance().getConnection();
         try {
