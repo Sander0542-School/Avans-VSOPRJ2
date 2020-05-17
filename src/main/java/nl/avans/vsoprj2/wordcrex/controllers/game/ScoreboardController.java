@@ -9,7 +9,6 @@ import javafx.scene.shape.Circle;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
-import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.ScoreboardRound;
 
@@ -59,25 +58,6 @@ public class ScoreboardController extends Controller {
         Image profileImage = new Image(String.valueOf(this.getClass().getResource("/images/profile.png")));
         this.imagePlayerOne.setFill(new ImagePattern(profileImage));
         this.imagePlayerTwo.setFill(new ImagePattern(profileImage));
-
-        //region TODO Remove this region when testing is finished.
-        Connection connection = Singleton.getInstance().getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM game WHERE game_id = 502");
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                this.setGame(new Game(resultSet));
-            }
-
-            PreparedStatement statement1 = connection.prepareStatement("SELECT * FROM account WHERE username='luc';");
-            ResultSet resultSet1 = statement1.executeQuery();
-            while (resultSet1.next()) {
-                Singleton.getInstance().setUser(new Account(resultSet1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //endregion
     }
 
     /**
