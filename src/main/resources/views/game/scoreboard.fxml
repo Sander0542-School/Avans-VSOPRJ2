@@ -2,7 +2,9 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.ImagePattern?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
@@ -14,7 +16,15 @@
         <AnchorPane style="-fx-background-color: #201b53;">
             <HBox prefHeight="220.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <Circle radius="67.0" fx:id="imagePlayerOne"/>
+                    <Circle radius="67.0">
+                        <fill>
+                            <ImagePattern>
+                                <image>
+                                    <Image url="@/images/profile.png"/>
+                                </image>
+                            </ImagePattern>
+                        </fill>
+                    </Circle>
                     <Label textFill="white" fx:id="usernamePlayerOne">
                         <font>
                             <Font name="Roboto Black" size="18.0"/>
@@ -22,7 +32,15 @@
                     </Label>
                 </VBox>
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <Circle radius="67.0" fx:id="imagePlayerTwo"/>
+                    <Circle radius="67.0">
+                        <fill>
+                            <ImagePattern>
+                                <image>
+                                    <Image url="@/images/profile.png"/>
+                                </image>
+                            </ImagePattern>
+                        </fill>
+                    </Circle>
                     <Label textFill="white" fx:id="usernamePlayerTwo">
                         <font>
                             <Font name="Roboto Black" size="18.0"/>
