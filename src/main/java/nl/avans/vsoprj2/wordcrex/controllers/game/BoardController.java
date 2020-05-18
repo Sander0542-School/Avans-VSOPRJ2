@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.fxml.FXML;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -46,5 +47,37 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    @FXML
+    private void handleScoreboardAction() {
+        this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ScoreboardController scoreboardController = (ScoreboardController) controller;
+                scoreboardController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+
+    @FXML
+    private void handleChatAction() {
+        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ChatController chatController = (ChatController) controller;
+                chatController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
     }
 }
