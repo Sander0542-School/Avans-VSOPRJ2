@@ -67,7 +67,6 @@ public class BoardController extends Controller {
 
     @FXML
     private void viewChat() {
-        System.out.println("Test");
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
