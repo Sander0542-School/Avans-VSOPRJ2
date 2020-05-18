@@ -1,11 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
@@ -93,12 +91,7 @@ public class GamesController extends Controller {
                 if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
                     this.setGameItemClick(gameItem);
                 } else {
-                    gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            GamesController.this.gameRequest(gameItem);
-                        }
-                    });
+                    gameItem.setOnMouseClicked(event -> GamesController.this.gameRequest(gameItem));
                 }
 
                 this.gameInvites.getChildren().add(gameItem);
@@ -174,22 +167,17 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
-        gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
-            public void handle(MouseEvent event) {
-                GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
-                    @Override
-                    public void beforeNavigate(Controller controller) {
-                        BoardController boardController = (BoardController) controller;
-                        boardController.setGame(gameItem.getGame());
-                    }
-
-                    @Override
-                    public void afterNavigate(Controller controller) {
-
-                    }
-                });
+            public void beforeNavigate(Controller controller) {
+                BoardController boardController = (BoardController) controller;
+                boardController.setGame(gameItem.getGame());
             }
-        });
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        }));
     }
 }
