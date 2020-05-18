@@ -28,9 +28,9 @@ public class AppBar extends AnchorPane implements Initializable {
 
     private ContextMenu optionsMenu = new ContextMenu();
 
-    private EventHandler backButtonEventHandler;
-    private EventHandler deleteButtonEventHandler;
-    private EventHandler optionsMenuEventHandler;
+    private EventHandler<MouseEvent> backButtonEventHandler;
+    private EventHandler<MouseEvent> deleteButtonEventHandler;
+    private EventHandler<MouseEvent> optionsMenuEventHandler;
 
     public AppBar() {
         super();
@@ -81,10 +81,6 @@ public class AppBar extends AnchorPane implements Initializable {
         this.deleteButton.setManaged(visible);
     }
 
-    public void handleOptionsButton(MouseEvent event) {
-        this.optionsMenu.show(this, event.getScreenX(), event.getScreenY());
-    }
-
     public void handleBackButton(MouseEvent event) {
         if (this.backButtonEventHandler != null) {
             this.backButtonEventHandler.handle(event);
@@ -97,28 +93,32 @@ public class AppBar extends AnchorPane implements Initializable {
         }
     }
 
-    public void setOnBackButtonEvent(EventHandler eventHandler) {
+    public void handleOptionsButton(MouseEvent event) {
+        this.optionsMenu.show(this, event.getScreenX(), event.getScreenY());
+    }
+
+    public void setOnBackButtonEvent(EventHandler<MouseEvent> eventHandler) {
         this.backButtonEventHandler = eventHandler;
     }
 
-    public EventHandler getOnBackButtonEvent() {
+    public EventHandler<MouseEvent> getOnBackButtonEvent() {
         return this.backButtonEventHandler;
     }
 
-    public void setOnOptionsMenuEvent(EventHandler eventHandler) {
-        this.optionsMenuEventHandler = eventHandler;
-    }
-
-    public EventHandler getOnOptionsMenuEvent() {
-        return this.optionsMenuEventHandler;
-    }
-
-    public void setOnDeleteButtonEvent(EventHandler eventHandler) {
+    public void setOnDeleteButtonEvent(EventHandler<MouseEvent> eventHandler) {
         this.deleteButtonEventHandler = eventHandler;
     }
 
-    public EventHandler getOnDeleteButtonEvent() {
+    public EventHandler<MouseEvent> getOnDeleteButtonEvent() {
         return this.deleteButtonEventHandler;
+    }
+
+    public void setOnOptionsMenuEvent(EventHandler<MouseEvent> eventHandler) {
+        this.optionsMenuEventHandler = eventHandler;
+    }
+
+    public EventHandler<MouseEvent> getOnOptionsMenuEvent() {
+        return this.optionsMenuEventHandler;
     }
 
     @Override
