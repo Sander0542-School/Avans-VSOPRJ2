@@ -30,7 +30,7 @@ public class AppBar extends AnchorPane implements Initializable {
 
     private EventHandler<MouseEvent> backButtonEventHandler;
     private EventHandler<MouseEvent> deleteButtonEventHandler;
-    private EventHandler<MouseEvent> optionsMenuEventHandler;
+    private EventHandler<ActionEvent> optionsMenuEventHandler;
 
     public AppBar() {
         super();
@@ -113,11 +113,11 @@ public class AppBar extends AnchorPane implements Initializable {
         return this.deleteButtonEventHandler;
     }
 
-    public void setOnOptionsMenuEvent(EventHandler<MouseEvent> eventHandler) {
+    public void setOnOptionsMenuEvent(EventHandler<ActionEvent> eventHandler) {
         this.optionsMenuEventHandler = eventHandler;
     }
 
-    public EventHandler<MouseEvent> getOnOptionsMenuEvent() {
+    public EventHandler<ActionEvent> getOnOptionsMenuEvent() {
         return this.optionsMenuEventHandler;
     }
 
@@ -127,12 +127,9 @@ public class AppBar extends AnchorPane implements Initializable {
 
         for (MenuItem item : this.optionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());
-            item.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    if (AppBar.this.optionsMenuEventHandler != null) {
-                        AppBar.this.optionsMenuEventHandler.handle(actionEvent);
-                    }
+            item.setOnAction(actionEvent -> {
+                if (AppBar.this.optionsMenuEventHandler != null) {
+                    AppBar.this.optionsMenuEventHandler.handle(actionEvent);
                 }
             });
         }
