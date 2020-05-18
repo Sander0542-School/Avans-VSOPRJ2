@@ -20,7 +20,7 @@ public class SuggestedAccount extends HBox implements Initializable {
     private Button inviteButton;
     private String userName;
 
-    private EventHandler inviteEventHandler = null;
+    private EventHandler<MouseEvent> inviteEventHandler = null;
 
     public SuggestedAccount() {
         super();
@@ -52,11 +52,11 @@ public class SuggestedAccount extends HBox implements Initializable {
         }
     }
 
-    public void setOnInviteEvent(EventHandler eventHandler) {
+    public void setOnInviteEvent(EventHandler<MouseEvent> eventHandler) {
         this.inviteEventHandler = eventHandler;
     }
 
-    public EventHandler getOnInviteEvent() {
+    public EventHandler<MouseEvent> getOnInviteEvent() {
         return this.inviteEventHandler;
     }
 
