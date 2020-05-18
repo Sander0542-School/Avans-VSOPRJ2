@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
-    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @FXML
     private ScrollPane chatScrollContainer;

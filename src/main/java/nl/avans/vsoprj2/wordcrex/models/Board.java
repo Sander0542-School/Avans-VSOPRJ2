@@ -15,7 +15,7 @@ public class Board {
     }
 
     private Tile[][] grid;
-    private Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
+    private Map<String, TileType> predefinedTileTypes = new HashMap<>();
 
     public Board() {
         this.populatePredefinedTileTypes();
