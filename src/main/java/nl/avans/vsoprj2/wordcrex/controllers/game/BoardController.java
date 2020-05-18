@@ -50,7 +50,7 @@ public class BoardController extends Controller {
     }
 
     @FXML
-    private void viewScoreboard() {
+    private void handleScoreboardAction() {
         this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
@@ -66,7 +66,7 @@ public class BoardController extends Controller {
     }
 
     @FXML
-    private void viewChat() {
+    private void handleChatAction() {
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
