@@ -23,9 +23,9 @@ public class BoardController extends Controller {
 
         if(dialogResult.isPresent())
         if (dialogResult.get() == ButtonType.OK) {
-            String word = "goed"; //TODO: Create getWord() Method
+            String word = "goed"; //TODO: Implement method from pull request : https://github.com/daanh432/Avans-VSOPRJ2/pull/51
             if(this.checkWord(word)) {
-                //TODO: inplement score calculations
+                //TODO: implement score calculations
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Goed woord.");
                 alert.setTitle("Correcte dingen jongeman!");
                 alert.showAndWait();
