@@ -1,7 +1,5 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
