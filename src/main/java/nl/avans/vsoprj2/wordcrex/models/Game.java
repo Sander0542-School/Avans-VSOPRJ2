@@ -78,10 +78,10 @@ public class Game extends DbModel {
     }
 
     public String getMessage() {
-        Object user = Singleton.getInstance().getUser();
+        Account user = Singleton.getInstance().getUser();
         switch (this.getGameState()) {
             case REQUEST:
-                if (this.getUsernamePlayer1() == user) {
+                if (this.getUsernamePlayer1().equals(user.getUsername())) {
                     return String.format("Waiting for %s to", this.getUsernamePlayer2());
                 }
                 return String.format("Invited by %s", this.getUsernamePlayer1());
