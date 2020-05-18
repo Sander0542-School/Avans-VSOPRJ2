@@ -50,12 +50,7 @@ public class NewController extends Controller {
                 this.userNamesList.add(userName);
 
                 final SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
-                suggestedAccount.setOnInviteEvent(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                        NewController.this.createNewGame(suggestedAccount.getUserName());
-                    }
-                });
+                suggestedAccount.setOnInviteEvent(event -> NewController.this.createNewGame(suggestedAccount.getUserName()));
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccount);
                 this.suggestedAccountsContainer.setVisible(true);

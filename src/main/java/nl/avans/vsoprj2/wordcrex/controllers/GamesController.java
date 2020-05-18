@@ -93,12 +93,7 @@ public class GamesController extends Controller {
                 if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
                     this.setGameItemClick(gameItem);
                 } else {
-                    gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            GamesController.this.gameRequest(gameItem);
-                        }
-                    });
+                    gameItem.setOnMouseClicked(event -> GamesController.this.gameRequest(gameItem));
                 }
 
                 this.gameInvites.getChildren().add(gameItem);
@@ -174,22 +169,17 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
-        gameItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
-            public void handle(MouseEvent event) {
-                GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
-                    @Override
-                    public void beforeNavigate(Controller controller) {
-                        BoardController boardController = (BoardController) controller;
-                        boardController.setGame(gameItem.getGame());
-                    }
-
-                    @Override
-                    public void afterNavigate(Controller controller) {
-
-                    }
-                });
+            public void beforeNavigate(Controller controller) {
+                BoardController boardController = (BoardController) controller;
+                boardController.setGame(gameItem.getGame());
             }
-        });
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        }));
     }
 }
