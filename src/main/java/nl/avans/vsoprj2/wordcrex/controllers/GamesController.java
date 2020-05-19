@@ -185,17 +185,20 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
-        gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                BoardController boardController = (BoardController) controller;
-                boardController.setGame(gameItem.getGame());
-            }
+        Game gameItemGame = gameItem.getGame();
+        if(gameItemGame.getAnswerPlayer2() == Game.Answer.ACCEPTED) {
+            gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
+                @Override
+                public void beforeNavigate(Controller controller) {
+                    BoardController boardController = (BoardController) controller;
+                    boardController.setGame(gameItem.getGame());
+                }
 
-            @Override
-            public void afterNavigate(Controller controller) {
+                @Override
+                public void afterNavigate(Controller controller) {
 
-            }
-        }));
+                }
+            }));
+        }
     }
 }
