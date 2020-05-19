@@ -1,9 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -58,7 +55,13 @@ public class NewController extends Controller {
         }
     }
 
-    public void handleRequestAction() {
+    @FXML
+    private void handleBackButton() {
+        this.navigateTo("/views/games.fxml");
+    }
+
+    @FXML
+    private void handleRequestAction() {
         Random rand = new Random();
         this.createGameRequest("NL", this.usernameslist.get(rand.nextInt(this.usernameslist.size())));
     }
@@ -93,7 +96,7 @@ public class NewController extends Controller {
 
                 int letterId = 0;
 
-                while(symbolResult.next()) {
+                while (symbolResult.next()) {
                     String symbol = symbolResult.getString("symbol");
                     int counted = symbolResult.getInt("counted");
 
