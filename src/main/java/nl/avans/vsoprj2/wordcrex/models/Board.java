@@ -14,7 +14,7 @@ public class Board {
         SIXLETTER
     }
 
-    public static int BOARD_SIZE = 14;
+    public static final int BOARD_SIZE = 14;
 
     private Tile[][] grid;
     private Map<String, TileType> predefinedTileTypes = new HashMap<>();
