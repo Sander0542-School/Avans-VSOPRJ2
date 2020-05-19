@@ -60,7 +60,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    private void handleEnterPressed(KeyEvent keyEvent) {
+    private void handleEnterReleased(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) this.handleLoginAction();
     }
 }
