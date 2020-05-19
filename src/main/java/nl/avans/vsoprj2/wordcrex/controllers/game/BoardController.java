@@ -81,6 +81,12 @@ public class BoardController extends Controller {
         });
     }
 
+    private void tileRemoved(Tile placedTile) {
+        this.unconfirmedTiles.remove(placedTile);
+
+        this.updateLayout();
+    }
+
     private void updateLayout() {
         List<List<Tile>> words = this.getWords();
 
