@@ -81,6 +81,23 @@ public class BoardController extends Controller {
         });
     }
 
+    private boolean checkWords(List<List<Tile>> words) {
+        // No words
+        if (words == null) {
+            return false;
+        }
+
+        List<String> wordStrings = this.getWordsFromList(words);
+
+        for (String wordString : wordStrings) {
+            if (!this.isExistingWord(wordString)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private List<List<Tile>> getWords() {
         Orientation orientation = this.getWordOrientation();
 
