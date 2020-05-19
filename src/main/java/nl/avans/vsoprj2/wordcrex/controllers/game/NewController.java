@@ -86,14 +86,17 @@ public class NewController extends Controller {
                 ResultSet symbolResult = symbolsStatement.executeQuery();
 
                 StringBuilder queryBuilder = new StringBuilder();
-                queryBuilder.append("INSERT INTO letter (game_id, symbol_letterset_code, symbol) VALUES ");
+                queryBuilder.append("INSERT INTO letter (letter_id, game_id, symbol_letterset_code, symbol) VALUES ");
+
+                int letterId = 0;
 
                 while(symbolResult.next()) {
                     String symbol = symbolResult.getString("symbol");
                     int counted = symbolResult.getInt("counted");
 
                     for (int i = 0; i < counted; i++) {
-                        queryBuilder.append(String.format("(%s, '%s', '%s'),", gameId, letterset, symbol));
+                        letterId++;
+                        queryBuilder.append(String.format("(%s, %s, '%s', '%s'),", letterId, gameId, letterset, symbol));
                     }
                 }
                 queryBuilder.setLength(queryBuilder.length() - 1);
