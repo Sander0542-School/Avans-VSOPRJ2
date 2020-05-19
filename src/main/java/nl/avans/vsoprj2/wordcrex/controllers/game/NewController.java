@@ -1,6 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -15,7 +18,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    private List<String> userNamesList = new ArrayList<>();
+    private List<String> usernameslist = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccountsContainer;
@@ -33,7 +36,7 @@ public class NewController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM account WHERE username != ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username != ?");
             statement.setString(1, Singleton.getInstance().getUser().getUsername());
             ResultSet resultSet = statement.executeQuery();
 
@@ -41,11 +44,11 @@ public class NewController extends Controller {
             this.suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof SuggestedAccount);
 
             while (resultSet.next()) {
-                String userName = resultSet.getString("username");
-                this.userNamesList.add(userName);
+                final String username = resultSet.getString("username");
+                this.usernameslist.add(username);
 
-                final SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
-                suggestedAccount.setOnInviteEvent(event -> NewController.this.createNewGame(suggestedAccount.getUserName()));
+                SuggestedAccount suggestedAccount = new SuggestedAccount(username);
+                suggestedAccount.setOnInviteEvent(event -> NewController.this.createNewGame(username));
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccount);
                 this.suggestedAccountsContainer.setVisible(true);
@@ -57,7 +60,7 @@ public class NewController extends Controller {
 
     public void handleRequestAction() {
         Random rand = new Random();
-        this.createGameRequest("NL", this.userNamesList.get(rand.nextInt(this.userNamesList.size())));
+        this.createGameRequest("NL", this.usernameslist.get(rand.nextInt(this.usernameslist.size())));
     }
 
     public void createNewGame(String otherPlayer) {

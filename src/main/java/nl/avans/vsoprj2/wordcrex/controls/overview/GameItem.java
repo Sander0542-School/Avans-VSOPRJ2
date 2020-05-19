@@ -46,9 +46,10 @@ public class GameItem extends AnchorPane implements Initializable {
     }
 
     public void setGame(Game game) {
+        if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
 
-        String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1(); //TODO(getUser() --> getUser().getUsername())
+        String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1();
 
         this.gameTitleLabel.setText(String.format("%s - %s", otherUser, game.getLettersetCode()));
         this.messageLabel.setText(game.getMessage());
