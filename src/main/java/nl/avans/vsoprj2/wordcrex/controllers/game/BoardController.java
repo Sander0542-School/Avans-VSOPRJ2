@@ -81,6 +81,12 @@ public class BoardController extends Controller {
         });
     }
 
+    private void tilePlaced(Tile placedTile) {
+        this.unconfirmedTiles.add(placedTile);
+
+        this.updateLayout();
+    }
+
     private void tileRemoved(Tile placedTile) {
         this.unconfirmedTiles.remove(placedTile);
 
