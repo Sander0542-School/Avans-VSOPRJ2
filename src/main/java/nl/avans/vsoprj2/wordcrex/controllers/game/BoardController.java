@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -47,6 +48,10 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    public void handleBackButton(MouseEvent event) {
+        System.out.println("Test");
     }
 
     @FXML
