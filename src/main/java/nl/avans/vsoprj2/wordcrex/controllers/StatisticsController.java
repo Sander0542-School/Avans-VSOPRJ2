@@ -50,7 +50,7 @@ public class StatisticsController extends Controller {
         this.topWordScore.setText(this.statistic.getTopWordScore());
     }
 
-    public void bottomBarNavigation(Event event) {
+    public void handleBottomBarNavigation(Event event) {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
         if (bottomBarItem.getId().equals("games")) {
