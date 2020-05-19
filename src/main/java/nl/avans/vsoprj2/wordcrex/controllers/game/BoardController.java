@@ -1,11 +1,16 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
+import nl.avans.vsoprj2.wordcrex.models.Board;
 import nl.avans.vsoprj2.wordcrex.models.Game;
+import nl.avans.vsoprj2.wordcrex.models.Tile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +19,10 @@ import java.sql.SQLException;
 
 public class BoardController extends Controller {
     private Game game;
+    private Board board;
+
+    @FXML
+    private GridPane gameGrid;
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -23,6 +32,19 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+        this.board = new Board(game.getGameId());
+        this.updateView();
+    }
+
+    private void updateView(){
+        Tile[][] grid = this.board.getGrid();
+        for(int x = 0; x < grid.length; x++){
+            for(int y = 0; y < grid.length; y++){
+                Character value = grid[x][y].getValue();
+                Board.TileType tileType = grid[x][y].getTileType();
+                this.gameGrid.add(new LetterTile(value, tileType), 1, 1);
+            }
+        }
     }
 
     /**
