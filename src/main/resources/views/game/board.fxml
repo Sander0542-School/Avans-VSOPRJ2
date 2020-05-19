@@ -62,13 +62,13 @@
         <HBox alignment="CENTER" prefHeight="64.0" spacing="64.0" style="-fx-background-color: #1b1744;">
             <HBox alignment="CENTER_RIGHT" prefWidth="136.0" spacing="32.0">
 
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/play_arrow.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
@@ -83,10 +83,10 @@
                 <LetterTile/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="136.0" spacing="32.0">
-                <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
                     <Image url="@/images/drawables/chat_bubble_outline.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/more_horiz.png"/>
                 </ImageView>
             </HBox>
