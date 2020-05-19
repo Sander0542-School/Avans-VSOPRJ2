@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
-    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @FXML
     private ScrollPane chatScrollContainer;
@@ -72,6 +72,7 @@ public class ChatController extends Controller {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
+            //TODO(Daan) navigate back to board
         }
     }
 
@@ -115,6 +116,7 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
+                    this.navigateBackToGame();
                 }
             }
         });
@@ -149,10 +151,26 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
+                    this.navigateBackToGame();
                 }
             }
             keyEvent.consume();
         }
     }
-}
 
+    @FXML
+    private void navigateBackToGame() {
+        this.navigateTo("/views/game/board.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                BoardController boardController = (BoardController) controller;
+                boardController.setGame(ChatController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+}

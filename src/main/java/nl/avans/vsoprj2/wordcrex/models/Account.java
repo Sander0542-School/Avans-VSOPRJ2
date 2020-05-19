@@ -24,6 +24,10 @@ public class Account extends Model {
         return this.username;
     }
 
+    public String getRole() {
+        return this.role;
+    }
+
     public Statistic getStatistic() {
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -50,6 +54,7 @@ public class Account extends Model {
 
             throw new DbLoadException(ex);
         }
+
         return null;
     }
 }

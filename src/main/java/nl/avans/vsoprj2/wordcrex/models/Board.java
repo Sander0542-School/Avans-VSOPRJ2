@@ -15,7 +15,7 @@ public class Board {
     }
 
     private Tile[][] grid;
-    private Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
+    private Map<String, TileType> predefinedTileTypes = new HashMap<>();
 
     public Board() {
         this.populatePredefinedTileTypes();
@@ -74,11 +74,11 @@ public class Board {
     }
 
     public Tile[][] getGrid() {
-        return grid;
+        return this.grid;
     }
 
     public void setValue(int x, int y, Character Value) {
-        grid[x][y].setValue(Value);
+        this.grid[x][y].setValue(Value);
     }
 
 }
