@@ -81,6 +81,27 @@ public class BoardController extends Controller {
         });
     }
 
+    private HashMap<Character, Integer> getSymbolValues() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT `symbol`, `value` FROM `symbol` WHERE `letterset_code` = ?");
+            statement.setString(1, this.game.getLettersetCode());
+
+            ResultSet symbolSet = statement.executeQuery();
+
+            HashMap<Character, Integer> symbolValues = new HashMap<>();
+
+            while(symbolSet.next()) {
+                symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
+            }
+
+            return symbolValues;
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
     public List<Tile> findWord(Tile tile, boolean horizontal) {
         List<Tile> wordTiles = new ArrayList<>();
         Tile firstLetter = tile;
