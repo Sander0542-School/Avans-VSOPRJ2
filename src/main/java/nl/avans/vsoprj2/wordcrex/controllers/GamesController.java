@@ -74,6 +74,12 @@ public class GamesController extends Controller {
                 if(resultSet.next()) {
                     int GameID = resultSet.getInt("game_id");
                     int TurnID = resultSet.getByte("turn_id");
+                    //TODO make loop for every letter in a hand
+                    PreparedStatement handLetterStatement = connection.prepareStatement("INSERT INTO turn (game_id, turn_id, letter_id) VALUES (?, ?, ?)");
+                    handLetterStatement.setInt(1, GameID);
+                    handLetterStatement.setInt(2, TurnID);
+                    handLetterStatement.setInt(3, game.getGameId());
+                    handLetterStatement.executeUpdate();
                 }
             } catch (SQLException e) {
                 throw new DbLoadException(e);
