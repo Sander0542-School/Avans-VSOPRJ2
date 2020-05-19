@@ -46,6 +46,7 @@ public class GameItem extends AnchorPane implements Initializable {
     }
 
     public void setGame(Game game) {
+        if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
 
         String otherUser = game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername()) ? game.getUsernamePlayer2() : game.getUsernamePlayer1();
