@@ -21,7 +21,7 @@ public class LoginController extends Controller {
     @FXML
     private Label error;
 
-    public void backButton() {
+    public void handleBackButton() {
         this.navigateTo("/views/index.fxml");
     }
 
