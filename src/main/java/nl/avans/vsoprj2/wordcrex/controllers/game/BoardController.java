@@ -81,6 +81,16 @@ public class BoardController extends Controller {
         });
     }
 
+    private List<String> getWordsFromList(List<List<Tile>> words) {
+        List<String> wordsString = new ArrayList<>();
+
+        for (List<Tile> word : words) {
+            wordsString.add(word.stream().map(Tile::getValue).iterator().toString());
+        }
+
+        return wordsString;
+    }
+
     private HashMap<Character, Integer> getSymbolValues() {
         Connection connection = Singleton.getInstance().getConnection();
 
