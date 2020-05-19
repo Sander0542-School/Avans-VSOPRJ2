@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controls.games;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,7 @@ public class SuggestedAccount extends HBox implements Initializable {
     private Button inviteButton;
     private String userName;
 
-    private EventHandler<MouseEvent> inviteEventHandler = null;
+    private EventHandler<ActionEvent> inviteEventHandler = null;
 
     public SuggestedAccount() {
         super();
@@ -44,17 +45,17 @@ public class SuggestedAccount extends HBox implements Initializable {
         this.inviteButton.setText(account);
     }
 
-    public void handleInviteAction(MouseEvent event) {
+    public void handleInviteAction(ActionEvent event) {
         if (this.inviteEventHandler != null) {
             this.inviteEventHandler.handle(event);
         }
     }
 
-    public void setOnInviteEvent(EventHandler<MouseEvent> eventHandler) {
+    public void setOnInviteEvent(EventHandler<ActionEvent> eventHandler) {
         this.inviteEventHandler = eventHandler;
     }
 
-    public EventHandler<MouseEvent> getOnInviteEvent() {
+    public EventHandler<ActionEvent> getOnInviteEvent() {
         return this.inviteEventHandler;
     }
 
