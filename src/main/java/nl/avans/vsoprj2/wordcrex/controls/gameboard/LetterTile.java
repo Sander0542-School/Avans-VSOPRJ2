@@ -3,6 +3,7 @@ package nl.avans.vsoprj2.wordcrex.controls.gameboard;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import nl.avans.vsoprj2.wordcrex.models.Board;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +23,10 @@ public class LetterTile extends AnchorPane implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public LetterTile(Character a,  Board.TileType i) {
+        System.out.println(a);
     }
 
     @Override
