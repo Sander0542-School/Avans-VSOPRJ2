@@ -18,16 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class BoardController extends Controller {
     private Game game;
     private Board board;
 
     @FXML
-    private GridPane gameGrid = new GridPane();
-    @FXML
-    private HBox centerBox;
+    private GridPane gameGrid;
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -39,7 +36,6 @@ public class BoardController extends Controller {
         this.game = game;
         this.board = new Board(game.getGameId());
         this.updateView();
-        this.centerBox.getChildren().addAll(this.gameGrid);
     }
 
     private void updateView(){
@@ -48,9 +44,8 @@ public class BoardController extends Controller {
             for(int y = 0; y < grid.length; y++){
                 Character value = grid[x][y].getValue();
                 Board.TileType tileType = grid[x][y].getTileType();
-                LetterTile Tijdelijk = new LetterTile(value, tileType);
-                this.gameGrid.add(Tijdelijk, x, y);
-                //this.gameGrid.getChildren().add(Tijdelijk);
+
+                this.gameGrid.add(new LetterTile(value, tileType), x, y);
             }
         }
     }
