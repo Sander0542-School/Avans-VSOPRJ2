@@ -108,6 +108,6 @@
         </VBox>
     </center>
     <bottom>
-        <BottomBar onBarItemClicked="#bottomBarNavigation" active="statistics"/>
+        <BottomBar onBarItemClicked="#handleBottomBarNavigation" active="statistics"/>
     </bottom>
 </BorderPane>
