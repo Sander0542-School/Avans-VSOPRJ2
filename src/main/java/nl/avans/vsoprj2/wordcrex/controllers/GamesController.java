@@ -2,13 +2,11 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
@@ -23,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GamesController extends Controller {
@@ -60,21 +57,22 @@ public class GamesController extends Controller {
         alert.setTitle("Game request");
         alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer2());
 
-        ButtonType buttonTypeDecline = new ButtonType("Decline");
-        ButtonType buttonTypeAccept = new ButtonType("Accept");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeDecline = new ButtonType("Weigeren", ButtonBar.ButtonData.NO);
+        ButtonType buttonTypeAccept = new ButtonType("Accepteren", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeCancel = new ButtonType("Annuleren", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(buttonTypeDecline, buttonTypeAccept, buttonTypeCancel);
-        Optional<ButtonType> result = alert.showAndWait();
+        alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeDecline, buttonTypeCancel);
 
-        if (result.get() == buttonTypeDecline) {
-            game.setAnswerPlayer2(Game.Answer.REJECTED);
-        } else if (result.get() == buttonTypeAccept) {
-            game.setGameState(Game.GameState.PLAYING);
-            game.setAnswerPlayer2(Game.Answer.ACCEPTED);
-        }
-
-        game.save();
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.NO) {
+                game.setAnswerPlayer2(Game.Answer.REJECTED);
+                game.save();
+            } else if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                game.setGameState(Game.GameState.PLAYING);
+                game.setAnswerPlayer2(Game.Answer.ACCEPTED);
+                game.save();
+            }
+        });
     }
 
     private void loadGames(Account user) {
@@ -173,18 +171,29 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
-        gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                BoardController boardController = (BoardController) controller;
-                boardController.setGame(gameItem.getGame());
-            }
+        gameItem.setOnMouseClicked(event -> {
+                    if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Wachten op tegenstander");
+                        alert.setHeaderText(String.format("Je tegenstander %s heeft je uitnodiging nog niet geaccepteerd.", gameItem.getGame().getUsernamePlayer2()));
+                        alert.showAndWait();
+                        return;
+                    }
 
-            @Override
-            public void afterNavigate(Controller controller) {
+                    GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
+                        @Override
+                        public void beforeNavigate(Controller controller) {
+                            BoardController boardController = (BoardController) controller;
+                            boardController.setGame(gameItem.getGame());
+                        }
 
-            }
-        }));
+                        @Override
+                        public void afterNavigate(Controller controller) {
+
+                        }
+                    });
+                }
+        );
     }
 
     public void handleBottomBarNavigation(Event event) {
