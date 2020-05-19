@@ -2,7 +2,7 @@ package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.models.Board.TileType;
 
-class Tile {
+public class Tile {
     private Character value;
     private final TileType tileType;
 
