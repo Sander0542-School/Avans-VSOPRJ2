@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class SettingsController extends Controller {
 
     @FXML
@@ -19,5 +22,9 @@ public class SettingsController extends Controller {
     public void handleLogoutAction() {
         Singleton.getInstance().setUser(null);
         this.navigateTo("/views/index.fxml");
+    }
+
+    public void handleBackButton() {
+        this.navigateTo("/views/games.fxml");
     }
 }
