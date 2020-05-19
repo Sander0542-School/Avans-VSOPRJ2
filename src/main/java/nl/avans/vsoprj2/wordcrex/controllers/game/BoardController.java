@@ -81,6 +81,45 @@ public class BoardController extends Controller {
         });
     }
 
+    public int calculatePoints(List<List<Tile>> words) {
+        int points = 0;
+
+        HashMap<Character, Integer> symbolValues = this.getSymbolValues();
+
+        for (List<Tile> word : words) {
+            int wordPoints = 0;
+            int wordMultiplier = 1;
+
+            for (Tile tile : word) {
+                int letterMultiplier = 1;
+                switch(tile.getTileType()) {
+                    case TWOLETTER:
+                        letterMultiplier = 2;
+                        break;
+                    case FOURLETTER:
+                        letterMultiplier = 4;
+                        break;
+                    case SIXLETTER:
+                        letterMultiplier = 6;
+                        break;
+                    case START:
+                    case THREEWORD:
+                        wordMultiplier *= 3;
+                        break;
+                    case FOURWORD:
+                        wordMultiplier *= 4;
+                        break;
+                }
+
+                wordPoints += symbolValues.get(tile.getValue()) * letterMultiplier;
+            }
+
+            points += (wordPoints * wordMultiplier);
+        }
+
+        return points;
+    }
+
     private List<String> getWordsFromList(List<List<Tile>> words) {
         List<String> wordsString = new ArrayList<>();
 
