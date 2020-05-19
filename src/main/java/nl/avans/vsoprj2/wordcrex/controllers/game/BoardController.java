@@ -81,6 +81,47 @@ public class BoardController extends Controller {
         });
     }
 
+    private List<List<Tile>> getWords() {
+        Orientation orientation = this.getWordOrientation();
+
+        List<List<Tile>> words = new ArrayList<>();
+
+        if (orientation == null) {
+            return null;
+        }
+
+        switch (orientation) {
+            case SINGLE_TILE:
+                words.add(this.findWord(this.unconfirmedTiles.get(0), true));
+                words.add(this.findWord(this.unconfirmedTiles.get(0), false));
+                break;
+            case VERTICAL:
+                int minY = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getY)).get().getY();
+                int maxY = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getY)).get().getY();
+
+                words.add(this.findWord(this.unconfirmedTiles.get(0), false));
+
+                for (int y = minY; y <= maxY; y++) {
+                    words.add(this.findWord(this.board.getTile(this.unconfirmedTiles.get(0).getX(), y), true));
+                }
+                break;
+            case HORIZONTAL:
+                int minX = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getX)).get().getX();
+                int maxX = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getX)).get().getX();
+
+                words.add(this.findWord(this.unconfirmedTiles.get(0), true));
+
+                for (int x = minX; x <= maxX; x++) {
+                    words.add(this.findWord(this.board.getTile(x, this.unconfirmedTiles.get(0).getY()), false));
+                }
+                break;
+        }
+
+        words.removeIf(Objects::isNull);
+
+        return words.size() > 0 ? words : null;
+    }
+
     public int calculatePoints(List<List<Tile>> words) {
         int points = 0;
 
