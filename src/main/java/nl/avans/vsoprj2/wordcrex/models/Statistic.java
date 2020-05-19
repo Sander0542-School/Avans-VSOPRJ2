@@ -2,47 +2,48 @@ package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 
 public class Statistic extends Model {
     @Column("games_won")
-    private String gamesWon;
+    private Long gamesWon;
     @Column("games_lost")
-    private String gamesLost;
+    private Long gamesLost;
     @Column("games_tied")
-    private String gamesTied;
+    private Long gamesTied;
     @Column("games_left")
-    private String gamesLeft;
+    private Long gamesLeft;
     @Column("top_game_score")
-    private String topGameScore;
+    private BigDecimal topGameScore;
     @Column("top_word_score")
-    private String topWordScore;
+    private Long topWordScore;
 
     public Statistic(ResultSet resultSet) {
         super(resultSet);
     }
 
-    public String getGamesWon() {
+    public Long getGamesWon() {
         return this.gamesWon;
     }
 
-    public String getGamesLost() {
+    public Long getGamesLost() {
         return this.gamesLost;
     }
 
-    public String getGamesTied() {
+    public Long getGamesTied() {
         return this.gamesTied;
     }
 
-    public String getGamesLeft() {
+    public Long getGamesLeft() {
         return this.gamesLeft;
     }
 
-    public String getTopGameScore() {
+    public BigDecimal getTopGameScore() {
         return this.topGameScore;
     }
 
-    public String getTopWordScore() {
+    public Long getTopWordScore() {
         return this.topWordScore;
     }
 }
