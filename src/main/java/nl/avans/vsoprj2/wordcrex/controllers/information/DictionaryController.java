@@ -6,6 +6,6 @@ import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 public class DictionaryController extends Controller {
     @FXML
     private void handleBackButton() {
-        this.navigateTo("/views/games.fxml");
+        this.navigateTo("/views/information.fxml");
     }
 }
