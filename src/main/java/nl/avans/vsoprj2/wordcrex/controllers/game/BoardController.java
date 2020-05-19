@@ -2,18 +2,27 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
+import nl.avans.vsoprj2.wordcrex.models.Board;
 import nl.avans.vsoprj2.wordcrex.models.Game;
+import nl.avans.vsoprj2.wordcrex.models.Tile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class BoardController extends Controller {
+
     private Game game;
+    private Board board = new Board();
+
+    private List<Tile> unconfirmedTiles = new ArrayList<>();
 
     /**
      * This method needs to be called in the BeforeNavigation.
