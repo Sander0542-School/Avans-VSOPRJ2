@@ -81,6 +81,18 @@ public class BoardController extends Controller {
         });
     }
 
+    private void updateLayout() {
+        List<List<Tile>> words = this.getWords();
+
+        //TODO() Hide point count on layout
+
+        if (this.checkWords(words)) {
+            int points = this.calculatePoints(words);
+
+            //TODO() Show point count on layout
+        }
+    }
+
     private boolean checkWords(List<List<Tile>> words) {
         // No words
         if (words == null) {
