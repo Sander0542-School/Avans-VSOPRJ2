@@ -81,6 +81,45 @@ public class BoardController extends Controller {
         });
     }
 
+    private Orientation getWordOrientation() {
+        if (this.unconfirmedTiles.size() == 0) {
+            return null;
+        } else if (this.unconfirmedTiles.size() == 1) {
+            return Orientation.SINGLE_TILE;
+        }
+
+        Stream<Integer> differentXValues = this.unconfirmedTiles.stream().map(Tile::getX).distinct();
+        Stream<Integer> differentYValues = this.unconfirmedTiles.stream().map(Tile::getY).distinct();
+
+        if (differentXValues.count() > 1 && differentYValues.count() > 1) {
+            return null;
+        }
+
+        if (differentXValues.count() == 1) {
+            int minY = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getY)).get().getY();
+            int maxY = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getY)).get().getY();
+
+            for (int y = minY; y <= maxY; y++) {
+                if (!this.board.hasValue(differentXValues.findFirst().get(), y)) {
+                    return null;
+                }
+            }
+
+            return Orientation.VERTICAL;
+        } else {
+            int minX = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getX)).get().getX();
+            int maxX = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getX)).get().getX();
+
+            for (int x = minX; x <= maxX; x++) {
+                if (!this.board.hasValue(x, differentYValues.findFirst().get())) {
+                    return null;
+                }
+            }
+
+            return Orientation.HORIZONTAL;
+        }
+    }
+
     private enum Orientation {
         SINGLE_TILE,
         HORIZONTAL,
