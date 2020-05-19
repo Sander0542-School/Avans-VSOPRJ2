@@ -59,6 +59,11 @@ public class BoardController extends Controller {
     }
 
     @FXML
+    private void handleBackButton() {
+        this.navigateTo("/views/games.fxml");
+    }
+
+    @FXML
     private void handleScoreboardAction() {
         this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
             @Override
