@@ -69,9 +69,22 @@ public class Board {
         return this.predefinedTileTypes.getOrDefault(x + "," + y, TileType.NORMAL);
     }
 
+    public Tile getTile(int x, int y) {
+        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+            return null;
+        }
+
+        return this.grid[x][y];
+    }
+
+    public boolean hasValue(int x, int y) {
+        return this.getValue(x, y) != null;
+    }
 
     public Character getValue(int x, int y) {
-        return this.grid[x][y].getValue();
+        Tile tile = this.getTile(x, y);
+
+        return tile == null ? null : tile.getValue();
     }
 
     public Tile[][] getGrid() {
