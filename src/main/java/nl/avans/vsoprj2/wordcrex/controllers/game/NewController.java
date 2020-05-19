@@ -68,14 +68,14 @@ public class NewController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO game(game_state, letterset_code, username_player1, username_player2, answer_player2, username_winner) VALUES ('request', ?, ?, ?, 'unknown', NULL)");
-            statement.setString(1, letterset);
-            statement.setString(2, Singleton.getInstance().getUser().getUsername());
-            statement.setString(3, otherPlayer);
+            PreparedStatement gameStatement = connection.prepareStatement("INSERT INTO game(game_state, letterset_code, username_player1, username_player2, answer_player2, username_winner) VALUES ('request', ?, ?, ?, 'unknown', NULL)", Statement.RETURN_GENERATED_KEYS);
+            gameStatement.setString(1, letterset);
+            gameStatement.setString(2, Singleton.getInstance().getUser().getUsername());
+            gameStatement.setString(3, otherPlayer);
 
-            statement.executeUpdate();
+            gameStatement.executeUpdate();
 
-            ResultSet resultSet = statement.getGeneratedKeys();
+            ResultSet resultSet = gameStatement.getGeneratedKeys();
 
             if (resultSet.next()) {
                 int gameId = resultSet.getInt(1);
