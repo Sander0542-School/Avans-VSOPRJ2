@@ -80,4 +80,10 @@ public class BoardController extends Controller {
             }
         });
     }
+
+    private enum Orientation {
+        SINGLE_TILE,
+        HORIZONTAL,
+        VERTICAL
+    }
 }
