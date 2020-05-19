@@ -187,7 +187,7 @@ public class GamesController extends Controller {
         }));
     }
 
-    public void bottomBarNavigation(Event event) {
+    public void handleBottomBarNavigation(Event event) {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
         if (bottomBarItem.getId().equals("statistics")) {
