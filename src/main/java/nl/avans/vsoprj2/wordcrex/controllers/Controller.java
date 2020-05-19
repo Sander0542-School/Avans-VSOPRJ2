@@ -37,6 +37,10 @@ public abstract class Controller implements Initializable {
             }
 
             Scene scene = new Scene(parent);
+            
+            controller.borderPane.setPrefWidth(this.getStage().getScene().getWidth());
+            controller.borderPane.setPrefHeight(this.getStage().getScene().getHeight());
+            
             this.getStage().setScene(scene);
 
             if (navigationListener != null) {
