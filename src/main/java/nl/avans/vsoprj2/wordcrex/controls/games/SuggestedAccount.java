@@ -15,8 +15,6 @@ import java.util.ResourceBundle;
 
 public class SuggestedAccount extends HBox implements Initializable {
     @FXML
-    private Label usernameLabel;
-    @FXML
     private Button inviteButton;
     private String userName;
 
@@ -43,7 +41,7 @@ public class SuggestedAccount extends HBox implements Initializable {
     public SuggestedAccount(String account) {
         this();
         this.userName = account;
-        this.usernameLabel.setText(account);
+        this.inviteButton.setText(account);
     }
 
     public void handleInviteAction(MouseEvent event) {
