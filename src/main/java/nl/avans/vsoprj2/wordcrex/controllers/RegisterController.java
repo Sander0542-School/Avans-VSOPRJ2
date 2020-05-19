@@ -21,6 +21,7 @@ public class RegisterController extends Controller {
     private PasswordField repeatpassword;
     @FXML
     private Label error;
+
     public void handleRegisterAction() {
         this.error.setVisible(false);
 
@@ -78,6 +79,10 @@ public class RegisterController extends Controller {
                 throw new DbLoadException(e3);
             }
         }
+    }
+
+    public void handleBackButton() {
+        this.navigateTo("/views/index.fxml");
     }
 
     private void showErrorMessage(String message) {

@@ -1,12 +1,18 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
+import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -179,5 +185,26 @@ public class GamesController extends Controller {
 
             }
         }));
+    }
+
+    public void handleBottomBarNavigation(Event event) {
+        BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
+
+        if (bottomBarItem.getId().equals("statistics")) {
+            this.navigateTo("/views/statistics.fxml");
+        }
+    }
+
+    public void handleOptionsMenu(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+
+        switch (menuItem.getId()) {
+            case "info":
+                this.navigateTo("/views/information.fxml");
+                break;
+            case "settings":
+                this.navigateTo("/views/settings.fxml");
+                break;
+        }
     }
 }

@@ -1,7 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.models.Statistic;
 
@@ -44,6 +48,27 @@ public class StatisticsController extends Controller {
         this.gamesLeft.setText(this.statistic.getGamesLeft());
         this.topGameScore.setText(this.statistic.getTopGameScore());
         this.topWordScore.setText(this.statistic.getTopWordScore());
+    }
+
+    public void handleBottomBarNavigation(Event event) {
+        BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
+
+        if (bottomBarItem.getId().equals("games")) {
+            this.navigateTo("/views/games.fxml");
+        }
+    }
+
+    public void handleOptionsMenu(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+
+        switch (menuItem.getId()) {
+            case "info":
+                this.navigateTo("/views/information.fxml");
+                break;
+            case "settings":
+                this.navigateTo("/views/settings.fxml");
+                break;
+        }
     }
 
     /**
