@@ -171,20 +171,29 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
-        if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) return;
+        gameItem.setOnMouseClicked(event -> {
+                    if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Wachten op tegenstander");
+                        alert.setHeaderText(String.format("Je tegenstander %s heeft je uitnodiging nog niet geaccepteerd.", gameItem.getGame().getUsernamePlayer2()));
+                        alert.showAndWait();
+                        return;
+                    }
 
-        gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                BoardController boardController = (BoardController) controller;
-                boardController.setGame(gameItem.getGame());
-            }
+                    GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
+                        @Override
+                        public void beforeNavigate(Controller controller) {
+                            BoardController boardController = (BoardController) controller;
+                            boardController.setGame(gameItem.getGame());
+                        }
 
-            @Override
-            public void afterNavigate(Controller controller) {
+                        @Override
+                        public void afterNavigate(Controller controller) {
 
-            }
-        }));
+                        }
+                    });
+                }
+        );
     }
 
     public void handleBottomBarNavigation(Event event) {
