@@ -4,9 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <?import java.net.URL?>
-
 <fx:root prefHeight="64.0" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/styles/context-menu.css"/>
@@ -24,7 +22,7 @@
     </HBox>
 
     <HBox spacing="24" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
-        <ImageView fx:id="deleteButton" pickOnBounds="true" onMouseClicked="#deleteButtonClicked" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
+        <ImageView fx:id="deleteButton" pickOnBounds="true" onMouseClicked="#handleDeleteButton" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
             <Image url="@/images/drawables/delete.png"/>
         </ImageView>
         <ImageView fx:id="optionsButton" pickOnBounds="true" onMouseClicked="#handleOptionsButton" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
