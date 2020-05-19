@@ -2,13 +2,11 @@ package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
@@ -173,6 +171,8 @@ public class GamesController extends Controller {
     }
 
     private void setGameItemClick(GameItem gameItem) {
+        if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) return;
+
         gameItem.setOnMouseClicked(event -> GamesController.this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
