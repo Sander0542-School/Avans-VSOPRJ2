@@ -81,6 +81,38 @@ public class BoardController extends Controller {
         });
     }
 
+    public List<Tile> findWord(Tile tile, boolean horizontal) {
+        List<Tile> wordTiles = new ArrayList<>();
+        Tile firstLetter = tile;
+        int i = 1;
+
+        if (horizontal) {
+            while (this.board.hasValue(tile.getX() - i, tile.getY())) {
+                firstLetter = this.board.getTile(tile.getX() - i, tile.getY());
+                i--;
+            }
+            wordTiles.add(firstLetter);
+            i++;
+            while (this.board.hasValue(tile.getX() - i, tile.getY())) {
+                wordTiles.add(this.board.getTile(tile.getX() - i, tile.getY()));
+                i++;
+            }
+        } else {
+            while (this.board.hasValue(tile.getX(), tile.getY() - i)) {
+                firstLetter = this.board.getTile(tile.getX(), tile.getY() - i);
+                i--;
+            }
+            wordTiles.add(firstLetter);
+            i++;
+            while (this.board.hasValue(tile.getX(), tile.getY() - i)) {
+                wordTiles.add(this.board.getTile(tile.getX(), tile.getY() - i));
+                i++;
+            }
+        }
+
+        return wordTiles.size() > 1 ? wordTiles : null;
+    }
+
     private Orientation getWordOrientation() {
         if (this.unconfirmedTiles.size() == 0) {
             return null;
