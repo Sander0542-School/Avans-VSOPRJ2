@@ -56,6 +56,6 @@
     </center>
 
     <bottom>
-        <BottomBar onBarItemClicked="#bottomBarNavigation" active="games"/>
+        <BottomBar onBarItemClicked="#handleBottomBarNavigation" active="games"/>
     </bottom>
 </BorderPane>
