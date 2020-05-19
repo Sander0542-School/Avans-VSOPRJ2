@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GamesController extends Controller {
@@ -58,21 +57,22 @@ public class GamesController extends Controller {
         alert.setTitle("Game request");
         alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer2());
 
-        ButtonType buttonTypeDecline = new ButtonType("Decline");
-        ButtonType buttonTypeAccept = new ButtonType("Accept");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeDecline = new ButtonType("Weigeren", ButtonBar.ButtonData.NO);
+        ButtonType buttonTypeAccept = new ButtonType("Accepteren", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeCancel = new ButtonType("Annuleren", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(buttonTypeDecline, buttonTypeAccept, buttonTypeCancel);
-        Optional<ButtonType> result = alert.showAndWait();
+        alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeDecline, buttonTypeCancel);
 
-        if (result.get() == buttonTypeDecline) {
-            game.setAnswerPlayer2(Game.Answer.REJECTED);
-        } else if (result.get() == buttonTypeAccept) {
-            game.setGameState(Game.GameState.PLAYING);
-            game.setAnswerPlayer2(Game.Answer.ACCEPTED);
-        }
-
-        game.save();
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.NO) {
+                game.setAnswerPlayer2(Game.Answer.REJECTED);
+                game.save();
+            } else if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                game.setGameState(Game.GameState.PLAYING);
+                game.setAnswerPlayer2(Game.Answer.ACCEPTED);
+                game.save();
+            }
+        });
     }
 
     private void loadGames(Account user) {
