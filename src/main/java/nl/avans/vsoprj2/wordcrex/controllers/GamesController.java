@@ -13,10 +13,7 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,6 +63,21 @@ public class GamesController extends Controller {
         } else if (result.get() == buttonTypeAccept) {
             game.setGameState(Game.GameState.PLAYING);
             game.setAnswerPlayer2(Game.Answer.ACCEPTED);
+
+            Connection connection = Singleton.getInstance().getConnection();
+            try {
+                PreparedStatement turnStatement = connection.prepareStatement("INSERT INTO turn (game_id, turn_id) VALUES (?, 1)", Statement.RETURN_GENERATED_KEYS);
+                turnStatement.setInt(1, game.getGameId());
+                turnStatement.executeUpdate();
+                ResultSet resultSet = turnStatement.getResultSet();
+
+                if(resultSet.next()) {
+                    int GameID = resultSet.getInt("game_id");
+                    int TurnID = resultSet.getByte("turn_id");
+                }
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
         }
 
         game.save();
