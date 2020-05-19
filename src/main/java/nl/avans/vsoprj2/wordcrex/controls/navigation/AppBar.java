@@ -23,8 +23,8 @@ public class AppBar extends AnchorPane implements Initializable {
     @FXML
     private ImageView deleteButton;
 
-    private EventHandler backButtonEventHandler;
-    private EventHandler deleteButtonEventHandler;
+    private EventHandler<MouseEvent> backButtonEventHandler;
+    private EventHandler<MouseEvent> deleteButtonEventHandler;
 
     public AppBar() {
         super();
@@ -81,26 +81,26 @@ public class AppBar extends AnchorPane implements Initializable {
         }
     }
 
-    public void setOnBackButtonEvent(EventHandler eventHandler) {
+    public void setOnBackButtonEvent(EventHandler<MouseEvent> eventHandler) {
         this.backButtonEventHandler = eventHandler;
     }
 
-    public EventHandler getOnBackButtonEvent() {
+    public EventHandler<MouseEvent> getOnBackButtonEvent() {
         return this.backButtonEventHandler;
     }
 
     public void deleteButtonClicked(MouseEvent event) {
-        if (deleteButtonEventHandler != null) {
-            deleteButtonEventHandler.handle(event);
+        if (this.deleteButtonEventHandler != null) {
+            this.deleteButtonEventHandler.handle(event);
         }
     }
 
-    public EventHandler getOnDeleteButtonEvent() {
-        return deleteButtonEventHandler;
+    public EventHandler<MouseEvent> getOnDeleteButtonEvent() {
+        return this.deleteButtonEventHandler;
     }
 
-    public void setOnDeleteButtonEvent(EventHandler eventHandler) {
-        deleteButtonEventHandler = eventHandler;
+    public void setOnDeleteButtonEvent(EventHandler<MouseEvent> eventHandler) {
+        this.deleteButtonEventHandler = eventHandler;
     }
 
     @Override

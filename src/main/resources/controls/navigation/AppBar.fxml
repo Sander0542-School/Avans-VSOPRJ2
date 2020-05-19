@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <fx:root prefHeight="64.0" style="-fx-background-color: #1b1744;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <HBox spacing="32" alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0">
-        <ImageView fx:id="backButton" onMouseClicked="#backButtonClicked" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
+        <ImageView fx:id="backButton" pickOnBounds="true" onMouseClicked="#backButtonClicked" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
             <Image url="@/images/drawables/arrow_back.png"/>
         </ImageView>
         <Label fx:id="titleLabel" text="Title" textFill="WHITE">
@@ -17,10 +17,10 @@
     </HBox>
 
     <HBox spacing="24" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
-        <ImageView fx:id="deleteButton" onMouseClicked="#deleteButtonClicked" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
+        <ImageView fx:id="deleteButton" pickOnBounds="true" onMouseClicked="#deleteButtonClicked" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
             <Image url="@/images/drawables/delete.png"/>
         </ImageView>
-        <ImageView fx:id="optionsButton" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
+        <ImageView fx:id="optionsButton" pickOnBounds="true" visible="false" managed="false" fitHeight="24.0" fitWidth="24.0">
             <Image url="@/images/drawables/more_vert.png"/>
         </ImageView>
     </HBox>

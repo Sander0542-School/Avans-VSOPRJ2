@@ -21,8 +21,8 @@ public class Board {
         SIXLETTER
     }
 
-    private final Tile[][] grid;
-    private final Map<String, TileType> predefinedTileTypes = new HashMap<String, TileType>();
+
+    private Tile[][] grid;
 
     public Board() {
         this.grid = this.newBoard();
