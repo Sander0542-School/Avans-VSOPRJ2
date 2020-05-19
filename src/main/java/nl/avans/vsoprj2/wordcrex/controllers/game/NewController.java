@@ -8,10 +8,7 @@ import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -76,7 +73,36 @@ public class NewController extends Controller {
             statement.setString(2, Singleton.getInstance().getUser().getUsername());
             statement.setString(3, otherPlayer);
 
-            statement.execute();
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                int gameId = resultSet.getInt(1);
+
+                PreparedStatement symbolsStatement = connection.prepareStatement("SELECT symbol, counted FROM symbol WHERE letterset_code = ?");
+                symbolsStatement.setString(1, letterset);
+
+                ResultSet symbolResult = symbolsStatement.executeQuery();
+
+                StringBuilder queryBuilder = new StringBuilder();
+                queryBuilder.append("INSERT INTO letter (game_id, symbol_letterset_code, symbol) VALUES ");
+
+                while(symbolResult.next()) {
+                    String symbol = symbolResult.getString("symbol");
+                    int counted = symbolResult.getInt("counted");
+
+                    for (int i = 0; i < counted; i++) {
+                        queryBuilder.append(String.format("(%s, '%s', '%s'),", gameId, letterset, symbol));
+                    }
+                }
+                queryBuilder.setLength(queryBuilder.length() - 1);
+
+                queryBuilder.append(";");
+
+                PreparedStatement lettersStatement = connection.prepareStatement(queryBuilder.toString());
+                lettersStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         } finally {
