@@ -1,6 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -11,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class BoardController extends Controller {
     private Game game;
@@ -33,6 +37,52 @@ public class BoardController extends Controller {
         this.game.setWinner(winner);
 
         this.game.save();
+    }
+
+    public void passGameClick() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Game passen");
+        alert.setHeaderText("Weet je zeker dat je wil passen?");
+
+        ButtonType buttonTypeCancel = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeOk = new ButtonType("OK");
+
+        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeOk);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == buttonTypeOk) {
+//            this.passGame();
+        }
+    }
+
+    private void passGame() {
+        Connection connection = Singleton.getInstance().getConnection();
+        String currentUsername = Singleton.getInstance().getUser().getUsername();
+        boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
+
+        //TODO Check Turn status
+        //SELECT (SELECT turnaction_type FROM turnplayer1 WHERE game_id = 546 ORDER BY turn_id DESC) AS type_player1, (SELECT turnaction_type FROM turnplayer2 WHERE game_id = 546 ORDER BY turn_id DESC) AS type_player2
+
+        try {
+            if (isPlayer1) {
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer1(game_id, turn_id, username_player1, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM `turnplayer1` WHERE game_id = ?), ?, 0, 0, 'pass')");
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, this.game.getGameId());
+                statement.setString(3, currentUsername);
+
+                statement.execute();
+            } else {
+            }
+
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void giveNewLetterInHand() {
+        //TODO Give new letters
+        //TODO Start new turn
     }
 
     public boolean isExistingWord(String word) {

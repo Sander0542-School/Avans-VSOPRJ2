@@ -68,7 +68,7 @@
                 <ImageView fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView onMouseClicked="#passGameClick" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
