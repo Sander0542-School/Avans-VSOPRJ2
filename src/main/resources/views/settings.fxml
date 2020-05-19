@@ -12,7 +12,7 @@
     <center>
         <VBox alignment="TOP_CENTER">
             <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 100 0 0 0;" spacing="32.0">
-                <Label text="John Doe" textFill="#201b53">
+                <Label fx:id="username" textFill="#201b53">
                     <font>
                         <Font name="Roboto Black" size="18.0" />
                     </font>
