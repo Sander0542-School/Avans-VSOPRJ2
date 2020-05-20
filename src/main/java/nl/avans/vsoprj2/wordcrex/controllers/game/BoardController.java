@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static nl.avans.vsoprj2.wordcrex.models.Board.TileType.START;
+
 public class BoardController extends Controller {
     private Game game;
     private Board board;
@@ -160,16 +162,22 @@ public class BoardController extends Controller {
             }
         }
 
-        if (this.board.containsLetters()) { // if no letters are present yet, ignore following check
-            for (Tile tile : this.unconfirmedTiles) { // checking if at least 1 of the new letters touches an older letter
-                if ((this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
-                        !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) ||
-                        (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
-                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) ||
-                        (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
-                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) ||
-                        (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
-                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1)))) ;
+        for (Tile tile : this.unconfirmedTiles) { // checking if at least 1 of the new letters touches an older letter
+            if (tile.getTileType() == START) return true; // bypass check if this is the first word this game
+            if (this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1))) {
                 return true;
             }
         }

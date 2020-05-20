@@ -22,7 +22,6 @@ public class Board {
     public static final int BOARD_SIZE = 15;
 
     private final Tile[][] grid;
-    private boolean containsLetters = false; // letters which have been confirmed, i.e. are in the DB
 
     public Board(int gameId) {
         this.grid = this.newBoard();
@@ -129,16 +128,5 @@ public class Board {
 
     public Tile[][] getGrid() {
         return this.grid;
-    }
-
-    public boolean containsLetters() {
-        return this.containsLetters;
-    }
-
-    /**
-     * Needs to be called the first time letters are confirmed on the board
-     */
-    public void setContainsLetters() {
-        this.containsLetters = true; // can only be set to true, since no confirmed letters can be removed
     }
 }
