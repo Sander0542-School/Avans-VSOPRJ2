@@ -24,14 +24,12 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
-
     private Game game;
     private Board board;
     private final List<Tile> unconfirmedTiles = new ArrayList<>();
 
     @FXML
     private GridPane gameGrid;
-
 
     /**
      * This method needs to be called in the BeforeNavigation.

@@ -38,34 +38,38 @@ public class BackgroundTile extends AnchorPane implements Initializable {
     public void setTileType(Board.TileType tileType) {
         switch (tileType) {
             case START:
-                this.color.setStyle("-fx-background-color: #ed1193;");
+                this.setBackgroundColor("#ed1193");
                 this.color.setText("*");
                 break;
             case TWOLETTER:
-                this.color.setStyle("-fx-background-color: #2dabe1;");
+                this.setBackgroundColor("#2dabe1");
                 this.color.setText("2L");
                 break;
             case THREEWORD:
-                this.color.setStyle("-fx-background-color: #ed1193;");
+                this.setBackgroundColor("#ed1193");
                 this.color.setText("3W");
                 break;
             case FOURLETTER:
-                this.color.setStyle("-fx-background-color: #2a4d9a;");
+                this.setBackgroundColor("#2a4d9a");
                 this.color.setText("4L");
                 break;
             case FOURWORD:
-                this.color.setStyle("-fx-background-color: #f26623;");
+                this.setBackgroundColor("#f26623");
                 this.color.setText("4W");
                 break;
             case SIXLETTER:
-                this.color.setStyle("-fx-background-color: #0b9544;");
+                this.setBackgroundColor("#0b9544");
                 this.color.setText("6L");
                 break;
             default:
-                this.color.setStyle("-fx-background-color: #1b1744;");
+                this.setBackgroundColor("#1b1744");
                 this.color.setText("");
                 break;
         }
+    }
+
+    private void setBackgroundColor(String hexColor) {
+        this.color.setStyle(String.format("-fx-background-color: %s; -fx-background-radius: 6;", hexColor));
     }
 
     @Override
