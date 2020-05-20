@@ -186,7 +186,6 @@ public class BoardController extends Controller {
             int wordPoints = 0;
             int wordMultiplier = 1;
 
-
             for (Tile tile : word) {
                 int letterMultiplier = 1;
                 if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
