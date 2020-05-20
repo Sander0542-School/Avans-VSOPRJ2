@@ -12,20 +12,27 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LetterTile extends AnchorPane implements Initializable {
-    @FXML
-    private Label letter;
+
     @FXML
     private Label worth;
+    @FXML
+    private Label letter;
 
-    public LetterTile(Character character, Board.TileType tileType) {
+
+    public LetterTile(Character character, int worth) {
+        this();
+
+        this.letter.setText(character.toString());
+        this.worth.setText(String.valueOf(worth));
+
+    }
+
+    public LetterTile() {
         super();
 
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/LetterTile.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-
-        this.letter.setText(character.toString());
-        this.worth.setText("1");
 
         try {
             loader.load();
@@ -33,6 +40,7 @@ public class LetterTile extends AnchorPane implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
