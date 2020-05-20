@@ -21,7 +21,7 @@ public abstract class DbModel extends Model {
     public abstract String getTable();
 
     public boolean save() {
-        if (this.getTable() != null) {
+        if (this.getTable() == null) {
             return false;
         }
 
@@ -78,8 +78,6 @@ public abstract class DbModel extends Model {
                     statement.setNull(i + 1, Types.VARCHAR);
                 }
             }
-
-            System.err.println(statement);
 
             return statement.executeUpdate() > 0;
         } catch (Exception e) {
