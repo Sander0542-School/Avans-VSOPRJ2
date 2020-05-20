@@ -103,13 +103,17 @@ public class Board {
                     System.out.println(characters[i]);
                     this.grid[xValues[i]][yValues[i]].setValue(characters[i].charAt(0));
                 }
-
-
-    public void setValue(int x, int y, Character Value) {
-        this.grid[x][y].setValue(Value);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
-    public Tile getTile(int x, int y) {
+    public void setValue ( int x, int y, Character value){
+        this.grid[x][y].setValue(value);
+    }
+
+    public Tile getTile ( int x, int y){
         if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
             return null;
         }
@@ -117,17 +121,17 @@ public class Board {
         return this.grid[x][y];
     }
 
-    public boolean hasValue(int x, int y) {
+    public boolean hasValue ( int x, int y){
         return this.getValue(x, y) != null;
     }
 
-    public Character getValue(int x, int y) {
+    public Character getValue ( int x, int y){
         Tile tile = this.getTile(x, y);
 
         return tile == null ? null : tile.getValue();
     }
 
-    public Tile[][] getGrid() {
+    public Tile[][] getGrid () {
         return this.grid;
     }
 }

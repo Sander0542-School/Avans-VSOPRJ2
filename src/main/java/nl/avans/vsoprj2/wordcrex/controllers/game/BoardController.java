@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class BoardController extends Controller {
 
     private Game game;
-    private Board board = new Board();
+    private Board board;
     private List<Tile> unconfirmedTiles = new ArrayList<>();
     
     @FXML

@@ -18,6 +18,10 @@ public class Tile {
         this.tileType = type;
     }
 
+    public Tile(TileType tileType) {
+        this.tileType = tileType;
+    }
+
     public Character getValue() {
         return this.value;
     }
