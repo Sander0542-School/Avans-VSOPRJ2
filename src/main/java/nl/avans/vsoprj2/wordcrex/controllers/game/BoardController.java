@@ -1,8 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Board;
@@ -17,9 +20,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
-
     private Game game;
-    private Board board = new Board();
+    private Board board;
 
     private List<Tile> unconfirmedTiles = new ArrayList<>();
     private HashMap<Character, Integer> symbolValues = new HashMap<>();
@@ -27,6 +29,9 @@ public class BoardController extends Controller {
     public BoardController() {
         this.getSymbolValues();
     }
+
+    @FXML
+    private GridPane gameGrid;
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -36,6 +41,24 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+        this.board = new Board(game.getGameId());
+        this.updateView();
+    }
+
+    private void updateView() {
+        Tile[][] grid = this.board.getGrid();
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid.length; y++) {
+                Character value = grid[x][y].getValue();
+
+                if (value != null) {
+                    this.gameGrid.add(new LetterTile(value, 1), x, y);
+                } else {
+                    Board.TileType tileType = grid[x][y].getTileType();
+                    this.gameGrid.add(new BackgroundTile(tileType), x, y);
+                }
+            }
+        }
     }
 
     /**
@@ -260,7 +283,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<Tile> findWord(Tile tile, boolean horizontal) {
+    public List<Tile> findWord (Tile tile, boolean horizontal) {
         List<Tile> wordTiles = new ArrayList<>();
         Tile firstLetter = tile;
         int i = 1;
