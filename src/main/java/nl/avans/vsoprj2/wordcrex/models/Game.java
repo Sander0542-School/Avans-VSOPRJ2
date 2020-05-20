@@ -83,14 +83,14 @@ public class Game extends DbModel {
         switch (this.getGameState()) {
             case REQUEST:
                 if (this.getUsernamePlayer1().equals(user.getUsername())) {
-                    return String.format("Waiting for %s to", this.getUsernamePlayer2());
+                    return "Wacht op acceptatie van speler";
                 }
-                return String.format("Invited by %s", this.getUsernamePlayer1());
+                return "Uitgenodigd door speler";
             case PLAYING:
-                return "Playing";
+                return "Aan het spelen";
             case FINISHED:
             case RESIGNED:
-                return "Game ended";
+                return "Spel afgelopen";
             default:
                 return "Unknown";
         }
