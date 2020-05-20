@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import nl.avans.vsoprj2.wordcrex.controls.navigation.*?>
-
+<?import javafx.scene.text.Font?>
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.InformationController">
     <top>
-        <AppBar title="Informatie" backButton="true" />
+        <AppBar title="Informatie" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
     
     <center>

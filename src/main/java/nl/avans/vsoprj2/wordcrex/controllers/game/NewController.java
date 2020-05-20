@@ -8,17 +8,14 @@ import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    private List<String> userNamesList = new ArrayList<>();
+    private List<String> usernameslist = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccountsContainer;
@@ -36,7 +33,7 @@ public class NewController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM account WHERE username != ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username != ?");
             statement.setString(1, Singleton.getInstance().getUser().getUsername());
             ResultSet resultSet = statement.executeQuery();
 
@@ -44,11 +41,11 @@ public class NewController extends Controller {
             this.suggestedAccountsContainer.getChildren().removeIf(node -> node instanceof SuggestedAccount);
 
             while (resultSet.next()) {
-                String userName = resultSet.getString("username");
-                this.userNamesList.add(userName);
+                final String username = resultSet.getString("username");
+                this.usernameslist.add(username);
 
-                final SuggestedAccount suggestedAccount = new SuggestedAccount(userName);
-                suggestedAccount.setOnInviteEvent(event -> NewController.this.createNewGame(suggestedAccount.getUserName()));
+                SuggestedAccount suggestedAccount = new SuggestedAccount(username);
+                suggestedAccount.setOnInviteEvent(event -> NewController.this.createNewGame(username));
 
                 this.suggestedAccountsContainer.getChildren().add(suggestedAccount);
                 this.suggestedAccountsContainer.setVisible(true);
@@ -58,9 +55,15 @@ public class NewController extends Controller {
         }
     }
 
-    public void handleRequestAction() {
+    @FXML
+    private void handleBackButton() {
+        this.navigateTo("/views/games.fxml");
+    }
+
+    @FXML
+    private void handleRequestAction() {
         Random rand = new Random();
-        this.createGameRequest("NL", this.userNamesList.get(rand.nextInt(this.userNamesList.size())));
+        this.createGameRequest("NL", this.usernameslist.get(rand.nextInt(this.usernameslist.size())));
     }
 
     public void createNewGame(String otherPlayer) {
@@ -71,12 +74,44 @@ public class NewController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO game(game_state, letterset_code, username_player1, username_player2, answer_player2, username_winner) VALUES ('request', ?, ?, ?, 'unknown', NULL)");
-            statement.setString(1, letterset);
-            statement.setString(2, Singleton.getInstance().getUser().getUsername());
-            statement.setString(3, otherPlayer);
+            PreparedStatement gameStatement = connection.prepareStatement("INSERT INTO game(game_state, letterset_code, username_player1, username_player2, answer_player2, username_winner) VALUES ('request', ?, ?, ?, 'unknown', NULL)", Statement.RETURN_GENERATED_KEYS);
+            gameStatement.setString(1, letterset);
+            gameStatement.setString(2, Singleton.getInstance().getUser().getUsername());
+            gameStatement.setString(3, otherPlayer);
 
-            statement.execute();
+            gameStatement.executeUpdate();
+
+            ResultSet resultSet = gameStatement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                int gameId = resultSet.getInt(1);
+
+                PreparedStatement symbolsStatement = connection.prepareStatement("SELECT symbol, counted FROM symbol WHERE letterset_code = ?");
+                symbolsStatement.setString(1, letterset);
+
+                ResultSet symbolResult = symbolsStatement.executeQuery();
+
+                StringBuilder queryBuilder = new StringBuilder();
+                queryBuilder.append("INSERT INTO letter (letter_id, game_id, symbol_letterset_code, symbol) VALUES ");
+
+                int letterId = 0;
+
+                while (symbolResult.next()) {
+                    String symbol = symbolResult.getString("symbol");
+                    int counted = symbolResult.getInt("counted");
+
+                    for (int i = 0; i < counted; i++) {
+                        letterId++;
+                        queryBuilder.append(String.format("(%s, %s, '%s', '%s'),", letterId, gameId, letterset, symbol));
+                    }
+                }
+                queryBuilder.setLength(queryBuilder.length() - 1);
+
+                queryBuilder.append(";");
+
+                PreparedStatement lettersStatement = connection.prepareStatement(queryBuilder.toString());
+                lettersStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         } finally {
