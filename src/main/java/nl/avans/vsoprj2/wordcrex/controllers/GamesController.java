@@ -55,7 +55,7 @@ public class GamesController extends Controller {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Game request");
-        alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer2());
+        alert.setHeaderText("Je kunt een nieuw spel starten met " + game.getUsernamePlayer1());
 
         ButtonType buttonTypeDecline = new ButtonType("Weigeren", ButtonBar.ButtonData.NO);
         ButtonType buttonTypeAccept = new ButtonType("Accepteren", ButtonBar.ButtonData.YES);
@@ -72,6 +72,8 @@ public class GamesController extends Controller {
                 game.setAnswerPlayer2(Game.Answer.ACCEPTED);
                 game.save();
             }
+
+            this.loadGames(Singleton.getInstance().getUser());
         });
     }
 
