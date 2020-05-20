@@ -126,14 +126,16 @@ public class BoardController extends Controller {
 
     private void giveNewLetterInHand() {
         // TODO Check if game end
-        // if max letters <= 7
-        // else
+        // if max letters over <= 7 {
+        //  this.endGame()
+        // } else {
 
-        // TODO Give new letters
-        //
+            // TODO Give new letters
+            // Same as give new letters but first clear hand.
 
-        // TODO Start new turn
-        // Start new turn functions same as play a turn
+            // TODO Start new turn
+            // Start new turn functions same as play a turn.
+        // }
     }
 
     public boolean isExistingWord(String word) {
