@@ -1,12 +1,8 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
@@ -27,13 +23,10 @@ public class BoardController extends Controller {
 
     private Game game;
     private Board board;
-    private List<Tile> unconfirmedTiles = new ArrayList<>();
-    
+    private final List<Tile> unconfirmedTiles = new ArrayList<>();
+
     @FXML
     private GridPane gameGrid;
-
-
-
 
 
     /**
@@ -49,17 +42,16 @@ public class BoardController extends Controller {
         this.updateView();
     }
 
-    private void updateView(){
+    private void updateView() {
         Tile[][] grid = this.board.getGrid();
-        for(int x = 0; x < grid.length; x++){
-            for(int y = 0; y < grid.length; y++){
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid.length; y++) {
                 Character value = grid[x][y].getValue();
 
 
-                if(value != null){
+                if (value != null) {
                     this.gameGrid.add(new LetterTile(value, 1), x, y);
-                }else
-                {
+                } else {
                     Board.TileType tileType = grid[x][y].getTileType();
                     this.gameGrid.add(new BackgroundTile(tileType), x, y);
                 }
@@ -222,7 +214,7 @@ public class BoardController extends Controller {
             for (Tile tile : word) {
                 int letterMultiplier = 1;
                 if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
-                    switch(tile.getTileType()) {
+                    switch (tile.getTileType()) {
                         case TWOLETTER:
                             letterMultiplier = 2;
                             break;
@@ -273,7 +265,7 @@ public class BoardController extends Controller {
 
             HashMap<Character, Integer> symbolValues = new HashMap<>();
 
-            while(symbolSet.next()) {
+            while (symbolSet.next()) {
                 symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
             }
 

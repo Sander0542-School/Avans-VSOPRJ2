@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Board {
 
@@ -25,7 +23,7 @@ public class Board {
     public static final int BOARD_SIZE = 15;
 
 
-    private Tile[][] grid;
+    private final Tile[][] grid;
 
     public Board(int gameId) {
         this.grid = this.newBoard();
@@ -109,11 +107,11 @@ public class Board {
         }
     }
 
-    public void setValue ( int x, int y, Character value){
+    public void setValue(int x, int y, Character value) {
         this.grid[x][y].setValue(value);
     }
 
-    public Tile getTile ( int x, int y){
+    public Tile getTile(int x, int y) {
         if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
             return null;
         }
@@ -121,17 +119,17 @@ public class Board {
         return this.grid[x][y];
     }
 
-    public boolean hasValue ( int x, int y){
+    public boolean hasValue(int x, int y) {
         return this.getValue(x, y) != null;
     }
 
-    public Character getValue ( int x, int y){
+    public Character getValue(int x, int y) {
         Tile tile = this.getTile(x, y);
 
         return tile == null ? null : tile.getValue();
     }
 
-    public Tile[][] getGrid () {
+    public Tile[][] getGrid() {
         return this.grid;
     }
 }

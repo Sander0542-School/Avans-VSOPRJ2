@@ -9,7 +9,7 @@ public class Tile {
 
     private Character value;
 
-    private TileType tileType;
+    private final TileType tileType;
 
     public Tile(int x, int y, TileType type) {
         this.x = x;

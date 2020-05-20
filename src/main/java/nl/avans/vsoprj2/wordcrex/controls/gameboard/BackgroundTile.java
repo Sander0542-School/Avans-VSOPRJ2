@@ -18,7 +18,7 @@ public class BackgroundTile extends AnchorPane implements Initializable {
     public BackgroundTile(Board.TileType tileType) {
         this();
 
-        switch (tileType){
+        switch (tileType) {
             case NORMAL:
                 this.color.setStyle("-fx-background-color: #303c85;");
                 this.color.setText("");
@@ -50,7 +50,6 @@ public class BackgroundTile extends AnchorPane implements Initializable {
         }
 
 
-
     }
 
     public BackgroundTile() {
@@ -66,7 +65,6 @@ public class BackgroundTile extends AnchorPane implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
 
     }
