@@ -1,11 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -15,14 +17,13 @@ import nl.avans.vsoprj2.wordcrex.models.Game;
 import java.net.URL;
 import java.sql.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
     private List<ChatMessage> chatMessages = new ArrayList<>();
+    private Timer autoFetch = new Timer();
 
     @FXML
     private ScrollPane chatScrollContainer;
@@ -49,6 +50,27 @@ public class ChatController extends Controller {
         this.game = game;
         this.fetch();
         this.render();
+        this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
+    }
+
+    /**
+     * Creates a TimerTask to automatically fetch and rerender chat messages if the data is changed.
+     *
+     * @return TimerTask
+     */
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if (WordCrex.DEBUG_MODE) System.out.println("ChatController: Autofetch running.");
+                int originalSize = ChatController.this.chatMessages.size();
+                ChatController.this.fetch();
+                if (ChatController.this.chatMessages.size() != originalSize) {
+                    if (WordCrex.DEBUG_MODE) System.out.println("ChatController: Autofetch data updated rendering.");
+                    Platform.runLater(ChatController.this::render);
+                }
+            }
+        };
     }
 
     /**
@@ -157,6 +179,8 @@ public class ChatController extends Controller {
 
     @FXML
     private void navigateBackToGame() {
+        this.autoFetch.cancel();
+        this.autoFetch.purge();
         this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
