@@ -55,7 +55,7 @@
     </top>
 
     <center>
-        <GridPane fx:id="gameGrid" />
+        <GridPane fx:id="gameGrid" alignment="CENTER"/>
     </center>
 
     <bottom>
