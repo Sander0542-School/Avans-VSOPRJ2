@@ -188,23 +188,25 @@ public class BoardController extends Controller {
 
             for (Tile tile : word) {
                 int letterMultiplier = 1;
-                switch(tile.getTileType()) {
-                    case TWOLETTER:
-                        letterMultiplier = 2;
-                        break;
-                    case FOURLETTER:
-                        letterMultiplier = 4;
-                        break;
-                    case SIXLETTER:
-                        letterMultiplier = 6;
-                        break;
-                    case START:
-                    case THREEWORD:
-                        wordMultiplier *= 3;
-                        break;
-                    case FOURWORD:
-                        wordMultiplier *= 4;
-                        break;
+                if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
+                    switch(tile.getTileType()) {
+                        case TWOLETTER:
+                            letterMultiplier = 2;
+                            break;
+                        case FOURLETTER:
+                            letterMultiplier = 4;
+                            break;
+                        case SIXLETTER:
+                            letterMultiplier = 6;
+                            break;
+                        case START:
+                        case THREEWORD:
+                            wordMultiplier *= 3;
+                            break;
+                        case FOURWORD:
+                            wordMultiplier *= 4;
+                            break;
+                    }
                 }
 
                 wordPoints += symbolValues.get(tile.getValue()) * letterMultiplier;
@@ -213,6 +215,7 @@ public class BoardController extends Controller {
             points += (wordPoints * wordMultiplier);
         }
 
+        if (this.unconfirmedTiles.size() == 7 && words.size() != 0) points += 100;
         return points;
     }
 
