@@ -22,6 +22,7 @@ public class Board {
     public static final int BOARD_SIZE = 15;
 
     private final Tile[][] grid;
+    private boolean containsLetters = false; // letters which have been confirmed, i.e. are in the DB
 
     public Board(int gameId) {
         this.grid = this.newBoard();
@@ -41,7 +42,7 @@ public class Board {
                 int xCord = result.getInt(1) - 1;
                 int yCord = result.getInt(2) - 1;
                 String type = result.getString(3);
-                newGrid[xCord][yCord] = new Tile(this.getTileType(type));
+                newGrid[xCord][yCord] = new Tile(xCord, yCord, this.getTileType(type));
             }
             return newGrid;
         } catch (SQLException e) {
@@ -109,7 +110,7 @@ public class Board {
     }
 
     public Tile getTile(int x, int y) {
-        if (x < 0 || x > BOARD_SIZE || y < 0 || y > BOARD_SIZE) {
+        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
             return null;
         }
 
@@ -128,5 +129,16 @@ public class Board {
 
     public Tile[][] getGrid() {
         return this.grid;
+    }
+
+    public boolean containsLetters() {
+        return this.containsLetters;
+    }
+
+    /**
+     * Needs to be called the first time letters are confirmed on the board
+     */
+    public void setContainsLetters() {
+        this.containsLetters = true; // can only be set to true, since no confirmed letters can be removed
     }
 }

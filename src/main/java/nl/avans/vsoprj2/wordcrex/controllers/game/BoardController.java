@@ -159,17 +159,19 @@ public class BoardController extends Controller {
                 return false;
             }
         }
-        int adjacentConfirmedTiles = 0; // checking if at least 1 of the new letters touches an older letter
-        for (Tile tile : this.unconfirmedTiles) {
-            if ((this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
-                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) ||
-                    (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
-                            !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) ||
-                    (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
-                            !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) ||
-                    (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
-                            !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1)))) ;
-            return true;
+
+        if (this.board.containsLetters()) { // if no letters are present yet, ignore following check
+            for (Tile tile : this.unconfirmedTiles) { // checking if at least 1 of the new letters touches an older letter
+                if ((this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
+                        !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) ||
+                        (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
+                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) ||
+                        (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
+                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) ||
+                        (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
+                                !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1)))) ;
+                return true;
+            }
         }
 
         return false;
