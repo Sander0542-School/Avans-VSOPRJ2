@@ -9,13 +9,17 @@ public class Tile {
 
     private Character value;
 
-    private TileType tileType;
+    private final TileType tileType;
 
     public Tile(int x, int y, TileType type) {
         this.x = x;
         this.y = y;
 
         this.tileType = type;
+    }
+
+    public Tile(TileType tileType) {
+        this.tileType = tileType;
     }
 
     public Character getValue() {
