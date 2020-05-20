@@ -48,8 +48,6 @@ public class BackgroundTile extends AnchorPane implements Initializable {
                 this.color.setText("6L");
                 break;
         }
-
-
     }
 
     public BackgroundTile() {
@@ -59,14 +57,11 @@ public class BackgroundTile extends AnchorPane implements Initializable {
         loader.setRoot(this);
         loader.setController(this);
 
-
         try {
             loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     @Override

@@ -48,7 +48,6 @@ public class BoardController extends Controller {
             for (int y = 0; y < grid.length; y++) {
                 Character value = grid[x][y].getValue();
 
-
                 if (value != null) {
                     this.gameGrid.add(new LetterTile(value, 1), x, y);
                 } else {
