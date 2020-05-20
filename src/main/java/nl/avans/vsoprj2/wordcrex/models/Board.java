@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Board {
-
     public enum TileType {
         NORMAL,
         START,
@@ -21,7 +20,6 @@ public class Board {
     }
 
     public static final int BOARD_SIZE = 15;
-
 
     private final Tile[][] grid;
 
