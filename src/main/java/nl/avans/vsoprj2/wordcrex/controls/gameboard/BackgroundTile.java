@@ -61,6 +61,10 @@ public class BackgroundTile extends AnchorPane implements Initializable {
                 this.color.setStyle("-fx-background-color: #0b9544;");
                 this.color.setText("6L");
                 break;
+            default:
+                this.color.setStyle("-fx-background-color: #1b1744;");
+                this.color.setText("");
+                break;
         }
     }
 
