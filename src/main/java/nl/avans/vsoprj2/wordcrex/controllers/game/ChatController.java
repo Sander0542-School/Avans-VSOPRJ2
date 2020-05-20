@@ -62,6 +62,8 @@ public class ChatController extends Controller {
             statement.setInt(1, this.game.getGameId());
             ResultSet resultSet = statement.executeQuery();
 
+            this.chatMessages.clear();
+
             while (resultSet.next()) {
                 this.chatMessages.add(new ChatMessage(resultSet));
             }
@@ -104,7 +106,6 @@ public class ChatController extends Controller {
                     PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
                     statement.setInt(1, this.game.getGameId());
                     statement.execute();
-                    this.chatMessages.clear();
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
