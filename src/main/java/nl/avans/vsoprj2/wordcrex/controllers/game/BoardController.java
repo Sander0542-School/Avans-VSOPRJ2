@@ -18,7 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class BoardController extends Controller {
 
@@ -124,9 +125,15 @@ public class BoardController extends Controller {
     }
 
     private void giveNewLetterInHand() {
-        //TODO Give new letters
-        //TODO Start new turn
-        //TODO Check if game end
+        // TODO Check if game end
+        // if max letters <= 7
+        // else
+
+        // TODO Give new letters
+        //
+
+        // TODO Start new turn
+        // Start new turn functions same as play a turn
     }
 
     public boolean isExistingWord(String word) {
