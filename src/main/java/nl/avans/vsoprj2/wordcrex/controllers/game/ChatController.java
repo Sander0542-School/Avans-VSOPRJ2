@@ -71,7 +71,11 @@ public class ChatController extends Controller {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
-            //TODO(Daan) navigate back to board
+            try {
+                this.navigateBackToGame();
+            } catch (Exception ignore) {
+                // Ignore exception
+            }
         }
     }
 
