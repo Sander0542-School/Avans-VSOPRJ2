@@ -37,7 +37,6 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
-        System.out.println(game.getGameId());
         this.board = new Board(game.getGameId());
         this.updateView();
     }
