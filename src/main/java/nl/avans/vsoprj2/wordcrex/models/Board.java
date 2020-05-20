@@ -96,7 +96,6 @@ public class Board {
                 }
 
                 for (int i = 0; i < characters.length; i++) {
-                    System.out.println(characters[i]);
                     this.grid[xValues[i]][yValues[i]].setValue(characters[i].charAt(0));
                 }
             }
