@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
@@ -22,7 +23,8 @@ public class RegisterController extends Controller {
     @FXML
     private Label error;
 
-    public void handleRegisterAction() {
+    @FXML
+    private void handleRegisterAction() {
         this.error.setVisible(false);
 
         if (this.username.getText().trim().isEmpty() || this.password.getText().trim().isEmpty() || this.repeatpassword.getText().trim().isEmpty()) {
@@ -81,13 +83,18 @@ public class RegisterController extends Controller {
         }
     }
 
-    public void handleBackButton() {
+    @FXML
+    private void handleBackButton() {
         this.navigateTo("/views/index.fxml");
+    }
+
+    @FXML
+    private void handleEnterReleased() {
+        this.handleRegisterAction();
     }
 
     private void showErrorMessage(String message) {
         this.error.setText(message);
         this.error.setVisible(true);
     }
-
 }

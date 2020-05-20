@@ -22,6 +22,8 @@ public class Board {
         SIXLETTER
     }
 
+    public static final int BOARD_SIZE = 15;
+
 
     private Tile[][] grid;
 
@@ -31,8 +33,7 @@ public class Board {
     }
 
     private Tile[][] newBoard() {
-        int gridSize = 15;
-        Tile[][] newGrid = new Tile[gridSize][gridSize];
+        Tile[][] newGrid = new Tile[BOARD_SIZE][BOARD_SIZE];
 
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -102,19 +103,28 @@ public class Board {
                     System.out.println(characters[i]);
                     this.grid[xValues[i]][yValues[i]].setValue(characters[i].charAt(0));
                 }
-            }
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-            throw new DbLoadException(e);
-        }
-    }
+
 
     public void setValue(int x, int y, Character Value) {
         this.grid[x][y].setValue(Value);
     }
 
+    public Tile getTile(int x, int y) {
+        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+            return null;
+        }
+
+        return this.grid[x][y];
+    }
+
+    public boolean hasValue(int x, int y) {
+        return this.getValue(x, y) != null;
+    }
+
     public Character getValue(int x, int y) {
-        return this.grid[x][y].getValue();
+        Tile tile = this.getTile(x, y);
+
+        return tile == null ? null : tile.getValue();
     }
 
     public Tile[][] getGrid() {

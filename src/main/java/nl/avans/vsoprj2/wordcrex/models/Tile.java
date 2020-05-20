@@ -3,10 +3,18 @@ package nl.avans.vsoprj2.wordcrex.models;
 import nl.avans.vsoprj2.wordcrex.models.Board.TileType;
 
 public class Tile {
-    private Character value;
-    private final TileType tileType;
+    private int x;
+    private int y;
+    private boolean confirmed = false;
 
-    public Tile(TileType type) {
+    private Character value;
+
+    private TileType tileType;
+
+    public Tile(int x, int y, TileType type) {
+        this.x = x;
+        this.y = y;
+
         this.tileType = type;
     }
 
@@ -20,5 +28,21 @@ public class Tile {
 
     public TileType getTileType() {
         return this.tileType;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void confirm() {
+        this.confirmed = true;
+    }
+
+    public boolean getConfirmed() {
+        return this.confirmed;
     }
 }

@@ -10,10 +10,10 @@
 
     <top>
         <AnchorPane prefHeight="64.0" style="-fx-background-color: #1b1744;">
-            <ImageView fitHeight="24.0" fitWidth="24.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <ImageView fitHeight="24.0" fitWidth="24.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" onMouseClicked="#handleBackButton">
                 <Image url="@/images/drawables/arrow_back.png"/>
             </ImageView>
-            <HBox alignment="CENTER" spacing="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" spacing="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="0.0">
 
                 <Label text="Speler 1" textFill="WHITE">
                     <font>
@@ -62,13 +62,13 @@
         <HBox alignment="CENTER" prefHeight="64.0" spacing="64.0" style="-fx-background-color: #1b1744;">
             <HBox alignment="CENTER_RIGHT" prefWidth="136.0" spacing="32.0">
 
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/play_arrow.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
@@ -83,10 +83,10 @@
                 <LetterTile/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="136.0" spacing="32.0">
-                <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
                     <Image url="@/images/drawables/chat_bubble_outline.png"/>
                 </ImageView>
-                <ImageView fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/more_horiz.png"/>
                 </ImageView>
             </HBox>

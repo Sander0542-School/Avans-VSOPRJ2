@@ -42,12 +42,12 @@ public class StatisticsController extends Controller {
     private void render() {
         this.name.setText(Singleton.getInstance().getUser().getUsername());
 
-        this.gamesWon.setText(this.statistic.getGamesWon());
-        this.gamesLost.setText(this.statistic.getGamesLost());
-        this.gamesTied.setText(this.statistic.getGamesTied());
-        this.gamesLeft.setText(this.statistic.getGamesLeft());
-        this.topGameScore.setText(this.statistic.getTopGameScore());
-        this.topWordScore.setText(this.statistic.getTopWordScore());
+        this.gamesWon.setText(this.statistic.getGamesWon().toString());
+        this.gamesLost.setText(this.statistic.getGamesLost().toString());
+        this.gamesTied.setText(this.statistic.getGamesTied().toString());
+        this.gamesLeft.setText(this.statistic.getGamesLeft().toString());
+        this.topGameScore.setText(this.statistic.getTopGameScore().toString());
+        this.topWordScore.setText(this.statistic.getTopWordScore().toString());
     }
 
     public void handleBottomBarNavigation(Event event) {
