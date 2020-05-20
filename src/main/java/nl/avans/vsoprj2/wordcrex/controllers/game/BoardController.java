@@ -1,12 +1,14 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -24,9 +26,12 @@ import java.util.stream.Stream;
 public class BoardController extends Controller {
 
     private Game game;
-    private Board board = new Board();
+    private Board board;
+    private final List<Tile> unconfirmedTiles = new ArrayList<>();
 
-    private List<Tile> unconfirmedTiles = new ArrayList<>();
+    @FXML
+    private GridPane gameGrid;
+
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -36,6 +41,24 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+        this.board = new Board(game.getGameId());
+        this.updateView();
+    }
+
+    private void updateView() {
+        Tile[][] grid = this.board.getGrid();
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid.length; y++) {
+                Character value = grid[x][y].getValue();
+
+                if (value != null) {
+                    this.gameGrid.add(new LetterTile(value, 1), x, y);
+                } else {
+                    Board.TileType tileType = grid[x][y].getTileType();
+                    this.gameGrid.add(new BackgroundTile(tileType), x, y);
+                }
+            }
+        }
     }
 
     /**
@@ -283,7 +306,7 @@ public class BoardController extends Controller {
             for (Tile tile : word) {
                 int letterMultiplier = 1;
                 if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
-                    switch(tile.getTileType()) {
+                    switch (tile.getTileType()) {
                         case TWOLETTER:
                             letterMultiplier = 2;
                             break;
@@ -334,7 +357,7 @@ public class BoardController extends Controller {
 
             HashMap<Character, Integer> symbolValues = new HashMap<>();
 
-            while(symbolSet.next()) {
+            while (symbolSet.next()) {
                 symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
             }
 
