@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
@@ -26,6 +27,8 @@ public class BoardController extends Controller {
     @FXML
     private GridPane gameGrid;
 
+
+
     /**
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
@@ -34,6 +37,7 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+        System.out.println(game.getGameId());
         this.board = new Board(game.getGameId());
         this.updateView();
     }
@@ -43,9 +47,15 @@ public class BoardController extends Controller {
         for(int x = 0; x < grid.length; x++){
             for(int y = 0; y < grid.length; y++){
                 Character value = grid[x][y].getValue();
-                Board.TileType tileType = grid[x][y].getTileType();
 
-                this.gameGrid.add(new LetterTile(value, tileType), x, y);
+
+                if(value != null){
+                    this.gameGrid.add(new LetterTile(value, 1), x, y);
+                }else
+                {
+                    Board.TileType tileType = grid[x][y].getTileType();
+                    this.gameGrid.add(new BackgroundTile(tileType), x, y);
+                }
             }
         }
     }
