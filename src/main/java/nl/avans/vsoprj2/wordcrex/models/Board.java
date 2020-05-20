@@ -70,7 +70,7 @@ public class Board {
     }
 
     public Tile getTile(int x, int y) {
-        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+        if (x < 0 || x > BOARD_SIZE || y < 0 || y > BOARD_SIZE) {
             return null;
         }
 

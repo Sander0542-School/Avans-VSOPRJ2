@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
