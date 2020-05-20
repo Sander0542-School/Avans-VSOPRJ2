@@ -149,7 +149,6 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
-                    this.navigateBackToGame();
                 }
             }
             keyEvent.consume();
