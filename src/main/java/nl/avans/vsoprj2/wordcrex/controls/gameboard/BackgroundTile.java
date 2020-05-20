@@ -18,11 +18,25 @@ public class BackgroundTile extends AnchorPane implements Initializable {
     public BackgroundTile(Board.TileType tileType) {
         this();
 
+        this.setTileType(tileType);
+    }
+
+    public BackgroundTile() {
+        super();
+
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/BackgroundTile.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setTileType(Board.TileType tileType) {
         switch (tileType) {
-            case NORMAL:
-                this.color.setStyle("-fx-background-color: #303c85;");
-                this.color.setText("");
-                break;
             case START:
                 this.color.setStyle("-fx-background-color: #ed1193;");
                 this.color.setText("*");
@@ -47,20 +61,6 @@ public class BackgroundTile extends AnchorPane implements Initializable {
                 this.color.setStyle("-fx-background-color: #0b9544;");
                 this.color.setText("6L");
                 break;
-        }
-    }
-
-    public BackgroundTile() {
-        super();
-
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/BackgroundTile.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
