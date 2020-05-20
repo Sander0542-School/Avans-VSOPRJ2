@@ -283,7 +283,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<Tile> findWord (Tile tile, boolean horizontal) {
+    public List<Tile> findWord(Tile tile, boolean horizontal) {
         List<Tile> wordTiles = new ArrayList<>();
         Tile firstLetter = tile;
         int i = 1;
