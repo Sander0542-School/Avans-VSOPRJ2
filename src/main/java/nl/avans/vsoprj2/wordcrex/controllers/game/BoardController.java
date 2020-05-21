@@ -1,8 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.*;
 
@@ -18,12 +21,13 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Stream;
 
-
 public class BoardController extends Controller {
     private Game game;
-    private Board board = new Board();
+    private Board board;
+    private final List<Tile> unconfirmedTiles = new ArrayList<>();
 
-    private List<Tile> unconfirmedTiles = new ArrayList<>();
+    @FXML
+    private GridPane gameGrid;
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -33,6 +37,24 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+        this.board = new Board(game.getGameId());
+        this.updateView();
+    }
+
+    private void updateView() {
+        Tile[][] grid = this.board.getGrid();
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid.length; y++) {
+                Character value = grid[x][y].getValue();
+
+                if (value != null) {
+                    this.gameGrid.add(new LetterTile(value, 1), x, y);
+                } else {
+                    Board.TileType tileType = grid[x][y].getTileType();
+                    this.gameGrid.add(new BackgroundTile(tileType), x, y);
+                }
+            }
+        }
     }
 
     /**
@@ -57,6 +79,11 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    @FXML
+    private void handleBackButton() {
+        this.navigateTo("/views/games.fxml");
     }
 
     @FXML
@@ -184,23 +211,25 @@ public class BoardController extends Controller {
 
             for (Tile tile : word) {
                 int letterMultiplier = 1;
-                switch (tile.getTileType()) {
-                    case TWOLETTER:
-                        letterMultiplier = 2;
-                        break;
-                    case FOURLETTER:
-                        letterMultiplier = 4;
-                        break;
-                    case SIXLETTER:
-                        letterMultiplier = 6;
-                        break;
-                    case START:
-                    case THREEWORD:
-                        wordMultiplier *= 3;
-                        break;
-                    case FOURWORD:
-                        wordMultiplier *= 4;
-                        break;
+                if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
+                    switch (tile.getTileType()) {
+                        case TWOLETTER:
+                            letterMultiplier = 2;
+                            break;
+                        case FOURLETTER:
+                            letterMultiplier = 4;
+                            break;
+                        case SIXLETTER:
+                            letterMultiplier = 6;
+                            break;
+                        case START:
+                        case THREEWORD:
+                            wordMultiplier *= 3;
+                            break;
+                        case FOURWORD:
+                            wordMultiplier *= 4;
+                            break;
+                    }
                 }
 
                 wordPoints += symbolValues.get(tile.getValue()) * letterMultiplier;
@@ -209,6 +238,7 @@ public class BoardController extends Controller {
             points += (wordPoints * wordMultiplier);
         }
 
+        if (this.unconfirmedTiles.size() == 7 && words.size() != 0) points += 100;
         return points;
     }
 

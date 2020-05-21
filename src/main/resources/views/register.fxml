@@ -21,9 +21,9 @@
                 <VBox alignment="CENTER">
                     <VBox spacing="25" maxWidth="600" alignment="CENTER">
                         <Label fx:id="error" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
-                        <TextField fx:id="username" promptText="Gebruikersnaam" prefWidth="600"/>
-                        <PasswordField fx:id="password" promptText="Wachtwoord" prefWidth="600"/>
-                        <PasswordField fx:id="repeatpassword" promptText="Wachtwoord (Herhaal)" prefWidth="600"/>
+                        <TextField onKeyReleased="#handleEnterReleased" fx:id="username" promptText="Gebruikersnaam" prefWidth="600"/>
+                        <PasswordField onKeyReleased="#handleEnterReleased" fx:id="password" promptText="Wachtwoord" prefWidth="600"/>
+                        <PasswordField onKeyReleased="#handleEnterReleased" fx:id="repeatpassword" promptText="Wachtwoord (Herhaal)" prefWidth="600"/>
                         <Button onAction="#handleRegisterAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Aanmelden"/>
                     </VBox>
                 </VBox>

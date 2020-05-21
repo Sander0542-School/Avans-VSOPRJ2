@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0" style="-fx-background-color: #ffffff; -fx-background-radius: 6;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-    <Label alignment="CENTER" contentDisplay="CENTER" text="W" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <font>
-         <Font size="28.0" />
-      </font>
+<?import javafx.scene.text.Font?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0" style="-fx-background-color: #ffffff; -fx-background-radius: 6;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal">
+    <Label fx:id="letter" alignment="CENTER" contentDisplay="CENTER" text="*" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <font>
+            <Font size="28.0"/>
+        </font>
     </Label>
-    <Label alignment="CENTER" contentDisplay="CENTER" text="8" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <font>
-         <Font size="12.0" />
-      </font>
-      <padding>
-         <Insets left="28.0" top="20.0" />
-      </padding>
+    <Label fx:id="worth" alignment="CENTER" contentDisplay="CENTER" text="1" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <font>
+            <Font size="12.0"/>
+        </font>
+        <padding>
+            <Insets left="28.0" top="20.0"/>
+        </padding>
     </Label>
 </fx:root>
