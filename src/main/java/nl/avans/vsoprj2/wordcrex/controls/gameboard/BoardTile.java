@@ -100,6 +100,11 @@ public class BoardTile extends AnchorPane implements Initializable {
         return this.letter.getText().charAt(0);
     }
 
+    public int getWorth() {
+        String worth = this.worth.getText();
+        return Integer.parseInt(worth.isEmpty() ? "0" : worth);
+    }
+
     public enum TileType {
         NORMAL("--", Color.rgb(27, 23, 68)),
         START("*", Color.rgb(237, 17, 147)),
