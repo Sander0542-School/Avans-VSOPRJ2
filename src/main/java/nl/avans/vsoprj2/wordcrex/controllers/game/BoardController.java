@@ -332,8 +332,8 @@ public class BoardController extends Controller {
 
         if (dialogResult.isPresent())
             if (dialogResult.get() == ButtonType.OK) {
-                //List<List<Tile>> words = this.getWords();
-                if (true) {//this.checkWords(words)) {
+                List<List<Tile>> words = this.getWords();
+                if (this.checkWords(words)) {
                     this.createNewPlayerTurn();
                 } else {
                     //Throws alert if word is not correct
@@ -411,6 +411,7 @@ public class BoardController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             int newTurnId = 0;
+            //Creates new turn_id
             PreparedStatement getPreviousTurnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
             getPreviousTurnStatement.setInt(1, this.game.getGameId());
             ResultSet turn = getPreviousTurnStatement.executeQuery();
@@ -422,6 +423,9 @@ public class BoardController extends Controller {
             newTurnStatement.setInt(1, this.game.getGameId());
             newTurnStatement.setInt(2, newTurnId);
             ResultSet newTurnResultSet = newTurnStatement.executeQuery();
+
+            //create new hand
+            //TODO to be created
         } catch(SQLException e) {
             throw new DbLoadException(e);
         }
