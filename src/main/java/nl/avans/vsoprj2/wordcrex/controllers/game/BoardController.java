@@ -379,34 +379,51 @@ public class BoardController extends Controller {
             turnPlayerStatement.setInt(1, this.game.getGameId());
             turnPlayerStatement.setInt(2, currentTurnId);
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
-            turnPlayerStatement.setInt(4, 0);
+            turnPlayerStatement.setInt(4, 0); //Bonus ???
             turnPlayerStatement.setInt(5, this.calculatePoints(this.getWords()));
-            turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString());
+            turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString().toLowerCase());
             turnPlayerStatement.executeQuery();
 
             //Get other players turn
             String otherPlayerTurnQuery;
             if (isPlayer1) {
-                otherPlayerTurnQuery = "SELECT * FROM `turnplayer2` WHERE `game_id` = ? AND `turn_id` = ?";
+                otherPlayerTurnQuery = "SELECT * FROM `turnplayer2` WHERE `game_id` = ? AND `turn_id` = ? AND `username_player2` = ?";
             } else {
-                otherPlayerTurnQuery = "SELECT * FROM `turnplayer1` WHERE `game_id` = ? AND `turn_id` = ?";
+                otherPlayerTurnQuery = "SELECT * FROM `turnplayer1` WHERE `game_id` = ? AND `turn_id` = ? AND `username_player1` = ?";
             }
 
             PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
             otherPlayerTurnStatement.setInt(1, this.game.getGameId());
-            otherPlayerTurnStatement.setInt(1, currentTurnId);
+            otherPlayerTurnStatement.setInt(2, currentTurnId);
+            otherPlayerTurnStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer2() : this.game.getUsernamePlayer1());
             ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
 
             //if other player has played their turn, create a new turn
             if(otherPlayerTurnResultSet.next()) {
-                this.createNewTurn(currentTurnId);
+                this.createNewTurn();
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
     }
 
-    private void createNewTurn(int currentTurn) {
+    private void createNewTurn() {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            int newTurnId = 0;
+            PreparedStatement getPreviousTurnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
+            getPreviousTurnStatement.setInt(1, this.game.getGameId());
+            ResultSet turn = getPreviousTurnStatement.executeQuery();
+            while (turn.next()) {
+                newTurnId = turn.getInt(1) + 1;
+            }
 
+            PreparedStatement newTurnStatement = connection.prepareStatement("INSERT INTO `turn`(`game_id`, `turn_id`) VALUES (?,?)");
+            newTurnStatement.setInt(1, this.game.getGameId());
+            newTurnStatement.setInt(2, newTurnId);
+            ResultSet newTurnResultSet = newTurnStatement.executeQuery();
+        } catch(SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 }
