@@ -41,12 +41,12 @@ public class Game extends DbModel {
         return this.gameId;
     }
 
-    public String getGameState() {
-        return this.gameState;
+    public GameState getGameState() {
+        return GameState.valueOf(this.gameState.toUpperCase());
     }
 
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState.toString().toLowerCase();
     }
 
     public String getLettersetCode() {
@@ -61,38 +61,51 @@ public class Game extends DbModel {
         return this.usernamePlayer2;
     }
 
-    public String getAnswerPlayer2() {
-        return this.answerPlayer2;
+    public Answer getAnswerPlayer2() {
+        return Answer.valueOf(this.answerPlayer2.toUpperCase());
     }
 
-    public void setAnswerPlayer2(String answerPlayer2) {
-        this.answerPlayer2 = answerPlayer2;
+    public void setAnswerPlayer2(Answer answerPlayer2) {
+        this.answerPlayer2 = answerPlayer2.toString().toLowerCase();
     }
 
     public String getUsernameWinner() {
         return this.usernameWinner;
     }
 
-    public void setUsernameWinner(String usernameWinner) {
-        this.usernameWinner = usernameWinner;
+    public void setWinner(Account winner) {
+        this.usernameWinner = winner.getUsername();
     }
 
     public String getMessage() {
-        Object user = Singleton.getInstance().getUser();
-        switch (this.getGameState()) { //TODO(Sander) replace wth Enum
-            case "request":
-                if (this.getUsernamePlayer1() == user) {
-                    return String.format("Waiting for %s to", this.getUsernamePlayer2());
+        Account user = Singleton.getInstance().getUser();
+        switch (this.getGameState()) {
+            case REQUEST:
+                if (this.getUsernamePlayer1().equals(user.getUsername())) {
+                    return "Wacht op acceptatie van speler";
                 }
-                return String.format("Invited by %s", this.getUsernamePlayer1());
-            case "playing":
-                return "Playing";
-            case "finished":
-            case "resigned":
-                return "Game ended";
+                return "Uitgenodigd door speler";
+            case PLAYING:
+                return "Aan het spelen";
+            case FINISHED:
+            case RESIGNED:
+                return "Spel afgelopen";
             default:
                 return "Unknown";
         }
+    }
+
+    public enum GameState {
+        REQUEST,
+        PLAYING,
+        FINISHED,
+        RESIGNED,
+    }
+
+    public enum Answer {
+        ACCEPTED,
+        REJECTED,
+        UNKNOWN,
     }
 
     public int getPlayerScore(boolean isPlayer1) {
@@ -115,4 +128,3 @@ public class Game extends DbModel {
         }
     }
 }
-
