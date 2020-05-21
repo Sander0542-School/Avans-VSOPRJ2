@@ -88,12 +88,6 @@ public class BoardController extends Controller {
                     int xCord = xCords[i] - 1;
                     int yCord = yCords[i] - 1;
 
-                    System.out.print(letter);
-                    System.out.print(": ");
-                    System.out.print(xCord);
-                    System.out.print(",");
-                    System.out.print(yCord);
-
                     BoardTile boardTile = this.getBoardTile(xCord, yCord);
 
                     boardTile.setConfirmed(true);
