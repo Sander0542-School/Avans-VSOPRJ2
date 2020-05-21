@@ -41,7 +41,7 @@ public class Board {
                 int xCord = result.getInt(1) - 1;
                 int yCord = result.getInt(2) - 1;
                 String type = result.getString(3);
-                newGrid[xCord][yCord] = new Tile(this.getTileType(type));
+                newGrid[xCord][yCord] = new Tile(xCord, yCord, this.getTileType(type));
             }
             return newGrid;
         } catch (SQLException e) {

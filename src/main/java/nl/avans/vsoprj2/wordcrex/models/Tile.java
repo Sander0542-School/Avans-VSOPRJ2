@@ -5,7 +5,6 @@ import nl.avans.vsoprj2.wordcrex.models.Board.TileType;
 public class Tile {
     private int x;
     private int y;
-    private boolean confirmed = false;
 
     private Character value;
 
@@ -16,10 +15,6 @@ public class Tile {
         this.y = y;
 
         this.tileType = type;
-    }
-
-    public Tile(TileType tileType) {
-        this.tileType = tileType;
     }
 
     public Character getValue() {
@@ -40,13 +35,5 @@ public class Tile {
 
     public int getY() {
         return this.y;
-    }
-
-    public void confirm() {
-        this.confirmed = true;
-    }
-
-    public boolean getConfirmed() {
-        return this.confirmed;
     }
 }
