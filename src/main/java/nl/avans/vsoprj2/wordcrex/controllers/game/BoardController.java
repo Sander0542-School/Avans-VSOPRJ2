@@ -4,11 +4,10 @@ import javafx.fxml.FXML;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Account;
-import nl.avans.vsoprj2.wordcrex.models.Board;
-import nl.avans.vsoprj2.wordcrex.models.Game;
-import nl.avans.vsoprj2.wordcrex.models.Tile;
+import nl.avans.vsoprj2.wordcrex.models.*;
+
 import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -185,7 +184,7 @@ public class BoardController extends Controller {
 
             for (Tile tile : word) {
                 int letterMultiplier = 1;
-                switch(tile.getTileType()) {
+                switch (tile.getTileType()) {
                     case TWOLETTER:
                         letterMultiplier = 2;
                         break;
@@ -234,7 +233,7 @@ public class BoardController extends Controller {
 
             HashMap<Character, Integer> symbolValues = new HashMap<>();
 
-            while(symbolSet.next()) {
+            while (symbolSet.next()) {
                 symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
             }
 
@@ -332,23 +331,82 @@ public class BoardController extends Controller {
         Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
 
         if (dialogResult.isPresent())
-        if (dialogResult.get() == ButtonType.OK) {
-            List<List<Tile>> words = this.getWords();
-            if (this.checkWords(words)) {
-                this.createNewTurn();
-            } else {
-                //Throws alert if word is not correct
-                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Dit is geen geldig woord.\nProbeer een ander woord.");
-                invalidWordDialog.setTitle("Fout Woord");
-                invalidWordDialog.showAndWait();
+            if (dialogResult.get() == ButtonType.OK) {
+                //List<List<Tile>> words = this.getWords();
+                if (true) {//this.checkWords(words)) {
+                    this.createNewPlayerTurn();
+                } else {
+                    //Throws alert if word is not correct
+                    Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Dit is geen geldig woord.\nProbeer een ander woord.");
+                    invalidWordDialog.setTitle("Fout Woord");
+                    invalidWordDialog.showAndWait();
+                }
             }
-        }
     }
 
     /**
-     *
+     * Creates a new turnPlayer record
+     * If both player have player their turn, a new turn is created
      */
-    private void createNewTurn() {
+    private void createNewPlayerTurn() {
+        Connection connection = Singleton.getInstance().getConnection();
+        boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
+        int currentTurnId = 0;
+
+        try {
+            //Get the current turn
+            PreparedStatement turnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
+            turnStatement.setInt(1, this.game.getGameId());
+            ResultSet turn = turnStatement.executeQuery();
+            while (turn.next()) {
+                currentTurnId = turn.getInt(1);
+            }
+
+            //Game has no turn prints error
+            if (currentTurnId == 0) {
+                System.err.println("Kan geen beurten van het huidige spel ophalen...");
+                return;
+            }
+
+            //Insert into correct TurnPlayer table
+            String turnPlayerQuery;
+            if (isPlayer1) {
+                turnPlayerQuery = "INSERT INTO `turnplayer1`(`game_id`, `turn_id`, `username_player1`, `bonus`, `score`, `turnaction_type`) VALUES (?,?,?,?,?,?)";
+            } else {
+                turnPlayerQuery = "INSERT INTO `turnplayer2`(`game_id`, `turn_id`, `username_player2`, `bonus`, `score`, `turnaction_type`) VALUES (?,?,?,?,?,?)";
+            }
+            PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
+            turnPlayerStatement.setInt(1, this.game.getGameId());
+            turnPlayerStatement.setInt(2, currentTurnId);
+            turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
+            turnPlayerStatement.setInt(4, 0);
+            turnPlayerStatement.setInt(5, this.calculatePoints(this.getWords()));
+            turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString());
+            turnPlayerStatement.executeQuery();
+
+            //Get other players turn
+            String otherPlayerTurnQuery;
+            if (isPlayer1) {
+                otherPlayerTurnQuery = "SELECT * FROM `turnplayer2` WHERE `game_id` = ? AND `turn_id` = ?";
+            } else {
+                otherPlayerTurnQuery = "SELECT * FROM `turnplayer1` WHERE `game_id` = ? AND `turn_id` = ?";
+            }
+
+            PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
+            otherPlayerTurnStatement.setInt(1, this.game.getGameId());
+            otherPlayerTurnStatement.setInt(1, currentTurnId);
+            ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
+
+            //if other player has played their turn, create a new turn
+            if(otherPlayerTurnResultSet.next()) {
+                this.createNewTurn(currentTurnId);
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void createNewTurn(int currentTurn) {
 
     }
 }
