@@ -1,7 +1,12 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Board {
     public enum TileType {
@@ -14,71 +19,114 @@ public class Board {
         SIXLETTER
     }
 
-    private Tile[][] grid;
-    private Map<String, TileType> predefinedTileTypes = new HashMap<>();
+    public static final int BOARD_SIZE = 15;
 
-    public Board() {
-        this.populatePredefinedTileTypes();
+    private final Tile[][] grid;
+
+    public Board(int gameId) {
         this.grid = this.newBoard();
-    }
-
-    private void populatePredefinedTileTypes() {
-        String[] TWOLETTER = {"2,1", "6,1", "8,1", "12,1", "8,3", "6,6", "8,6", "2,7", "12,7", "6,8", "8,8", "8,11", "2,13", "6,13", "8,13", "12,13"};
-        String[] THREEWORD = {"4,0", "10,0", "0,2", "14,2", "3,4", "11,4", "3,10", "11,10", "0,12", "14,12", "4,14", "10,14"};
-        String[] FOURLETTER = {"7,0", "3,2", "11,2", "5,3", "9,3", "1,4", "13,4", "7,5", "7,9", "1,10", "13,10", "5,11", "9,11", "3,12", "11,12", "7,14"};
-        String[] FOURWORD = {"0,7", "14,7"};
-        String[] SIXLETTER = {"0,0", "14,0", "4,5", "10,5", "1,6", "13,6", "1,8", "13,8", "4,9", "10,9", "14,14", "0,14"};
-
-        this.predefinedTileTypes.put("6,6", TileType.START);
-
-        for (String key : TWOLETTER) {
-            this.predefinedTileTypes.put(key, TileType.TWOLETTER);
-        }
-
-        for (String key : THREEWORD) {
-            this.predefinedTileTypes.put(key, TileType.THREEWORD);
-        }
-
-        for (String key : FOURLETTER) {
-            this.predefinedTileTypes.put(key, TileType.FOURLETTER);
-        }
-
-        for (String key : FOURWORD) {
-            this.predefinedTileTypes.put(key, TileType.FOURWORD);
-        }
-
-        for (String key : SIXLETTER) {
-            this.predefinedTileTypes.put(key, TileType.SIXLETTER);
-        }
+        this.updateBoard(gameId);
     }
 
     private Tile[][] newBoard() {
-        int gridSize = 14;
-        Tile[][] newGrid = new Tile[gridSize][gridSize];
+        Tile[][] newGrid = new Tile[BOARD_SIZE][BOARD_SIZE];
 
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                newGrid[x][y] = new Tile(this.getTileType(x, y));
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int xCord = result.getInt(1) - 1;
+                int yCord = result.getInt(2) - 1;
+                String type = result.getString(3);
+                newGrid[xCord][yCord] = new Tile(this.getTileType(type));
             }
+            return newGrid;
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
         }
-        return newGrid;
     }
 
-    private TileType getTileType(int x, int y) {
-        return this.predefinedTileTypes.getOrDefault(x + "," + y, TileType.NORMAL);
+    private TileType getTileType(String type) {
+        switch (type) {
+            case "*":
+                return TileType.START;
+            case "2L":
+                return TileType.TWOLETTER;
+            case "3W":
+                return TileType.THREEWORD;
+            case "4L":
+                return TileType.FOURLETTER;
+            case "4W":
+                return TileType.FOURWORD;
+            case "6L":
+                return TileType.SIXLETTER;
+            default:
+                return TileType.NORMAL;
+        }
     }
 
+    public void updateBoard(int gameId) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT woorddeel, `x-waarden`, `y-waarden` FROM gelegd WHERE game_id = ?");
+            statement.setInt(1, gameId);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String word = result.getString(1);
+                String xValuesString = result.getString(2);
+                String yValuesString = result.getString(3);
+
+                String[] characters = word.split(",");
+                int[] xValues = new int[characters.length];
+                int[] yValues = new int[characters.length];
+
+                String[] xValue = xValuesString.split(",");
+                for (int i = 0; i < xValue.length; i++) {
+                    xValues[i] = Integer.parseInt(xValue[i]) - 1;
+                }
+
+                String[] yValue = yValuesString.split(",");
+                for (int i = 0; i < yValue.length; i++) {
+                    yValues[i] = Integer.parseInt(yValue[i]) - 1;
+                }
+
+                for (int i = 0; i < characters.length; i++) {
+                    this.grid[xValues[i]][yValues[i]].setValue(characters[i].charAt(0));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void setValue(int x, int y, Character value) {
+        this.grid[x][y].setValue(value);
+    }
+
+    public Tile getTile(int x, int y) {
+        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+            return null;
+        }
+
+        return this.grid[x][y];
+    }
+
+    public boolean hasValue(int x, int y) {
+        return this.getValue(x, y) != null;
+    }
 
     public Character getValue(int x, int y) {
-        return this.grid[x][y].getValue();
+        Tile tile = this.getTile(x, y);
+
+        return tile == null ? null : tile.getValue();
     }
 
     public Tile[][] getGrid() {
         return this.grid;
     }
-
-    public void setValue(int x, int y, Character Value) {
-        this.grid[x][y].setValue(Value);
-    }
-
 }
