@@ -1,10 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Board;
@@ -22,9 +25,14 @@ public class BoardController extends Controller {
     private Game game;
     private Board board;
     private final List<Tile> unconfirmedTiles = new ArrayList<>();
+    private LetterTile selectedLetter;
+    private boolean moveTileFromToBoard = false;
+    private BoardTile previousBoardTile;
 
     @FXML
     private GridPane gameGrid;
+    @FXML
+    private HBox lettertiles;
 
     private HashMap<Character, Integer> symbolValues;
 
@@ -59,6 +67,7 @@ public class BoardController extends Controller {
                 BoardTile.TileType type = BoardTile.TileType.fromDatabase(result.getString("tile_type"));
 
                 BoardTile boardTile = new BoardTile(type);
+                this.setBoardTileClick(boardTile);
 
                 this.gameGrid.add(boardTile, xCord, yCord);
             }
@@ -91,6 +100,7 @@ public class BoardController extends Controller {
                     BoardTile boardTile = this.getBoardTile(xCord, yCord);
 
                     boardTile.setConfirmed(true);
+                    boardTile.setLetterValue(letter);
                     boardTile.setLetter(letter, this.symbolValues.get(letter));
                 }
             }
@@ -150,7 +160,13 @@ public class BoardController extends Controller {
 
     @FXML
     private void handleChatAction() {
-        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
+
+        //TODO: Add onclicklistener to HandOutLetters()
+        for (Node tile : this.lettertiles.getChildren()) {
+            this.setLetterTileClick((LetterTile)tile);
+        }
+
+        /*this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
                 ChatController chatController = (ChatController) controller;
@@ -161,7 +177,7 @@ public class BoardController extends Controller {
             public void afterNavigate(Controller controller) {
 
             }
-        });
+        });*/
     }
 
     private void tilePlaced(Tile placedTile) {
@@ -392,5 +408,78 @@ public class BoardController extends Controller {
         SINGLE_TILE,
         HORIZONTAL,
         VERTICAL
+    }
+
+    private void setLetterTileClick(LetterTile lettertile) {
+        lettertile.setOnMouseClicked(event -> {
+            this.moveTileFromToBoard = false;
+            if(this.selectedLetter == lettertile){
+                lettertile.deselectLetter();
+                this.selectedLetter = null;
+            }
+            else{
+                this.selectLetter(lettertile);
+            }
+        });
+    }
+
+    private void selectLetter(LetterTile lettertile){
+        if(this.selectedLetter != null){
+            this.selectedLetter.deselectLetter();
+        }
+
+        this.selectedLetter = lettertile;
+        lettertile.selectLetter();
+    }
+
+    private void setBoardTileClick(BoardTile boardTile) {
+        boardTile.setOnMouseClicked(event -> {
+            if(this.selectedLetter != null){
+                //System.out.println("TestSet: " + boardTile.getLetterValue());
+
+                if(boardTile.getLetterValue() == null){
+                    boardTile.setConfirmed(false);
+                    //TODO: Edit handOutLetters
+                    //boardTile.setLetter(this.selectedLetter.getLetterModel().getSymbol().charAt(0), this.selectedLetter.getLetterModel().getValue());
+                    //boardTile.setLetterTile(this.selectedLetter);
+                    //boardTile.setLetterValue(this.selectedLetter.getLetterModel().getSymbol().charAt(0));
+                    boardTile.setLetter('B', 2);
+                    boardTile.setLetterTile(this.selectedLetter);
+                    boardTile.setLetterValue('B');
+
+                    if(this.moveTileFromToBoard){
+                        this.previousBoardTile.setConfirmed(true);
+                        this.previousBoardTile.removeLetter();
+                        this.previousBoardTile.setLetterTile(null);
+                        this.previousBoardTile.setLetterValue(null);
+                        this.moveTileFromToBoard = false;
+                    }
+                    else{
+                        this.lettertiles.getChildren().remove(this.selectedLetter);
+                    }
+
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
+
+
+            }
+            //move tile on board
+            else{
+                if(!boardTile.isConfirmed() && boardTile.getLetterTile() != null){
+                    this.previousBoardTile = boardTile;
+                    this.moveTileFromToBoard = true;
+
+                    if(this.selectedLetter == boardTile.getLetterTile()){
+                        boardTile.getLetterTile().deselectLetter();
+                        this.selectedLetter = null;
+                    }
+                    else{
+                        this.selectLetter(boardTile.getLetterTile());
+                    }
+                }
+            }
+
+        });
     }
 }

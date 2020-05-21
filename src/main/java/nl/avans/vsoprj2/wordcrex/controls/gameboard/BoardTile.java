@@ -11,6 +11,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nl.avans.vsoprj2.wordcrex.Colors;
+import nl.avans.vsoprj2.wordcrex.models.Letter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +27,8 @@ public class BoardTile extends AnchorPane implements Initializable {
 
     TileType tileType;
     private boolean confirmed = true;
+    private LetterTile letterTile;
+    private Character letterValue;
 
     public BoardTile(TileType tileType) {
         this();
@@ -59,6 +62,22 @@ public class BoardTile extends AnchorPane implements Initializable {
         return this.tileType;
     }
 
+    public void setLetterTile(LetterTile letterTile){
+        this.letterTile = letterTile;
+    }
+
+    public LetterTile getLetterTile(){
+        return this.letterTile;
+    }
+
+    public void setLetterValue(Character letterValue){
+        this.letterValue = letterValue;
+    }
+
+    public Character getLetterValue(){
+        return this.letterValue;
+    }
+
     private void updateBackgroundColor() {
         Color color = this.getTileType().color;
 
@@ -89,6 +108,12 @@ public class BoardTile extends AnchorPane implements Initializable {
         this.letter.setText(String.valueOf(letter));
         this.worth.setText(String.valueOf(worth));
 
+        this.updateBackgroundColor();
+    }
+
+    public void removeLetter() {
+        this.letter.setText("");
+        this.worth.setText("");
         this.updateBackgroundColor();
     }
 

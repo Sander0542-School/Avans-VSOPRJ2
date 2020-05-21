@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import nl.avans.vsoprj2.wordcrex.models.Letter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,8 @@ public class LetterTile extends AnchorPane implements Initializable {
     private Label worth;
     @FXML
     private Label letter;
+
+    private Letter letterModel;
 
     public LetterTile(Character character, int worth) {
         this();
@@ -35,6 +38,22 @@ public class LetterTile extends AnchorPane implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setLetterModel(Letter letterModel){
+        this.letterModel = letterModel;
+    }
+
+    public Letter getLetterModel(){
+        return this.letterModel;
+    }
+
+    public void selectLetter(){
+        this.setStyle("-fx-background-color: #A3A3A3; -fx-background-radius: 6;");
+    }
+
+    public void deselectLetter(){
+        this.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 6;");
     }
 
     @Override
