@@ -4,8 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.controls.gameboard.BackgroundTile;
-import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Board;
@@ -27,6 +26,8 @@ public class BoardController extends Controller {
     @FXML
     private GridPane gameGrid;
 
+    private HashMap<Character, Integer> symbolValues;
+
     /**
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
@@ -36,23 +37,76 @@ public class BoardController extends Controller {
     public void setGame(Game game) {
         this.game = game;
         this.board = new Board(game.getGameId());
-        this.updateView();
+
+        this.symbolValues = this.getSymbolValues();
+
+        this.generateBoard();
+        this.loadLetters();
     }
 
-    private void updateView() {
-        Tile[][] grid = this.board.getGrid();
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid.length; y++) {
-                Character value = grid[x][y].getValue();
+    private void generateBoard() {
+        this.gameGrid.getChildren().clear();
 
-                if (value != null) {
-                    this.gameGrid.add(new LetterTile(value, 1), x, y);
-                } else {
-                    Board.TileType tileType = grid[x][y].getTileType();
-                    this.gameGrid.add(new BackgroundTile(tileType), x, y);
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int xCord = result.getInt("x") - 1;
+                int yCord = result.getInt("y") - 1;
+                BoardTile.TileType type = BoardTile.TileType.fromDatabase(result.getString("tile_type"));
+
+                BoardTile boardTile = new BoardTile(type);
+
+                this.gameGrid.add(boardTile, xCord, yCord);
+            }
+
+        } catch (SQLException e) {
+            this.gameGrid.getChildren().clear();
+
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void loadLetters() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT `woorddeel`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
+            statement.setInt(1, this.game.getGameId());
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String[] letters = result.getString("woorddeel").split(",");
+                int[] xCords = Arrays.stream(result.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+                int[] yCords = Arrays.stream(result.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+
+                for (int i = 0; i < letters.length; i++) {
+                    char letter = letters[i].charAt(0);
+                    int xCord = xCords[i] - 1;
+                    int yCord = yCords[i] - 1;
+
+                    System.out.print(letter);
+                    System.out.print(": ");
+                    System.out.print(xCord);
+                    System.out.print(",");
+                    System.out.print(yCord);
+
+                    BoardTile boardTile = this.getBoardTile(xCord, yCord);
+
+                    boardTile.setConfirmed(true);
+                    boardTile.setLetter(letter, this.symbolValues.get(letter));
                 }
             }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
         }
+    }
+
+    public BoardTile getBoardTile(int xCord, int yCord) {
+        return (BoardTile) this.gameGrid.getChildren().filtered(node -> GridPane.getRowIndex(node) == xCord).filtered(node -> GridPane.getColumnIndex(node) == yCord).get(0);
     }
 
     /**
@@ -201,8 +255,6 @@ public class BoardController extends Controller {
     public int calculatePoints(List<List<Tile>> words) {
         int points = 0;
 
-        HashMap<Character, Integer> symbolValues = this.getSymbolValues();
-
         for (List<Tile> word : words) {
             int wordPoints = 0;
             int wordMultiplier = 1;
@@ -230,7 +282,7 @@ public class BoardController extends Controller {
                     }
                 }
 
-                wordPoints += symbolValues.get(tile.getValue()) * letterMultiplier;
+                wordPoints += this.symbolValues.get(tile.getValue()) * letterMultiplier;
             }
 
             points += (wordPoints * wordMultiplier);
