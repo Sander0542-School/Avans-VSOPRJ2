@@ -8,6 +8,9 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Board;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.Tile;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -316,5 +319,36 @@ public class BoardController extends Controller {
         SINGLE_TILE,
         HORIZONTAL,
         VERTICAL
+    }
+
+    /**
+     *
+     */
+    @FXML
+    private void confirmLettersButtonClicked() {
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Bevestig Woord");
+        confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
+        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
+
+        if (dialogResult.isPresent())
+        if (dialogResult.get() == ButtonType.OK) {
+            List<List<Tile>> words = this.getWords();
+            if (this.checkWords(words)) {
+                this.createNewTurn();
+            } else {
+                //Throws alert if word is not correct
+                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Dit is geen geldig woord.\nProbeer een ander woord.");
+                invalidWordDialog.setTitle("Fout Woord");
+                invalidWordDialog.showAndWait();
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void createNewTurn() {
+
     }
 }
