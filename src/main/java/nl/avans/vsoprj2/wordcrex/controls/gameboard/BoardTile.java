@@ -92,6 +92,14 @@ public class BoardTile extends AnchorPane implements Initializable {
         this.updateBackgroundColor();
     }
 
+    public boolean hasLetter() {
+        return !this.letter.getText().isEmpty();
+    }
+
+    public char getLetter() {
+        return this.letter.getText().charAt(0);
+    }
+
     public enum TileType {
         NORMAL("--", Color.rgb(27, 23, 68)),
         START("*", Color.rgb(237, 17, 147)),
