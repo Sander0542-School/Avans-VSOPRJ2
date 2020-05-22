@@ -158,11 +158,7 @@ public class BoardController extends Controller {
     @FXML
     private void handleChatAction() {
 
-        //TODO: Add onclicklistener to HandOutLetters()
-        /*for (Node tile : this.lettertiles.getChildren()) {
-            this.setLetterTileClick((LetterTile)tile);
-        }*/
-
+        //TODO: Testing purpose
         this.getHandLetters(this.lettertiles);
 
         /*this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
