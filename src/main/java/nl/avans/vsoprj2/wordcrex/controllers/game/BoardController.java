@@ -520,13 +520,16 @@ public class BoardController extends Controller {
 
     private void setLetterTileClick(LetterTile lettertile) {
         lettertile.setOnMouseClicked(event -> {
-            this.moveTileFromToBoard = false;
             if (this.selectedLetter == lettertile) {
                 lettertile.deselectLetter();
                 this.selectedLetter = null;
             } else {
+                if(this.moveTileFromToBoard){
+                    this.previousBoardTile.deselectTile();
+                }
                 this.selectLetter(lettertile);
             }
+            this.moveTileFromToBoard = false;
         });
     }
 
