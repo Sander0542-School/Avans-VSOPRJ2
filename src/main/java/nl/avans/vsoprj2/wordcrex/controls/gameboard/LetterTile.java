@@ -13,17 +13,17 @@ import java.util.ResourceBundle;
 
 public class LetterTile extends AnchorPane implements Initializable {
     @FXML
-    private Label worth;
+    private Label letterTileSymbol;
     @FXML
-    private Label letter;
+    private Label letterTileValue;
 
-    private Letter letterModel;
+    private Letter letter;
 
-    public LetterTile(Character character, int worth) {
+    public LetterTile(Letter letter) {
         this();
-
-        this.letter.setText(character.toString());
-        this.worth.setText(String.valueOf(worth));
+        this.letterTileSymbol.setText(letter.getSymbol());
+        this.letterTileValue.setText(Integer.toString(letter.getValue()));
+        this.letter = letter;
     }
 
     public LetterTile() {
@@ -40,12 +40,8 @@ public class LetterTile extends AnchorPane implements Initializable {
         }
     }
 
-    public void setLetterModel(Letter letterModel){
-        this.letterModel = letterModel;
-    }
-
-    public Letter getLetterModel(){
-        return this.letterModel;
+    public Letter getLetter(){
+        return this.letter;
     }
 
     public void selectLetter(){

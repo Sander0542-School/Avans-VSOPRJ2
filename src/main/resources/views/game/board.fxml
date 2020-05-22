@@ -77,7 +77,7 @@
                 </ImageView>
 
             </HBox>
-            <HBox fx:id="lettertiles" alignment="CENTER" spacing="6.0" prefWidth="450">
+            <HBox fx:id="lettertiles" onMouseClicked="#handleLettertilesClick" alignment="CENTER" spacing="6.0" prefWidth="450">
                 <LetterTile/>
                 <LetterTile/>
                 <LetterTile/>

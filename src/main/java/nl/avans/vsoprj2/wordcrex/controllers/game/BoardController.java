@@ -9,10 +9,7 @@ import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Account;
-import nl.avans.vsoprj2.wordcrex.models.Board;
-import nl.avans.vsoprj2.wordcrex.models.Game;
-import nl.avans.vsoprj2.wordcrex.models.Tile;
+import nl.avans.vsoprj2.wordcrex.models.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -162,9 +159,11 @@ public class BoardController extends Controller {
     private void handleChatAction() {
 
         //TODO: Add onclicklistener to HandOutLetters()
-        for (Node tile : this.lettertiles.getChildren()) {
+        /*for (Node tile : this.lettertiles.getChildren()) {
             this.setLetterTileClick((LetterTile)tile);
-        }
+        }*/
+
+        this.getHandLetters(this.lettertiles);
 
         /*this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
@@ -410,6 +409,120 @@ public class BoardController extends Controller {
         VERTICAL
     }
 
+    //hand out letters (previous turn winner)
+    public void handOutLetters(HBox lettertiles) {
+        Connection connection = Singleton.getInstance().getConnection();
+        int currentTurn = this.game.getCurrentTurn();
+        int extraLetters = 7;
+        ArrayList<Letter> letters = new ArrayList<>();
+
+        if (currentTurn > 0) {
+            try {
+                //get leftover letters from the previous turn
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
+                                "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
+                                "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
+                                "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
+                                "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
+                );
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, (currentTurn - 1));
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    letters.add(new Letter(result));
+                    extraLetters--;
+                }
+
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        }
+
+        letters.addAll(this.getRandomLettersFromPool(extraLetters));
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("INSERT INTO `handletter` (`game_id`,`turn_id`,`letter_id`) VALUES ");
+
+            int handletterCount = 0;
+            for (Letter letter : letters) {
+                if (handletterCount > 0) {
+                    sb.append(",");
+                }
+                sb.append("(").append(this.game.getGameId()).append(", ").append(currentTurn).append(",").append(letter.getLetterId()).append(")");
+                handletterCount++;
+            }
+            sb.append(";");
+
+            PreparedStatement statement = connection.prepareStatement(sb.toString());
+            int result = statement.executeUpdate();
+
+            if (result > 0) {
+                Collections.shuffle(letters);
+                this.displayLetters(letters, lettertiles);
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    public ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
+        Connection connection = Singleton.getInstance().getConnection();
+        ArrayList<Letter> letters = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ORDER BY RAND() LIMIT ?");
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, extraLetters);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                letters.add(new Letter(result));
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return letters;
+    }
+
+    //get handed out letters (handed out by previous turn winner)
+    public void getHandLetters(HBox lettertiles) {
+        Connection connection = Singleton.getInstance().getConnection();
+        int currentTurn = this.game.getCurrentTurn();
+        ArrayList<Letter> letters = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
+            statement.setInt(1, this.game.getGameId());
+            //TODO: Remove "-7"
+            statement.setInt(2, currentTurn - 7);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                letters.add(new Letter(result));
+            }
+
+            Collections.shuffle(letters);
+            this.displayLetters(letters, lettertiles);
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void displayLetters(ArrayList<Letter> letters, HBox lettertiles) {
+        lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
+
+        for (Letter letter : letters) {
+            LetterTile letterTile = new LetterTile(letter);
+            this.setLetterTileClick(letterTile);
+            lettertiles.getChildren().add(letterTile);
+        }
+    }
+
     private void setLetterTileClick(LetterTile lettertile) {
         lettertile.setOnMouseClicked(event -> {
             this.moveTileFromToBoard = false;
@@ -435,17 +548,11 @@ public class BoardController extends Controller {
     private void setBoardTileClick(BoardTile boardTile) {
         boardTile.setOnMouseClicked(event -> {
             if(this.selectedLetter != null){
-                //System.out.println("TestSet: " + boardTile.getLetterValue());
-
                 if(boardTile.getLetterValue() == null){
                     boardTile.setConfirmed(false);
-                    //TODO: Edit handOutLetters
-                    //boardTile.setLetter(this.selectedLetter.getLetterModel().getSymbol().charAt(0), this.selectedLetter.getLetterModel().getValue());
-                    //boardTile.setLetterTile(this.selectedLetter);
-                    //boardTile.setLetterValue(this.selectedLetter.getLetterModel().getSymbol().charAt(0));
-                    boardTile.setLetter('B', 2);
+                    boardTile.setLetter(this.selectedLetter.getLetter().getSymbol().charAt(0), this.selectedLetter.getLetter().getValue());
                     boardTile.setLetterTile(this.selectedLetter);
-                    boardTile.setLetterValue('B');
+                    boardTile.setLetterValue(this.selectedLetter.getLetter().getSymbol().charAt(0));
 
                     if(this.moveTileFromToBoard){
                         this.previousBoardTile.setConfirmed(true);
@@ -461,8 +568,6 @@ public class BoardController extends Controller {
                     this.selectedLetter.deselectLetter();
                     this.selectedLetter = null;
                 }
-
-
             }
             //move tile on board
             else{
@@ -481,5 +586,20 @@ public class BoardController extends Controller {
             }
 
         });
+    }
+
+    public void handleLettertilesClick() {
+        if(this.selectedLetter != null && this.moveTileFromToBoard){
+            this.previousBoardTile.setConfirmed(true);
+            this.previousBoardTile.removeLetter();
+            this.previousBoardTile.setLetterTile(null);
+            this.previousBoardTile.setLetterValue(null);
+            this.moveTileFromToBoard = false;
+
+            this.lettertiles.getChildren().add(this.selectedLetter);
+
+            this.selectedLetter.deselectLetter();
+            this.selectedLetter = null;
+        }
     }
 }
