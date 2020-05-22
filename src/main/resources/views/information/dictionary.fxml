@@ -9,7 +9,7 @@
         <AppBar title="WoordenBoek" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
     <center>
-        <VBox alignment="CENTER" fillWidth="false" spacing="10">
+        <VBox fx:id="settings" alignment="CENTER" fillWidth="false" spacing="10">
             <Label prefWidth="500" text="Username:" />
             <TextField prefWidth="500"/>
             <Label prefWidth="500" text="Woord:" />
