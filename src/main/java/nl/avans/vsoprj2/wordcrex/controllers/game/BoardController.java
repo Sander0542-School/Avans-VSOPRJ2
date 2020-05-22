@@ -1,7 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -522,18 +521,17 @@ public class BoardController extends Controller {
     private void setLetterTileClick(LetterTile lettertile) {
         lettertile.setOnMouseClicked(event -> {
             this.moveTileFromToBoard = false;
-            if(this.selectedLetter == lettertile){
+            if (this.selectedLetter == lettertile) {
                 lettertile.deselectLetter();
                 this.selectedLetter = null;
-            }
-            else{
+            } else {
                 this.selectLetter(lettertile);
             }
         });
     }
 
-    private void selectLetter(LetterTile lettertile){
-        if(this.selectedLetter != null){
+    private void selectLetter(LetterTile lettertile) {
+        if (this.selectedLetter != null) {
             this.selectedLetter.deselectLetter();
         }
 
@@ -543,49 +541,54 @@ public class BoardController extends Controller {
 
     private void setBoardTileClick(BoardTile boardTile) {
         boardTile.setOnMouseClicked(event -> {
-            if(this.selectedLetter != null){
-                if(boardTile.getLetterValue() == null){
-                    boardTile.setConfirmed(false);
-                    boardTile.setLetter(this.selectedLetter.getLetter().getSymbol().charAt(0), this.selectedLetter.getLetter().getValue());
-                    boardTile.setLetterTile(this.selectedLetter);
-                    boardTile.setLetterValue(this.selectedLetter.getLetter().getSymbol().charAt(0));
-
-                    if(this.moveTileFromToBoard){
-                        this.previousBoardTile.setConfirmed(true);
-                        this.previousBoardTile.removeLetter();
-                        this.previousBoardTile.setLetterTile(null);
-                        this.previousBoardTile.setLetterValue(null);
-                        this.moveTileFromToBoard = false;
-                    }
-                    else{
-                        this.lettertiles.getChildren().remove(this.selectedLetter);
-                    }
-
-                    this.selectedLetter.deselectLetter();
+            if (this.selectedLetter != null) {
+                if (this.selectedLetter == boardTile.getLetterTile()) {
+                    boardTile.deselectTile();
                     this.selectedLetter = null;
+                } else {
+                    if (boardTile.getLetterValue() == null) {
+                        boardTile.setConfirmed(false);
+                        boardTile.setLetter(this.selectedLetter.getLetter().getSymbol().charAt(0), this.selectedLetter.getLetter().getValue());
+                        boardTile.setLetterTile(this.selectedLetter);
+                        boardTile.setLetterValue(this.selectedLetter.getLetter().getSymbol().charAt(0));
+
+                        if (this.moveTileFromToBoard) {
+                            this.previousBoardTile.setConfirmed(true);
+                            this.previousBoardTile.removeLetter();
+                            this.previousBoardTile.setLetterTile(null);
+                            this.previousBoardTile.setLetterValue(null);
+                            this.moveTileFromToBoard = false;
+                        } else {
+                            this.lettertiles.getChildren().remove(this.selectedLetter);
+                        }
+
+                        this.selectedLetter.deselectLetter();
+                        this.selectedLetter = null;
+                    } else {
+                        if (!boardTile.isConfirmed()) {
+                            this.previousBoardTile.deselectTile();
+                            this.previousBoardTile = boardTile;
+                            this.moveTileFromToBoard = true;
+                            this.selectLetter(boardTile.getLetterTile());
+                            boardTile.selectTile();
+                        }
+                    }
                 }
             }
-            //move tile on board
-            else{
-                if(!boardTile.isConfirmed() && boardTile.getLetterTile() != null){
+            //move selected tile to another tile on board
+            else {
+                if (!boardTile.isConfirmed() && boardTile.getLetterTile() != null) {
                     this.previousBoardTile = boardTile;
                     this.moveTileFromToBoard = true;
-
-                    if(this.selectedLetter == boardTile.getLetterTile()){
-                        boardTile.getLetterTile().deselectLetter();
-                        this.selectedLetter = null;
-                    }
-                    else{
-                        this.selectLetter(boardTile.getLetterTile());
-                    }
+                    this.selectLetter(boardTile.getLetterTile());
+                    boardTile.selectTile();
                 }
             }
-
         });
     }
 
     public void handleLettertilesClick() {
-        if(this.selectedLetter != null && this.moveTileFromToBoard){
+        if (this.selectedLetter != null && this.moveTileFromToBoard) {
             this.previousBoardTile.setConfirmed(true);
             this.previousBoardTile.removeLetter();
             this.previousBoardTile.setLetterTile(null);

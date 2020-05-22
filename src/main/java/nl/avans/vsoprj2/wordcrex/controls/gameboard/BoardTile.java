@@ -3,15 +3,10 @@ package nl.avans.vsoprj2.wordcrex.controls.gameboard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nl.avans.vsoprj2.wordcrex.Colors;
-import nl.avans.vsoprj2.wordcrex.models.Letter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -62,19 +57,19 @@ public class BoardTile extends AnchorPane implements Initializable {
         return this.tileType;
     }
 
-    public void setLetterTile(LetterTile letterTile){
+    public void setLetterTile(LetterTile letterTile) {
         this.letterTile = letterTile;
     }
 
-    public LetterTile getLetterTile(){
+    public LetterTile getLetterTile() {
         return this.letterTile;
     }
 
-    public void setLetterValue(Character letterValue){
+    public void setLetterValue(Character letterValue) {
         this.letterValue = letterValue;
     }
 
-    public Character getLetterValue(){
+    public Character getLetterValue() {
         return this.letterValue;
     }
 
@@ -89,6 +84,14 @@ public class BoardTile extends AnchorPane implements Initializable {
         }
 
         this.setStyle(String.format("-fx-background-color: %s; -fx-background-radius: 6;", Colors.toRGBCode(color)));
+    }
+
+    public void selectTile() {
+        this.setStyle("-fx-background-color: #9C936A; -fx-background-radius: 6;");
+    }
+
+    public void deselectTile() {
+        this.setStyle("-fx-background-color: #F4E6A7; -fx-background-radius: 6;");
     }
 
     public boolean isConfirmed() {
