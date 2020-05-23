@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static nl.avans.vsoprj2.wordcrex.models.Board.TileType.START;
+
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
@@ -169,7 +171,27 @@ public class BoardController extends Controller {
             }
         }
 
-        return true;
+        for (Tile tile : this.unconfirmedTiles) { // checking if at least 1 of the new letters touches an older letter
+            if (tile.getTileType() == START) return true; // bypass check if this is the first word this game
+            if (this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) {
+                return true;
+            }
+            if (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
+                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private List<List<Tile>> getWords() {
@@ -292,7 +314,7 @@ public class BoardController extends Controller {
         return wordsString;
     }
 
-    private HashMap<Character, Integer> getSymbolValues() {
+    private void getSymbolValues() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -301,13 +323,10 @@ public class BoardController extends Controller {
 
             ResultSet symbolSet = statement.executeQuery();
 
-            HashMap<Character, Integer> symbolValues = new HashMap<>();
-
             while (symbolSet.next()) {
-                symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
+                this.symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
             }
 
-            return symbolValues;
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
