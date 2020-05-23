@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static nl.avans.vsoprj2.wordcrex.models.Board.TileType.START;
-
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
@@ -314,7 +312,7 @@ public class BoardController extends Controller {
         return wordsString;
     }
 
-    private void getSymbolValues() {
+    private HashMap<Character, Integer> getSymbolValues() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -323,10 +321,13 @@ public class BoardController extends Controller {
 
             ResultSet symbolSet = statement.executeQuery();
 
+            HashMap<Character, Integer> symbolValues = new HashMap<>();
+
             while (symbolSet.next()) {
-                this.symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
+                symbolValues.put(symbolSet.getString("symbol").charAt(0), symbolSet.getInt("value"));
             }
 
+            return symbolValues;
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
