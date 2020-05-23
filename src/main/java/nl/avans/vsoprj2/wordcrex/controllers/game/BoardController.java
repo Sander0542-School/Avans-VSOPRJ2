@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -28,6 +29,15 @@ public class BoardController extends Controller {
     @FXML
     private GridPane gameGrid;
 
+    @FXML
+    private Label player1Name;
+    @FXML
+    private Label player2Name;
+    @FXML
+    private Label player1Score;
+    @FXML
+    private Label player2Score;
+
     private HashMap<Character, Integer> symbolValues;
 
     /**
@@ -44,6 +54,8 @@ public class BoardController extends Controller {
         this.board.loadLetters(game, this.symbolValues);
 
         this.loadBoard();
+
+        this.loadPlayerData();
     }
 
     public List<Tile> getUnconfirmedTiles() {
@@ -68,6 +80,14 @@ public class BoardController extends Controller {
                 this.gameGrid.add(new BoardTile(this.board.getTile(x, y)), x - 1, y - 1);
             }
         }
+    }
+
+    public void loadPlayerData() {
+        this.player1Name.setText(this.game.getUsernamePlayer1());
+        this.player2Name.setText(this.game.getUsernamePlayer2());
+
+        this.player1Score.setText(String.valueOf(this.game.getPlayerScore(true)));
+        this.player2Score.setText(String.valueOf(this.game.getPlayerScore(false)));
     }
 
     /**
