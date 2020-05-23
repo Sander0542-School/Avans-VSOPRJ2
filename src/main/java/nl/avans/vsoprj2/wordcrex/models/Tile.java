@@ -1,104 +1,62 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import nl.avans.vsoprj2.wordcrex.Colors;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class Tile extends AnchorPane implements Initializable {
-    @FXML
-    private Label letter;
-    @FXML
-    private Label multiplier;
-    @FXML
-    private Label worth;
+public class Tile {
+    private TileType tileType;
 
-    TileType tileType;
+    private Character letter;
+    private Integer worth;
+
     private boolean confirmed = true;
+    private boolean highlighted = false;
 
     public Tile(TileType tileType) {
-        this();
-
-        this.setTileType(tileType);
-    }
-
-    public Tile() {
-        super();
-
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/BoardTile.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void setTileType(TileType tileType) {
         this.tileType = tileType;
-
-        this.multiplier.setText(tileType == TileType.NORMAL ? "" : tileType.value);
-
-        this.updateBackgroundColor();
     }
 
     public TileType getTileType() {
         return this.tileType;
     }
 
-    private void updateBackgroundColor() {
-        Color color = this.getTileType().color;
-
-        if (!this.letter.getText().isEmpty()) {
-            color = Color.rgb(255, 255, 255);
-            if (!this.isConfirmed()) {
-                color = Color.rgb(244, 230, 167);
-            }
-        }
-
-        this.setStyle(String.format("-fx-background-color: %s; -fx-background-radius: 6;", Colors.toRGBCode(color)));
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     public boolean isConfirmed() {
         return this.confirmed;
     }
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
-    public void setLetter(char letter, int worth) {
-        this.letter.setText(String.valueOf(letter));
-        this.worth.setText(String.valueOf(worth));
-
-        this.updateBackgroundColor();
+    public void setLetter(Character letter, Integer worth) {
+        this.letter = letter;
+        this.worth = worth;
     }
 
     public boolean hasLetter() {
-        return !this.letter.getText().isEmpty();
+        return this.letter != null;
     }
 
-    public char getLetter() {
-        return this.letter.getText().charAt(0);
+    public Character getLetter() {
+        return this.letter;
     }
 
-    public int getWorth() {
-        String worth = this.worth.getText();
-        return Integer.parseInt(worth.isEmpty() ? "0" : worth);
+    public boolean hasWorth() {
+        return this.worth != null;
+    }
+
+    public Integer getWorth() {
+        return this.worth;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    public boolean isHighlighted() {
+        return this.highlighted;
     }
 
     public enum TileType {
