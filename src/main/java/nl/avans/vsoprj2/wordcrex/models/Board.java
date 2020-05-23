@@ -42,20 +42,33 @@ public class Board {
     public void loadLetters(Game game, HashMap<Character, Integer> symbolValues) {
         Connection connection = Singleton.getInstance().getConnection();
 
+        String table = Singleton.getInstance().getUser().getUsername().equals(game.getUsernamePlayer1()) ? "gelegdplayer1" : "gelegdplayer2";
+
         int currentTurnId = game.getCurrentTurn();
+        int playerLastTurn = 0;
+        int turnId = 0;
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
-            statement.setInt(1, game.getGameId());
+            PreparedStatement playerStatement = connection.prepareStatement(String.format("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `%s` WHERE `game_id` = ? ORDER BY `turn_id` DESC LIMIT 1;", table));
+            playerStatement.setInt(1, game.getGameId());
 
-            ResultSet result = statement.executeQuery();
+            ResultSet playerResult = playerStatement.executeQuery();
 
-            while (result.next()) {
-                String[] letters = result.getString("woorddeel").split(",");
-                int[] xCords = Arrays.stream(result.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
-                int[] yCords = Arrays.stream(result.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+            if (playerResult.next()) {
+                playerLastTurn = playerResult.getInt("turn_id");
+            }
 
-                int turnId = result.getInt("turn_id");
+            PreparedStatement gelegdstatement = connection.prepareStatement("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
+            gelegdstatement.setInt(1, game.getGameId());
+
+            ResultSet gelegdResult = gelegdstatement.executeQuery();
+
+            while (gelegdResult.next()) {
+                String[] letters = gelegdResult.getString("woorddeel").split(",");
+                int[] xCords = Arrays.stream(gelegdResult.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+                int[] yCords = Arrays.stream(gelegdResult.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+
+                turnId = gelegdResult.getInt("turn_id");
 
                 for (int i = 0; i < letters.length; i++) {
                     char letter = letters[i].charAt(0);
@@ -65,7 +78,25 @@ public class Board {
                     Tile tile = this.getTile(xCord, yCord);
 
                     tile.setConfirmed(true);
-                    tile.setHighlighted((currentTurnId - 1) == turnId);
+                    tile.setHighlighted(gelegdResult.isLast() && turnId == playerLastTurn);
+                    tile.setLetter(letter, symbolValues.get(letter));
+                }
+            }
+
+            if (playerLastTurn > turnId) {
+                String[] letters = playerResult.getString("woorddeel").split(",");
+                int[] xCords = Arrays.stream(playerResult.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+                int[] yCords = Arrays.stream(playerResult.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+
+                for (int i = 0; i < letters.length; i++) {
+                    char letter = letters[i].charAt(0);
+                    int xCord = xCords[i];
+                    int yCord = yCords[i];
+
+                    Tile tile = this.getTile(xCord, yCord);
+
+                    tile.setConfirmed(true);
+                    tile.setHighlighted(true);
                     tile.setLetter(letter, symbolValues.get(letter));
                 }
             }
