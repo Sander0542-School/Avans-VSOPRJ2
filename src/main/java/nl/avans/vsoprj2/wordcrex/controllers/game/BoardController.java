@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
+import nl.avans.vsoprj2.wordcrex.models.Tile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -51,11 +51,11 @@ public class BoardController extends Controller {
             while (result.next()) {
                 int xCord = result.getInt("x");
                 int yCord = result.getInt("y");
-                BoardTile.TileType type = BoardTile.TileType.fromDatabase(result.getString("tile_type"));
+                Tile.TileType type = Tile.TileType.fromDatabase(result.getString("tile_type"));
 
-                BoardTile boardTile = new BoardTile(type);
+                Tile tile = new Tile(type);
 
-                this.gameGrid.add(boardTile, xCord - 1, yCord - 1);
+                this.gameGrid.add(tile, xCord - 1, yCord - 1);
             }
 
         } catch (SQLException e) {
@@ -83,10 +83,10 @@ public class BoardController extends Controller {
                     int xCord = xCords[i];
                     int yCord = yCords[i];
 
-                    BoardTile boardTile = this.getBoardTile(xCord, yCord);
+                    Tile tile = this.getBoardTile(xCord, yCord);
 
-                    boardTile.setConfirmed(true);
-                    boardTile.setLetter(letter, this.symbolValues.get(letter));
+                    tile.setConfirmed(true);
+                    tile.setLetter(letter, this.symbolValues.get(letter));
                 }
             }
         } catch (SQLException e) {
@@ -94,22 +94,22 @@ public class BoardController extends Controller {
         }
     }
 
-    public BoardTile getBoardTile(int xCord, int yCord) {
-        return (BoardTile) this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == xCord - 1).filtered(node -> GridPane.getRowIndex(node) == yCord - 1).get(0);
+    public Tile getBoardTile(int xCord, int yCord) {
+        return (Tile) this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == xCord - 1).filtered(node -> GridPane.getRowIndex(node) == yCord - 1).get(0);
     }
 
-    public List<BoardTile> getUnconfirmedTiles() {
-        List<BoardTile> boardTiles = new ArrayList<>();
+    public List<Tile> getUnconfirmedTiles() {
+        List<Tile> tiles = new ArrayList<>();
 
         this.gameGrid.getChildren().forEach(node -> {
-            BoardTile boardTile = (BoardTile) node;
+            Tile tile = (Tile) node;
 
-            if (boardTile.isConfirmed()) {
-                boardTiles.add(boardTile);
+            if (tile.isConfirmed()) {
+                tiles.add(tile);
             }
         });
 
-        return boardTiles;
+        return tiles;
     }
 
     /**
@@ -173,20 +173,20 @@ public class BoardController extends Controller {
         });
     }
 
-    private void tilePlaced(BoardTile placedTile) {
+    private void tilePlaced(Tile placedTile) {
 //        unconfirmedTiles.add(placedTile);
 
         this.updatePoints();
     }
 
-    private void tileRemoved(BoardTile placedTile) {
+    private void tileRemoved(Tile placedTile) {
 //        unconfirmedTiles.remove(placedTile);
 
         this.updatePoints();
     }
 
     private void updatePoints() {
-        List<List<BoardTile>> words = this.getWords();
+        List<List<Tile>> words = this.getWords();
 
         //TODO() Hide point count on layout
 
@@ -197,7 +197,7 @@ public class BoardController extends Controller {
         }
     }
 
-    private boolean checkWords(List<List<BoardTile>> words) {
+    private boolean checkWords(List<List<Tile>> words) {
         // No words
         if (words == null) {
             return false;
@@ -214,11 +214,11 @@ public class BoardController extends Controller {
         return true;
     }
 
-    private List<List<BoardTile>> getWords() {
+    private List<List<Tile>> getWords() {
         Orientation orientation = this.getWordOrientation();
 
-        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
-        List<List<BoardTile>> words = new ArrayList<>();
+        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
+        List<List<Tile>> words = new ArrayList<>();
 
         Coordinates coordinates;
 
@@ -256,12 +256,12 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    private Coordinates getCoordinates(List<BoardTile> boardTiles) {
+    private Coordinates getCoordinates(List<Tile> tiles) {
         Coordinates coordinates = null;
 
-        for (BoardTile boardTile : boardTiles) {
-            int xCord = GridPane.getRowIndex(boardTile) - 1;
-            int yCord = GridPane.getColumnIndex(boardTile) - 1;
+        for (Tile tile : tiles) {
+            int xCord = GridPane.getRowIndex(tile) - 1;
+            int yCord = GridPane.getColumnIndex(tile) - 1;
 
             if (coordinates == null) {
                 coordinates = new Coordinates(xCord, xCord, yCord, yCord);
@@ -276,15 +276,15 @@ public class BoardController extends Controller {
         return coordinates;
     }
 
-    public Points calculatePoints(List<List<BoardTile>> words) {
+    public Points calculatePoints(List<List<Tile>> words) {
         Points points = new Points();
 
-        for (List<BoardTile> word : words) {
+        for (List<Tile> word : words) {
             int wordPoints = 0;
             int wordPointsBonus = 0;
             int wordMultiplier = 1;
 
-            for (BoardTile tile : word) {
+            for (Tile tile : word) {
                 int letterMultiplier = 1;
 
                 if (!tile.isConfirmed()) {
@@ -323,11 +323,11 @@ public class BoardController extends Controller {
         return points;
     }
 
-    private List<String> getWordsFromList(List<List<BoardTile>> words) {
+    private List<String> getWordsFromList(List<List<Tile>> words) {
         List<String> wordsString = new ArrayList<>();
 
-        for (List<BoardTile> word : words) {
-            wordsString.add(word.stream().map(BoardTile::getLetter).iterator().toString());
+        for (List<Tile> word : words) {
+            wordsString.add(word.stream().map(Tile::getLetter).iterator().toString());
         }
 
         return wordsString;
@@ -354,9 +354,9 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<BoardTile> findWord(BoardTile tile, boolean horizontal) {
-        List<BoardTile> wordTiles = new ArrayList<>();
-        BoardTile firstLetter = tile;
+    public List<Tile> findWord(Tile tile, boolean horizontal) {
+        List<Tile> wordTiles = new ArrayList<>();
+        Tile firstLetter = tile;
         int i = 1;
 
         int xCord = GridPane.getColumnIndex(tile) + 1;
@@ -390,7 +390,7 @@ public class BoardController extends Controller {
     }
 
     private Orientation getWordOrientation() {
-        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
+        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
 
         if (unconfirmedTiles.size() == 0) {
             return null;

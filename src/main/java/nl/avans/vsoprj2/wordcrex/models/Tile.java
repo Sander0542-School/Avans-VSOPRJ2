@@ -1,14 +1,10 @@
-package nl.avans.vsoprj2.wordcrex.controls.gameboard;
+package nl.avans.vsoprj2.wordcrex.models;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nl.avans.vsoprj2.wordcrex.Colors;
 
@@ -16,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BoardTile extends AnchorPane implements Initializable {
+public class Tile extends AnchorPane implements Initializable {
     @FXML
     private Label letter;
     @FXML
@@ -27,13 +23,13 @@ public class BoardTile extends AnchorPane implements Initializable {
     TileType tileType;
     private boolean confirmed = true;
 
-    public BoardTile(TileType tileType) {
+    public Tile(TileType tileType) {
         this();
 
         this.setTileType(tileType);
     }
 
-    public BoardTile() {
+    public Tile() {
         super();
 
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/controls/gameboard/BoardTile.fxml"));
