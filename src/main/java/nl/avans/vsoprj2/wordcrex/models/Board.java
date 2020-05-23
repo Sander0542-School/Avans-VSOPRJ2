@@ -7,8 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Board {
     public static final int BOARD_SIZE = 15;
@@ -102,6 +104,19 @@ public class Board {
 
     public Tile[][] getTiles() {
         return this.tiles;
+    }
+
+    public boolean hasConfirmedSurroundingTile(int x, int y) {
+        List<Tile> surroundTiles = new ArrayList<>();
+
+        surroundTiles.add(this.getTile(x - 1, y - 1));
+        surroundTiles.add(this.getTile(x - 1, y + 1));
+        surroundTiles.add(this.getTile(x + 1, y + 1));
+        surroundTiles.add(this.getTile(x + 1, y - 1));
+
+        surroundTiles.removeIf(tile -> !tile.hasLetter() || !tile.isConfirmed());
+
+        return surroundTiles.size() > 0;
     }
 
     public static class Coordinate {

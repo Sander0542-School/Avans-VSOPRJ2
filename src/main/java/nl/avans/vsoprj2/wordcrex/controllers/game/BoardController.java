@@ -156,7 +156,6 @@ public class BoardController extends Controller {
     }
 
     private boolean checkWords(List<List<Tile>> words) {
-        // No words
         if (words == null) {
             return false;
         }
@@ -169,22 +168,13 @@ public class BoardController extends Controller {
             }
         }
 
-        for (Tile tile : this.unconfirmedTiles) { // checking if at least 1 of the new letters touches an older letter
-            if (tile.getTileType() == START) return true; // bypass check if this is the first word this game
-            if (this.board.getValue(tile.getX() + 1, tile.getY()) != null &&
-                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() + 1, tile.getY()))) {
+        for (Tile tile : this.getUnconfirmedTiles()) {
+            if (tile.getTileType() == Tile.TileType.START) {
                 return true;
             }
-            if (this.board.getValue(tile.getX(), tile.getY() + 1) != null &&
-                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() + 1))) {
-                return true;
-            }
-            if (this.board.getValue(tile.getX() - 1, tile.getY()) != null &&
-                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX() - 1, tile.getY()))) {
-                return true;
-            }
-            if (this.board.getValue(tile.getX(), tile.getY() - 1) != null &&
-                    !this.unconfirmedTiles.contains(this.board.getTile(tile.getX(), tile.getY() - 1))) {
+
+            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+            if (this.board.hasConfirmedSurroundingTile(coordinate.getX(), coordinate.getY())) {
                 return true;
             }
         }
