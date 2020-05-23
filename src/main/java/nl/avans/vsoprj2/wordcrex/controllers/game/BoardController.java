@@ -4,20 +4,26 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.models.Tile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
+import nl.avans.vsoprj2.wordcrex.models.Board;
 import nl.avans.vsoprj2.wordcrex.models.Game;
+import nl.avans.vsoprj2.wordcrex.models.Tile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
     private Game game;
+    private final Board board = new Board();
 
     @FXML
     private GridPane gameGrid;
@@ -35,81 +41,33 @@ public class BoardController extends Controller {
 
         this.symbolValues = this.getSymbolValues();
 
-        this.generateBoard();
-        this.loadLetters();
-    }
+        this.board.loadLetters(game, this.symbolValues);
 
-    private void generateBoard() {
-        this.gameGrid.getChildren().clear();
-
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                int xCord = result.getInt("x");
-                int yCord = result.getInt("y");
-                Tile.TileType type = Tile.TileType.fromDatabase(result.getString("tile_type"));
-
-                Tile tile = new Tile(type);
-
-                this.gameGrid.add(tile, xCord - 1, yCord - 1);
-            }
-
-        } catch (SQLException e) {
-            this.gameGrid.getChildren().clear();
-
-            throw new DbLoadException(e);
-        }
-    }
-
-    private void loadLetters() {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT `woorddeel`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
-            statement.setInt(1, this.game.getGameId());
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String[] letters = result.getString("woorddeel").split(",");
-                int[] xCords = Arrays.stream(result.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
-                int[] yCords = Arrays.stream(result.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
-
-                for (int i = 0; i < letters.length; i++) {
-                    char letter = letters[i].charAt(0);
-                    int xCord = xCords[i];
-                    int yCord = yCords[i];
-
-                    Tile tile = this.getBoardTile(xCord, yCord);
-
-                    tile.setConfirmed(true);
-                    tile.setLetter(letter, this.symbolValues.get(letter));
-                }
-            }
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
-    }
-
-    public Tile getBoardTile(int xCord, int yCord) {
-        return (Tile) this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == xCord - 1).filtered(node -> GridPane.getRowIndex(node) == yCord - 1).get(0);
+        this.loadBoard();
     }
 
     public List<Tile> getUnconfirmedTiles() {
         List<Tile> tiles = new ArrayList<>();
 
-        this.gameGrid.getChildren().forEach(node -> {
-            Tile tile = (Tile) node;
-
-            if (tile.isConfirmed()) {
-                tiles.add(tile);
+        for (Tile[] row : this.board.getTiles()) {
+            for (Tile tile : row) {
+                if (!tile.isConfirmed()) {
+                    tiles.add(tile);
+                }
             }
-        });
+        }
 
         return tiles;
+    }
+
+    public void loadBoard() {
+        this.gameGrid.getChildren().clear();
+
+        for (int x = 1; x <= Board.BOARD_SIZE; x++) {
+            for (int y = 1; y <= Board.BOARD_SIZE; y++) {
+                this.gameGrid.add(new BoardTile(this.board.getTile(x, y)), x - 1, y - 1);
+            }
+        }
     }
 
     /**
@@ -216,8 +174,8 @@ public class BoardController extends Controller {
 
     private List<List<Tile>> getWords() {
         Orientation orientation = this.getWordOrientation();
-
         List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
+
         List<List<Tile>> words = new ArrayList<>();
 
         Coordinates coordinates;
@@ -237,7 +195,7 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), false));
 
                 for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                    words.add(this.findWord(this.getBoardTile(coordinates.minX, y), true));
+                    words.add(this.findWord(this.board.getTile(coordinates.minX, y), true));
                 }
                 break;
             case HORIZONTAL:
@@ -246,7 +204,7 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), true));
 
                 for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                    words.add(this.findWord((this.getBoardTile(x, coordinates.minY)), false));
+                    words.add(this.findWord((this.board.getTile(x, coordinates.minY)), false));
                 }
                 break;
         }
@@ -256,12 +214,13 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    private Coordinates getCoordinates(List<Tile> tiles) {
+    public Coordinates getCoordinates(List<Tile> tiles) {
         Coordinates coordinates = null;
 
         for (Tile tile : tiles) {
-            int xCord = GridPane.getRowIndex(tile) - 1;
-            int yCord = GridPane.getColumnIndex(tile) - 1;
+            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+            int xCord = coordinate.getX();
+            int yCord = coordinate.getY();
 
             if (coordinates == null) {
                 coordinates = new Coordinates(xCord, xCord, yCord, yCord);
@@ -323,7 +282,7 @@ public class BoardController extends Controller {
         return points;
     }
 
-    private List<String> getWordsFromList(List<List<Tile>> words) {
+    public List<String> getWordsFromList(List<List<Tile>> words) {
         List<String> wordsString = new ArrayList<>();
 
         for (List<Tile> word : words) {
@@ -356,32 +315,33 @@ public class BoardController extends Controller {
 
     public List<Tile> findWord(Tile tile, boolean horizontal) {
         List<Tile> wordTiles = new ArrayList<>();
-        Tile firstLetter = tile;
+        Tile firstTile = tile;
         int i = 1;
 
-        int xCord = GridPane.getColumnIndex(tile) + 1;
-        int yCord = GridPane.getRowIndex(tile) + 1;
+        Board.Coordinate coordinate = this.board.getCoordinate(tile);
+        int xCord = coordinate.getX();
+        int yCord = coordinate.getY();
 
         if (horizontal) {
-            while (this.getBoardTile(xCord - i, yCord).hasLetter()) {
-                firstLetter = this.getBoardTile(xCord - i, yCord);
+            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+                firstTile = this.board.getTile(xCord - i, yCord);
                 i--;
             }
-            wordTiles.add(firstLetter);
+            wordTiles.add(firstTile);
             i++;
-            while (this.getBoardTile(xCord - i, yCord).hasLetter()) {
-                wordTiles.add(this.getBoardTile(xCord - i, yCord));
+            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+                wordTiles.add(this.board.getTile(xCord - i, yCord));
                 i++;
             }
         } else {
-            while (this.getBoardTile(xCord, yCord - i).hasLetter()) {
-                firstLetter = this.getBoardTile(xCord, yCord - i);
+            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
+                firstTile = this.board.getTile(xCord, yCord - i);
                 i--;
             }
-            wordTiles.add(firstLetter);
+            wordTiles.add(firstTile);
             i++;
-            while (this.getBoardTile(xCord, yCord - i).hasLetter()) {
-                wordTiles.add(this.getBoardTile(xCord, yCord - i));
+            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
+                wordTiles.add(this.board.getTile(xCord, yCord - i));
                 i++;
             }
         }
@@ -400,8 +360,8 @@ public class BoardController extends Controller {
 
         Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
 
-        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(GridPane::getColumnIndex).distinct();
-        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(GridPane::getRowIndex).distinct();
+        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getX()).distinct();
+        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getY()).distinct();
 
         if (differentXValues.count() > 1 && differentYValues.count() > 1) {
             return null;
@@ -409,7 +369,7 @@ public class BoardController extends Controller {
 
         if (differentXValues.count() == 1) {
             for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                if (!this.getBoardTile(differentXValues.findFirst().get() + 1, y).hasLetter()) {
+                if (!this.board.getTile(differentXValues.findFirst().get() + 1, y).hasLetter()) {
                     return null;
                 }
             }
@@ -417,7 +377,7 @@ public class BoardController extends Controller {
             return Orientation.VERTICAL;
         } else {
             for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                if (!this.getBoardTile(x, differentYValues.findFirst().get() + 1).hasLetter()) {
+                if (!this.board.getTile(x, differentYValues.findFirst().get() + 1).hasLetter()) {
                     return null;
                 }
             }
