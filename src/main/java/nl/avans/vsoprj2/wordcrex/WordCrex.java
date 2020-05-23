@@ -6,6 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
+
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Hello world!
@@ -22,12 +29,26 @@ public class WordCrex extends Application {
         stage.setTitle("WordCrex");
         stage.getIcons().add(new Image("/images/icon.png"));
 
-        Parent parent = new FXMLLoader(this.getClass().getResource("/views/index.fxml")).load();
-        Scene scene = new Scene(parent);
+        URL resource = this.getClass().getResource("/views/index.fxml");
 
-//        if (DEBUG_MODE) {
-//            stage.setTitle(String.format("WordCrex - Java: %s - JavaFX: %s", System.getProperty("java.version"), System.getProperty("javafx.version")));
-//        }
+        if (DEBUG_MODE) {
+            try {
+                PreparedStatement statement = Singleton.getInstance().getConnection().prepareStatement("SELECT * FROM `account` WHERE `username` = ?");
+                statement.setString(1, "jagermeester");
+                ResultSet result = statement.executeQuery();
+
+                if (result.next()) {
+                    Account account = new Account(result);
+                    Singleton.getInstance().setUser(account);
+                    resource = this.getClass().getResource("/views/games.fxml");
+                }
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        }
+
+        Parent parent = new FXMLLoader(resource).load();
+        Scene scene = new Scene(parent);
 
         stage.setScene(scene);
 
