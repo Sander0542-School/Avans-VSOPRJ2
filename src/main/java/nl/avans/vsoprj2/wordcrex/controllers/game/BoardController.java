@@ -158,9 +158,9 @@ public class BoardController extends Controller {
     private void handleChatAction() {
 
         //TODO: Testing purpose
-        this.getHandLetters(this.lettertiles);
+        //this.getHandLetters(this.lettertiles);
 
-        /*this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
+        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
                 ChatController chatController = (ChatController) controller;
@@ -171,7 +171,7 @@ public class BoardController extends Controller {
             public void afterNavigate(Controller controller) {
 
             }
-        });*/
+        });
     }
 
     private void tilePlaced(Tile placedTile) {
@@ -493,8 +493,9 @@ public class BoardController extends Controller {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
-            //TODO: Remove "-7"
-            statement.setInt(2, currentTurn - 7);
+            //TODO: Testing purpose: Remove "-7"
+            //statement.setInt(2, currentTurn - 7);
+            statement.setInt(2, currentTurn);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
