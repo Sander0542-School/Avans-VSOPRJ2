@@ -462,7 +462,7 @@ public class BoardController extends Controller {
     private void createNewTurn() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            int newTurnId = 0;
+            int newTurnId = 1;
             //Creates new turn_id
             PreparedStatement getPreviousTurnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
             getPreviousTurnStatement.setInt(1, this.game.getGameId());
