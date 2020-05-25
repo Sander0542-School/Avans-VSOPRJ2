@@ -11,17 +11,17 @@
     <center>
         <VBox fx:id="settings" alignment="CENTER" fillWidth="false" spacing="10">
             <Label prefWidth="500" text="Username:" />
-            <TextField prefWidth="500"/>
+            <TextField fx:id="username" prefWidth="500"/>
             <Label prefWidth="500" text="Woord:" />
-            <TextField prefWidth="500" />
+            <TextField fx:id="word" prefWidth="500" />
             <Label prefWidth="500" text="Toevoegen of Verwijderen:" />
-            <RadioButton prefWidth="500" text="Toevoegen" />
-            <RadioButton prefWidth="500" text="Verwijderen" />
+            <RadioButton fx:id="add" prefWidth="500" text="Toevoegen" />
+            <RadioButton fx:id="delete" prefWidth="500" text="Verwijderen" />
             <Label prefWidth="500" text="Taal:" />
-            <ComboBox prefWidth="500" promptText="Kies een taal" />
+            <ComboBox fx:id="language" prefWidth="500" promptText="Kies een taal" />
             <Label prefWidth="500" text="Comment:" />
             <TextField prefWidth="500"/>
-            <Button prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
+            <Button onAction="#submit" prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
         </VBox>
     </center>
 </BorderPane>

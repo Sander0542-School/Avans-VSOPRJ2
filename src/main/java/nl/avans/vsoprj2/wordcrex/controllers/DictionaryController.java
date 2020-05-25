@@ -1,6 +1,26 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+
 public class DictionaryController extends Controller{
+
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField word;
+    @FXML
+    private Label error;
+    @FXML
+    private TextField comment;
+    @FXML
+    private RadioButton add;
+    @FXML
+    private RadioButton delete;
+    @FXML
+    private ComboBox language;
+
+
 
     public DictionaryController(){
         this.fillLanguageDropdown();
