@@ -12,10 +12,13 @@ import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Tile;
 
+import javax.swing.plaf.synth.SynthLookAndFeel;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class DictionaryController extends Controller {
     @FXML
@@ -38,22 +41,31 @@ public class DictionaryController extends Controller {
     @FXML
     private ComboBox<String> language;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.language.getItems().removeAll(this.language.getItems());
+        this.language.getItems().addAll(this.Languages());
+    }
 
 
     public DictionaryController(){
-        this.fillLanguageDropdown();
     }
 
-    private void fillLanguageDropdown(){
+    private String[] Languages(){
         Connection connection = Singleton.getInstance().getConnection();
-
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset"); //returns 4 results instead of expected 2
+            ResultSet result = statement.executeQuery();
 
-            //this.language.getItems().clear();
+            result.last();
+
+            String[] returnValue = new String[result.getRow()];
+            result.beforeFirst();
+
             while (result.next()) {
-                //this.language.getItems().add(result.getString(2));
+               returnValue[result.getRow() -1] = result.getString(2);
             }
+            return returnValue;
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
