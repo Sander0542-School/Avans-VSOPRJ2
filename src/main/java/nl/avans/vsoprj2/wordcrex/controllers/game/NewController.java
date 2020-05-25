@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -14,11 +15,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import nl.avans.vsoprj2.wordcrex.models.Statistic;
+
 public class NewController extends Controller {
     private List<String> usernameslist = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccountsContainer;
+
+    @FXML
+    private Label highScoreLabel;
+
+    private Statistic statistic;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -26,7 +34,13 @@ public class NewController extends Controller {
 
         this.suggestedAccountsContainer.managedProperty().bind(this.suggestedAccountsContainer.visibleProperty());
 
+        this.loadHighScore();
         this.loadAccounts();
+    }
+
+    private void loadHighScore() {
+        this.statistic = Singleton.getInstance().getUser().getStatistic();
+        this.highScoreLabel.setText(this.statistic.getTopGameScore().toString();
     }
 
     private void loadAccounts() {
