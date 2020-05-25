@@ -25,6 +25,7 @@ public class BoardController extends Controller {
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
+    private ArrayList<Letter> currentLetters = new ArrayList<>();
 
     @FXML
     private GridPane gameGrid;
@@ -143,8 +144,8 @@ public class BoardController extends Controller {
     private void handleChatAction() {
 
         //TODO: Testing purpose
-//        this.getHandLetters(this.lettertiles);
-//        if (1==1) return;
+        /*this.getHandLetters(this.lettertiles);
+        if (1==1) return;*/
 
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
@@ -430,7 +431,7 @@ public class BoardController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
-        ArrayList<Letter> letters = new ArrayList<>();
+        this.currentLetters.clear();
 
         if (currentTurn > 0) {
             try {
@@ -447,7 +448,7 @@ public class BoardController extends Controller {
                 ResultSet result = statement.executeQuery();
 
                 while (result.next()) {
-                    letters.add(new Letter(result));
+                    this.currentLetters.add(new Letter(result));
                     extraLetters--;
                 }
 
@@ -456,14 +457,14 @@ public class BoardController extends Controller {
             }
         }
 
-        letters.addAll(this.getRandomLettersFromPool(extraLetters));
+        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters));
 
         try {
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO `handletter` (`game_id`,`turn_id`,`letter_id`) VALUES ");
 
             int handletterCount = 0;
-            for (Letter letter : letters) {
+            for (Letter letter : this.currentLetters) {
                 if (handletterCount > 0) {
                     sb.append(",");
                 }
@@ -476,8 +477,8 @@ public class BoardController extends Controller {
             int result = statement.executeUpdate();
 
             if (result > 0) {
-                Collections.shuffle(letters);
-                this.displayLetters(letters, lettertiles);
+                Collections.shuffle(this.currentLetters);
+                this.displayLetters(lettertiles);
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
@@ -509,7 +510,7 @@ public class BoardController extends Controller {
     public void getHandLetters(HBox lettertiles) {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
-        ArrayList<Letter> letters = new ArrayList<>();
+        this.currentLetters.clear();
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
@@ -520,24 +521,31 @@ public class BoardController extends Controller {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                letters.add(new Letter(result));
+                this.currentLetters.add(new Letter(result));
             }
 
-            Collections.shuffle(letters);
-            this.displayLetters(letters, lettertiles);
+            this.displayLetters(lettertiles);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
     }
 
-    private void displayLetters(ArrayList<Letter> letters, HBox lettertiles) {
+    private void displayLetters(HBox lettertiles) {
         lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
+        Collections.shuffle(this.currentLetters);
 
-        for (Letter letter : letters) {
+        for (Letter letter : this.currentLetters) {
             LetterTile letterTile = new LetterTile(letter);
             this.setLetterTileClick(letterTile);
             lettertiles.getChildren().add(letterTile);
         }
+    }
+
+    @FXML
+    private void handleShuffleAction() {
+        /*if(!this.getUnconfirmedTiles().isEmpty()){
+            this.displayLetters(this.lettertiles);
+        }*/
     }
 
     private void setLetterTileClick(LetterTile lettertile) {
@@ -571,7 +579,7 @@ public class BoardController extends Controller {
                     boardTile.setSelected(false);
                     this.selectedLetter = null;
                 } else {
-                    if (boardTile.getLetterTile() == null) {
+                    if (!boardTile.getTile().hasLetter() && boardTile.getLetterTile() == null) {
                         boardTile.setLetterTile(this.selectedLetter);
 
                         if (this.moveTileFromToBoard) {
@@ -586,7 +594,9 @@ public class BoardController extends Controller {
                         this.selectedLetter = null;
                     } else {
                         if (!boardTile.getTile().isConfirmed()) {
-                            this.previousBoardTile.setSelected(false);
+                            if(this.previousBoardTile != null){
+                                this.previousBoardTile.setSelected(false);
+                            }
                             this.previousBoardTile = boardTile;
                             this.moveTileFromToBoard = true;
                             this.selectLetter(boardTile.getLetterTile());
