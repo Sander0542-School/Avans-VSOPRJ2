@@ -79,7 +79,9 @@ public class BoardController extends Controller {
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
             for (int y = 1; y <= Board.BOARD_SIZE; y++) {
-                this.gameGrid.add(new BoardTile(this.board.getTile(x, y)), x - 1, y - 1);
+                BoardTile boardTile = new BoardTile(this.board.getTile(x, y));
+                this.setBoardTileClick(boardTile);
+                this.gameGrid.add(boardTile, x - 1, y - 1);
             }
         }
     }
@@ -141,7 +143,8 @@ public class BoardController extends Controller {
     private void handleChatAction() {
 
         //TODO: Testing purpose
-        //this.getHandLetters(this.lettertiles);
+        this.getHandLetters(this.lettertiles);
+        if (1==1) return;
 
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
@@ -512,8 +515,8 @@ public class BoardController extends Controller {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
             //TODO: Testing purpose: Remove "-7"
-            //statement.setInt(2, currentTurn - 7);
-            statement.setInt(2, currentTurn);
+            statement.setInt(2, currentTurn - 7);
+//            statement.setInt(2, currentTurn);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -544,7 +547,7 @@ public class BoardController extends Controller {
                 this.selectedLetter = null;
             } else {
                 if (this.moveTileFromToBoard) {
-                    this.previousBoardTile.deselectTile();
+                    this.previousBoardTile.setSelected(false);
                 }
                 this.selectLetter(lettertile);
             }
@@ -565,20 +568,15 @@ public class BoardController extends Controller {
         boardTile.setOnMouseClicked(event -> {
             if (this.selectedLetter != null) {
                 if (this.selectedLetter == boardTile.getLetterTile()) {
-                    boardTile.deselectTile();
+                    boardTile.setSelected(false);
                     this.selectedLetter = null;
                 } else {
-                    if (boardTile.getLetterValue() == null) {
-                        boardTile.setConfirmed(false);
-                        boardTile.setLetter(this.selectedLetter.getLetter().getSymbol().charAt(0), this.selectedLetter.getLetter().getValue());
+                    if (boardTile.getLetterTile() == null) {
                         boardTile.setLetterTile(this.selectedLetter);
-                        boardTile.setLetterValue(this.selectedLetter.getLetter().getSymbol().charAt(0));
 
                         if (this.moveTileFromToBoard) {
-                            this.previousBoardTile.setConfirmed(true);
-                            this.previousBoardTile.removeLetter();
                             this.previousBoardTile.setLetterTile(null);
-                            this.previousBoardTile.setLetterValue(null);
+                            this.previousBoardTile.setSelected(false);
                             this.moveTileFromToBoard = false;
                         } else {
                             this.lettertiles.getChildren().remove(this.selectedLetter);
@@ -587,23 +585,23 @@ public class BoardController extends Controller {
                         this.selectedLetter.deselectLetter();
                         this.selectedLetter = null;
                     } else {
-                        if (!boardTile.isConfirmed()) {
-                            this.previousBoardTile.deselectTile();
+                        if (!boardTile.getTile().isConfirmed()) {
+                            this.previousBoardTile.setSelected(false);
                             this.previousBoardTile = boardTile;
                             this.moveTileFromToBoard = true;
                             this.selectLetter(boardTile.getLetterTile());
-                            boardTile.selectTile();
+                            boardTile.setSelected(true);
                         }
                     }
                 }
             }
             //move selected tile to another tile on board
             else {
-                if (!boardTile.isConfirmed() && boardTile.getLetterTile() != null) {
+                if (!boardTile.getTile().isConfirmed() && boardTile.getLetterTile() != null) {
                     this.previousBoardTile = boardTile;
                     this.moveTileFromToBoard = true;
                     this.selectLetter(boardTile.getLetterTile());
-                    boardTile.selectTile();
+                    boardTile.setSelected(true);
                 }
             }
         });
@@ -611,10 +609,8 @@ public class BoardController extends Controller {
 
     public void handleLettertilesClick() {
         if (this.selectedLetter != null && this.moveTileFromToBoard) {
-            this.previousBoardTile.setConfirmed(true);
-            this.previousBoardTile.removeLetter();
             this.previousBoardTile.setLetterTile(null);
-            this.previousBoardTile.setLetterValue(null);
+            this.previousBoardTile.updateBackgroundColor();
             this.moveTileFromToBoard = false;
 
             this.lettertiles.getChildren().add(this.selectedLetter);

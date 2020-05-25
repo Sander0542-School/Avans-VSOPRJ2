@@ -8,7 +8,7 @@ public class Tile {
     private Character letter;
     private Integer worth;
 
-    private boolean confirmed = true;
+    private boolean confirmed = false;
     private boolean highlighted = false;
 
     public Tile(TileType tileType) {
