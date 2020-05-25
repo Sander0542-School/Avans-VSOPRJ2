@@ -1,9 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.paint.Color;
-
-import java.io.IOException;
 
 public class Tile {
     private TileType tileType;
