@@ -26,11 +26,7 @@ public class BoardController extends Controller {
     private Board board;
 
     private List<Tile> unconfirmedTiles = new ArrayList<>();
-    private HashMap<Character, Integer> symbolValues = new HashMap<>();
-
-    public BoardController() {
-        this.getSymbolValues();
-    }
+    private HashMap<Character, Integer> symbolValues;
 
     @FXML
     private GridPane gameGrid;
@@ -43,7 +39,11 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+
+        this.symbolValues = this.getSymbolValues();
+
         this.board = new Board(game.getGameId());
+
         this.updateView();
     }
 
@@ -275,7 +275,7 @@ public class BoardController extends Controller {
         return wordsString;
     }
 
-    private void getSymbolValues() {
+    private HashMap<Character, Integer> getSymbolValues() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -284,10 +284,13 @@ public class BoardController extends Controller {
 
             ResultSet symbolSet = statement.executeQuery();
 
+            HashMap<Character, Integer> symbolValues = new HashMap<>();
+
             while (symbolSet.next()) {
-                this.symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
+                symbolValues.put(symbolSet.getString("symbol").charAt(0), symbolSet.getInt("value"));
             }
 
+            return symbolValues;
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
