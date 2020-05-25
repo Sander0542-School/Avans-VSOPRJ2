@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -35,7 +36,7 @@ public class DictionaryController extends Controller {
     @FXML
     private RadioButton delete;
     @FXML
-    private ComboBox language;
+    private ComboBox<String> language;
 
 
 
@@ -47,10 +48,11 @@ public class DictionaryController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
-            ResultSet result = statement.executeQuery();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset"); //returns 4 results instead of expected 2
 
+            //this.language.getItems().clear();
             while (result.next()) {
+                //this.language.getItems().add(result.getString(2));
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);

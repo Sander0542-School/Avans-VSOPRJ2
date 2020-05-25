@@ -18,7 +18,8 @@
             <RadioButton fx:id="add" prefWidth="500" text="Toevoegen" />
             <RadioButton fx:id="delete" prefWidth="500" text="Verwijderen" />
             <Label prefWidth="500" text="Taal:" />
-            <ComboBox fx:id="language" prefWidth="500" promptText="Kies een taal" />
+            <ComboBox fx:id="language" prefWidth="500" promptText="Kies een taal">
+            </ComboBox>
             <Label prefWidth="500" text="Comment:" />
             <TextField prefWidth="500"/>
             <Button onAction="#submit" prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
