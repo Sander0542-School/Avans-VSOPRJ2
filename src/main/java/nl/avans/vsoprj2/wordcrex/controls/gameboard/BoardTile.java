@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import nl.avans.vsoprj2.wordcrex.Colors;
+import nl.avans.vsoprj2.wordcrex.models.Tile;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,15 +21,12 @@ public class BoardTile extends AnchorPane implements Initializable {
     @FXML
     private Label worth;
 
-    TileType tileType;
-    private boolean confirmed = true;
-    private LetterTile letterTile;
-    private Character letterValue;
+    Tile tile;
 
-    public BoardTile(TileType tileType) {
+    public BoardTile(Tile tile) {
         this();
 
-        this.setTileType(tileType);
+        this.setTile(tile);
     }
 
     public BoardTile() {
@@ -45,16 +43,14 @@ public class BoardTile extends AnchorPane implements Initializable {
         }
     }
 
-    public void setTileType(TileType tileType) {
-        this.tileType = tileType;
+    public void setTile(Tile tile) {
+        this.tile = tile;
 
-        this.multiplier.setText(tileType == TileType.NORMAL ? "" : tileType.value);
+        this.multiplier.setText(this.tile.getTileType() == Tile.TileType.NORMAL ? "" : this.tile.getTileType().getValue());
+        this.letter.setText(this.tile.hasLetter() ? this.tile.getLetter().toString() : "");
+        this.worth.setText(this.tile.hasWorth() ? this.tile.getWorth().toString() : "");
 
-        this.updateBackgroundColor();
-    }
-
-    public TileType getTileType() {
-        return this.tileType;
+        Color color = this.getTile().getTileType().getColor();
     }
 
     public void setLetterTile(LetterTile letterTile) {
@@ -76,10 +72,13 @@ public class BoardTile extends AnchorPane implements Initializable {
     private void updateBackgroundColor() {
         Color color = this.getTileType().color;
 
-        if (!this.letter.getText().isEmpty()) {
+        if (this.tile.hasLetter()) {
             color = Color.rgb(255, 255, 255);
-            if (!this.isConfirmed()) {
-                color = Color.rgb(244, 230, 167);
+            if (!this.tile.isConfirmed()) {
+                color = Color.rgb(145,242,129);
+            }
+            if (this.tile.isHighlighted()) {
+                color = Color.rgb(250, 235, 182);
             }
         }
 
@@ -93,13 +92,9 @@ public class BoardTile extends AnchorPane implements Initializable {
     public void deselectTile() {
         this.setStyle("-fx-background-color: #F4E6A7; -fx-background-radius: 6;");
     }
-
-    public boolean isConfirmed() {
-        return this.confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
+    
+    public Tile getTile() {
+        return this.tile;
     }
 
     @Override
@@ -107,51 +102,9 @@ public class BoardTile extends AnchorPane implements Initializable {
 
     }
 
-    public void setLetter(char letter, int worth) {
-        this.letter.setText(String.valueOf(letter));
-        this.worth.setText(String.valueOf(worth));
-
-        this.updateBackgroundColor();
-    }
-
     public void removeLetter() {
         this.letter.setText("");
         this.worth.setText("");
         this.updateBackgroundColor();
-    }
-
-    public enum TileType {
-        NORMAL("--", Color.rgb(27, 23, 68)),
-        START("*", Color.rgb(237, 17, 147)),
-        TWOLETTER("2L", Color.rgb(45, 171, 225)),
-        THREEWORD("3W", Color.rgb(237, 17, 147)),
-        FOURLETTER("4L", Color.rgb(42, 77, 154)),
-        FOURWORD("4W", Color.rgb(242, 102, 35)),
-        SIXLETTER("6L", Color.rgb(11, 149, 68));
-
-        private final String value;
-        private final Color color;
-
-        TileType(String value, Color color) {
-            this.value = value;
-            this.color = color;
-        }
-
-        public static TileType fromDatabase(String databaseValue) {
-            for (TileType tileType : values()) {
-                if (tileType.value.equals(databaseValue)) {
-                    return tileType;
-                }
-            }
-            return null;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
-
-        public Color getColor() {
-            return this.color;
-        }
     }
 }

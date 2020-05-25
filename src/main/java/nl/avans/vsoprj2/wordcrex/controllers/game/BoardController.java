@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -14,13 +15,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
     private Game game;
-    private Board board;
-    private final List<Tile> unconfirmedTiles = new ArrayList<>();
+    private final Board board = new Board();
+    
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
@@ -29,6 +33,15 @@ public class BoardController extends Controller {
     private GridPane gameGrid;
     @FXML
     private HBox lettertiles;
+
+    @FXML
+    private Label player1Name;
+    @FXML
+    private Label player2Name;
+    @FXML
+    private Label player1Score;
+    @FXML
+    private Label player2Score;
 
     private HashMap<Character, Integer> symbolValues;
 
@@ -40,73 +53,46 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
-        this.board = new Board(game.getGameId());
 
         this.symbolValues = this.getSymbolValues();
 
-        this.generateBoard();
-        this.loadLetters();
+        this.board.loadLetters(game, this.symbolValues);
+
+        this.loadBoard();
+
+        this.loadPlayerData();
     }
 
-    private void generateBoard() {
-        this.gameGrid.getChildren().clear();
+    public List<Tile> getUnconfirmedTiles() {
+        List<Tile> tiles = new ArrayList<>();
 
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                int xCord = result.getInt("x") - 1;
-                int yCord = result.getInt("y") - 1;
-                BoardTile.TileType type = BoardTile.TileType.fromDatabase(result.getString("tile_type"));
-
-                BoardTile boardTile = new BoardTile(type);
-                this.setBoardTileClick(boardTile);
-
-                this.gameGrid.add(boardTile, xCord, yCord);
-            }
-
-        } catch (SQLException e) {
-            this.gameGrid.getChildren().clear();
-
-            throw new DbLoadException(e);
-        }
-    }
-
-    private void loadLetters() {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT `woorddeel`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
-            statement.setInt(1, this.game.getGameId());
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String[] letters = result.getString("woorddeel").split(",");
-                int[] xCords = Arrays.stream(result.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
-                int[] yCords = Arrays.stream(result.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
-
-                for (int i = 0; i < letters.length; i++) {
-                    char letter = letters[i].charAt(0);
-                    int xCord = xCords[i] - 1;
-                    int yCord = yCords[i] - 1;
-
-                    BoardTile boardTile = this.getBoardTile(xCord, yCord);
-
-                    boardTile.setConfirmed(true);
-                    boardTile.setLetterValue(letter);
-                    boardTile.setLetter(letter, this.symbolValues.get(letter));
+        for (Tile[] row : this.board.getTiles()) {
+            for (Tile tile : row) {
+                if (!tile.isConfirmed()) {
+                    tiles.add(tile);
                 }
             }
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+        }
+
+        return tiles;
+    }
+
+    public void loadBoard() {
+        this.gameGrid.getChildren().clear();
+
+        for (int x = 1; x <= Board.BOARD_SIZE; x++) {
+            for (int y = 1; y <= Board.BOARD_SIZE; y++) {
+                this.gameGrid.add(new BoardTile(this.board.getTile(x, y)), x - 1, y - 1);
+            }
         }
     }
 
-    public BoardTile getBoardTile(int xCord, int yCord) {
-        return (BoardTile) this.gameGrid.getChildren().filtered(node -> GridPane.getRowIndex(node) == xCord).filtered(node -> GridPane.getColumnIndex(node) == yCord).get(0);
+    public void loadPlayerData() {
+        this.player1Name.setText(this.game.getUsernamePlayer1());
+        this.player2Name.setText(this.game.getUsernamePlayer2());
+
+        this.player1Score.setText(String.valueOf(this.game.getPlayerScore(true)));
+        this.player2Score.setText(String.valueOf(this.game.getPlayerScore(false)));
     }
 
     /**
@@ -175,31 +161,30 @@ public class BoardController extends Controller {
     }
 
     private void tilePlaced(Tile placedTile) {
-        this.unconfirmedTiles.add(placedTile);
+//        unconfirmedTiles.add(placedTile);
 
-        this.updateLayout();
+        this.updatePoints();
     }
 
     private void tileRemoved(Tile placedTile) {
-        this.unconfirmedTiles.remove(placedTile);
+//        unconfirmedTiles.remove(placedTile);
 
-        this.updateLayout();
+        this.updatePoints();
     }
 
-    private void updateLayout() {
+    private void updatePoints() {
         List<List<Tile>> words = this.getWords();
 
         //TODO() Hide point count on layout
 
         if (this.checkWords(words)) {
-            int points = this.calculatePoints(words);
+            Points points = this.calculatePoints(words);
 
             //TODO() Show point count on layout
         }
     }
 
     private boolean checkWords(List<List<Tile>> words) {
-        // No words
         if (words == null) {
             return false;
         }
@@ -212,13 +197,27 @@ public class BoardController extends Controller {
             }
         }
 
-        return true;
+        for (Tile tile : this.getUnconfirmedTiles()) {
+            if (tile.getTileType() == Tile.TileType.START) {
+                return true;
+            }
+
+            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+            if (this.board.hasConfirmedSurroundingTile(coordinate.getX(), coordinate.getY())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private List<List<Tile>> getWords() {
         Orientation orientation = this.getWordOrientation();
+        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
 
         List<List<Tile>> words = new ArrayList<>();
+
+        Coordinates coordinates;
 
         if (orientation == null) {
             return null;
@@ -226,27 +225,25 @@ public class BoardController extends Controller {
 
         switch (orientation) {
             case SINGLE_TILE:
-                words.add(this.findWord(this.unconfirmedTiles.get(0), true));
-                words.add(this.findWord(this.unconfirmedTiles.get(0), false));
+                words.add(this.findWord(unconfirmedTiles.get(0), true));
+                words.add(this.findWord(unconfirmedTiles.get(0), false));
                 break;
             case VERTICAL:
-                int minY = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getY)).get().getY();
-                int maxY = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getY)).get().getY();
+                coordinates = this.getCoordinates(unconfirmedTiles);
 
-                words.add(this.findWord(this.unconfirmedTiles.get(0), false));
+                words.add(this.findWord(unconfirmedTiles.get(0), false));
 
-                for (int y = minY; y <= maxY; y++) {
-                    words.add(this.findWord(this.board.getTile(this.unconfirmedTiles.get(0).getX(), y), true));
+                for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
+                    words.add(this.findWord(this.board.getTile(coordinates.minX, y), true));
                 }
                 break;
             case HORIZONTAL:
-                int minX = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getX)).get().getX();
-                int maxX = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getX)).get().getX();
+                coordinates = this.getCoordinates(unconfirmedTiles);
 
-                words.add(this.findWord(this.unconfirmedTiles.get(0), true));
+                words.add(this.findWord(unconfirmedTiles.get(0), true));
 
-                for (int x = minX; x <= maxX; x++) {
-                    words.add(this.findWord(this.board.getTile(x, this.unconfirmedTiles.get(0).getY()), false));
+                for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
+                    words.add(this.findWord((this.board.getTile(x, coordinates.minY)), false));
                 }
                 break;
         }
@@ -256,16 +253,39 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    public int calculatePoints(List<List<Tile>> words) {
-        int points = 0;
+    public Coordinates getCoordinates(List<Tile> tiles) {
+        Coordinates coordinates = null;
+
+        for (Tile tile : tiles) {
+            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+            int xCord = coordinate.getX();
+            int yCord = coordinate.getY();
+
+            if (coordinates == null) {
+                coordinates = new Coordinates(xCord, xCord, yCord, yCord);
+            }
+
+            coordinates.minX = Math.min(xCord, coordinates.minX);
+            coordinates.maxX = Math.max(xCord, coordinates.maxX);
+            coordinates.minY = Math.min(yCord, coordinates.minY);
+            coordinates.maxY = Math.max(yCord, coordinates.maxY);
+        }
+
+        return coordinates;
+    }
+
+    public Points calculatePoints(List<List<Tile>> words) {
+        Points points = new Points();
 
         for (List<Tile> word : words) {
             int wordPoints = 0;
+            int wordPointsBonus = 0;
             int wordMultiplier = 1;
 
             for (Tile tile : word) {
                 int letterMultiplier = 1;
-                if (this.unconfirmedTiles.contains(tile)) { // ignores multis if tile was placed on previous turn
+
+                if (!tile.isConfirmed()) {
                     switch (tile.getTileType()) {
                         case TWOLETTER:
                             letterMultiplier = 2;
@@ -286,21 +306,26 @@ public class BoardController extends Controller {
                     }
                 }
 
-                wordPoints += this.symbolValues.get(tile.getValue()) * letterMultiplier;
+                wordPoints += tile.getWorth();
+                wordPointsBonus += tile.getWorth() * letterMultiplier;
             }
 
-            points += (wordPoints * wordMultiplier);
+            wordPointsBonus = (wordPointsBonus * wordMultiplier) - wordPoints;
+
+            points.addPoints(wordPoints);
+            points.addBonus(wordPointsBonus);
         }
 
-        if (this.unconfirmedTiles.size() == 7 && words.size() != 0) points += 100;
+        if (this.getUnconfirmedTiles().size() == 7 && words.size() != 0) points.addBonus(100);
+
         return points;
     }
 
-    private List<String> getWordsFromList(List<List<Tile>> words) {
+    public List<String> getWordsFromList(List<List<Tile>> words) {
         List<String> wordsString = new ArrayList<>();
 
         for (List<Tile> word : words) {
-            wordsString.add(word.stream().map(Tile::getValue).iterator().toString());
+            wordsString.add(word.stream().map(Tile::getLetter).iterator().toString());
         }
 
         return wordsString;
@@ -318,7 +343,7 @@ public class BoardController extends Controller {
             HashMap<Character, Integer> symbolValues = new HashMap<>();
 
             while (symbolSet.next()) {
-                symbolValues.put(symbolSet.getString(1).charAt(0), symbolSet.getInt(2));
+                symbolValues.put(symbolSet.getString("symbol").charAt(0), symbolSet.getInt("value"));
             }
 
             return symbolValues;
@@ -329,29 +354,33 @@ public class BoardController extends Controller {
 
     public List<Tile> findWord(Tile tile, boolean horizontal) {
         List<Tile> wordTiles = new ArrayList<>();
-        Tile firstLetter = tile;
+        Tile firstTile = tile;
         int i = 1;
 
+        Board.Coordinate coordinate = this.board.getCoordinate(tile);
+        int xCord = coordinate.getX();
+        int yCord = coordinate.getY();
+
         if (horizontal) {
-            while (this.board.hasValue(tile.getX() - i, tile.getY())) {
-                firstLetter = this.board.getTile(tile.getX() - i, tile.getY());
+            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+                firstTile = this.board.getTile(xCord - i, yCord);
                 i--;
             }
-            wordTiles.add(firstLetter);
+            wordTiles.add(firstTile);
             i++;
-            while (this.board.hasValue(tile.getX() - i, tile.getY())) {
-                wordTiles.add(this.board.getTile(tile.getX() - i, tile.getY()));
+            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+                wordTiles.add(this.board.getTile(xCord - i, yCord));
                 i++;
             }
         } else {
-            while (this.board.hasValue(tile.getX(), tile.getY() - i)) {
-                firstLetter = this.board.getTile(tile.getX(), tile.getY() - i);
+            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
+                firstTile = this.board.getTile(xCord, yCord - i);
                 i--;
             }
-            wordTiles.add(firstLetter);
+            wordTiles.add(firstTile);
             i++;
-            while (this.board.hasValue(tile.getX(), tile.getY() - i)) {
-                wordTiles.add(this.board.getTile(tile.getX(), tile.getY() - i));
+            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
+                wordTiles.add(this.board.getTile(xCord, yCord - i));
                 i++;
             }
         }
@@ -360,48 +389,40 @@ public class BoardController extends Controller {
     }
 
     private Orientation getWordOrientation() {
-        if (this.unconfirmedTiles.size() == 0) {
+        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
+
+        if (unconfirmedTiles.size() == 0) {
             return null;
-        } else if (this.unconfirmedTiles.size() == 1) {
+        } else if (unconfirmedTiles.size() == 1) {
             return Orientation.SINGLE_TILE;
         }
 
-        Stream<Integer> differentXValues = this.unconfirmedTiles.stream().map(Tile::getX).distinct();
-        Stream<Integer> differentYValues = this.unconfirmedTiles.stream().map(Tile::getY).distinct();
+        Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
+
+        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getX()).distinct();
+        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getY()).distinct();
 
         if (differentXValues.count() > 1 && differentYValues.count() > 1) {
             return null;
         }
 
         if (differentXValues.count() == 1) {
-            int minY = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getY)).get().getY();
-            int maxY = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getY)).get().getY();
-
-            for (int y = minY; y <= maxY; y++) {
-                if (!this.board.hasValue(differentXValues.findFirst().get(), y)) {
+            for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
+                if (!this.board.getTile(differentXValues.findFirst().get() + 1, y).hasLetter()) {
                     return null;
                 }
             }
 
             return Orientation.VERTICAL;
         } else {
-            int minX = this.unconfirmedTiles.stream().min(Comparator.comparing(Tile::getX)).get().getX();
-            int maxX = this.unconfirmedTiles.stream().max(Comparator.comparing(Tile::getX)).get().getX();
-
-            for (int x = minX; x <= maxX; x++) {
-                if (!this.board.hasValue(x, differentYValues.findFirst().get())) {
+            for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
+                if (!this.board.getTile(x, differentYValues.findFirst().get() + 1).hasLetter()) {
                     return null;
                 }
             }
 
             return Orientation.HORIZONTAL;
         }
-    }
-
-    private enum Orientation {
-        SINGLE_TILE,
-        HORIZONTAL,
-        VERTICAL
     }
 
     //hand out letters (previous turn winner)
@@ -603,6 +624,48 @@ public class BoardController extends Controller {
 
             this.selectedLetter.deselectLetter();
             this.selectedLetter = null;
+        }
+    }
+
+    private enum Orientation {
+        SINGLE_TILE,
+        HORIZONTAL,
+        VERTICAL
+    }
+
+    private static class Coordinates {
+        public int minX;
+        public int maxX;
+
+        public int minY;
+        public int maxY;
+
+        public Coordinates(int minX, int maxX, int minY, int maxY) {
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minY = minY;
+            this.maxY = maxY;
+        }
+    }
+
+    private static class Points {
+        private int points = 0;
+        private int bonus = 0;
+
+        public void addPoints(int points) {
+            this.points += points;
+        }
+
+        public void addBonus(int bonus) {
+            this.bonus += bonus;
+        }
+
+        public int getPoints() {
+            return this.points;
+        }
+
+        public int getBonus() {
+            return this.bonus;
         }
     }
 }
