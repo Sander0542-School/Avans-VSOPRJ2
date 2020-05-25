@@ -144,8 +144,13 @@ public class BoardController extends Controller {
             } catch (SQLException e) {
                 throw new DbLoadException(e);
             }
+        } else if(typePlayer1.equals(ScoreboardRound.TurnActionType.PASS) && typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
+            this.giveNewLetterInHand();
         } else {
-            System.out.println("Je hebt deze beurt al iets gedaan");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game pass");
+            alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
+            alert.showAndWait();
         }
     }
 
