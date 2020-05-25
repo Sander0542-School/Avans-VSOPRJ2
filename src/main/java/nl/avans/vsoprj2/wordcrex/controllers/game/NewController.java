@@ -40,7 +40,7 @@ public class NewController extends Controller {
 
     private void loadHighScore() {
         this.statistic = Singleton.getInstance().getUser().getStatistic();
-        this.highScoreLabel.setText(this.statistic.getTopGameScore().toString();
+        this.highScoreLabel.setText(this.statistic.getTopGameScore().toString());
     }
 
     private void loadAccounts() {
