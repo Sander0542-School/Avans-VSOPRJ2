@@ -15,16 +15,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
-    
+
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
@@ -546,7 +543,7 @@ public class BoardController extends Controller {
                 lettertile.deselectLetter();
                 this.selectedLetter = null;
             } else {
-                if(this.moveTileFromToBoard){
+                if (this.moveTileFromToBoard) {
                     this.previousBoardTile.deselectTile();
                 }
                 this.selectLetter(lettertile);
