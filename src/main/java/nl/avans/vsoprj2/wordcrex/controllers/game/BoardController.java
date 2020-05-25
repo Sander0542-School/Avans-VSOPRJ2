@@ -114,9 +114,7 @@ public class BoardController extends Controller {
             throw new DbLoadException(e);
         }
 
-        System.out.println(currentUserIsPlayer1);
-
-        if (currentUserIsPlayer1 && typePlayer1 != ScoreboardRound.TurnActionType.UNKNOWN) {
+        if (currentUserIsPlayer1 && typePlayer1.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
             try {
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer1(game_id, turn_id, username_player1, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer1 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
                 statement.setInt(1, this.game.getGameId());
@@ -125,13 +123,13 @@ public class BoardController extends Controller {
 
                 statement.executeUpdate();
 
-                if (typePlayer2 == ScoreboardRound.TurnActionType.PASS) {
+                if (typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
                     this.giveNewLetterInHand();
                 }
             } catch (SQLException e) {
                 throw new DbLoadException(e);
             }
-        } else if (!currentUserIsPlayer1 && typePlayer2 != ScoreboardRound.TurnActionType.UNKNOWN) {
+        } else if (!currentUserIsPlayer1 && typePlayer2.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
             try {
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer2(game_id, turn_id, username_player2, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer2 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
                 statement.setInt(1, this.game.getGameId());
@@ -140,7 +138,7 @@ public class BoardController extends Controller {
 
                 statement.executeUpdate();
 
-                if (typePlayer1 == ScoreboardRound.TurnActionType.PASS) {
+                if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS)) {
                     this.giveNewLetterInHand();
                 }
             } catch (SQLException e) {
@@ -152,6 +150,8 @@ public class BoardController extends Controller {
     }
 
     private void giveNewLetterInHand() {
+        System.out.println("geeft nieuwe letters in hand");
+
         // TODO Check if game end
         // if max letters over <= 7 {
         //  this.endGame()
