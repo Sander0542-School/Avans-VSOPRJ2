@@ -124,7 +124,18 @@ public class DictionaryController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO dictionary (word, letterset_code, state, username) VALUES (?,?,'pending',?)");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE `letterset_code` = ? AND `letterset_code` = ?");
+            statement.setString(1, this.word.getText().trim());
+            statement.setString(2, this.languages.get(selectedLanguage));
+
+            ResultSet symbolSet = statement.executeQuery();
+            if (symbolSet == null) {
+                this.error.setVisible(true);
+                this.error.setText("Woord is eerder toegevoegd");
+                return;
+            }
+
+            statement = connection.prepareStatement("INSERT INTO dictionary (word, letterset_code, state, username) VALUES (?,?,'pending',?)");
             statement.setString(1, this.word.getText().trim());
             statement.setString(2, this.languages.get(selectedLanguage));
             statement.setString(3, this.username.getText().trim());
