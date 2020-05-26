@@ -15,19 +15,7 @@
                             <Font name="Roboto Black" size="30"/>
                         </font>
                     </Label>
-                    <Label text="0" textFill="WHITE">
-                        <font>
-                            <Font name="Roboto Black" size="30"/>
-                        </font>
-                    </Label>
-                </VBox>
-                <VBox alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="16.0">
-                    <Label text="Sterkte" textFill="WHITE">
-                        <font>
-                            <Font name="Roboto Black" size="30"/>
-                        </font>
-                    </Label>
-                    <Label text="1500" textFill="WHITE">
+                    <Label fx:id="highScoreLabel" text="0" textFill="WHITE">
                         <font>
                             <Font name="Roboto Black" size="30"/>
                         </font>
@@ -39,7 +27,7 @@
 
     <center>
         <VBox spacing="20" style="-fx-background-color: #FFBB00;">
-            <VBox alignment="CENTER" style="-fx-background-color: #FFBB00; -fx-padding: 10 20 10 20;">
+            <VBox alignment="CENTER" style="-fx-background-color: #FFBB00; -fx-padding: 20 0 20 -10;">
                 <Button onAction="#handleRequestAction" alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
                     <font>
                         <Font name="Roboto Black" size="16"/>
