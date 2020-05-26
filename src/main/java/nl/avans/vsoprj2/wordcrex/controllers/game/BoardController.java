@@ -675,7 +675,7 @@ public class BoardController extends Controller {
     }
 
     /**
-     *
+     * Play button event, asks player if they want to play a turn
      */
     @FXML
     private void confirmLettersButtonClicked() {
@@ -699,7 +699,7 @@ public class BoardController extends Controller {
     }
 
     /**
-     * Creates a new turnPlayer record
+     * Creates a new turnPlayer record in the database
      * If both player have player their turn, a new turn is created
      */
     private void createNewPlayerTurn() {
@@ -708,19 +708,7 @@ public class BoardController extends Controller {
         int currentTurnId = 0;
 
         try {
-            //Get the current turn
-            PreparedStatement turnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
-            turnStatement.setInt(1, this.game.getGameId());
-            ResultSet turn = turnStatement.executeQuery();
-            while (turn.next()) {
-                currentTurnId = turn.getInt(1);
-            }
-
-            //Game has no turn prints error
-            if (currentTurnId == 0) {
-                System.err.println("Kan geen beurten van het huidige spel ophalen...");
-                return;
-            }
+            currentTurnId = this.game.getCurrentTurn();
 
             //Insert into correct TurnPlayer table
             String turnPlayerQuery;
@@ -729,14 +717,17 @@ public class BoardController extends Controller {
             } else {
                 turnPlayerQuery = "INSERT INTO `turnplayer2`(`game_id`, `turn_id`, `username_player2`, `bonus`, `score`, `turnaction_type`) VALUES (?,?,?,?,?,?)";
             }
+
+            //Insert into TurnPlayer table
+            List<List<Tile>> words = this.getWords();
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
             turnPlayerStatement.setInt(2, currentTurnId);
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
-            turnPlayerStatement.setInt(4, 0); //Bonus ???
-            turnPlayerStatement.setInt(5, 0);
+            turnPlayerStatement.setInt(4, this.calculatePoints(words).getBonus());
+            turnPlayerStatement.setInt(5, this.calculatePoints(words).getPoints());
             turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString().toLowerCase());
-            turnPlayerStatement.executeQuery();
+            ResultSet turnPlayerResultSet = turnPlayerStatement.executeQuery();
 
             //Get other players turn
             String otherPlayerTurnQuery;
@@ -746,14 +737,21 @@ public class BoardController extends Controller {
                 otherPlayerTurnQuery = "SELECT * FROM `turnplayer1` WHERE `game_id` = ? AND `turn_id` = ? AND `username_player1` = ?";
             }
 
+            //Get other players turn
             PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
             otherPlayerTurnStatement.setInt(1, this.game.getGameId());
             otherPlayerTurnStatement.setInt(2, currentTurnId);
             otherPlayerTurnStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer2() : this.game.getUsernamePlayer1());
             ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
 
-            //if other player has played their turn, create a new turn
             if (otherPlayerTurnResultSet.next()) {
+                //If players have the same score.. the first player gets the bonus
+                if(otherPlayerTurnResultSet.getInt("score") == turnPlayerResultSet.getInt("score")) {
+                    String updateBonusQuery = isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?";
+                    PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
+                    updateBonusStatement.setInt(1, 5);
+                    updateBonusStatement.executeUpdate();
+                }
                 this.createNewTurn();
             }
         } catch (SQLException e) {
@@ -761,25 +759,20 @@ public class BoardController extends Controller {
         }
     }
 
+    /**
+     * Creates a new turn in the database
+     */
     private void createNewTurn() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            int newTurnId = 1;
-            //Creates new turn_id
-            PreparedStatement getPreviousTurnStatement = connection.prepareStatement("SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?");
-            getPreviousTurnStatement.setInt(1, this.game.getGameId());
-            ResultSet turn = getPreviousTurnStatement.executeQuery();
-            while (turn.next()) {
-                newTurnId = turn.getInt(1) + 1;
-            }
+            int newTurnId = this.game.getCurrentTurn() + 1;
 
             PreparedStatement newTurnStatement = connection.prepareStatement("INSERT INTO `turn`(`game_id`, `turn_id`) VALUES (?,?)");
             newTurnStatement.setInt(1, this.game.getGameId());
             newTurnStatement.setInt(2, newTurnId);
-            ResultSet newTurnResultSet = newTurnStatement.executeQuery();
+            newTurnStatement.executeQuery();
 
-            //create new hand
-            //TODO to be created
+            this.handOutLetters();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
