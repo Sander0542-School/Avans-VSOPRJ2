@@ -144,11 +144,6 @@ public class BoardController extends Controller {
 
     @FXML
     private void handleChatAction() {
-
-        //TODO: Testing purpose
-        /*this.getHandLetters(this.lettertiles);
-        if (1==1) return;*/
-
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
