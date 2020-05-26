@@ -122,7 +122,7 @@ public class Board {
     public Coordinate getCoordinate(Tile tile) {
         for (int row = 1; row <= BOARD_SIZE; row++) {
             for (int column = 1; column <= BOARD_SIZE; column++) {
-                Tile columnTile = this.getTile(row - 1, column - 1);
+                Tile columnTile = this.getTile(row, column);
 
                 if (tile.equals(columnTile)) {
                     return new Coordinate(row, column);

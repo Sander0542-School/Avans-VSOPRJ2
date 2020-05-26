@@ -3,31 +3,34 @@ package nl.avans.vsoprj2.wordcrex.controllers.game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
+import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Account;
-import nl.avans.vsoprj2.wordcrex.models.Board;
-import nl.avans.vsoprj2.wordcrex.models.Game;
-import nl.avans.vsoprj2.wordcrex.models.Tile;
+import nl.avans.vsoprj2.wordcrex.models.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
 
+    private LetterTile selectedLetter;
+    private boolean moveTileFromToBoard = false;
+    private BoardTile previousBoardTile;
+    private ArrayList<Letter> currentLetters = new ArrayList<>();
+
     @FXML
     private GridPane gameGrid;
+    @FXML
+    private HBox lettertiles;
 
     @FXML
     private Label player1Name;
@@ -56,6 +59,8 @@ public class BoardController extends Controller {
         this.loadBoard();
 
         this.loadPlayerData();
+
+        this.loadHandLetters();
     }
 
     public List<Tile> getUnconfirmedTiles() {
@@ -77,7 +82,9 @@ public class BoardController extends Controller {
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
             for (int y = 1; y <= Board.BOARD_SIZE; y++) {
-                this.gameGrid.add(new BoardTile(this.board.getTile(x, y)), x - 1, y - 1);
+                BoardTile boardTile = new BoardTile(this.board.getTile(x, y));
+                this.setBoardTileClick(boardTile);
+                this.gameGrid.add(boardTile, x - 1, y - 1);
             }
         }
     }
@@ -413,6 +420,210 @@ public class BoardController extends Controller {
             }
 
             return Orientation.HORIZONTAL;
+        }
+    }
+
+    //hand out letters (previous turn winner)
+    public void handOutLetters() {
+        Connection connection = Singleton.getInstance().getConnection();
+        int currentTurn = this.game.getCurrentTurn();
+        int extraLetters = 7;
+        this.currentLetters.clear();
+
+        if (currentTurn > 0) {
+            try {
+                //get leftover letters from the previous turn
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
+                                "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
+                                "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
+                                "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
+                                "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
+                );
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, (currentTurn - 1));
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    this.currentLetters.add(new Letter(result));
+                    extraLetters--;
+                }
+
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        }
+
+        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters));
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("INSERT INTO `handletter` (`game_id`,`turn_id`,`letter_id`) VALUES ");
+
+            int handletterCount = 0;
+            for (Letter letter : this.currentLetters) {
+                if (handletterCount > 0) {
+                    sb.append(",");
+                }
+                sb.append("(").append(this.game.getGameId()).append(", ").append(currentTurn).append(",").append(letter.getLetterId()).append(")");
+                handletterCount++;
+            }
+            sb.append(";");
+
+            PreparedStatement statement = connection.prepareStatement(sb.toString());
+            int result = statement.executeUpdate();
+
+            if (result > 0) {
+                Collections.shuffle(this.currentLetters);
+                this.displayLetters();
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    public ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
+        Connection connection = Singleton.getInstance().getConnection();
+        ArrayList<Letter> letters = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ORDER BY RAND() LIMIT ?");
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, extraLetters);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                letters.add(new Letter(result));
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return letters;
+    }
+
+    //get handed out letters (handed out by previous turn winner)
+    public void loadHandLetters() {
+        Connection connection = Singleton.getInstance().getConnection();
+        int currentTurn = this.game.getCurrentTurn();
+        this.currentLetters.clear();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
+            statement.setInt(1, this.game.getGameId());
+            //TODO: Testing purpose: Remove "-7"
+//            statement.setInt(2, currentTurn - 7);
+            statement.setInt(2, currentTurn);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                this.currentLetters.add(new Letter(result));
+            }
+
+            this.displayLetters();
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void displayLetters() {
+        this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
+        Collections.shuffle(this.currentLetters);
+
+        for (Letter letter : this.currentLetters) {
+            LetterTile letterTile = new LetterTile(letter);
+            this.setLetterTileClick(letterTile);
+            this.lettertiles.getChildren().add(letterTile);
+        }
+    }
+
+    @FXML
+    private void handleShuffleAction() {
+        /*if(!this.getUnconfirmedTiles().isEmpty()){
+            this.displayLetters(this.lettertiles);
+        }*/
+    }
+
+    private void setLetterTileClick(LetterTile lettertile) {
+        lettertile.setOnMouseClicked(event -> {
+            if (this.selectedLetter == lettertile) {
+                lettertile.deselectLetter();
+                this.selectedLetter = null;
+            } else {
+                if (this.moveTileFromToBoard) {
+                    this.previousBoardTile.setSelected(false);
+                }
+                this.selectLetter(lettertile);
+            }
+            this.moveTileFromToBoard = false;
+        });
+    }
+
+    private void selectLetter(LetterTile lettertile) {
+        if (this.selectedLetter != null) {
+            this.selectedLetter.deselectLetter();
+        }
+
+        this.selectedLetter = lettertile;
+        lettertile.selectLetter();
+    }
+
+    private void setBoardTileClick(BoardTile boardTile) {
+        boardTile.setOnMouseClicked(event -> {
+            if (this.selectedLetter != null) {
+                if (this.selectedLetter == boardTile.getLetterTile()) {
+                    boardTile.setSelected(false);
+                    this.selectedLetter = null;
+                } else {
+                    if (!boardTile.getTile().hasLetter() && boardTile.getLetterTile() == null) {
+                        boardTile.setLetterTile(this.selectedLetter);
+
+                        if (this.moveTileFromToBoard) {
+                            this.previousBoardTile.setLetterTile(null);
+                            this.previousBoardTile.setSelected(false);
+                            this.moveTileFromToBoard = false;
+                        } else {
+                            this.lettertiles.getChildren().remove(this.selectedLetter);
+                        }
+
+                        this.selectedLetter.deselectLetter();
+                        this.selectedLetter = null;
+                    } else {
+                        if (!boardTile.getTile().isConfirmed()) {
+                            if(this.previousBoardTile != null){
+                                this.previousBoardTile.setSelected(false);
+                            }
+                            this.previousBoardTile = boardTile;
+                            this.moveTileFromToBoard = true;
+                            this.selectLetter(boardTile.getLetterTile());
+                            boardTile.setSelected(true);
+                        }
+                    }
+                }
+            }
+            //move selected tile to another tile on board
+            else {
+                if (!boardTile.getTile().isConfirmed() && boardTile.getLetterTile() != null) {
+                    this.previousBoardTile = boardTile;
+                    this.moveTileFromToBoard = true;
+                    this.selectLetter(boardTile.getLetterTile());
+                    boardTile.setSelected(true);
+                }
+            }
+        });
+    }
+
+    public void handleLettertilesClick() {
+        if (this.selectedLetter != null && this.moveTileFromToBoard) {
+            this.previousBoardTile.setLetterTile(null);
+            this.previousBoardTile.updateBackgroundColor();
+            this.moveTileFromToBoard = false;
+
+            this.lettertiles.getChildren().add(this.selectedLetter);
+
+            this.selectedLetter.deselectLetter();
+            this.selectedLetter = null;
         }
     }
 

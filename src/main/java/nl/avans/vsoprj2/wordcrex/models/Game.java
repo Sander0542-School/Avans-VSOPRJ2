@@ -113,19 +113,6 @@ public class Game extends DbModel {
         return 0;
     }
 
-    public enum GameState {
-        REQUEST,
-        PLAYING,
-        FINISHED,
-        RESIGNED,
-    }
-
-    public enum Answer {
-        ACCEPTED,
-        REJECTED,
-        UNKNOWN,
-    }
-
     public int getPlayerScore(boolean isPlayer1) {
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -144,5 +131,18 @@ public class Game extends DbModel {
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }
+    }
+
+    public enum GameState {
+        REQUEST,
+        PLAYING,
+        FINISHED,
+        RESIGNED,
+    }
+
+    public enum Answer {
+        ACCEPTED,
+        REJECTED,
+        UNKNOWN,
     }
 }
