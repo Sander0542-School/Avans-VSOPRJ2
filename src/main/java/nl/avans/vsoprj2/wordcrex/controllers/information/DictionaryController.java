@@ -1,10 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -42,6 +39,10 @@ public class DictionaryController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ToggleGroup group = new ToggleGroup();
+        this.add.setToggleGroup(group);
+        this.delete.setToggleGroup(group);
+
         this.language.getItems().removeAll(this.language.getItems());
         this.language.getItems().addAll(this.Languages());
     }
@@ -106,11 +107,12 @@ public class DictionaryController extends Controller {
             return;
         };
 
+        if (!this.add.isSelected() && !this.delete.isSelected()){
+            this.error.setVisible(true);
+            this.error.setText("add/delete");
+            return;
+        }
 
-
-
-       // this.add;
-        //this.delete;
      //   this.language;
 
 
