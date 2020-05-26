@@ -15,7 +15,7 @@
             </ImageView>
             <HBox alignment="CENTER" spacing="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="0.0">
 
-                <Label text="Speler 1" textFill="WHITE">
+                <Label fx:id="player1Name" textFill="WHITE" prefWidth="156" alignment="CENTER_RIGHT">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
@@ -23,7 +23,7 @@
 
                 <HBox alignment="CENTER" maxHeight="-Infinity" spacing="14.0" style="-fx-background-radius: 6; -fx-background-color: fff;" onMouseClicked="#handleScoreboardAction">
 
-                    <Label text="0" textFill="black">
+                    <Label fx:id="player1Score" text="0" textFill="black">
                         <font>
                             <Font name="Roboto Black" size="16.0"/>
                         </font>
@@ -33,7 +33,7 @@
                             <Font name="Roboto Black" size="16.0"/>
                         </font>
                     </Label>
-                    <Label text="0" textFill="black">
+                    <Label fx:id="player2Score" text="0" textFill="black">
                         <font>
                             <Font name="Roboto Black" size="16.0"/>
                         </font>
@@ -44,7 +44,7 @@
 
                 </HBox>
 
-                <Label text="Speler 2" textFill="WHITE">
+                <Label fx:id="player2Name" textFill="WHITE" prefWidth="156" alignment="CENTER_LEFT">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
@@ -57,7 +57,7 @@
     <center>
         <GridPane fx:id="gameGrid" hgap="2" vgap="2" alignment="CENTER">
             <padding>
-                <Insets bottom="4" left="4" right="4" top="4" />
+                <Insets bottom="4" left="4" right="4" top="4"/>
             </padding>
         </GridPane>
     </center>
@@ -69,7 +69,7 @@
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/play_arrow.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView onMouseClicked="#handleShuffleAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
                 <ImageView pickOnBounds="true" onMouseClicked="#passGameClick" fitHeight="24.0" fitWidth="24.0">
@@ -77,7 +77,7 @@
                 </ImageView>
 
             </HBox>
-            <HBox alignment="CENTER" spacing="6.0">
+            <HBox fx:id="lettertiles" onMouseClicked="#handleLettertilesClick" alignment="CENTER" spacing="6.0" prefWidth="450">
                 <LetterTile/>
                 <LetterTile/>
                 <LetterTile/>
