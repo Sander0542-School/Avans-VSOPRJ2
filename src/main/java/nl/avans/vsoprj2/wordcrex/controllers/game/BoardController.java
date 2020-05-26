@@ -684,7 +684,7 @@ public class BoardController extends Controller {
         confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
         Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
 
-        if (dialogResult.isPresent())
+        if (dialogResult.isPresent()) {
             if (dialogResult.get() == ButtonType.OK) {
                 List<List<Tile>> words = this.getWords();
                 if (this.checkWords(words)) {
@@ -696,6 +696,7 @@ public class BoardController extends Controller {
                     invalidWordDialog.showAndWait();
                 }
             }
+        }
     }
 
     /**
@@ -705,11 +706,8 @@ public class BoardController extends Controller {
     private void createNewPlayerTurn() {
         Connection connection = Singleton.getInstance().getConnection();
         boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
-        int currentTurnId = 0;
 
         try {
-            currentTurnId = this.game.getCurrentTurn();
-
             //Insert into correct TurnPlayer table
             String turnPlayerQuery;
             if (isPlayer1) {
@@ -722,12 +720,12 @@ public class BoardController extends Controller {
             List<List<Tile>> words = this.getWords();
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
-            turnPlayerStatement.setInt(2, currentTurnId);
+            turnPlayerStatement.setInt(2, this.game.getCurrentTurn());
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
-            turnPlayerStatement.setInt(4, this.calculatePoints(words).getBonus());
-            turnPlayerStatement.setInt(5, this.calculatePoints(words).getPoints());
+            turnPlayerStatement.setInt(4, 0); //bonus is default 0
+            turnPlayerStatement.setInt(5, this.calculatePoints(words).getPoints() + this.calculatePoints(words).getBonus());
             turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString().toLowerCase());
-            ResultSet turnPlayerResultSet = turnPlayerStatement.executeQuery();
+            turnPlayerStatement.executeUpdate();
 
             //Get other players turn
             String otherPlayerTurnQuery;
@@ -740,16 +738,18 @@ public class BoardController extends Controller {
             //Get other players turn
             PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
             otherPlayerTurnStatement.setInt(1, this.game.getGameId());
-            otherPlayerTurnStatement.setInt(2, currentTurnId);
+            otherPlayerTurnStatement.setInt(2, this.game.getCurrentTurn());
             otherPlayerTurnStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer2() : this.game.getUsernamePlayer1());
             ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
 
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
-                if(otherPlayerTurnResultSet.getInt("score") == turnPlayerResultSet.getInt("score")) {
-                    String updateBonusQuery = isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?";
+                if(otherPlayerTurnResultSet.getInt("score") == (this.calculatePoints(words).getPoints() + this.calculatePoints(words).getBonus())) {
+                    String updateBonusQuery = isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?" + " WHERE `game_id` = ? AND `turn_id` = ?";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
+                    updateBonusStatement.setInt(1, this.game.getGameId());
+                    updateBonusStatement.setInt(1, this.game.getCurrentTurn());
                     updateBonusStatement.executeUpdate();
                 }
                 this.createNewTurn();
@@ -770,7 +770,7 @@ public class BoardController extends Controller {
             PreparedStatement newTurnStatement = connection.prepareStatement("INSERT INTO `turn`(`game_id`, `turn_id`) VALUES (?,?)");
             newTurnStatement.setInt(1, this.game.getGameId());
             newTurnStatement.setInt(2, newTurnId);
-            newTurnStatement.executeQuery();
+            newTurnStatement.executeUpdate();
 
             this.handOutLetters();
         } catch (SQLException e) {
