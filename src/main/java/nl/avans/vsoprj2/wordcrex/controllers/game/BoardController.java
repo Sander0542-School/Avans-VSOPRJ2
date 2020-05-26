@@ -59,6 +59,8 @@ public class BoardController extends Controller {
         this.loadBoard();
 
         this.loadPlayerData();
+
+        this.getHandLetters(this.lettertiles);
     }
 
     public List<Tile> getUnconfirmedTiles() {
