@@ -120,18 +120,25 @@ public class DictionaryController extends Controller {
            return;
        }
 
-       /*
+
         Connection connection = Singleton.getInstance().getConnection();
+
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO dictionary (`word`, `letterset_code`, `state`, `username`) VALUES (?,?,?,?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO dictionary (word, letterset_code, state, username) VALUES (?,?,'pending',?)");
             statement.setString(1, this.word.getText().trim());
             statement.setString(2, this.languages.get(selectedLanguage));
-            statement.setString(3, "pending");
             statement.setString(3, this.username.getText().trim());
-            ResultSet result = statement.executeQuery();
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                this.error.setVisible(true);
+                this.error.setText("verstuurd");
+            }
         } catch (SQLException e) {
             throw new DbLoadException(e);
-        }*/
+        }
+
+
+
 
     }
 }
