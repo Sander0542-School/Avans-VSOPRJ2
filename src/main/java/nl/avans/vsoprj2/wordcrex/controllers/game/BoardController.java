@@ -60,7 +60,7 @@ public class BoardController extends Controller {
 
         this.loadPlayerData();
 
-        this.getHandLetters(this.lettertiles);
+        this.loadHandLetters();
     }
 
     public List<Tile> getUnconfirmedTiles() {
@@ -424,7 +424,7 @@ public class BoardController extends Controller {
     }
 
     //hand out letters (previous turn winner)
-    public void handOutLetters(HBox lettertiles) {
+    public void handOutLetters() {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
@@ -475,7 +475,7 @@ public class BoardController extends Controller {
 
             if (result > 0) {
                 Collections.shuffle(this.currentLetters);
-                this.displayLetters(lettertiles);
+                this.displayLetters();
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
@@ -504,7 +504,7 @@ public class BoardController extends Controller {
     }
 
     //get handed out letters (handed out by previous turn winner)
-    public void getHandLetters(HBox lettertiles) {
+    public void loadHandLetters() {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         this.currentLetters.clear();
@@ -521,20 +521,20 @@ public class BoardController extends Controller {
                 this.currentLetters.add(new Letter(result));
             }
 
-            this.displayLetters(lettertiles);
+            this.displayLetters();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
     }
 
-    private void displayLetters(HBox lettertiles) {
-        lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
+    private void displayLetters() {
+        this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
         Collections.shuffle(this.currentLetters);
 
         for (Letter letter : this.currentLetters) {
             LetterTile letterTile = new LetterTile(letter);
             this.setLetterTileClick(letterTile);
-            lettertiles.getChildren().add(letterTile);
+            this.lettertiles.getChildren().add(letterTile);
         }
     }
 
