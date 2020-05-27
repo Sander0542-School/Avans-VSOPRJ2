@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GamesController extends Controller {
 
@@ -34,6 +36,8 @@ public class GamesController extends Controller {
     @FXML
     private VBox finishedGames;
 
+    private final Timer autoFetch = new Timer();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -44,10 +48,21 @@ public class GamesController extends Controller {
         this.finishedGames.managedProperty().bind(this.finishedGames.visibleProperty());
 
         this.loadGames(Singleton.getInstance().getUser());
+
+        this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
     }
 
     public void handleNewGameAction() {
         this.navigateTo("/views/game/new.fxml");
+    }
+
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                GamesController.this.loadGames(Singleton.getInstance().getUser());
+            }
+        };
     }
 
     private void gameRequest(GameItem gameItem) {
