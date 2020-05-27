@@ -592,7 +592,7 @@ public class BoardController extends Controller {
                         this.selectedLetter = null;
                     } else {
                         if (!boardTile.getTile().isConfirmed()) {
-                            if(this.previousBoardTile != null){
+                            if (this.previousBoardTile != null) {
                                 this.previousBoardTile.setSelected(false);
                             }
                             this.previousBoardTile = boardTile;
