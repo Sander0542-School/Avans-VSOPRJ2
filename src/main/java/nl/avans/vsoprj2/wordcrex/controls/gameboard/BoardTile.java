@@ -137,4 +137,15 @@ public class BoardTile extends AnchorPane implements Initializable {
 
         return null;
     }
+
+    public int getWorth() {
+        if (this.getTile().hasWorth()) {
+            return this.getTile().getWorth();
+        }
+        if (this.getLetterTile() != null) {
+            return this.getLetterTile().getLetter().getValue();
+        }
+
+        return 0;
+    }
 }
