@@ -124,6 +124,7 @@ public class ScoreboardRound extends Model {
     public enum TurnActionType {
         PLAY,
         PASS,
-        RESIGN
+        RESIGN,
+        UNKNOWN
     }
 }

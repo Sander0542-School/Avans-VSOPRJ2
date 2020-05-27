@@ -6,6 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -68,7 +71,7 @@ public class BoardController extends Controller {
 
         this.loadHandLetters();
 
-        if (game.getCurrentTurn() == 0) this.createNewTurn();
+        if (game.getCurrentTurn() == 0) this.createNewTurn(false);
     }
 
     public List<BoardTile> getUnconfirmedTiles() {
@@ -108,11 +111,132 @@ public class BoardController extends Controller {
     /**
      * @param winner - Account model
      */
-    public void endGame(Account winner) {
-        this.game.setGameState(Game.GameState.FINISHED);
-        this.game.setWinner(winner);
+    public void endGame() {
+        Connection connection = Singleton.getInstance().getConnection();
 
-        this.game.save();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT (SELECT (SUM(bonus) + SUM(score)) FROM turnplayer1 WHERE game_id = ?) AS Player1, (SELECT (SUM(bonus) + SUM(score)) FROM turnplayer2 WHERE game_id = ?) AS Player2");
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, this.game.getGameId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                if (resultSet.getInt("Player1") > resultSet.getInt("Player2")) {
+                    this.game.setGameState(Game.GameState.FINISHED);
+                    this.game.setWinner(this.game.getUsernamePlayer1());
+                    this.game.save();
+                } else {
+                    this.game.setGameState(Game.GameState.FINISHED);
+                    this.game.setWinner(this.game.getUsernamePlayer2());
+                    this.game.save();
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    public void passGameClick() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Game passen");
+        alert.setHeaderText("Weet je zeker dat je wil passen?");
+
+        ButtonType buttonTypeCancel = new ButtonType("Nee", ButtonBar.ButtonData.NO);
+        ButtonType buttonTypeOk = new ButtonType("Ja", ButtonBar.ButtonData.YES);
+
+        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeOk);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                this.passGame();
+            }
+        });
+    }
+
+    private void passGame() {
+        Connection connection = Singleton.getInstance().getConnection();
+        String currentUsername = Singleton.getInstance().getUser().getUsername();
+        boolean currentUserIsPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
+        ScoreboardRound.TurnActionType typePlayer1 = ScoreboardRound.TurnActionType.UNKNOWN;
+        ScoreboardRound.TurnActionType typePlayer2 = ScoreboardRound.TurnActionType.UNKNOWN;
+
+        //Getting turn information of players
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT IFNULL((SELECT turnaction_type FROM turnplayer1 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player1, IFNULL((SELECT turnaction_type FROM turnplayer2 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player2");
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, this.game.getGameId());
+            statement.setInt(3, this.game.getGameId());
+            statement.setInt(4, this.game.getGameId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                typePlayer1 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player1").toUpperCase());
+                typePlayer2 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player2").toUpperCase());
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        if (currentUserIsPlayer1 && typePlayer1.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
+            try {
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer1(game_id, turn_id, username_player1, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer1 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, this.game.getGameId());
+                statement.setString(3, currentUsername);
+
+                statement.executeUpdate();
+
+                if (typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
+                    this.giveNewLetterInHand();
+                }
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        } else if (!currentUserIsPlayer1 && typePlayer2.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
+            try {
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer2(game_id, turn_id, username_player2, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer2 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, this.game.getGameId());
+                statement.setString(3, currentUsername);
+
+                statement.executeUpdate();
+
+                if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS)) {
+                    this.giveNewLetterInHand();
+                }
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        } else if(typePlayer1.equals(ScoreboardRound.TurnActionType.PASS) && typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
+            this.giveNewLetterInHand();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game pass");
+            alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
+            alert.showAndWait();
+        }
+    }
+
+    private void giveNewLetterInHand() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(l.letter_id) AS amountOfPoolLetters FROM pot p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ?");
+            statement.setInt(1, this.game.getGameId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                if (resultSet.getInt("amountOfPoolLetters") <= 7) {
+                    this.endGame();
+                } else {
+                    this.createNewTurn(true);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 
     public boolean isExistingWord(String word) {
@@ -445,13 +569,14 @@ public class BoardController extends Controller {
     }
 
     //hand out letters (previous turn winner)
-    public void handOutLetters() {
+    public void handOutLetters(boolean isPassedTurn) {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
         this.currentLetters.clear();
 
-        if (currentTurn > 0) {
+
+        if (currentTurn > 0 && !isPassedTurn) {
             try {
                 //get leftover letters from the previous turn
                 PreparedStatement statement = connection.prepareStatement(
@@ -785,7 +910,7 @@ public class BoardController extends Controller {
                     updateBonusStatement.setInt(3, this.game.getCurrentTurn());
                     updateBonusStatement.executeUpdate();
                 }
-                this.createNewTurn();
+                this.createNewTurn(false);
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
@@ -795,7 +920,7 @@ public class BoardController extends Controller {
     /**
      * Creates a new turn in the database
      */
-    private void createNewTurn() {
+    private void createNewTurn(boolean isPassedTurn) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             int newTurnId = this.game.getCurrentTurn() + 1;
@@ -805,7 +930,7 @@ public class BoardController extends Controller {
             newTurnStatement.setInt(2, newTurnId);
             newTurnStatement.executeUpdate();
 
-            this.handOutLetters();
+            this.handOutLetters(isPassedTurn);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }

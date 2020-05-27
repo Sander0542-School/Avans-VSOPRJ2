@@ -73,8 +73,8 @@ public class Game extends DbModel {
         return this.usernameWinner;
     }
 
-    public void setWinner(Account winner) {
-        this.usernameWinner = winner.getUsername();
+    public void setWinner(String winner) {
+        this.usernameWinner = winner;
     }
 
     public String getMessage() {
