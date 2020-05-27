@@ -3,9 +3,11 @@ package nl.avans.vsoprj2.wordcrex.controls.gameboard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import nl.avans.vsoprj2.wordcrex.Colors;
 import nl.avans.vsoprj2.wordcrex.models.Tile;
 
@@ -45,6 +47,16 @@ public class BoardTile extends AnchorPane implements Initializable {
         }
     }
 
+    public void setSize(double size) {
+        this.setPrefWidth(size);
+        this.setPrefHeight(size);
+
+        this.multiplier.setFont(Font.font(size * 0.375));
+        this.letter.setFont(Font.font(size * 0.5));
+        this.worth.setFont(Font.font(size * 0.222));
+        this.worth.setPadding(new Insets(size * 0.416, 0, 0, size * 0.583));
+    }
+
     public void setTile(Tile tile) {
         this.tile = tile;
 
@@ -81,7 +93,7 @@ public class BoardTile extends AnchorPane implements Initializable {
         if (this.tile.hasLetter()) {
             color = Color.rgb(255, 255, 255);
             if (this.tile.isHighlighted()) {
-                color = Color.rgb(145,242,129);
+                color = Color.rgb(145, 242, 129);
             }
             this.multiplier.setVisible(false);
         }
@@ -105,7 +117,7 @@ public class BoardTile extends AnchorPane implements Initializable {
     public boolean isSelected() {
         return this.selected;
     }
-    
+
     public Tile getTile() {
         return this.tile;
     }
