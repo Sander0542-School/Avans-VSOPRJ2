@@ -81,7 +81,7 @@ public class BoardTile extends AnchorPane implements Initializable {
         if (this.tile.hasLetter()) {
             color = Color.rgb(255, 255, 255);
             if (this.tile.isHighlighted()) {
-                color = Color.rgb(145,242,129);
+                color = Color.rgb(145, 242, 129);
             }
             this.multiplier.setVisible(false);
         }
@@ -105,7 +105,7 @@ public class BoardTile extends AnchorPane implements Initializable {
     public boolean isSelected() {
         return this.selected;
     }
-    
+
     public Tile getTile() {
         return this.tile;
     }
