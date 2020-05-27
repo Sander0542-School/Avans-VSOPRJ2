@@ -365,16 +365,15 @@ public class BoardController extends Controller {
         if (horizontal) {
             while (this.hasTileAndLetter(xCord - i, yCord)) {
                 firstTile = this.getBoardTile(xCord - i, yCord);
-                i--;
-            }
-            wordTiles.add(firstTile);
-            i++;
-            while (this.hasTileAndLetter(xCord - i, yCord)) {
-                wordTiles.add(this.getBoardTile(xCord - i, yCord));
                 i++;
             }
-        } else {
+            wordTiles.add(firstTile);
+            i -= 2;
+            while (this.hasTileAndLetter(xCord - i, yCord)) {
+                wordTiles.add(this.getBoardTile(xCord - i, yCord));
                 i--;
+            }
+        } else {
             while (this.hasTileAndLetter(xCord, yCord - i)) {
                 firstTile = this.getBoardTile(xCord, yCord - i);
                 i++;
