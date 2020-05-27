@@ -225,7 +225,7 @@ public class BoardController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 if (resultSet.getInt("amountOfPoolLetters") <= 7) {
                     this.endGame();
                 } else {
