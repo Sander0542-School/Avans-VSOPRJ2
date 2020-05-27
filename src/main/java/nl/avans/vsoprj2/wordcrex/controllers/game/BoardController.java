@@ -15,6 +15,7 @@ import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.*;
+import nl.avans.vsoprj2.wordcrex.utils.NumberUtil;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -842,7 +843,9 @@ public class BoardController extends Controller {
             if (dialogResult.get() == ButtonType.OK) {
                 List<List<BoardTile>> words = this.getWords();
                 if (this.checkWords(words)) {
+                    int turn = this.game.getCurrentTurn();
                     this.createNewPlayerTurn();
+                    this.createNewPlayerBoard(turn, this.getUnconfirmedTiles());
                 } else {
                     //Throws alert if word is not correct
                     Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "Dit is geen geldig woord.\nProbeer een ander woord.");
@@ -850,6 +853,97 @@ public class BoardController extends Controller {
                     invalidWordDialog.showAndWait();
                 }
             }
+        }
+    }
+
+    private void createNewPlayerBoard(int turn, List<BoardTile> boardTiles) {
+        Connection connection = Singleton.getInstance().getConnection();
+        boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
+
+        try {
+            StringBuilder boardPlayerQueryBuilder = new StringBuilder();
+
+            boardPlayerQueryBuilder.append("INSERT INTO `");
+            boardPlayerQueryBuilder.append(isPlayer1 ? "boardplayer1" : "boardplayer2");
+            boardPlayerQueryBuilder.append("` (`game_id`, `username`, `turn_id`, `letter_id`, `tile_x`, `tile_y`) VALUES ");
+
+            for (BoardTile boardTile : boardTiles) {
+                Letter letter = boardTile.getLetterTile().getLetter();
+                Board.Coordinate coordinate = this.board.getCoordinate(boardTile.getTile());
+                boardPlayerQueryBuilder.append(String.format("(%s, '%s', %s, %s, %s, %s),",
+                        this.game.getGameId(),
+                        Singleton.getInstance().getUser().getUsername(),
+                        turn,
+                        letter.getLetterId(),
+                        coordinate.getX(),
+                        coordinate.getY()
+                ));
+            }
+            boardPlayerQueryBuilder.setLength(boardPlayerQueryBuilder.length() - 1);
+            boardPlayerQueryBuilder.append(";");
+
+            PreparedStatement boardPlayerStatement = connection.prepareStatement(boardPlayerQueryBuilder.toString());
+
+            boardPlayerStatement.executeUpdate();
+
+            StringBuilder turnPlayerQueryBuilder = new StringBuilder();
+
+            turnPlayerQueryBuilder.append("SELECT (`cp`.`score` + `cp`.`bonus`) as cp_score, `cp`.`turnaction_type` as cp_turntype, (`op`.`score` + `op`.`bonus`) as op_score, `op`.`turnaction_type` as op_turntype FROM `");
+            turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
+            turnPlayerQueryBuilder.append("` cp INNER JOIN `");
+            turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
+            turnPlayerQueryBuilder.append("`op ON `cp`.`game_id` = `op`.`game_id` AND `cp`.`turn_id` = `op`.`turn_id` WHERE `cp`.`game_id` = ? AND `cp`.`turn_id` = ?;");
+
+            PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQueryBuilder.toString());
+            turnPlayerStatement.setInt(1, this.game.getGameId());
+            turnPlayerStatement.setInt(2, turn);
+
+            ResultSet turnPlayerResultSet = turnPlayerStatement.executeQuery();
+
+            if (turnPlayerResultSet.next()) {
+                Integer cpScore = NumberUtil.tryParse(turnPlayerResultSet.getString("cp_score"));
+                String cpTurnType = turnPlayerResultSet.getString("cp_turntype");
+
+                Integer opScore = NumberUtil.tryParse(turnPlayerResultSet.getString("op_score"));
+                String opTurnType = turnPlayerResultSet.getString("op_turntype");
+
+                boolean cpWon = true;
+                if (opScore >= cpScore) {
+                    cpWon = false;
+                }
+                if (cpTurnType.equals("pass")) {
+                    cpWon = false;
+
+                    if (cpTurnType.equals(opTurnType)) {
+                        return;
+                    }
+                }
+
+                String boardPlayerWon;
+                if (isPlayer1 && cpWon) {
+                    boardPlayerWon = "boardplayer1";
+                } else if (isPlayer1) {
+                    boardPlayerWon = "boardplayer2";
+                } else if (cpWon) {
+                    boardPlayerWon = "boardplayer2";
+                } else {
+                    boardPlayerWon = "boardplayer1";
+                }
+
+                StringBuilder turnBoardLetterQueryBuilder = new StringBuilder();
+                turnBoardLetterQueryBuilder.append("INSERT INTO `turnboardletter` (`game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y`) SELECT `game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y` FROM `");
+                turnBoardLetterQueryBuilder.append(boardPlayerWon);
+                turnBoardLetterQueryBuilder.append("` WHERE `game_id` = ? AND `turn_id` = ?;");
+
+                PreparedStatement turnBoardLetterStatement = connection.prepareStatement(turnBoardLetterQueryBuilder.toString());
+                turnBoardLetterStatement.setInt(1, this.game.getGameId());
+                turnBoardLetterStatement.setInt(2, turn);
+
+                turnBoardLetterStatement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
         }
     }
 
