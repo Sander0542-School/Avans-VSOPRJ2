@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -625,6 +626,14 @@ public class BoardController extends Controller {
 
             this.selectedLetter.deselectLetter();
             this.selectedLetter = null;
+        }
+    }
+
+    private void gridSizeChanged() {
+        for (Node node : this.gameGrid.getChildren()) {
+            double smallestSize = Math.min(this.gameGrid.getWidth(), this.gameGrid.getHeight());
+
+            ((BoardTile) node).setPrefWidth(smallestSize / (Board.BOARD_SIZE + 1));
         }
     }
 
