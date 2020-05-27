@@ -328,7 +328,7 @@ public class BoardController extends Controller {
         List<String> wordsString = new ArrayList<>();
 
         for (List<BoardTile> word : words) {
-            wordsString.add(word.stream().map(boardTile -> boardTile.getLetter()).iterator().toString());
+            wordsString.add(word.stream().map(BoardTile::getLetter).collect(Collectors.joining()));
         }
 
         return wordsString;
