@@ -691,7 +691,7 @@ public class BoardController extends Controller {
                     this.createNewPlayerTurn();
                 } else {
                     //Throws alert if word is not correct
-                    Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Dit is geen geldig woord.\nProbeer een ander woord.");
+                    Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "Dit is geen geldig woord.\nProbeer een ander woord.");
                     invalidWordDialog.setTitle("Fout Woord");
                     invalidWordDialog.showAndWait();
                 }
