@@ -67,7 +67,7 @@ public class BoardController extends Controller {
         this.loadHandLetters();
 
         if(game.getCurrentTurn() == 0) {
-            this.createNewTurn();   
+            this.createNewTurn();
         }
     }
 

@@ -71,11 +71,6 @@ public class GamesController extends Controller {
                 game.setGameState(Game.GameState.PLAYING);
                 game.setAnswerPlayer2(Game.Answer.ACCEPTED);
                 game.save();
-
-                BoardController boardController = new BoardController();
-                boardController.setGame(game);
-                //TODO uncomment when Confirm letters get merged
-                //boardController.createNewTurn();
             }
 
             this.loadGames(Singleton.getInstance().getUser());
