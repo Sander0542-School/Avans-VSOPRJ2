@@ -9,28 +9,31 @@ public class InformationController extends Controller {
     private void handleBackButton() {
         this.navigateTo("/views/games.fxml");
     }
+
     @FXML
     private void handleDictionary() {
 
         String userRole = Singleton.getInstance().getUser().getRole(); // returns null
 
-        if( userRole == "administrator"){
+        if (userRole == "administrator") {
             this.navigateTo("/views/information/adminDictionaryPage.fxml", new NavigationListener() {
                 @Override
                 public void beforeNavigate(Controller controller) {
                     DictionaryController dictionaryController = new DictionaryController();
                 }
+
                 @Override
                 public void afterNavigate(Controller controller) {
 
                 }
             });
-        }else {
+        } else {
             this.navigateTo("/views/information/dictionary.fxml", new NavigationListener() {
                 @Override
                 public void beforeNavigate(Controller controller) {
                     DictionaryController dictionaryController = new DictionaryController();
                 }
+
                 @Override
                 public void afterNavigate(Controller controller) {
 
