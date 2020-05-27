@@ -389,6 +389,16 @@ public class BoardController extends Controller {
         return wordTiles.size() > 1 ? wordTiles : null;
     }
 
+    private boolean hasTileAndLetter(int x, int y) {
+        BoardTile boardTile = this.getBoardTile(x, y);
+
+        if (boardTile != null) {
+            return boardTile.getLetter() != null;
+        }
+
+        return false;
+    }
+
     private BoardTile getBoardTile(int x, int y) {
         return (BoardTile) this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == (x - 1)).filtered(node -> GridPane.getRowIndex(node) == (y - 1)).get(0);
     }
