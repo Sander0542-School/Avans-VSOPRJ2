@@ -95,17 +95,22 @@ public class Game extends DbModel {
         }
     }
 
-    public enum GameState {
-        REQUEST,
-        PLAYING,
-        FINISHED,
-        RESIGNED,
-    }
+    public int getCurrentTurn() {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT MAX(turn_id) as turn FROM `turn` WHERE game_id = ? LIMIT 1");
+            statement.setInt(1, this.getGameId());
 
-    public enum Answer {
-        ACCEPTED,
-        REJECTED,
-        UNKNOWN,
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("turn");
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return 0;
     }
 
     public int getPlayerScore(boolean isPlayer1) {
@@ -126,5 +131,18 @@ public class Game extends DbModel {
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }
+    }
+
+    public enum GameState {
+        REQUEST,
+        PLAYING,
+        FINISHED,
+        RESIGNED,
+    }
+
+    public enum Answer {
+        ACCEPTED,
+        REJECTED,
+        UNKNOWN,
     }
 }
