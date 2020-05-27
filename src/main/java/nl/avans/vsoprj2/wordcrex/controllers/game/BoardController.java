@@ -238,7 +238,7 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), false));
 
                 for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                    words.add(this.findWord(this.board.getTile(coordinates.minX, y), true));
+                    words.add(this.findWord(this.getBoardTile(coordinates.minX, y), true));
                 }
                 break;
             case HORIZONTAL:
@@ -247,7 +247,7 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), true));
 
                 for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                    words.add(this.findWord((this.board.getTile(x, coordinates.minY)), false));
+                    words.add(this.findWord(this.getBoardTile(x, coordinates.maxY), false));
                 }
                 break;
         }
@@ -364,25 +364,25 @@ public class BoardController extends Controller {
 
         if (horizontal) {
             while (this.board.getTile(xCord - i, yCord).hasLetter()) {
-                firstTile = this.board.getTile(xCord - i, yCord);
+                firstTile = this.getBoardTile(xCord - i, yCord);
                 i--;
             }
             wordTiles.add(firstTile);
             i++;
             while (this.board.getTile(xCord - i, yCord).hasLetter()) {
-                wordTiles.add(this.board.getTile(xCord - i, yCord));
+                wordTiles.add(this.getBoardTile(xCord - i, yCord));
                 i++;
             }
         } else {
             while (this.board.getTile(xCord, yCord - i).hasLetter()) {
-                firstTile = this.board.getTile(xCord, yCord - i);
                 i--;
+                firstTile = this.getBoardTile(xCord, yCord - i);
             }
             wordTiles.add(firstTile);
             i++;
             while (this.board.getTile(xCord, yCord - i).hasLetter()) {
-                wordTiles.add(this.board.getTile(xCord, yCord - i));
                 i++;
+                wordTiles.add(this.getBoardTile(xCord, yCord - i));
             }
         }
 
