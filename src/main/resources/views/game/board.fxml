@@ -71,7 +71,7 @@
                 <ImageView onMouseClicked="#handleShuffleAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" onMouseClicked="#passGameClick" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
