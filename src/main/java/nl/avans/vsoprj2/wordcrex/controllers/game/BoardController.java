@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -20,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BoardController extends Controller {
@@ -414,16 +416,16 @@ public class BoardController extends Controller {
 
         Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
 
-        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getX()).distinct();
-        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getY()).distinct();
+        List<Integer> differentXValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getX()).distinct().collect(Collectors.toList());
+        List<Integer> differentYValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getY()).distinct().collect(Collectors.toList());
 
-        if (differentXValues.count() > 1 && differentYValues.count() > 1) {
+        if (differentXValues.size() > 1 && differentYValues.size() > 1) {
             return null;
         }
 
-        if (differentXValues.count() == 1) {
+        if (differentXValues.size() == 1) {
             for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                if (!this.board.getTile(differentXValues.findFirst().get() + 1, y).hasLetter()) {
+                if (!this.hasTileAndLetter(differentXValues.get(0), y)) {
                     return null;
                 }
             }
@@ -431,7 +433,7 @@ public class BoardController extends Controller {
             return Orientation.VERTICAL;
         } else {
             for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                if (!this.board.getTile(x, differentYValues.findFirst().get() + 1).hasLetter()) {
+                if (!this.hasTileAndLetter(x, differentYValues.get(0))) {
                     return null;
                 }
             }
