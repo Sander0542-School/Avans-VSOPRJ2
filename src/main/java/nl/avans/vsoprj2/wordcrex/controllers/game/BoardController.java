@@ -363,25 +363,25 @@ public class BoardController extends Controller {
         int yCord = coordinate.getY();
 
         if (horizontal) {
-            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+            while (this.hasTileAndLetter(xCord - i, yCord)) {
                 firstTile = this.getBoardTile(xCord - i, yCord);
                 i--;
             }
             wordTiles.add(firstTile);
             i++;
-            while (this.board.getTile(xCord - i, yCord).hasLetter()) {
+            while (this.hasTileAndLetter(xCord - i, yCord)) {
                 wordTiles.add(this.getBoardTile(xCord - i, yCord));
                 i++;
             }
         } else {
-            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
                 i--;
+            while (this.hasTileAndLetter(xCord, yCord - i)) {
                 firstTile = this.getBoardTile(xCord, yCord - i);
             }
             wordTiles.add(firstTile);
             i++;
-            while (this.board.getTile(xCord, yCord - i).hasLetter()) {
                 i++;
+            while (this.hasTileAndLetter(xCord, yCord - i)) {
                 wordTiles.add(this.getBoardTile(xCord, yCord - i));
             }
         }
