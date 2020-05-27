@@ -755,7 +755,7 @@ public class BoardController extends Controller {
 
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
-                if (otherPlayerTurnResultSet.getInt("score") == score) {
+                if (otherPlayerTurnResultSet.getInt("score") == points.getPoints()) {
                     String updateBonusQuery = (isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?") +
                             " WHERE `game_id` = ? AND `turn_id` = ?";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
