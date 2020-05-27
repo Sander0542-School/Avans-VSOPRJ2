@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -60,7 +61,10 @@ public class GamesController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
-                GamesController.this.loadGames(Singleton.getInstance().getUser());
+                Platform.runLater(() -> {
+                    System.out.println("hey hey");
+                    GamesController.this.loadGames(Singleton.getInstance().getUser());
+                });
             }
         };
     }
