@@ -107,11 +107,30 @@ public class BoardController extends Controller {
     /**
      * @param winner - Account model
      */
-    public void endGame(Account winner) {
-        this.game.setGameState(Game.GameState.FINISHED);
-        this.game.setWinner(winner);
+    public void endGame() {
+        Connection connection = Singleton.getInstance().getConnection();
 
-        this.game.save();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT (SELECT (SUM(bonus) + SUM(score)) FROM turnplayer1 WHERE game_id = ?) AS Player1, (SELECT (SUM(bonus) + SUM(score)) FROM turnplayer2 WHERE game_id = ?) AS Player2");
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, this.game.getGameId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                if (resultSet.getInt("Player1") > resultSet.getInt("Player2")) {
+                    this.game.setGameState(Game.GameState.FINISHED);
+                    this.game.setWinner(this.game.getUsernamePlayer1());
+                    this.game.save();
+                } else {
+                    this.game.setGameState(Game.GameState.FINISHED);
+                    this.game.setWinner(this.game.getUsernamePlayer2());
+                    this.game.save();
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 
     public void passGameClick() {
@@ -196,19 +215,24 @@ public class BoardController extends Controller {
     }
 
     private void giveNewLetterInHand() {
-        System.out.println("geeft nieuwe letters in hand");
+        Connection connection = Singleton.getInstance().getConnection();
 
-        // TODO Check if game end
-        // if max letters over <= 7 {
-        //  this.endGame()
-        // } else {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(l.letter_id) AS amountOfPoolLetters FROM pot p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ORDER BY RAND()");
+            statement.setInt(1, this.game.getGameId());
 
-        // TODO Give new letters
-        // Same as give new letters but first clear hand.
+            ResultSet resultSet = statement.executeQuery();
 
-        // TODO Start new turn
-        // Start new turn functions same as play a turn.
-        // }
+            while (resultSet.next()) {
+                if (resultSet.getInt("amountOfPoolLetters") <= 7) {
+                    this.endGame();
+                } else {
+                    this.createNewTurn(true);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 
     public boolean isExistingWord(String word) {
@@ -525,33 +549,35 @@ public class BoardController extends Controller {
     }
 
     //hand out letters (previous turn winner)
-    public void handOutLetters() {
+    public void handOutLetters(boolean isPassedTurn) {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
         this.currentLetters.clear();
 
-        if (currentTurn > 0) {
-            try {
-                //get leftover letters from the previous turn
-                PreparedStatement statement = connection.prepareStatement(
-                        "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
-                                "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
-                                "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
-                                "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
-                                "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
-                );
-                statement.setInt(1, this.game.getGameId());
-                statement.setInt(2, (currentTurn - 1));
-                ResultSet result = statement.executeQuery();
+        if (!isPassedTurn) {
+            if (currentTurn > 0) {
+                try {
+                    //get leftover letters from the previous turn
+                    PreparedStatement statement = connection.prepareStatement(
+                            "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
+                                    "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
+                                    "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
+                                    "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
+                                    "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
+                    );
+                    statement.setInt(1, this.game.getGameId());
+                    statement.setInt(2, (currentTurn - 1));
+                    ResultSet result = statement.executeQuery();
 
-                while (result.next()) {
-                    this.currentLetters.add(new Letter(result));
-                    extraLetters--;
+                    while (result.next()) {
+                        this.currentLetters.add(new Letter(result));
+                        extraLetters--;
+                    }
+
+                } catch (SQLException e) {
+                    throw new DbLoadException(e);
                 }
-
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
             }
         }
 
@@ -865,7 +891,7 @@ public class BoardController extends Controller {
                     updateBonusStatement.setInt(3, this.game.getCurrentTurn());
                     updateBonusStatement.executeUpdate();
                 }
-                this.createNewTurn();
+                this.createNewTurn(false);
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
@@ -875,7 +901,7 @@ public class BoardController extends Controller {
     /**
      * Creates a new turn in the database
      */
-    private void createNewTurn() {
+    private void createNewTurn(boolean isPassedTurn) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             int newTurnId = this.game.getCurrentTurn() + 1;
@@ -885,7 +911,7 @@ public class BoardController extends Controller {
             newTurnStatement.setInt(2, newTurnId);
             newTurnStatement.executeUpdate();
 
-            this.handOutLetters();
+            this.handOutLetters(isPassedTurn);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
