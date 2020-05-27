@@ -35,7 +35,7 @@ public class DictionaryController extends Controller {
     @FXML
     private ComboBox<String> language;
 
-    private Dictionary<String, String> languages = new Hashtable<String, String>();
+    private final Dictionary<String, String> languages = new Hashtable<String, String>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +45,9 @@ public class DictionaryController extends Controller {
 
         this.language.getItems().removeAll(this.language.getItems());
         this.language.getItems().addAll(this.Languages());
+
+        this.username.setText(Singleton.getInstance().getUser().getUsername());
+        this.username.setDisable(true);
     }
 
 
@@ -54,7 +57,7 @@ public class DictionaryController extends Controller {
     private String[] Languages() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset"); //returns 4 results instead of expected 2
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset");
             ResultSet result = statement.executeQuery();
 
             result.last();
@@ -91,19 +94,19 @@ public class DictionaryController extends Controller {
         //validation
         if (this.username.getText().trim().isEmpty()){
             this.error.setVisible(true);
-            this.error.setText("username");
+            this.error.setText("Username");
             return;
         };
 
         if (this.word.getText().trim().isEmpty()){
             this.error.setVisible(true);
-            this.error.setText("word");
+            this.error.setText("Word");
             return;
         };
 
         if (this.comment.getText().trim().isEmpty()){
             this.error.setVisible(true);
-            this.error.setText("comment");
+            this.error.setText("Comment");
             return;
         };
 
@@ -122,14 +125,13 @@ public class DictionaryController extends Controller {
 
 
         Connection connection = Singleton.getInstance().getConnection();
-
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE `letterset_code` = ? AND `letterset_code` = ?");
             statement.setString(1, this.word.getText().trim());
             statement.setString(2, this.languages.get(selectedLanguage));
 
-            ResultSet symbolSet = statement.executeQuery();
-            if (symbolSet == null) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet == null) {
                 this.error.setVisible(true);
                 this.error.setText("Woord is eerder toegevoegd");
                 return;
@@ -142,14 +144,11 @@ public class DictionaryController extends Controller {
             int result = statement.executeUpdate();
             if (result > 0) {
                 this.error.setVisible(true);
-                this.error.setText("verstuurd");
+                this.error.setText("Verstuurd");
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
-
-
-
 
     }
 }
