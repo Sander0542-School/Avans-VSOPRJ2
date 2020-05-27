@@ -402,7 +402,9 @@ public class BoardController extends Controller {
     }
 
     private BoardTile getBoardTile(int x, int y) {
-        return (BoardTile) this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == (x - 1)).filtered(node -> GridPane.getRowIndex(node) == (y - 1)).get(0);
+        FilteredList<Node> nodes = this.gameGrid.getChildren().filtered(node -> GridPane.getColumnIndex(node) == (x - 1)).filtered(node -> GridPane.getRowIndex(node) == (y - 1));
+
+        return nodes.isEmpty() ? null : (BoardTile) nodes.get(0);
     }
 
     private Orientation getWordOrientation() {
