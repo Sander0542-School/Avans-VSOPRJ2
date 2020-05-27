@@ -714,13 +714,13 @@ public class BoardController extends Controller {
             }
 
             //Insert into TurnPlayer table
-            int score = this.calculatePoints(this.getWords()).getPoints() + this.calculatePoints(this.getWords()).getBonus();
+            Points points = this.calculatePoints(this.getWords());
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
             turnPlayerStatement.setInt(2, this.game.getCurrentTurn());
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
-            turnPlayerStatement.setInt(4, 0); //bonus is default 0
-            turnPlayerStatement.setInt(5, score);
+            turnPlayerStatement.setInt(4, points.getBonus());
+            turnPlayerStatement.setInt(5, points.getPoints());
             turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString().toLowerCase());
             turnPlayerStatement.executeUpdate();
 
