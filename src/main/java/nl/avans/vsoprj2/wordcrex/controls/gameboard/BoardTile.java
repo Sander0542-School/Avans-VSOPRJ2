@@ -42,18 +42,19 @@ public class BoardTile extends AnchorPane implements Initializable {
 
         try {
             loader.load();
-
-            this.widthProperty().addListener((observable, oldValue, newValue) -> {
-                this.multiplier.setFont(Font.font(newValue.doubleValue() * 0.375));
-                this.letter.setFont(Font.font(newValue.doubleValue() * 0.5));
-                this.worth.setFont(Font.font(newValue.doubleValue() * 0.222));
-                this.worth.setPadding(new Insets(newValue.doubleValue() * 0.416, 0, 0, newValue.doubleValue() * 0.583));
-                this.setPrefHeight(newValue.doubleValue());
-            });
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setSize(double size) {
+        this.setPrefWidth(size);
+        this.setPrefHeight(size);
+
+        this.multiplier.setFont(Font.font(size * 0.375));
+        this.letter.setFont(Font.font(size * 0.5));
+        this.worth.setFont(Font.font(size * 0.222));
+        this.worth.setPadding(new Insets(size * 0.416, 0, 0, size * 0.583));
     }
 
     public void setTile(Tile tile) {
