@@ -69,14 +69,14 @@ public class BoardController extends Controller {
         if (game.getCurrentTurn() == 0) this.createNewTurn();
     }
 
-    public List<Tile> getUnconfirmedTiles() {
-        List<Tile> tiles = new ArrayList<>();
+    public List<BoardTile> getUnconfirmedTiles() {
+        List<BoardTile> tiles = new ArrayList<>();
 
-        for (Tile[] row : this.board.getTiles()) {
-            for (Tile tile : row) {
-                if (!tile.isConfirmed()) {
-                    tiles.add(tile);
-                }
+        for (Node node : this.gameGrid.getChildren()) {
+            BoardTile boardTile = (BoardTile) node;
+
+            if (boardTile.getLetterTile() != null) {
+                tiles.add(boardTile);
             }
         }
 
