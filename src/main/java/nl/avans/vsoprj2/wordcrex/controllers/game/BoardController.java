@@ -282,7 +282,6 @@ public class BoardController extends Controller {
 
         for (List<Tile> word : words) {
             int wordPoints = 0;
-            int wordPointsBonus = 0;
             int wordMultiplier = 1;
 
             for (Tile tile : word) {
@@ -309,14 +308,12 @@ public class BoardController extends Controller {
                     }
                 }
 
-                wordPoints += tile.getWorth();
-                wordPointsBonus += tile.getWorth() * letterMultiplier;
+                wordPoints += tile.getWorth() * letterMultiplier;
             }
 
-            wordPointsBonus = (wordPointsBonus * wordMultiplier) - wordPoints;
+            wordPoints *= wordMultiplier;
 
             points.addPoints(wordPoints);
-            points.addBonus(wordPointsBonus);
         }
 
         if (this.getUnconfirmedTiles().size() == 7 && words.size() != 0) points.addBonus(100);
