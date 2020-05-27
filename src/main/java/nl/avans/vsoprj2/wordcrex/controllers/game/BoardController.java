@@ -316,7 +316,7 @@ public class BoardController extends Controller {
             points.addPoints(wordPoints);
         }
 
-        if (this.getUnconfirmedTiles().size() == 7 && words.size() != 0) points.addBonus(100);
+        if (this.getUnconfirmedTiles().size() == 7 && words.size() != 0) points.addPoints(100);
 
         return points;
     }
