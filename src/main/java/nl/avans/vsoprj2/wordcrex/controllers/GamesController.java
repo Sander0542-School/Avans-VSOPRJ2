@@ -62,7 +62,6 @@ public class GamesController extends Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    System.out.println("hey hey");
                     GamesController.this.loadGames(Singleton.getInstance().getUser());
                 });
             }
