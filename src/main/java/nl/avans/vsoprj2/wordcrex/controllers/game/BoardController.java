@@ -377,12 +377,13 @@ public class BoardController extends Controller {
                 i--;
             while (this.hasTileAndLetter(xCord, yCord - i)) {
                 firstTile = this.getBoardTile(xCord, yCord - i);
+                i++;
             }
             wordTiles.add(firstTile);
-            i++;
-                i++;
+            i -= 2;
             while (this.hasTileAndLetter(xCord, yCord - i)) {
                 wordTiles.add(this.getBoardTile(xCord, yCord - i));
+                i--;
             }
         }
 
