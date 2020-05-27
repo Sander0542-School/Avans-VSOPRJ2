@@ -557,29 +557,28 @@ public class BoardController extends Controller {
         int extraLetters = 7;
         this.currentLetters.clear();
 
-        if (!isPassedTurn) {
-            if (currentTurn > 0) {
-                try {
-                    //get leftover letters from the previous turn
-                    PreparedStatement statement = connection.prepareStatement(
-                            "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
-                                    "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
-                                    "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
-                                    "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
-                                    "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
-                    );
-                    statement.setInt(1, this.game.getGameId());
-                    statement.setInt(2, (currentTurn - 1));
-                    ResultSet result = statement.executeQuery();
 
-                    while (result.next()) {
-                        this.currentLetters.add(new Letter(result));
-                        extraLetters--;
-                    }
+        if (currentTurn > 0 && !isPassedTurn) {
+            try {
+                //get leftover letters from the previous turn
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl " +
+                                "LEFT JOIN turnboardletter tbl ON hl.game_id = tbl.game_id AND hl.turn_id = tbl.turn_id AND hl.letter_id = tbl.letter_id " +
+                                "INNER JOIN letter l ON hl.game_id = l.game_id AND hl.letter_id = l.letter_id " +
+                                "INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol " +
+                                "WHERE hl.game_id = ? AND hl.turn_id = ? AND tbl.letter_id IS NULL LIMIT 7"
+                );
+                statement.setInt(1, this.game.getGameId());
+                statement.setInt(2, (currentTurn - 1));
+                ResultSet result = statement.executeQuery();
 
-                } catch (SQLException e) {
-                    throw new DbLoadException(e);
+                while (result.next()) {
+                    this.currentLetters.add(new Letter(result));
+                    extraLetters--;
                 }
+
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
             }
         }
 
