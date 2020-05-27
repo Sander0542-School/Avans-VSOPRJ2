@@ -717,13 +717,13 @@ public class BoardController extends Controller {
             }
 
             //Insert into TurnPlayer table
-            List<List<Tile>> words = this.getWords();
+            int score = this.calculatePoints(this.getWords()).getPoints() + this.calculatePoints(this.getWords()).getBonus();
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
             turnPlayerStatement.setInt(2, this.game.getCurrentTurn());
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
             turnPlayerStatement.setInt(4, 0); //bonus is default 0
-            turnPlayerStatement.setInt(5, this.calculatePoints(words).getPoints() + this.calculatePoints(words).getBonus());
+            turnPlayerStatement.setInt(5, score);
             turnPlayerStatement.setString(6, ScoreboardRound.TurnActionType.PLAY.toString().toLowerCase());
             turnPlayerStatement.executeUpdate();
 
@@ -744,12 +744,13 @@ public class BoardController extends Controller {
 
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
-                if(otherPlayerTurnResultSet.getInt("score") == (this.calculatePoints(words).getPoints() + this.calculatePoints(words).getBonus())) {
-                    String updateBonusQuery = isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?" + " WHERE `game_id` = ? AND `turn_id` = ?";
+                if (otherPlayerTurnResultSet.getInt("score") == score) {
+                    String updateBonusQuery = (isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?") +
+                            " WHERE `game_id` = ? AND `turn_id` = ?";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
-                    updateBonusStatement.setInt(1, this.game.getGameId());
-                    updateBonusStatement.setInt(1, this.game.getCurrentTurn());
+                    updateBonusStatement.setInt(2, this.game.getGameId());
+                    updateBonusStatement.setInt(3, this.game.getCurrentTurn());
                     updateBonusStatement.executeUpdate();
                 }
                 this.createNewTurn();
