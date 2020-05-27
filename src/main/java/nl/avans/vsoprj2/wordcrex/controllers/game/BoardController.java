@@ -1,6 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -10,11 +13,6 @@ import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.*;
-
-import java.util.Optional;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -627,6 +625,22 @@ public class BoardController extends Controller {
             this.selectedLetter.deselectLetter();
             this.selectedLetter = null;
         }
+    }
+
+    private void gridSizeChanged() {
+        double size = Math.min(this.gameGrid.getWidth(), this.gameGrid.getHeight());
+
+        for (Node node : this.gameGrid.getChildren()) {
+            ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
+        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
+        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
     private enum Orientation {
