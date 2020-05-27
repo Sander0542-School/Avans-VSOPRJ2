@@ -126,4 +126,26 @@ public class BoardTile extends AnchorPane implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    public String getLetter() {
+        if (this.getTile().hasLetter()) {
+            return this.getTile().getLetter().toString();
+        }
+        if (this.getLetterTile() != null) {
+            return this.getLetterTile().getLetter().getSymbol();
+        }
+
+        return null;
+    }
+
+    public int getWorth() {
+        if (this.getTile().hasWorth()) {
+            return this.getTile().getWorth();
+        }
+        if (this.getLetterTile() != null) {
+            return this.getLetterTile().getLetter().getValue();
+        }
+
+        return 0;
+    }
 }
