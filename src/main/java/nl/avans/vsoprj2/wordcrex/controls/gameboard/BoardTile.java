@@ -3,9 +3,11 @@ package nl.avans.vsoprj2.wordcrex.controls.gameboard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import nl.avans.vsoprj2.wordcrex.Colors;
 import nl.avans.vsoprj2.wordcrex.models.Tile;
 
@@ -40,6 +42,15 @@ public class BoardTile extends AnchorPane implements Initializable {
 
         try {
             loader.load();
+
+            this.widthProperty().addListener((observable, oldValue, newValue) -> {
+                this.multiplier.setFont(Font.font(newValue.doubleValue() * 0.375));
+                this.letter.setFont(Font.font(newValue.doubleValue() * 0.5));
+                this.worth.setFont(Font.font(newValue.doubleValue() * 0.222));
+                this.worth.setPadding(new Insets(newValue.doubleValue() * 0.416, 0, 0, newValue.doubleValue() * 0.583));
+                this.setPrefHeight(newValue.doubleValue());
+            });
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
