@@ -177,7 +177,7 @@ public class BoardController extends Controller {
     }
 
     private void updatePoints() {
-        List<List<Tile>> words = this.getWords();
+        List<List<BoardTile>> words = this.getWords();
 
         //TODO() Hide point count on layout
 
@@ -188,7 +188,7 @@ public class BoardController extends Controller {
         }
     }
 
-    private boolean checkWords(List<List<Tile>> words) {
+    private boolean checkWords(List<List<BoardTile>> words) {
         if (words == null) {
             return false;
         }
@@ -201,12 +201,12 @@ public class BoardController extends Controller {
             }
         }
 
-        for (Tile tile : this.getUnconfirmedTiles()) {
-            if (tile.getTileType() == Tile.TileType.START) {
+        for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+            if (boardTile.getTile().getTileType() == Tile.TileType.START) {
                 return true;
             }
 
-            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+            Board.Coordinate coordinate = this.board.getCoordinate(boardTile.getTile());
             if (this.board.hasConfirmedSurroundingTile(coordinate.getX(), coordinate.getY())) {
                 return true;
             }
@@ -215,11 +215,11 @@ public class BoardController extends Controller {
         return false;
     }
 
-    private List<List<Tile>> getWords() {
+    private List<List<BoardTile>> getWords() {
         Orientation orientation = this.getWordOrientation();
-        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
+        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
 
-        List<List<Tile>> words = new ArrayList<>();
+        List<List<BoardTile>> words = new ArrayList<>();
 
         Coordinates coordinates;
 
@@ -257,11 +257,11 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    public Coordinates getCoordinates(List<Tile> tiles) {
+    public Coordinates getCoordinates(List<BoardTile> tiles) {
         Coordinates coordinates = null;
 
-        for (Tile tile : tiles) {
-            Board.Coordinate coordinate = this.board.getCoordinate(tile);
+        for (BoardTile boardTile : tiles) {
+            Board.Coordinate coordinate = this.board.getCoordinate(boardTile.getTile());
             int xCord = coordinate.getX();
             int yCord = coordinate.getY();
 
@@ -278,18 +278,18 @@ public class BoardController extends Controller {
         return coordinates;
     }
 
-    public Points calculatePoints(List<List<Tile>> words) {
+    public Points calculatePoints(List<List<BoardTile>> words) {
         Points points = new Points();
 
-        for (List<Tile> word : words) {
+        for (List<BoardTile> word : words) {
             int wordPoints = 0;
             int wordMultiplier = 1;
 
-            for (Tile tile : word) {
+            for (BoardTile boardTile : word) {
                 int letterMultiplier = 1;
 
-                if (!tile.isConfirmed()) {
-                    switch (tile.getTileType()) {
+                if (!boardTile.getTile().isConfirmed()) {
+                    switch (boardTile.getTile().getTileType()) {
                         case TWOLETTER:
                             letterMultiplier = 2;
                             break;
@@ -309,7 +309,7 @@ public class BoardController extends Controller {
                     }
                 }
 
-                wordPoints += tile.getWorth() * letterMultiplier;
+                wordPoints += boardTile.getWorth() * letterMultiplier;
             }
 
             wordPoints *= wordMultiplier;
@@ -322,11 +322,11 @@ public class BoardController extends Controller {
         return points;
     }
 
-    public List<String> getWordsFromList(List<List<Tile>> words) {
+    public List<String> getWordsFromList(List<List<BoardTile>> words) {
         List<String> wordsString = new ArrayList<>();
 
-        for (List<Tile> word : words) {
-            wordsString.add(word.stream().map(Tile::getLetter).iterator().toString());
+        for (List<BoardTile> word : words) {
+            wordsString.add(word.stream().map(boardTile -> boardTile.getLetter()).iterator().toString());
         }
 
         return wordsString;
@@ -353,12 +353,12 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<Tile> findWord(Tile tile, boolean horizontal) {
-        List<Tile> wordTiles = new ArrayList<>();
-        Tile firstTile = tile;
+    public List<BoardTile> findWord(BoardTile boardTile, boolean horizontal) {
+        List<BoardTile> wordTiles = new ArrayList<>();
+        BoardTile firstTile = boardTile;
         int i = 1;
 
-        Board.Coordinate coordinate = this.board.getCoordinate(tile);
+        Board.Coordinate coordinate = this.board.getCoordinate(boardTile.getTile());
         int xCord = coordinate.getX();
         int yCord = coordinate.getY();
 
@@ -390,7 +390,7 @@ public class BoardController extends Controller {
     }
 
     private Orientation getWordOrientation() {
-        List<Tile> unconfirmedTiles = this.getUnconfirmedTiles();
+        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
 
         if (unconfirmedTiles.size() == 0) {
             return null;
@@ -400,8 +400,8 @@ public class BoardController extends Controller {
 
         Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
 
-        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getX()).distinct();
-        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(tile -> this.board.getCoordinate(tile).getY()).distinct();
+        Stream<Integer> differentXValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getX()).distinct();
+        Stream<Integer> differentYValues = unconfirmedTiles.stream().map(boardTile -> this.board.getCoordinate(boardTile.getTile()).getY()).distinct();
 
         if (differentXValues.count() > 1 && differentYValues.count() > 1) {
             return null;
@@ -700,7 +700,7 @@ public class BoardController extends Controller {
 
         if (dialogResult.isPresent()) {
             if (dialogResult.get() == ButtonType.OK) {
-                List<List<Tile>> words = this.getWords();
+                List<List<BoardTile>> words = this.getWords();
                 if (this.checkWords(words)) {
                     this.createNewPlayerTurn();
                 } else {
