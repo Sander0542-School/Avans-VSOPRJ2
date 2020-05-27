@@ -69,7 +69,7 @@ public class BoardController extends Controller {
 
         this.loadHandLetters();
 
-        if (game.getCurrentTurn() == 0) this.createNewTurn();
+        if (game.getCurrentTurn() == 0) this.createNewTurn(false);
     }
 
     public List<Tile> getUnconfirmedTiles() {
