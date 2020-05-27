@@ -119,7 +119,7 @@ public class BoardController extends Controller {
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 if (resultSet.getInt("Player1") > resultSet.getInt("Player2")) {
                     this.game.setGameState(Game.GameState.FINISHED);
                     this.game.setWinner(this.game.getUsernamePlayer1());
