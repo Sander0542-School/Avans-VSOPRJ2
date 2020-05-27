@@ -630,10 +630,10 @@ public class BoardController extends Controller {
     }
 
     private void gridSizeChanged() {
-        for (Node node : this.gameGrid.getChildren()) {
-            double smallestSize = Math.min(this.gameGrid.getWidth(), this.gameGrid.getHeight());
+        double size = Math.min(this.gameGrid.getWidth(), this.gameGrid.getHeight());
 
-            ((BoardTile) node).setPrefWidth(smallestSize / (Board.BOARD_SIZE + 1));
+        for (Node node : this.gameGrid.getChildren()) {
+            ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
     }
 
