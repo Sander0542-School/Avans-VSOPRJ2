@@ -940,6 +940,8 @@ public class BoardController extends Controller {
                 turnBoardLetterStatement.setInt(2, turn);
 
                 turnBoardLetterStatement.executeUpdate();
+
+                this.createNewTurn(false);
             }
 
         } catch (SQLException e) {
@@ -1001,7 +1003,6 @@ public class BoardController extends Controller {
                     updateBonusStatement.setInt(3, this.game.getCurrentTurn());
                     updateBonusStatement.executeUpdate();
                 }
-                this.createNewTurn(false);
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
