@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class Game extends DbModel {
 
@@ -118,9 +117,7 @@ public class Game extends DbModel {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-
             String query = String.format("SELECT SUM(IFNULL(score, 0) + IFNULL(bonus, 0)) total_score FROM `%s` WHERE `game_id` = ? AND `turn_id` < (SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?)", (isPlayer1 ? "turnplayer1" : "turnplayer2"));
-
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             for (int i = 1; i <= preparedStatement.getParameterMetaData().getParameterCount(); i++) {
