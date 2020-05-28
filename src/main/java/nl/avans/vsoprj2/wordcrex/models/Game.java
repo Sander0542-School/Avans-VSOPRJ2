@@ -114,22 +114,13 @@ public class Game extends DbModel {
         return 0;
     }
 
-    public HashMap<Integer, Integer> getPlayerScore() {
-        // Select Count(scores) WHERE turnid < Max turn id van game
-
+    public int getPlayerScore(boolean isPlayer1) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            StringBuilder query = new StringBuilder();
 
-            query.append()
+            String query = String.format("SELECT SUM(IFNULL(score, 0) + IFNULL(bonus, 0)) total_score FROM `%s` WHERE `game_id` = ? AND `turn_id` < (SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?)", (isPlayer1 ? "turnplayer1" : "turnplayer2"));
 
-
-            turnPlayerQueryBuilder.append("SELECT (`cp`.`score` + `cp`.`bonus`) as cp_score, `cp`.`turnaction_type` as cp_turntype, (`op`.`score` + `op`.`bonus`) as op_score, `op`.`turnaction_type` as op_turntype FROM `");
-            turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
-            turnPlayerQueryBuilder.append("` cp INNER JOIN `");
-            turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
-            turnPlayerQueryBuilder.append("`op ON `cp`.`game_id` = `op`.`game_id` AND `cp`.`turn_id` = `op`.`turn_id` WHERE `cp`.`game_id` = ? AND `cp`.`turn_id` = ?;");
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             for (int i = 1; i <= preparedStatement.getParameterMetaData().getParameterCount(); i++) {
@@ -139,7 +130,7 @@ public class Game extends DbModel {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             resultSet.next();
-            return resultSet.getInt("calculated_score");
+            return resultSet.getInt("total_score");
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }
