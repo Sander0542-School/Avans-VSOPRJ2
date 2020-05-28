@@ -192,7 +192,10 @@ public class BoardController extends Controller {
                 this.giveNewLetterInHand();
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game pass");
+            alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
+            alert.showAndWait();
         }
     }
 
