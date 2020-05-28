@@ -69,7 +69,7 @@
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/play_arrow.png"/>
                 </ImageView>
-                <ImageView onMouseClicked="#handleShuffleAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView fx:id="shuffleReturnImage" onMouseClicked="#handleShuffleReturnAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
