@@ -660,8 +660,8 @@ public class BoardController extends Controller {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
             //TODO: Testing purpose: Remove "-7"
-            statement.setInt(2, currentTurn - 7);
-//            statement.setInt(2, currentTurn);
+            //statement.setInt(2, currentTurn - 7);
+            statement.setInt(2, currentTurn);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -687,25 +687,31 @@ public class BoardController extends Controller {
 
     @FXML
     private void handleShuffleReturnAction() {
-        if(this.getUnconfirmedTiles().isEmpty()){
+        if (this.getUnconfirmedTiles().isEmpty()) {
             //shuffle
-            this.displayLetters(this.lettertiles);
-        }
-        else{
+            this.displayLetters();
+        } else {
             //return letters
-            for (BoardTile tile: this.getUnconfirmedTiles()) {
-                System.out.println();
+            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+                boardTile.setLetterTile(null);
+                boardTile.updateBackgroundColor();
+                this.moveTileFromToBoard = false;
+
+                if (this.selectedLetter != null) {
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
             }
 
+            this.displayLetters();
             this.updateShuffleReturnButton();
         }
     }
 
-    private void updateShuffleReturnButton(){
-        if(this.getUnconfirmedTiles().isEmpty()){
+    private void updateShuffleReturnButton() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
             this.shuffleReturnImage.setImage(new Image("/images/drawables/shuffle.png"));
-        }
-        else{
+        } else {
             this.shuffleReturnImage.setImage(new Image("/images/drawables/restore.png"));
         }
     }
