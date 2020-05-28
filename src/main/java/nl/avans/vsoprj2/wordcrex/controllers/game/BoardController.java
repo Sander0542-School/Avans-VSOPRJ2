@@ -153,66 +153,49 @@ public class BoardController extends Controller {
 
     private void passGame() {
         Connection connection = Singleton.getInstance().getConnection();
+
+        int turn = this.game.getCurrentTurn();
+
         String currentUsername = Singleton.getInstance().getUser().getUsername();
-        boolean currentUserIsPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
+        boolean isPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
+
         ScoreboardRound.TurnActionType typePlayer1 = ScoreboardRound.TurnActionType.UNKNOWN;
         ScoreboardRound.TurnActionType typePlayer2 = ScoreboardRound.TurnActionType.UNKNOWN;
 
-        //Getting turn information of players
+        StringBuilder turnPlayerQueryBuilder = new StringBuilder();
+        turnPlayerQueryBuilder.append("INSERT INTO `");
+        turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
+        turnPlayerQueryBuilder.append("` (`game_id`, `turn_id`, `");
+        turnPlayerQueryBuilder.append(isPlayer1 ? "username_player1" : "username_player2");
+        turnPlayerQueryBuilder.append("`, `bonus`, `score`, `turnaction_type`) VALUES (?, ?, ?, 0, 0, 'pass');");
+
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT IFNULL((SELECT turnaction_type FROM turnplayer1 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player1, IFNULL((SELECT turnaction_type FROM turnplayer2 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player2");
-            statement.setInt(1, this.game.getGameId());
-            statement.setInt(2, this.game.getGameId());
-            statement.setInt(3, this.game.getGameId());
-            statement.setInt(4, this.game.getGameId());
+            PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQueryBuilder.toString());
+            turnPlayerStatement.setInt(1, this.game.getGameId());
+            turnPlayerStatement.setInt(2, turn);
+            turnPlayerStatement.setString(3, currentUsername);
 
-            ResultSet resultSet = statement.executeQuery();
+            turnPlayerStatement.executeUpdate();
 
-            if (resultSet.next()) {
-                typePlayer1 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player1").toUpperCase());
-                typePlayer2 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player2").toUpperCase());
+            StringBuilder turnPlayerQueryBuilder2 = new StringBuilder();
+
+            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id` FROM `");
+            turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
+            turnPlayerQueryBuilder2.append("` cp INNER JOIN `");
+            turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
+            turnPlayerQueryBuilder2.append("` op ON `cp`.`game_id` = `op`.`game_id` AND `cp`.`turn_id` = `op`.`turn_id` WHERE `cp`.`game_id` = ? AND `cp`.`turn_id` = ?;");
+
+            PreparedStatement turnPlayerStatement2 = connection.prepareStatement(turnPlayerQueryBuilder2.toString());
+            turnPlayerStatement2.setInt(1, this.game.getGameId());
+            turnPlayerStatement2.setInt(2, turn);
+
+            ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
+
+            if (turnPlayerResultSet2.next()) {
+                this.giveNewLetterInHand();
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
-        }
-
-        if (currentUserIsPlayer1 && typePlayer1.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer1(game_id, turn_id, username_player1, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer1 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
-                statement.setInt(1, this.game.getGameId());
-                statement.setInt(2, this.game.getGameId());
-                statement.setString(3, currentUsername);
-
-                statement.executeUpdate();
-
-                if (typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
-                    this.giveNewLetterInHand();
-                }
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
-            }
-        } else if (!currentUserIsPlayer1 && typePlayer2.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer2(game_id, turn_id, username_player2, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer2 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
-                statement.setInt(1, this.game.getGameId());
-                statement.setInt(2, this.game.getGameId());
-                statement.setString(3, currentUsername);
-
-                statement.executeUpdate();
-
-                if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS)) {
-                    this.giveNewLetterInHand();
-                }
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
-            }
-        } else if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS) && typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
-            this.giveNewLetterInHand();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game pass");
-            alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
-            alert.showAndWait();
         }
     }
 
@@ -572,7 +555,6 @@ public class BoardController extends Controller {
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
         this.currentLetters.clear();
-
 
         if (currentTurn > 0 && !isPassedTurn) {
             try {
