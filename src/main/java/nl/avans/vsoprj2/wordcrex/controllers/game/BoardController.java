@@ -159,9 +159,6 @@ public class BoardController extends Controller {
         String currentUsername = Singleton.getInstance().getUser().getUsername();
         boolean isPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
 
-        ScoreboardRound.TurnActionType typePlayer1 = ScoreboardRound.TurnActionType.UNKNOWN;
-        ScoreboardRound.TurnActionType typePlayer2 = ScoreboardRound.TurnActionType.UNKNOWN;
-
         StringBuilder turnPlayerQueryBuilder = new StringBuilder();
         turnPlayerQueryBuilder.append("INSERT INTO `");
         turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
