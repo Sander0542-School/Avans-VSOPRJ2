@@ -844,7 +844,7 @@ public class BoardController extends Controller {
                 List<List<BoardTile>> words = this.getWords();
                 if (this.checkWords(words)) {
                     int turn = this.game.getCurrentTurn();
-                    this.createNewPlayerTurn();
+                    this.createNewPlayerTurn(turn);
                     this.createNewPlayerBoard(turn, this.getUnconfirmedTiles());
                 } else {
                     //Throws alert if word is not correct
@@ -953,7 +953,7 @@ public class BoardController extends Controller {
      * Creates a new turnPlayer record in the database
      * If both player have player their turn, a new turn is created
      */
-    private void createNewPlayerTurn() {
+    private void createNewPlayerTurn(int turn) {
         Connection connection = Singleton.getInstance().getConnection();
         boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
 
@@ -970,7 +970,7 @@ public class BoardController extends Controller {
             Points points = this.calculatePoints(this.getWords());
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
-            turnPlayerStatement.setInt(2, this.game.getCurrentTurn());
+            turnPlayerStatement.setInt(2, turn);
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
             turnPlayerStatement.setInt(4, points.getBonus());
             turnPlayerStatement.setInt(5, points.getPoints());
@@ -988,7 +988,7 @@ public class BoardController extends Controller {
             //Get other players turn
             PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
             otherPlayerTurnStatement.setInt(1, this.game.getGameId());
-            otherPlayerTurnStatement.setInt(2, this.game.getCurrentTurn());
+            otherPlayerTurnStatement.setInt(2, turn);
             otherPlayerTurnStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer2() : this.game.getUsernamePlayer1());
             ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
 
@@ -1000,7 +1000,7 @@ public class BoardController extends Controller {
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
                     updateBonusStatement.setInt(2, this.game.getGameId());
-                    updateBonusStatement.setInt(3, this.game.getCurrentTurn());
+                    updateBonusStatement.setInt(3, turn);
                     updateBonusStatement.executeUpdate();
                 }
             }
