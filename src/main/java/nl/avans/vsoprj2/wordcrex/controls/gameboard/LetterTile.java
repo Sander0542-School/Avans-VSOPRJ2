@@ -40,15 +40,15 @@ public class LetterTile extends AnchorPane implements Initializable {
         }
     }
 
-    public Letter getLetter(){
+    public Letter getLetter() {
         return this.letter;
     }
 
-    public void selectLetter(){
+    public void selectLetter() {
         this.setStyle("-fx-background-color: #A3A3A3; -fx-background-radius: 6;");
     }
 
-    public void deselectLetter(){
+    public void deselectLetter() {
         this.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 6;");
     }
 
