@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -47,6 +49,8 @@ public class BoardController extends Controller {
     private Label player1Score;
     @FXML
     private Label player2Score;
+    @FXML
+    private ImageView shuffleReturnImage;
 
     private HashMap<Character, Integer> symbolValues;
 
@@ -82,7 +86,6 @@ public class BoardController extends Controller {
                 tiles.add(boardTile);
             }
         }
-
         return tiles;
     }
 
@@ -638,8 +641,6 @@ public class BoardController extends Controller {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
-            //TODO: Testing purpose: Remove "-7"
-//            statement.setInt(2, currentTurn - 7);
             statement.setInt(2, currentTurn);
             ResultSet result = statement.executeQuery();
 
@@ -665,10 +666,34 @@ public class BoardController extends Controller {
     }
 
     @FXML
-    private void handleShuffleAction() {
-        /*if(!this.getUnconfirmedTiles().isEmpty()){
-            this.displayLetters(this.lettertiles);
-        }*/
+    private void handleShuffleReturnAction() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            //shuffle
+            this.displayLetters();
+        } else {
+            //return letters
+            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+                boardTile.setLetterTile(null);
+                boardTile.updateBackgroundColor();
+                this.moveTileFromToBoard = false;
+
+                if (this.selectedLetter != null) {
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
+            }
+
+            this.displayLetters();
+            this.updateShuffleReturnButton();
+        }
+    }
+
+    private void updateShuffleReturnButton() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            this.shuffleReturnImage.setImage(new Image("/images/drawables/shuffle.png"));
+        } else {
+            this.shuffleReturnImage.setImage(new Image("/images/drawables/restore.png"));
+        }
     }
 
     private void setLetterTileClick(LetterTile lettertile) {
@@ -737,6 +762,8 @@ public class BoardController extends Controller {
                     boardTile.setSelected(true);
                 }
             }
+
+            this.updateShuffleReturnButton();
         });
     }
 
@@ -751,6 +778,8 @@ public class BoardController extends Controller {
             this.selectedLetter.deselectLetter();
             this.selectedLetter = null;
         }
+
+        this.updateShuffleReturnButton();
     }
 
     private void gridSizeChanged() {
