@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #201b53" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.NewController">
+    <top>
+        <VBox>
+            <AppBar title="Start een nieuw spel" onBackButtonEvent="#handleBackButton" backButton="true"/>
+            <AnchorPane prefHeight="208.0">
+                <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="16.0">
+                    <Label text="Hoogste spelscore" textFill="WHITE">
+                        <font>
+                            <Font name="Roboto Black" size="30"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="highScoreLabel" text="0" textFill="WHITE">
+                        <font>
+                            <Font name="Roboto Black" size="30"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </AnchorPane>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" style="-fx-background-color: #FFBB00;">
+            <VBox alignment="CENTER" style="-fx-background-color: #FFBB00; -fx-padding: 20 0 20 -10;">
+                <Button onAction="#handleRequestAction" alignment="CENTER" prefWidth="250" style="-fx-background-color: #201b53;" text="Random tegenstander" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Black" size="16"/>
+                    </font>
+                </Button>
+            </VBox>
+
+            <VBox alignment="CENTER">
+                <ScrollPane style="-fx-background-color:transparent;" fitToWidth="true">
+                    <VBox spacing="10" style="-fx-background-color: #FFBB00;" fx:id="suggestedAccountsContainer"/>
+                </ScrollPane>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

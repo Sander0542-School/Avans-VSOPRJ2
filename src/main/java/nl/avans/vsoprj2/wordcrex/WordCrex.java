@@ -1,31 +1,57 @@
 package nl.avans.vsoprj2.wordcrex;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
+
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Hello world!
  */
 public class WordCrex extends Application {
+    public static final boolean DEBUG_MODE = true;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
+        stage.setTitle("WordCrex");
+        stage.getIcons().add(new Image("/images/icon.png"));
 
-        stage.getIcons().add(new Image("/icon.png"));
+        URL resource = this.getClass().getResource("/views/index.fxml");
 
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
+        if (DEBUG_MODE) {
+            try {
+                PreparedStatement statement = Singleton.getInstance().getConnection().prepareStatement("SELECT * FROM `account` WHERE `username` = ?");
+                statement.setString(1, "jagermeester");
+                ResultSet result = statement.executeQuery();
+
+                if (result.next()) {
+                    Account account = new Account(result);
+                    Singleton.getInstance().setUser(account);
+                    resource = this.getClass().getResource("/views/games.fxml");
+                }
+            } catch (SQLException e) {
+                throw new DbLoadException(e);
+            }
+        }
+
+        Parent parent = new FXMLLoader(resource).load();
+        Scene scene = new Scene(parent);
+
         stage.setScene(scene);
 
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

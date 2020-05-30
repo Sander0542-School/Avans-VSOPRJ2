@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.InformationController">
+    <top>
+        <AppBar title="Informatie" backButton="true" onBackButtonEvent="#handleBackButton"/>
+    </top>
+    
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="25" left="25" right="25" top="25" />
+            </padding>
+
+            <Label alignment="CENTER" prefHeight="25" text="Spel Informatie" textFill="#201b53">
+                <font>
+                    <Font size="18" />
+                </font>
+            </Label>
+
+            <Separator/>
+
+            <HBox spacing="25">
+                <padding>
+                    <Insets bottom="15" right="5" top="10" />
+                </padding>
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Handleiding" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Spelregels" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="FAQ" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Woordenboek" />
+            </HBox>
+
+            <Label alignment="CENTER" prefHeight="25" text="Wettelijke documenten" textFill="#201b53">/
+                <font>
+                    <Font size="18" />
+                </font>
+            </Label>
+
+            <Separator/>
+
+            <HBox spacing="25">
+                <padding>
+                    <Insets bottom="15" right="5" top="10" />
+                </padding>
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Privacyverklaring" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Servicevoorwaarden" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
