@@ -4,23 +4,28 @@
 
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController">
     <top>
         <AppBar title="Accounts" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
 
     <center>
-        <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
+        <HBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15"/>
             </padding>
-            <VBox alignment="CENTER">
-                <ScrollPane style="-fx-background-color:transparent;" fitToWidth="true">
-                    <VBox spacing="10" style="-fx-background-color: #FFBB00;" fx:id="userContainer"/>
-                </ScrollPane>
+            <HBox alignment="TOP_CENTER">
+                <Label text="Select an account: " />
+                <ComboBox fx:id="userComboBox" onAction="#handleUserSelection"/>
+            </HBox>
+            <VBox spacing="25" maxWidth="600" alignment="CENTER">
+                <Label fx:id="currentUser" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
+                <ComboBox fx:id="userRoleComboBox" visible="false"/>
+                <Button fx:id="changeUserRoleButton" visible="false" onAction="#handleUserRoleChangeAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Wijzig Rol"/>
             </VBox>
-        </VBox>
+        </HBox>
     </center>
 </BorderPane>
