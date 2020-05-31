@@ -1,12 +1,14 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Statistic;
 
 import java.net.URL;
 import java.sql.*;
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
-
-import nl.avans.vsoprj2.wordcrex.models.Statistic;
 
 public class NewController extends Controller {
     private List<String> usernameslist = new ArrayList<>();
@@ -88,6 +88,18 @@ public class NewController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
+            PreparedStatement checkAllowedStatement = connection.prepareStatement("SELECT COUNT(*) as count FROM `game` WHERE `game_state`='request' AND username_player1 = ? AND username_player2 = ? AND answer_player2='unknown';");
+            checkAllowedStatement.setString(1, Singleton.getInstance().getUser().getUsername());
+            checkAllowedStatement.setString(2, otherPlayer);
+            ResultSet allowedResult = checkAllowedStatement.executeQuery();
+            if (allowedResult.next() && allowedResult.getInt("count") != 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Je hebt al een openstaande uitdaging!");
+                alert.setTitle("Dit mag niet.");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                return;
+            }
+
             PreparedStatement gameStatement = connection.prepareStatement("INSERT INTO game(game_state, letterset_code, username_player1, username_player2, answer_player2, username_winner) VALUES ('request', ?, ?, ?, 'unknown', NULL)", Statement.RETURN_GENERATED_KEYS);
             gameStatement.setString(1, letterset);
             gameStatement.setString(2, Singleton.getInstance().getUser().getUsername());
