@@ -24,9 +24,9 @@
                 </Label>
                 <VBox spacing="25" maxWidth="600" alignment="CENTER">
                     <Label fx:id="errorLabel" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
-                    <PasswordField fx:id="oldPassword" promptText="Oude wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
-                    <PasswordField fx:id="newPassword" promptText="Nieuw wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
-                    <PasswordField fx:id="confirmNewPassword" promptText="Herhaal nieuw wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
+                    <PasswordField fx:id="oldPassword" promptText="Oude wachtwoord" prefWidth="600"/>
+                    <PasswordField fx:id="newPassword" promptText="Nieuw wachtwoord" prefWidth="600"/>
+                    <PasswordField fx:id="confirmNewPassword" promptText="Herhaal nieuw wachtwoord" prefWidth="600"/>
                     <Button onAction="#handleChangePasswordAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Wijzig wachtwoord"/>
                 </VBox>
             </VBox>
