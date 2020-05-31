@@ -134,11 +134,25 @@ public class Game extends DbModel {
         }
     }
 
+    /**
+     * Checks if the user is allowed to place letters or pass the turn
+     *
+     * @return returns true if game should be locked
+     */
     public boolean getTurnLocked() {
-        Connection connection = Singleton.getInstance().getConnection();
+        final Connection connection = Singleton.getInstance().getConnection();
+        final String currentUsername = Singleton.getInstance().getUser().getUsername();
+
+        // If the current logged in user is not one of the 2 playing users in this game. Lock the game.
+        if (!currentUsername.equals(this.usernamePlayer1) && !currentUsername.equals(this.usernamePlayer2)) {
+            if (WordCrex.DEBUG_MODE)
+                System.out.println("Game: Current user is not a owner of this game. Locking turn...");
+            return true;
+        }
+
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT `t`.`turn_id`," +
-                    " `tp1`.`username_player1`, " +
+            PreparedStatement statement = connection.prepareStatement("SELECT `t`.`turn_id`, " +
+                    "`tp1`.`username_player1`, " +
                     "`tp2`.`username_player2` " +
                     "FROM `turn` `t` " +
                     "LEFT OUTER JOIN `turnplayer1` `tp1` ON t.`turn_id` = `tp1`.`turn_id` AND `t`.`game_id` = `tp1`.`game_id` " +
@@ -148,12 +162,10 @@ public class Game extends DbModel {
             statement.setInt(1, this.gameId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String currentUsername = Singleton.getInstance().getUser().getUsername();
-                String usernamePlayer1 = resultSet.getString("username_player1");
-                String usernamePlayer2 = resultSet.getString("username_player2");
-                if (currentUsername.equals(usernamePlayer1) && usernamePlayer2 == null) {
-                    return true;
-                } else return currentUsername.equals(usernamePlayer2) && usernamePlayer1 == null;
+                final String usernamePlayer1 = resultSet.getString("username_player1");
+                final String usernamePlayer2 = resultSet.getString("username_player2");
+                return (currentUsername.equals(usernamePlayer1) && usernamePlayer2 == null) ||
+                        (currentUsername.equals(usernamePlayer2) && usernamePlayer1 == null);
             }
             return false;
         } catch (SQLException e) {
