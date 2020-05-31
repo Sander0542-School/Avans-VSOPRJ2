@@ -140,8 +140,8 @@ public class NewController extends Controller {
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
-        } finally {
-            this.navigateTo("/views/games.fxml");
         }
+
+        this.navigateTo("/views/games.fxml");
     }
 }
