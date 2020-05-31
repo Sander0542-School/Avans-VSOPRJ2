@@ -144,7 +144,7 @@ public class Game extends DbModel {
         final String currentUsername = Singleton.getInstance().getUser().getUsername();
 
         // If the current logged in user is not one of the 2 playing users in this game. Lock the game.
-        if (!currentUsername.equals(this.usernamePlayer1) && !currentUsername.equals(this.usernamePlayer2)) {
+        if (!currentUsername.equals(this.getUsernamePlayer1()) && !currentUsername.equals(this.getUsernamePlayer2())) {
             if (WordCrex.DEBUG_MODE)
                 System.out.println("Game: Current user is not a owner of this game. Locking turn...");
             return true;
@@ -159,7 +159,7 @@ public class Game extends DbModel {
                     "LEFT OUTER JOIN `turnplayer2` `tp2` ON t.`turn_id` = `tp2`.`turn_id` AND `t`.`game_id` = `tp2`.`game_id` " +
                     "WHERE `t`.`game_id` = ? AND " +
                     "`t`.`turn_id` = (SELECT MAX(turn_id) FROM turn WHERE game_id = `t`.`game_id`) GROUP BY `t`.`game_id`");
-            statement.setInt(1, this.gameId);
+            statement.setInt(1, this.getGameId());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 final String usernamePlayer1 = resultSet.getString("username_player1");
