@@ -194,7 +194,7 @@ public class GamesController extends Controller {
 
             this.playingGamesResult = playingGamesStatement.executeQuery();
 
-            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'finished';");
+            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned');");
             finishedGamesStatement.setString(1, username);
             finishedGamesStatement.setString(2, username);
 
