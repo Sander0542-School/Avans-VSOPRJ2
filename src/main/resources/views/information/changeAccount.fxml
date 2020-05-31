@@ -12,18 +12,16 @@
     </top>
 
     <center>
-        <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 100 0 0 0;" spacing="32.0">
-            <Label fx:id="username" textFill="#201b53">
-                <font>
-                    <Font name="Roboto Black" size="18.0" />
-                </font>
-            </Label>
-        </VBox>
         <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15"/>
             </padding>
             <VBox alignment="CENTER">
+                <Label fx:id="username" textFill="#201b53">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
                 <VBox spacing="25" maxWidth="600" alignment="CENTER">
                     <Label fx:id="errorLabel" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
                     <PasswordField fx:id="oldPassword" promptText="Oude wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
