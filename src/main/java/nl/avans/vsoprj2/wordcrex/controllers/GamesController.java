@@ -194,7 +194,7 @@ public class GamesController extends Controller {
 
             this.playingGamesResult = playingGamesStatement.executeQuery();
 
-            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'finished';");
+            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned');");
             finishedGamesStatement.setString(1, username);
             finishedGamesStatement.setString(2, username);
 
@@ -206,7 +206,7 @@ public class GamesController extends Controller {
 
     private void setGameItemClick(GameItem gameItem) {
         gameItem.setOnMouseClicked(event -> {
-            if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) {
+            if (gameItem.getGame().getGameState() == Game.GameState.REQUEST) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Wachten op tegenstander");
                 alert.setHeaderText(String.format("Je tegenstander %s heeft je uitnodiging nog niet geaccepteerd.", gameItem.getGame().getUsernamePlayer2()));
