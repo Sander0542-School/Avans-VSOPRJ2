@@ -284,11 +284,20 @@ public class BoardController extends Controller {
         MenuItem menuItem = (MenuItem) event.getSource();
 
         switch (menuItem.getId()) {
-            case "info":
-                this.navigateTo("/views/information.fxml");
-                break;
-            case "settings":
-                this.navigateTo("/views/settings.fxml");
+            case "geef op":
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Het spel opgeven");
+                alert.setHeaderText(null);
+                alert.setContentText("Weet je zeker dat je wilt opgeven?");
+                ButtonType okButton = new ButtonType("Ja", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("Nee", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(okButton, noButton);
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        this.game.resignGame();
+                        this.navigateTo("/views/games.fxml");
+                    }
+                });
                 break;
         }
     }
@@ -816,7 +825,7 @@ public class BoardController extends Controller {
         this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
         this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
 
-        this.gameOptionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
+        this.gameOptionsMenu.getItems().addAll(new MenuItem("Geef Op"));
 
         for (MenuItem item : this.gameOptionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());
