@@ -146,7 +146,7 @@ public class Game extends DbModel {
         // If game is finished lock turn
         if (this.getGameState() != GameState.PLAYING) {
             if (WordCrex.DEBUG_MODE)
-                System.out.println("Game: Current user is not a owner of this game. Locking turn...");
+                System.out.println("Game: Game is not in the playing state");
             return true;
         }
 
