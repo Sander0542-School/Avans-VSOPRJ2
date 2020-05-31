@@ -727,6 +727,7 @@ public class BoardController extends Controller {
 
     private void setBoardTileClick(BoardTile boardTile) {
         boardTile.setOnMouseClicked(event -> {
+            if (this.turnLocked) return;
             if (this.selectedLetter != null) {
                 if (this.selectedLetter == boardTile.getLetterTile()) {
                     boardTile.setSelected(false);
