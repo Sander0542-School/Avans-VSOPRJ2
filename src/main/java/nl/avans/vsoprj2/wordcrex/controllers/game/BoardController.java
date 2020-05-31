@@ -1,14 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -35,6 +34,7 @@ public class BoardController extends Controller {
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
     private ArrayList<Letter> currentLetters = new ArrayList<>();
+    private ContextMenu gameOptionsMenu = new ContextMenu();
 
     @FXML
     private GridPane gameGrid;
@@ -272,6 +272,25 @@ public class BoardController extends Controller {
 
             }
         });
+    }
+
+    @FXML
+    private void handleGameOptionsMenu(MouseEvent event) {
+        this.gameOptionsMenu.show(this.getStage(), event.getScreenX(), event.getScreenY());
+    }
+
+    @FXML
+    private void gameOptionsMenuEventHandler(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+
+        switch (menuItem.getId()) {
+            case "info":
+                this.navigateTo("/views/information.fxml");
+                break;
+            case "settings":
+                this.navigateTo("/views/settings.fxml");
+                break;
+        }
     }
 
     private void tilePlaced(Tile placedTile) {
@@ -793,6 +812,16 @@ public class BoardController extends Controller {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+
+        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
+        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
+
+        this.gameOptionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
+
+        for (MenuItem item : this.gameOptionsMenu.getItems()) {
+            item.setId(item.getText().toLowerCase());
+            item.setOnAction(BoardController.this::gameOptionsMenuEventHandler);
+        }
 
         this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
         this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());

@@ -89,7 +89,7 @@
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
                     <Image url="@/images/drawables/chat_bubble_outline.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleGameOptionsMenu">
                     <Image url="@/images/drawables/more_horiz.png"/>
                 </ImageView>
             </HBox>
