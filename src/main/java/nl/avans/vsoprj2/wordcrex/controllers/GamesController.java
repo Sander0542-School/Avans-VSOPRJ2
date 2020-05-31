@@ -213,7 +213,7 @@ public class GamesController extends Controller {
             case "info":
                 this.navigateTo("/views/information.fxml");
                 break;
-            case "settings":
+            case "instellingen":
                 this.navigateTo("/views/settings.fxml");
                 break;
         }

@@ -5,20 +5,33 @@
 
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.information.AccountController">
     <top>
-        <AppBar title="Info Title" backButton="true" onBackButtonEvent="#handleBackButton"/>
+        <AppBar title="Wachtwoord wijzigen" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
 
     <center>
-
-        <ScrollPane fitToWidth="true">
-            <Label text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." wrapText="true"/>
+        <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 100 0 0 0;" spacing="32.0">
+            <Label fx:id="username" textFill="#201b53">
+                <font>
+                    <Font name="Roboto Black" size="18.0" />
+                </font>
+            </Label>
+        </VBox>
+        <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
             <padding>
-                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                <Insets bottom="15" left="15" right="15" top="15"/>
             </padding>
-        </ScrollPane>
-
-
+            <VBox alignment="CENTER">
+                <VBox spacing="25" maxWidth="600" alignment="CENTER">
+                    <Label fx:id="errorLabel" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
+                    <PasswordField fx:id="oldPassword" promptText="Oude wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
+                    <PasswordField fx:id="newPassword" promptText="Nieuw wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
+                    <PasswordField fx:id="confirmNewPassword" promptText="Herhaal nieuw wachtwoord" prefWidth="600" onKeyReleased="#handleEnterReleased"/>
+                    <Button onAction="#handleChangePasswordAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Wijzig wachtwoord"/>
+                </VBox>
+            </VBox>
+        </VBox>
     </center>
 </BorderPane>
