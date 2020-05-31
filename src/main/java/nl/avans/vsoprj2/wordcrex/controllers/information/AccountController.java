@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -59,7 +60,7 @@ public class AccountController extends Controller {
 
         try {
             Connection connection = Singleton.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT password FROM account WHERE username = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT `password` FROM `account` WHERE `username` = ?");
             statement.setString(1, Singleton.getInstance().getUser().getUsername());
             ResultSet oldPassword = statement.executeQuery();
 
@@ -70,13 +71,25 @@ public class AccountController extends Controller {
                 }
             }
 
-            System.out.println("Goed man");
+            PreparedStatement newPasswordStatement = connection.prepareStatement("UPDATE `account` SET `password` = ? WHERE `username` = ?");
+            newPasswordStatement.setString(1, this.newPassword.getText().trim());
+            newPasswordStatement.setString(2, Singleton.getInstance().getUser().getUsername());
+            newPasswordStatement.executeUpdate();
 
+            this.oldPassword.clear();
+            this.newPassword.clear();
+            this.confirmNewPassword.clear();
+
+            Alert invalidWordDialog = new Alert(Alert.AlertType.INFORMATION, "Je wachtwoord is succesvol geüpdate!");
+            invalidWordDialog.setTitle("Succes");
+            invalidWordDialog.showAndWait();
         } catch (SQLException ex) {
             if(WordCrex.DEBUG_MODE) {
                 System.err.println(ex.getErrorCode());
             } else {
-                throw new DbLoadException(ex);
+                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan tijdens het wijzigen van je wachtwoord.");
+                invalidWordDialog.setTitle("Error");
+                invalidWordDialog.showAndWait();
             }
         }
     }
