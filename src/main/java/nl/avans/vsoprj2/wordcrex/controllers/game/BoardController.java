@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
+    private boolean turnLocked;
 
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
@@ -62,6 +63,8 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+
+        this.turnLocked = this.game.getTurnLocked();
 
         this.symbolValues = this.getSymbolValues();
 
@@ -138,7 +141,9 @@ public class BoardController extends Controller {
         }
     }
 
-    public void passGameClick() {
+    @FXML
+    private void handlePassGame() {
+        if (this.turnLocked) return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Game passen");
         alert.setHeaderText("Weet je zeker dat je wil passen?");
