@@ -174,6 +174,19 @@ public class Game extends DbModel {
         }
     }
 
+    /**
+     * Sets the game state to resigned and the opponent as the winner
+     */
+    public void resignGame() {
+        this.setGameState(GameState.RESIGNED);
+        if (this.usernamePlayer1.equals(Singleton.getInstance().getUser().getUsername())) {
+            this.setWinner(this.usernamePlayer2);
+        } else {
+            this.setWinner(this.usernamePlayer1);
+        }
+        this.save();
+    }
+
     public enum GameState {
         REQUEST,
         PLAYING,
