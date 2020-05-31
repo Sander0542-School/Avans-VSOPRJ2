@@ -35,6 +35,7 @@ public class BoardController extends Controller {
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
     private ArrayList<Letter> currentLetters = new ArrayList<>();
+    private HashMap<Character, Integer> symbolValues;
 
     @FXML
     private GridPane gameGrid;
@@ -52,7 +53,13 @@ public class BoardController extends Controller {
     @FXML
     private ImageView shuffleReturnImage;
 
-    private HashMap<Character, Integer> symbolValues;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
+        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
+        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
+    }
 
     /**
      * This method needs to be called in the BeforeNavigation.
@@ -76,7 +83,7 @@ public class BoardController extends Controller {
         if (game.getCurrentTurn() == 0) this.createNewTurn(false);
     }
 
-    public List<BoardTile> getUnconfirmedTiles() {
+    private List<BoardTile> getUnconfirmedTiles() {
         List<BoardTile> tiles = new ArrayList<>();
 
         for (Node node : this.gameGrid.getChildren()) {
@@ -89,7 +96,7 @@ public class BoardController extends Controller {
         return tiles;
     }
 
-    public void loadBoard() {
+    private void loadBoard() {
         this.gameGrid.getChildren().clear();
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
@@ -101,7 +108,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public void loadPlayerData() {
+    private void loadPlayerData() {
         this.player1Name.setText(this.game.getUsernamePlayer1());
         this.player2Name.setText(this.game.getUsernamePlayer2());
 
@@ -109,10 +116,7 @@ public class BoardController extends Controller {
         this.player2Score.setText(String.valueOf(this.game.getPlayerScore(false)));
     }
 
-    /**
-     * @param winner - Account model
-     */
-    public void endGame() {
+    private void endGame() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -136,22 +140,6 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
-    }
-
-    public void passGameClick() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Game passen");
-        alert.setHeaderText("Weet je zeker dat je wil passen?");
-
-        ButtonType buttonTypeCancel = new ButtonType("Nee", ButtonBar.ButtonData.NO);
-        ButtonType buttonTypeOk = new ButtonType("Ja", ButtonBar.ButtonData.YES);
-
-        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeOk);
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                this.passGame();
-            }
-        });
     }
 
     private void passGame() {
@@ -243,6 +231,23 @@ public class BoardController extends Controller {
     }
 
     @FXML
+    private void handlePassGameAction() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Game passen");
+        alert.setHeaderText("Weet je zeker dat je wil passen?");
+
+        ButtonType buttonTypeCancel = new ButtonType("Nee", ButtonBar.ButtonData.NO);
+        ButtonType buttonTypeOk = new ButtonType("Ja", ButtonBar.ButtonData.YES);
+
+        alert.getButtonTypes().setAll(buttonTypeCancel, buttonTypeOk);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                this.passGame();
+            }
+        });
+    }
+
+    @FXML
     private void handleScoreboardAction() {
         this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
             @Override
@@ -274,29 +279,68 @@ public class BoardController extends Controller {
         });
     }
 
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
+    @FXML
+    private void handleShuffleReturnAction() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            //shuffle
+            this.displayLetters();
+        } else {
+            //return letters
+            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+                boardTile.setLetterTile(null);
+                boardTile.updateBackgroundColor();
+                this.moveTileFromToBoard = false;
 
-        this.updatePoints();
-    }
+                if (this.selectedLetter != null) {
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
+            }
 
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void updatePoints() {
-        List<List<BoardTile>> words = this.getWords();
-
-        //TODO() Hide point count on layout
-
-        if (this.checkWords(words)) {
-            Points points = this.calculatePoints(words);
-
-            //TODO() Show point count on layout
+            this.displayLetters();
+            this.updateShuffleReturnButton();
         }
     }
+
+    @FXML
+    private void handleLettertilesClick() {
+        if (this.selectedLetter != null && this.moveTileFromToBoard) {
+            this.previousBoardTile.setLetterTile(null);
+            this.previousBoardTile.updateBackgroundColor();
+            this.moveTileFromToBoard = false;
+
+            this.lettertiles.getChildren().add(this.selectedLetter);
+
+            this.selectedLetter.deselectLetter();
+            this.selectedLetter = null;
+        }
+
+        this.updateShuffleReturnButton();
+    }
+
+//    private void tilePlaced(Tile placedTile) {
+////        unconfirmedTiles.add(placedTile);
+//
+//        this.updatePoints();
+//    }
+//
+//    private void tileRemoved(Tile placedTile) {
+////        unconfirmedTiles.remove(placedTile);
+//
+//        this.updatePoints();
+//    }
+//
+//    private void updatePoints() {
+//        List<List<BoardTile>> words = this.getWords();
+//
+//        //TODO() Hide point count on layout
+//
+//        if (this.checkWords(words)) {
+//            Points points = this.calculatePoints(words);
+//
+//            //TODO() Show point count on layout
+//        }
+//    }
 
     private boolean checkWords(List<List<BoardTile>> words) {
         if (words == null) {
@@ -367,7 +411,7 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    public Coordinates getCoordinates(List<BoardTile> tiles) {
+    private Coordinates getCoordinates(List<BoardTile> tiles) {
         Coordinates coordinates = null;
 
         for (BoardTile boardTile : tiles) {
@@ -388,7 +432,7 @@ public class BoardController extends Controller {
         return coordinates;
     }
 
-    public Points calculatePoints(List<List<BoardTile>> words) {
+    private Points calculatePoints(List<List<BoardTile>> words) {
         Points points = new Points();
 
         for (List<BoardTile> word : words) {
@@ -432,7 +476,7 @@ public class BoardController extends Controller {
         return points;
     }
 
-    public List<String> getWordsFromList(List<List<BoardTile>> words) {
+    private List<String> getWordsFromList(List<List<BoardTile>> words) {
         List<String> wordsString = new ArrayList<>();
 
         for (List<BoardTile> word : words) {
@@ -463,7 +507,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<BoardTile> findWord(BoardTile boardTile, boolean horizontal) {
+    private List<BoardTile> findWord(BoardTile boardTile, boolean horizontal) {
         List<BoardTile> wordTiles = new ArrayList<>();
         BoardTile firstTile = boardTile;
         int i = 1;
@@ -552,8 +596,12 @@ public class BoardController extends Controller {
         }
     }
 
-    //hand out letters (previous turn winner)
-    public void handOutLetters(boolean isPassedTurn) {
+    /**
+     * Hand out letters (previous turn winner)
+     *
+     * @param isPassedTurn if the turn was passed this should be true
+     */
+    private void handOutLetters(boolean isPassedTurn) {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
@@ -611,7 +659,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
+    private ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
         Connection connection = Singleton.getInstance().getConnection();
         ArrayList<Letter> letters = new ArrayList<>();
 
@@ -632,8 +680,10 @@ public class BoardController extends Controller {
         return letters;
     }
 
-    //get handed out letters (handed out by previous turn winner)
-    public void loadHandLetters() {
+    /**
+     * Get handed out letters (handed out by previous turn winner)
+     */
+    private void loadHandLetters() {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         this.currentLetters.clear();
@@ -662,29 +712,6 @@ public class BoardController extends Controller {
             LetterTile letterTile = new LetterTile(letter);
             this.setLetterTileClick(letterTile);
             this.lettertiles.getChildren().add(letterTile);
-        }
-    }
-
-    @FXML
-    private void handleShuffleReturnAction() {
-        if (this.getUnconfirmedTiles().isEmpty()) {
-            //shuffle
-            this.displayLetters();
-        } else {
-            //return letters
-            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
-                boardTile.setLetterTile(null);
-                boardTile.updateBackgroundColor();
-                this.moveTileFromToBoard = false;
-
-                if (this.selectedLetter != null) {
-                    this.selectedLetter.deselectLetter();
-                    this.selectedLetter = null;
-                }
-            }
-
-            this.displayLetters();
-            this.updateShuffleReturnButton();
         }
     }
 
@@ -767,35 +794,12 @@ public class BoardController extends Controller {
         });
     }
 
-    public void handleLettertilesClick() {
-        if (this.selectedLetter != null && this.moveTileFromToBoard) {
-            this.previousBoardTile.setLetterTile(null);
-            this.previousBoardTile.updateBackgroundColor();
-            this.moveTileFromToBoard = false;
-
-            this.lettertiles.getChildren().add(this.selectedLetter);
-
-            this.selectedLetter.deselectLetter();
-            this.selectedLetter = null;
-        }
-
-        this.updateShuffleReturnButton();
-    }
-
     private void gridSizeChanged() {
         double size = Math.min(this.gameGrid.getWidth(), this.gameGrid.getHeight());
 
         for (Node node : this.gameGrid.getChildren()) {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
-        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
-        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
     private enum Orientation {
