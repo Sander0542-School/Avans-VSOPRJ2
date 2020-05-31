@@ -825,7 +825,7 @@ public class BoardController extends Controller {
         this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
         this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
 
-        this.gameOptionsMenu.getItems().addAll(new MenuItem("Geef Op"));
+        this.gameOptionsMenu.getItems().addAll(new MenuItem("Geef op"));
 
         for (MenuItem item : this.gameOptionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());
