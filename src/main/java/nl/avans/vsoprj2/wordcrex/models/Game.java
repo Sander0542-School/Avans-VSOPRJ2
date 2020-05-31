@@ -143,6 +143,13 @@ public class Game extends DbModel {
         final Connection connection = Singleton.getInstance().getConnection();
         final String currentUsername = Singleton.getInstance().getUser().getUsername();
 
+        // If game is finished lock turn
+        if (this.getGameState() != GameState.PLAYING) {
+            if (WordCrex.DEBUG_MODE)
+                System.out.println("Game: Current user is not a owner of this game. Locking turn...");
+            return true;
+        }
+
         // If the current logged in user is not one of the 2 playing users in this game. Lock the game.
         if (!currentUsername.equals(this.getUsernamePlayer1()) && !currentUsername.equals(this.getUsernamePlayer2())) {
             if (WordCrex.DEBUG_MODE)
