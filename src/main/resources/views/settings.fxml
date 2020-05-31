@@ -19,7 +19,7 @@
                 </Label>
             </VBox>
             <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 75 0 0 0;" spacing="32.0">
-                <Button prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Account gegevens aanpassen">
+                <Button onAction="#handleChangeAccountAction" prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Account gegevens aanpassen">
                     <font>
                         <Font name="Roboto Black" size="18.0" />
                     </font>
