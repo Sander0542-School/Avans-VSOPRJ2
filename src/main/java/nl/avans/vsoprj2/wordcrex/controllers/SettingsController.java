@@ -24,6 +24,10 @@ public class SettingsController extends Controller {
         this.navigateTo("/views/index.fxml");
     }
 
+    public void handleChangeAccountAction() {
+        this.navigateTo("/views/information/changeAccount.fxml");
+    }
+
     public void handleBackButton() {
         this.navigateTo("/views/games.fxml");
     }
