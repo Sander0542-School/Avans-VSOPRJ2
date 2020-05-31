@@ -117,7 +117,7 @@ public class Game extends DbModel {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            String query = String.format("SELECT SUM(IFNULL(`%s`,0) + IFNULL(`%s`, 0)) as `calculated_score` FROM `score` WHERE `game_id` = ?", (isPlayer1 ? "score1" : "score2"), (isPlayer1 ? "bonus1" : "bonus2"));
+            String query = String.format("SELECT SUM(IFNULL(score, 0) + IFNULL(bonus, 0)) total_score FROM `%s` WHERE `game_id` = ? AND `turn_id` < (SELECT MAX(`turn_id`) FROM `turn` WHERE `game_id` = ?)", (isPlayer1 ? "turnplayer1" : "turnplayer2"));
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             for (int i = 1; i <= preparedStatement.getParameterMetaData().getParameterCount(); i++) {
@@ -127,7 +127,7 @@ public class Game extends DbModel {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             resultSet.next();
-            return resultSet.getInt("calculated_score");
+            return resultSet.getInt("total_score");
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
         }

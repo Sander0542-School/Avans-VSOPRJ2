@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
@@ -47,6 +49,8 @@ public class BoardController extends Controller {
     private Label player1Score;
     @FXML
     private Label player2Score;
+    @FXML
+    private ImageView shuffleReturnImage;
 
     private HashMap<Character, Integer> symbolValues;
 
@@ -82,7 +86,6 @@ public class BoardController extends Controller {
                 tiles.add(boardTile);
             }
         }
-
         return tiles;
     }
 
@@ -153,62 +156,45 @@ public class BoardController extends Controller {
 
     private void passGame() {
         Connection connection = Singleton.getInstance().getConnection();
+
+        int turn = this.game.getCurrentTurn();
+
         String currentUsername = Singleton.getInstance().getUser().getUsername();
-        boolean currentUserIsPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
-        ScoreboardRound.TurnActionType typePlayer1 = ScoreboardRound.TurnActionType.UNKNOWN;
-        ScoreboardRound.TurnActionType typePlayer2 = ScoreboardRound.TurnActionType.UNKNOWN;
+        boolean isPlayer1 = this.game.getUsernamePlayer1().equals(currentUsername);
 
-        //Getting turn information of players
+        StringBuilder turnPlayerQueryBuilder = new StringBuilder();
+        turnPlayerQueryBuilder.append("INSERT INTO `");
+        turnPlayerQueryBuilder.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
+        turnPlayerQueryBuilder.append("` (`game_id`, `turn_id`, `");
+        turnPlayerQueryBuilder.append(isPlayer1 ? "username_player1" : "username_player2");
+        turnPlayerQueryBuilder.append("`, `bonus`, `score`, `turnaction_type`) VALUES (?, ?, ?, 0, 0, 'pass');");
+
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT IFNULL((SELECT turnaction_type FROM turnplayer1 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player1, IFNULL((SELECT turnaction_type FROM turnplayer2 WHERE game_id = ? AND turn_id = (SELECT MAX(turn_id) AS turn FROM `turn` WHERE game_id = ?) ORDER BY turn_id DESC), 'UNKNOWN') AS type_player2");
-            statement.setInt(1, this.game.getGameId());
-            statement.setInt(2, this.game.getGameId());
-            statement.setInt(3, this.game.getGameId());
-            statement.setInt(4, this.game.getGameId());
+            PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQueryBuilder.toString());
+            turnPlayerStatement.setInt(1, this.game.getGameId());
+            turnPlayerStatement.setInt(2, turn);
+            turnPlayerStatement.setString(3, currentUsername);
 
-            ResultSet resultSet = statement.executeQuery();
+            turnPlayerStatement.executeUpdate();
 
-            if (resultSet.next()) {
-                typePlayer1 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player1").toUpperCase());
-                typePlayer2 = ScoreboardRound.TurnActionType.valueOf(resultSet.getString("type_player2").toUpperCase());
+            StringBuilder turnPlayerQueryBuilder2 = new StringBuilder();
+
+            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id` FROM `");
+            turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
+            turnPlayerQueryBuilder2.append("` cp INNER JOIN `");
+            turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
+            turnPlayerQueryBuilder2.append("` op ON `cp`.`game_id` = `op`.`game_id` AND `cp`.`turn_id` = `op`.`turn_id` WHERE `cp`.`game_id` = ? AND `cp`.`turn_id` = ?;");
+
+            PreparedStatement turnPlayerStatement2 = connection.prepareStatement(turnPlayerQueryBuilder2.toString());
+            turnPlayerStatement2.setInt(1, this.game.getGameId());
+            turnPlayerStatement2.setInt(2, turn);
+
+            ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
+
+            if (turnPlayerResultSet2.next()) {
+                this.giveNewLetterInHand();
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
-
-        if (currentUserIsPlayer1 && typePlayer1.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer1(game_id, turn_id, username_player1, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer1 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
-                statement.setInt(1, this.game.getGameId());
-                statement.setInt(2, this.game.getGameId());
-                statement.setString(3, currentUsername);
-
-                statement.executeUpdate();
-
-                if (typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
-                    this.giveNewLetterInHand();
-                }
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
-            }
-        } else if (!currentUserIsPlayer1 && typePlayer2.equals(ScoreboardRound.TurnActionType.UNKNOWN)) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO turnplayer2(game_id, turn_id, username_player2, bonus, score, turnaction_type) VALUES (?, (SELECT (IFnull(MAX(turn_id), 0) + 1) AS next_turn FROM turnplayer2 t2 WHERE game_id = ?), ?, 0, 0, 'pass')");
-                statement.setInt(1, this.game.getGameId());
-                statement.setInt(2, this.game.getGameId());
-                statement.setString(3, currentUsername);
-
-                statement.executeUpdate();
-
-                if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS)) {
-                    this.giveNewLetterInHand();
-                }
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
-            }
-        } else if (typePlayer1.equals(ScoreboardRound.TurnActionType.PASS) && typePlayer2.equals(ScoreboardRound.TurnActionType.PASS)) {
-            this.giveNewLetterInHand();
-        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game pass");
             alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
@@ -573,7 +559,6 @@ public class BoardController extends Controller {
         int extraLetters = 7;
         this.currentLetters.clear();
 
-
         if (currentTurn > 0 && !isPassedTurn) {
             try {
                 //get leftover letters from the previous turn
@@ -656,8 +641,6 @@ public class BoardController extends Controller {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
-            //TODO: Testing purpose: Remove "-7"
-//            statement.setInt(2, currentTurn - 7);
             statement.setInt(2, currentTurn);
             ResultSet result = statement.executeQuery();
 
@@ -683,10 +666,34 @@ public class BoardController extends Controller {
     }
 
     @FXML
-    private void handleShuffleAction() {
-        /*if(!this.getUnconfirmedTiles().isEmpty()){
-            this.displayLetters(this.lettertiles);
-        }*/
+    private void handleShuffleReturnAction() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            //shuffle
+            this.displayLetters();
+        } else {
+            //return letters
+            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+                boardTile.setLetterTile(null);
+                boardTile.updateBackgroundColor();
+                this.moveTileFromToBoard = false;
+
+                if (this.selectedLetter != null) {
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
+            }
+
+            this.displayLetters();
+            this.updateShuffleReturnButton();
+        }
+    }
+
+    private void updateShuffleReturnButton() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            this.shuffleReturnImage.setImage(new Image("/images/drawables/shuffle.png"));
+        } else {
+            this.shuffleReturnImage.setImage(new Image("/images/drawables/restore.png"));
+        }
     }
 
     private void setLetterTileClick(LetterTile lettertile) {
@@ -755,6 +762,8 @@ public class BoardController extends Controller {
                     boardTile.setSelected(true);
                 }
             }
+
+            this.updateShuffleReturnButton();
         });
     }
 
@@ -769,6 +778,8 @@ public class BoardController extends Controller {
             this.selectedLetter.deselectLetter();
             this.selectedLetter = null;
         }
+
+        this.updateShuffleReturnButton();
     }
 
     private void gridSizeChanged() {
@@ -844,7 +855,7 @@ public class BoardController extends Controller {
                 List<List<BoardTile>> words = this.getWords();
                 if (this.checkWords(words)) {
                     int turn = this.game.getCurrentTurn();
-                    this.createNewPlayerTurn();
+                    this.createNewPlayerTurn(turn);
                     this.createNewPlayerBoard(turn, this.getUnconfirmedTiles());
                 } else {
                     //Throws alert if word is not correct
@@ -953,7 +964,7 @@ public class BoardController extends Controller {
      * Creates a new turnPlayer record in the database
      * If both player have player their turn, a new turn is created
      */
-    private void createNewPlayerTurn() {
+    private void createNewPlayerTurn(int turn) {
         Connection connection = Singleton.getInstance().getConnection();
         boolean isPlayer1 = this.game.getUsernamePlayer1().equals(Singleton.getInstance().getUser().getUsername());
 
@@ -970,7 +981,7 @@ public class BoardController extends Controller {
             Points points = this.calculatePoints(this.getWords());
             PreparedStatement turnPlayerStatement = connection.prepareStatement(turnPlayerQuery);
             turnPlayerStatement.setInt(1, this.game.getGameId());
-            turnPlayerStatement.setInt(2, this.game.getCurrentTurn());
+            turnPlayerStatement.setInt(2, turn);
             turnPlayerStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer1() : this.game.getUsernamePlayer2());
             turnPlayerStatement.setInt(4, points.getBonus());
             turnPlayerStatement.setInt(5, points.getPoints());
@@ -988,7 +999,7 @@ public class BoardController extends Controller {
             //Get other players turn
             PreparedStatement otherPlayerTurnStatement = connection.prepareStatement(otherPlayerTurnQuery);
             otherPlayerTurnStatement.setInt(1, this.game.getGameId());
-            otherPlayerTurnStatement.setInt(2, this.game.getCurrentTurn());
+            otherPlayerTurnStatement.setInt(2, turn);
             otherPlayerTurnStatement.setString(3, isPlayer1 ? this.game.getUsernamePlayer2() : this.game.getUsernamePlayer1());
             ResultSet otherPlayerTurnResultSet = otherPlayerTurnStatement.executeQuery();
 
@@ -1000,7 +1011,7 @@ public class BoardController extends Controller {
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
                     updateBonusStatement.setInt(2, this.game.getGameId());
-                    updateBonusStatement.setInt(3, this.game.getCurrentTurn());
+                    updateBonusStatement.setInt(3, turn);
                     updateBonusStatement.executeUpdate();
                 }
             }
