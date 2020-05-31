@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
+    private boolean turnLocked;
 
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
@@ -62,6 +63,8 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
+
+        this.turnLocked = this.game.getTurnLocked();
 
         this.symbolValues = this.getSymbolValues();
 
@@ -138,7 +141,9 @@ public class BoardController extends Controller {
         }
     }
 
-    public void passGameClick() {
+    @FXML
+    private void handlePassGame() {
+        if (this.turnLocked) return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Game passen");
         alert.setHeaderText("Weet je zeker dat je wil passen?");
@@ -726,6 +731,7 @@ public class BoardController extends Controller {
 
     private void setLetterTileClick(LetterTile lettertile) {
         lettertile.setOnMouseClicked(event -> {
+            if (this.turnLocked) return;
             if (this.selectedLetter == lettertile) {
                 lettertile.deselectLetter();
                 this.selectedLetter = null;
@@ -750,6 +756,7 @@ public class BoardController extends Controller {
 
     private void setBoardTileClick(BoardTile boardTile) {
         boardTile.setOnMouseClicked(event -> {
+            if (this.turnLocked) return;
             if (this.selectedLetter != null) {
                 if (this.selectedLetter == boardTile.getLetterTile()) {
                     boardTile.setSelected(false);
@@ -796,6 +803,8 @@ public class BoardController extends Controller {
     }
 
     public void handleLettertilesClick() {
+        if (this.turnLocked) return;
+
         if (this.selectedLetter != null && this.moveTileFromToBoard) {
             this.previousBoardTile.setLetterTile(null);
             this.previousBoardTile.updateBackgroundColor();
@@ -883,6 +892,7 @@ public class BoardController extends Controller {
      */
     @FXML
     private void confirmLettersButtonClicked() {
+        if (this.turnLocked) return;
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationDialog.setTitle("Bevestig Woord");
         confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
