@@ -773,6 +773,8 @@ public class BoardController extends Controller {
     }
 
     public void handleLettertilesClick() {
+        if (this.turnLocked) return;
+
         if (this.selectedLetter != null && this.moveTileFromToBoard) {
             this.previousBoardTile.setLetterTile(null);
             this.previousBoardTile.updateBackgroundColor();
@@ -850,6 +852,7 @@ public class BoardController extends Controller {
      */
     @FXML
     private void confirmLettersButtonClicked() {
+        if (this.turnLocked) return;
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationDialog.setTitle("Bevestig Woord");
         confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
