@@ -93,7 +93,7 @@ public class NewController extends Controller {
             checkAllowedStatement.setString(2, otherPlayer);
             ResultSet allowedResult = checkAllowedStatement.executeQuery();
             if (allowedResult.next() && allowedResult.getInt("count") != 0) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Je hebt al een openstaande uitdaging!");
+                Alert alert = new Alert(Alert.AlertType.WARNING, String.format("Je hebt al een openstaande uitdaging met %s!", otherPlayer));
                 alert.setTitle("Dit mag niet.");
                 alert.setHeaderText(null);
                 alert.showAndWait();
