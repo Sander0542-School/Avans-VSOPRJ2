@@ -146,7 +146,7 @@ public class Game extends DbModel {
         // If the current logged in user is not one of the 2 playing users in this game. Lock the game.
         if (!currentUsername.equals(this.usernamePlayer1) && !currentUsername.equals(this.usernamePlayer2)) {
             if (WordCrex.DEBUG_MODE)
-                System.out.println("Game: Current user is not a owner of this game. Locking turn...");
+                System.out.println("Game: Current user is not an owner of this game. Locking turn...");
             return true;
         }
 
