@@ -206,7 +206,7 @@ public class GamesController extends Controller {
 
     private void setGameItemClick(GameItem gameItem) {
         gameItem.setOnMouseClicked(event -> {
-            if (gameItem.getGame().getGameState() != Game.GameState.PLAYING) {
+            if (gameItem.getGame().getGameState() == Game.GameState.REQUEST) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Wachten op tegenstander");
                 alert.setHeaderText(String.format("Je tegenstander %s heeft je uitnodiging nog niet geaccepteerd.", gameItem.getGame().getUsernamePlayer2()));
