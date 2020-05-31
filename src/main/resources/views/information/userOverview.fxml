@@ -7,25 +7,31 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController">
     <top>
         <AppBar title="Accounts" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
 
     <center>
-        <HBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
+        <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15"/>
             </padding>
-            <HBox alignment="TOP_CENTER">
-                <Label text="Select an account: " />
-                <ComboBox fx:id="userComboBox" onAction="#handleUserSelection"/>
-            </HBox>
-            <VBox spacing="25" maxWidth="600" alignment="CENTER">
+            <VBox spacing="25" alignment="CENTER">
+                <HBox alignment="CENTER" spacing="25">
+                    <Label text="Selecteer een gebruiker: " />
+                    <ComboBox fx:id="userComboBox" onAction="#handleUserSelection"/>
+                    <Separator orientation="VERTICAL" />
+                    <TextField fx:id="searchInput" promptText="Zoek een gebruiker" />
+                    <Button onAction="#handleUserSearch" prefWidth="150" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Zoek gebruiker"/>
+                </HBox>
+                <Separator />
                 <Label fx:id="currentUser" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
-                <ComboBox fx:id="userRoleComboBox" visible="false"/>
+                <ComboBox fx:id="userRoleComboBox" visible="false" prefWidth="450" prefHeight="50"/>
                 <Button fx:id="changeUserRoleButton" visible="false" onAction="#handleUserRoleChangeAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Wijzig Rol"/>
             </VBox>
-        </HBox>
+        </VBox>
     </center>
 </BorderPane>

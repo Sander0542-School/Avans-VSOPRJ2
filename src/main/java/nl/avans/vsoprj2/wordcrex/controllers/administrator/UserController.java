@@ -1,10 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.administrator;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -28,6 +25,9 @@ public class UserController extends Controller {
     public Button changeUserRoleButton;
 
     @FXML
+    public TextInputControl searchInput;
+
+    @FXML
     private void handleBackButton() {
         this.navigateTo("/views/settings.fxml");
     }
@@ -40,6 +40,9 @@ public class UserController extends Controller {
         this.getAllRoles();
     }
 
+    /**
+     * Get all the roles from the database and fills the comboBox
+     */
     private void getAllRoles() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
@@ -61,6 +64,9 @@ public class UserController extends Controller {
         }
     }
 
+    /**
+     * Get all the users from the database and fills the comboBox
+     */
     private void getAllUsers() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
@@ -85,17 +91,53 @@ public class UserController extends Controller {
         }
     }
 
-    @FXML
-    private void handleUserSelection() {
-        this.currentUser.setText(((Account) this.userComboBox.getValue()).getUsername());
-        this.userRoleComboBox.getSelectionModel().select(((Account) this.userComboBox.getValue()).getRole());
+    /**
+     * Shows the form and fills the fields with the correct data
+     *
+     * @param account - The account that is going to be changed
+     */
+    private void handleFormChanges(Account account) {
+        this.currentUser.setText(account.getUsername());
+        this.userRoleComboBox.getSelectionModel().select(account.getRole());
         this.currentUser.setVisible(true);
         this.userRoleComboBox.setVisible(true);
         this.changeUserRoleButton.setVisible(true);
     }
 
     @FXML
+    private void handleUserSelection() {
+        this.handleFormChanges((Account) this.userComboBox.getValue());
+    }
+
+    @FXML
     private void handleUserRoleChangeAction() {
         System.out.println(this.userRoleComboBox.getValue());
+    }
+
+    @FXML
+    private void handleUserSearch() {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement userStatement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=?");
+            userStatement.setString(1, this.searchInput.getText().trim());
+            ResultSet user = userStatement.executeQuery();
+
+            if (user.next()) {
+                Account account = new Account(user);
+                this.handleFormChanges(account);
+            } else {
+                Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "De gebruiker die je probeert te zoeken bestaat niet!");
+                invalidWordDialog.setTitle("Pas op");
+                invalidWordDialog.showAndWait();
+            }
+        } catch (SQLException ex) {
+            if(WordCrex.DEBUG_MODE) {
+                System.err.println(ex.getErrorCode());
+            } else {
+                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de gebruiker.");
+                invalidWordDialog.setTitle("Error");
+                invalidWordDialog.showAndWait();
+            }
+        }
     }
 }
