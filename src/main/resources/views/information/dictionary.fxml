@@ -15,13 +15,8 @@
             <TextField fx:id="username" prefWidth="500"/>
             <Label prefWidth="500" text="Woord:"/>
             <TextField fx:id="word" prefWidth="500"/>
-            <Label prefWidth="500" text="Toevoegen of Verwijderen:"/>
-            <RadioButton fx:id="add" prefWidth="500" text="Toevoegen"/>
-            <RadioButton fx:id="delete" prefWidth="500" text="Verwijderen"/>
             <Label prefWidth="500" text="Taal:"/>
             <ComboBox fx:id="language" prefWidth="500" promptText="Kies een taal"/>
-            <Label prefWidth="500" text="Comment:"/>
-            <TextField fx:id="comment" prefWidth="500"/>
             <Button onAction="#submit" prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
         </VBox>
     </center>

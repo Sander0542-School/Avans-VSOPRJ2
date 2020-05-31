@@ -27,21 +27,12 @@ public class DictionaryController extends Controller {
     @FXML
     private Label error;
     @FXML
-    private TextField comment;
-    @FXML
-    private RadioButton add;
-    @FXML
-    private RadioButton delete;
-    @FXML
     private ComboBox<String> language;
 
     private final Dictionary<String, String> languages = new Hashtable<String, String>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ToggleGroup group = new ToggleGroup();
-        this.add.setToggleGroup(group);
-        this.delete.setToggleGroup(group);
 
         this.language.getItems().removeAll(this.language.getItems());
         this.language.getItems().addAll(this.Languages());
@@ -103,18 +94,6 @@ public class DictionaryController extends Controller {
             this.error.setText("Word");
             return;
         };
-
-        if (this.comment.getText().trim().isEmpty()){
-            this.error.setVisible(true);
-            this.error.setText("Comment");
-            return;
-        };
-
-        if (!this.add.isSelected() && !this.delete.isSelected()){
-            this.error.setVisible(true);
-            this.error.setText("add/delete");
-            return;
-        }
 
        String selectedLanguage = this.language.getValue();
        if(selectedLanguage == null || this.languages.get(selectedLanguage) == null){
