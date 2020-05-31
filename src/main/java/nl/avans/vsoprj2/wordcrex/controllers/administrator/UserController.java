@@ -9,6 +9,7 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController extends Controller {
@@ -97,27 +98,26 @@ public class UserController extends Controller {
      * @param account - The account that is going to be changed
      */
     private void handleFormChanges(Account account) {
-        this.currentUser.setText(account.getUsername());
-        this.userRoleComboBox.getSelectionModel().select(account.getRole());
-        this.currentUser.setVisible(true);
-        this.userRoleComboBox.setVisible(true);
-        this.changeUserRoleButton.setVisible(true);
+        if(account != null) {
+            this.currentUser.setText(account.getUsername());
+            this.userRoleComboBox.getSelectionModel().select(account.getRole());
+            this.currentUser.setVisible(true);
+            this.userRoleComboBox.setVisible(true);
+            this.changeUserRoleButton.setVisible(true);
+        }
     }
 
     @FXML
     private void handleUserSelection() {
+        this.searchInput.setText("");
         this.handleFormChanges((Account) this.userComboBox.getValue());
-    }
-
-    @FXML
-    private void handleUserRoleChangeAction() {
-        System.out.println(this.userRoleComboBox.getValue());
     }
 
     @FXML
     private void handleUserSearch() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
+            this.userComboBox.getSelectionModel().select(null);
             PreparedStatement userStatement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=?");
             userStatement.setString(1, this.searchInput.getText().trim());
             ResultSet user = userStatement.executeQuery();
@@ -137,6 +137,45 @@ public class UserController extends Controller {
                 Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de gebruiker.");
                 invalidWordDialog.setTitle("Error");
                 invalidWordDialog.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    private void handleUserRoleChangeAction() {
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Gebruikersrol wijzigen");
+        confirmationDialog.setHeaderText("Weet je zeker dat je de gebruikersrol van " + this.currentUser.getText() + " wil wijzgen?");
+        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
+
+        if (dialogResult.isPresent()) {
+            if (dialogResult.get() == ButtonType.OK) {
+                Connection connection = Singleton.getInstance().getConnection();
+                try {
+                    PreparedStatement userStatement = connection.prepareStatement("UPDATE `accountrole` SET `role` = ? WHERE `username` = ?");
+                    userStatement.setString(1, this.userRoleComboBox.getValue().toString());
+                    userStatement.setString(2, this.currentUser.getText());
+                    userStatement.executeUpdate();
+
+                    //reset user combobox to get the new role of the changed player
+                    this.userComboBox.getItems().clear();
+                    this.getAllUsers();
+
+                    //reset form
+                    this.currentUser.setVisible(false);
+                    this.userRoleComboBox.setVisible(false);
+                    this.changeUserRoleButton.setVisible(false);
+                    this.searchInput.setText("");
+
+                } catch (SQLException ex) {
+                    if(WordCrex.DEBUG_MODE) {
+                        System.err.println(ex.getErrorCode());
+                    } else {
+                        Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het veranderen van de gebruikersrol.");
+                        invalidWordDialog.setTitle("Error");
+                        invalidWordDialog.showAndWait();
+                    }
+                }
             }
         }
     }
