@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -36,6 +37,7 @@ public class BoardController extends Controller {
     private BoardTile previousBoardTile;
     private ArrayList<Letter> currentLetters = new ArrayList<>();
     private HashMap<Character, Integer> symbolValues;
+    private Timer timer = new Timer();
 
     @FXML
     private GridPane gameGrid;
@@ -61,6 +63,22 @@ public class BoardController extends Controller {
         this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                //TODO Only run when turn for current player is locked
+                //TODO Implement a locking system
+                Platform.runLater(() -> {
+                    BoardController.this.board.loadLetters(BoardController.this.game, BoardController.this.symbolValues);
+                    BoardController.this.loadBoard();
+                    BoardController.this.loadPlayerData();
+                    BoardController.this.loadHandLetters();
+                });
+            }
+        };
+    }
+
     /**
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
@@ -81,6 +99,8 @@ public class BoardController extends Controller {
         this.loadHandLetters();
 
         if (game.getCurrentTurn() == 0) this.createNewTurn(false);
+
+        this.timer.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
     }
 
     private List<BoardTile> getUnconfirmedTiles() {
