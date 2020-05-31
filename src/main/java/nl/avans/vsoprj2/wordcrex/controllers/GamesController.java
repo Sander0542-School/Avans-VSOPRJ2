@@ -227,10 +227,9 @@ public class GamesController extends Controller {
                 @Override
                 public void afterNavigate(Controller controller) {
 
-                        }
-                    });
                 }
-        );
+            });
+        });
     }
 
     public void handleBottomBarNavigation(Event event) {
