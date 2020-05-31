@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 
@@ -12,11 +13,18 @@ public class SettingsController extends Controller {
     @FXML
     public Label username;
 
+    @FXML
+    public Button btnUserOverview;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
         this.username.setText(Singleton.getInstance().getUser().getUsername());
+        if(Singleton.getInstance().getUser().getRole() != null)
+        if(Singleton.getInstance().getUser().getRole().equals("administrator")) {
+            this.btnUserOverview.setVisible(true);
+        }
     }
 
     public void handleLogoutAction() {
@@ -26,6 +34,10 @@ public class SettingsController extends Controller {
 
     public void handleChangeAccountAction() {
         this.navigateTo("/views/information/changeAccount.fxml");
+    }
+
+    public void handleUserOverviewAction() {
+        this.navigateTo("/views/information/userOverview.fxml");
     }
 
     public void handleBackButton() {

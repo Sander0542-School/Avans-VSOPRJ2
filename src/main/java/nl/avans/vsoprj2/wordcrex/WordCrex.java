@@ -34,8 +34,8 @@ public class WordCrex extends Application {
 
         if (DEBUG_MODE) {
             try {
-                PreparedStatement statement = Singleton.getInstance().getConnection().prepareStatement("SELECT * FROM `account` WHERE `username` = ?");
-                statement.setString(1, "jagermeester");
+                PreparedStatement statement = Singleton.getInstance().getConnection().prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=?");
+                statement.setString(1, "test-admin");
                 ResultSet result = statement.executeQuery();
 
                 if (result.next()) {
