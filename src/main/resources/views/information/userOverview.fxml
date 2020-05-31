@@ -4,6 +4,8 @@
 
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController">
     <top>
         <AppBar title="Accounts" backButton="true" onBackButtonEvent="#handleBackButton"/>
@@ -15,7 +17,9 @@
                 <Insets bottom="15" left="15" right="15" top="15"/>
             </padding>
             <VBox alignment="CENTER">
-
+                <ScrollPane style="-fx-background-color:transparent;" fitToWidth="true">
+                    <VBox spacing="10" style="-fx-background-color: #FFBB00;" fx:id="userContainer"/>
+                </ScrollPane>
             </VBox>
         </VBox>
     </center>
