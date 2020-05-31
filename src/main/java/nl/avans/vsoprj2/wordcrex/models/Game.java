@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 import nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey;
@@ -130,6 +131,53 @@ public class Game extends DbModel {
             return resultSet.getInt("total_score");
         } catch (SQLException ex) {
             throw new DbLoadException(ex);
+        }
+    }
+
+    /**
+     * Checks if the user is allowed to place letters or pass the turn
+     *
+     * @return returns true if game should be locked
+     */
+    public boolean getTurnLocked() {
+        final Connection connection = Singleton.getInstance().getConnection();
+        final String currentUsername = Singleton.getInstance().getUser().getUsername();
+
+        // If game is finished lock turn
+        if (this.getGameState() != GameState.PLAYING) {
+            if (WordCrex.DEBUG_MODE)
+                System.out.println("Game: Game is not in the playing state");
+            return true;
+        }
+
+        // If the current logged in user is not one of the 2 playing users in this game. Lock the game.
+        if (!currentUsername.equals(this.getUsernamePlayer1()) && !currentUsername.equals(this.getUsernamePlayer2())) {
+            if (WordCrex.DEBUG_MODE)
+                System.out.println("Game: Current user is not an owner of this game. Locking turn...");
+            return true;
+        }
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT `t`.`turn_id`, " +
+                    "`tp1`.`username_player1`, " +
+                    "`tp2`.`username_player2` " +
+                    "FROM `turn` `t` " +
+                    "LEFT OUTER JOIN `turnplayer1` `tp1` ON t.`turn_id` = `tp1`.`turn_id` AND `t`.`game_id` = `tp1`.`game_id` " +
+                    "LEFT OUTER JOIN `turnplayer2` `tp2` ON t.`turn_id` = `tp2`.`turn_id` AND `t`.`game_id` = `tp2`.`game_id` " +
+                    "WHERE `t`.`game_id` = ? AND " +
+                    "`t`.`turn_id` = (SELECT MAX(turn_id) FROM turn WHERE game_id = `t`.`game_id`) GROUP BY `t`.`game_id`");
+            statement.setInt(1, this.getGameId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                final String usernamePlayer1 = resultSet.getString("username_player1");
+                final String usernamePlayer2 = resultSet.getString("username_player2");
+                return (currentUsername.equals(usernamePlayer1) && usernamePlayer2 == null) ||
+                        (currentUsername.equals(usernamePlayer2) && usernamePlayer1 == null);
+            }
+            return false;
+        } catch (SQLException e) {
+            if (WordCrex.DEBUG_MODE) System.err.println("Game: couldn't determine if turn is locked or not.");
+            return true;
         }
     }
 
