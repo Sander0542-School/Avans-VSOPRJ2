@@ -32,14 +32,41 @@ public class DictionaryListController extends Controller {
 
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
-        this.PopulateWordList();
+        this.PopulateAdminWordList();
     }
 
     public DictionaryListController() {
 
     }
 
-    private void PopulateWordList() {
+    private void PopulateUserWordList() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `username` = ?;");
+            statement.setString(1, Singleton.getInstance().getUser().getUsername());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            this.dictionaryEntryContainer.setVisible(false);
+            this.dictionaryEntryContainer.getChildren().removeIf(node -> node instanceof DictionaryEntry);
+
+            while (resultSet.next()) {
+                DictionaryEntry dictionaryEntry = new DictionaryEntry(new Word(resultSet));
+
+                dictionaryEntry.acceptButton.setVisible(false);
+                dictionaryEntry.denyButton.setVisible(false);
+
+                this.dictionaryEntryContainer.getChildren().add(dictionaryEntry);
+                this.dictionaryEntryContainer.setVisible(true);
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    private void PopulateAdminWordList() {
 
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -80,7 +107,7 @@ public class DictionaryListController extends Controller {
             throw new DbLoadException(e);
         }
 
-        this.PopulateWordList();
+        this.PopulateAdminWordList();
     }
 
     private void AcceptWord(DictionaryEntry dictionaryEntry) {
@@ -96,6 +123,6 @@ public class DictionaryListController extends Controller {
             throw new DbLoadException(e);
         }
 
-        this.PopulateWordList();
+        this.PopulateAdminWordList();
     }
 }

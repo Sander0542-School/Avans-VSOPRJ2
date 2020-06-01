@@ -24,6 +24,21 @@ public class DictionaryController extends Controller {
     }
 
     @FXML
+    private void handleListButton() {
+        this.navigateTo("/views/information/dictionaryListPage.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                DictionaryListController dictionaryListController = new DictionaryListController();
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+
+    @FXML
     private TextField username;
     @FXML
     private TextField word;
@@ -85,23 +100,23 @@ public class DictionaryController extends Controller {
     }
 
     public void submit() {
-        //validation
+
         if (this.username.getText().trim().isEmpty()) {
             this.error.setVisible(true);
-            this.error.setText("Username");
+            this.error.setText("Geen geldig gebruikersnaam");
             return;
         }
 
         if (this.word.getText().trim().isEmpty()) {
             this.error.setVisible(true);
-            this.error.setText("Word");
+            this.error.setText("Voer een woord in");
             return;
         }
 
         String selectedLanguage = this.language.getValue();
         if (selectedLanguage == null || this.languages.get(selectedLanguage) == null) {
             this.error.setVisible(true);
-            this.error.setText("Language");
+            this.error.setText("Selecteer een taal");
             return;
         }
 
@@ -126,7 +141,7 @@ public class DictionaryController extends Controller {
             int result = statement.executeUpdate();
             if (result > 0) {
                 this.error.setVisible(true);
-                this.error.setText("Verstuurd");
+                this.error.setText("Inzending verstuurd");
             }
         } catch (SQLException e) {
             throw new DbLoadException(e);
