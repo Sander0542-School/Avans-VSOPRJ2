@@ -10,7 +10,7 @@
     </top>
     <center>
         <VBox alignment="TOP_CENTER">
-            <ScrollPane style="-fx-background-color:transparent;" fitToWidth="true">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: #FFBB00; -fx-background: #FFBB00;">
                 <VBox spacing="10" style="-fx-background-color: #FFBB00;" fx:id="dictionaryEntryContainer"/>
             </ScrollPane>
         </VBox>
