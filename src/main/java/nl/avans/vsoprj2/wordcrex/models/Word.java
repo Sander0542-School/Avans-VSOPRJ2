@@ -9,7 +9,7 @@ public class Word extends DbModel {
 
     @PrimaryKey
     @Column("word")
-    private String wordValue;
+    private String word;
     @PrimaryKey
     @Column("letterset_code")
     private String letterset_code;
@@ -28,7 +28,7 @@ public class Word extends DbModel {
     }
 
     public String getWord() {
-        return this.wordValue;
+        return this.word;
     }
 
     public String getLetterset_code() {
