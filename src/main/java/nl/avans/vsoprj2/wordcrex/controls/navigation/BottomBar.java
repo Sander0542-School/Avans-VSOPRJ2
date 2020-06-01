@@ -1,17 +1,22 @@
 package nl.avans.vsoprj2.wordcrex.controls.navigation;
 
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import nl.avans.vsoprj2.wordcrex.Singleton;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BottomBar extends HBox implements Initializable {
+
+    @FXML
+    private BottomBarItem observer;
 
     private EventHandler barItemEventHandler = null;
 
@@ -72,6 +77,6 @@ public class BottomBar extends HBox implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.observer.setVisible(Singleton.getInstance().getUser().getRole().equalsIgnoreCase("observer"));
     }
 }
