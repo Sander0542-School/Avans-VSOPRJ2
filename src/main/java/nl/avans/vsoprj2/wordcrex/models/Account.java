@@ -85,7 +85,7 @@ public class Account extends Model {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username = ? AND a.password = ?");
             statement.setString(1, username);
-            statement.setString(1, password);
+            statement.setString(2, password);
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
