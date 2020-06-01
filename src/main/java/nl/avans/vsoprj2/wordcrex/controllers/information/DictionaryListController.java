@@ -30,19 +30,12 @@ public class DictionaryListController extends Controller {
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
 
-        //While Debug_Mode is TRUE Singleton.getInstance().getUser().getRole() returns Null
-        //Boolean isAdministrator = Singleton.getInstance().getUser().getRole().equals("administrator");
-
-        Boolean isAdministrator = Singleton.getInstance().getUser().getRole() != null && Singleton.getInstance().getUser().getRole().equals("administrator");
+        Boolean isAdministrator = Singleton.getInstance().getUser().getRole().equals("moderator");
         if (isAdministrator) {
             this.PopulateAdminWordList();
         } else {
             this.PopulateUserWordList();
         }
-    }
-
-    public DictionaryListController() {
-
     }
 
     private void PopulateUserWordList() {
@@ -77,8 +70,7 @@ public class DictionaryListController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `state` = ?;");
-            statement.setString(1, "pending");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `state` = pending;");
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -104,11 +96,10 @@ public class DictionaryListController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement newPasswordStatement = connection.prepareStatement("UPDATE `dictionary` SET `state` = ? WHERE `word` = ? AND `letterset_code` = ?;");
-            newPasswordStatement.setString(1, "denied");
-            newPasswordStatement.setString(2, dictionaryEntry.getWord());
-            newPasswordStatement.setString(3, dictionaryEntry.getLanguage());
-            newPasswordStatement.executeUpdate();
+            PreparedStatement statement = connection.prepareStatement("UPDATE `dictionary` SET `state` = denied WHERE `word` = ? AND `letterset_code` = ?;");
+            statement.setString(1, dictionaryEntry.getWord());
+            statement.setString(2, dictionaryEntry.getLanguage());
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
@@ -120,11 +111,10 @@ public class DictionaryListController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement newPasswordStatement = connection.prepareStatement("UPDATE `dictionary` SET `state` = ? WHERE `word` = ? AND `letterset_code` = ?;");
-            newPasswordStatement.setString(1, "accepted");
-            newPasswordStatement.setString(2, dictionaryEntry.getWord());
-            newPasswordStatement.setString(3, dictionaryEntry.getLanguage());
-            newPasswordStatement.executeUpdate();
+            PreparedStatement statement = connection.prepareStatement("UPDATE `dictionary` SET `state` = accepted WHERE `word` = ? AND `letterset_code` = ?;");
+            statement.setString(1, dictionaryEntry.getWord());
+            statement.setString(2, dictionaryEntry.getLanguage());
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }

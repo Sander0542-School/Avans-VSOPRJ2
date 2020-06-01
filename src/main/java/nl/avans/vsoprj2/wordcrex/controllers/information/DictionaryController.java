@@ -91,21 +91,12 @@ public class DictionaryController extends Controller {
             statement.setString(1, word);
             statement.setString(2, code);
             ResultSet result = statement.executeQuery();
-            while (result.next()) {
-
-            }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
     }
 
     public void submit() {
-
-        if (this.username.getText().trim().isEmpty()) {
-            this.error.setVisible(true);
-            this.error.setText("Geen geldige gebruikersnaam");
-            return;
-        }
 
         if (this.word.getText().trim().isEmpty()) {
             this.error.setVisible(true);
