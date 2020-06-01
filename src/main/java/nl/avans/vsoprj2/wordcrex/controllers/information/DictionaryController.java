@@ -25,17 +25,7 @@ public class DictionaryController extends Controller {
 
     @FXML
     private void handleListButton() {
-        this.navigateTo("/views/information/dictionaryList.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                DictionaryListController dictionaryListController = new DictionaryListController();
-            }
-
-            @Override
-            public void afterNavigate(Controller controller) {
-
-            }
-        });
+        this.navigateTo("/views/information/dictionaryList.fxml");
     }
 
     @FXML
