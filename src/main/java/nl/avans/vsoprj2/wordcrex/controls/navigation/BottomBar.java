@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,6 +78,6 @@ public class BottomBar extends HBox implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.observer.setVisible(Singleton.getInstance().getUser().getRole().equalsIgnoreCase("observer"));
+        this.observer.setVisible(Singleton.getInstance().getUser().hasRole(Account.Role.OBSERVER));
     }
 }
