@@ -28,10 +28,10 @@ public class SettingsController extends Controller {
         super.initialize(url, resourceBundle);
 
         this.username.setText(Singleton.getInstance().getUser().getUsername());
-        if(Singleton.getInstance().getUser().getRole() != null)
-        if(this.userIsAdministrator()) {
-            this.btnUserOverview.setVisible(true);
-        }
+        if (Singleton.getInstance().getUser().getRole() != null)
+            if (this.userIsAdministrator()) {
+                this.btnUserOverview.setVisible(true);
+            }
     }
 
     public boolean userIsAdministrator() {
@@ -42,13 +42,13 @@ public class SettingsController extends Controller {
             ResultSet roles = userRolesStatement.executeQuery();
 
             while (roles.next()) {
-                if(Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(Account.Role.ADMINISTRATOR)) {
+                if (Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(Account.Role.ADMINISTRATOR)) {
                     return true;
                 }
             }
             return false;
         } catch (SQLException ex) {
-            if(WordCrex.DEBUG_MODE) {
+            if (WordCrex.DEBUG_MODE) {
                 System.err.println(ex.getErrorCode());
             } else {
                 Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de rollen.");
