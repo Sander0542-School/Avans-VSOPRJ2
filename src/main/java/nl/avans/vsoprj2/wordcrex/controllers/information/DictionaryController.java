@@ -1,7 +1,9 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -20,6 +22,7 @@ public class DictionaryController extends Controller {
     private void handleBackButton() {
         this.navigateTo("/views/information.fxml");
     }
+
     @FXML
     private TextField username;
     @FXML
@@ -58,7 +61,7 @@ public class DictionaryController extends Controller {
 
             while (result.next()) {
                 returnValue[result.getRow() - 1] = result.getString(2);
-                this.languages.put(result.getString(2),result.getString(1));
+                this.languages.put(result.getString(2), result.getString(1));
             }
             return returnValue;
         } catch (SQLException e) {
@@ -83,24 +86,24 @@ public class DictionaryController extends Controller {
 
     public void submit() {
         //validation
-        if (this.username.getText().trim().isEmpty()){
+        if (this.username.getText().trim().isEmpty()) {
             this.error.setVisible(true);
             this.error.setText("Username");
             return;
-        };
+        }
 
-        if (this.word.getText().trim().isEmpty()){
+        if (this.word.getText().trim().isEmpty()) {
             this.error.setVisible(true);
             this.error.setText("Word");
             return;
-        };
+        }
 
-       String selectedLanguage = this.language.getValue();
-       if(selectedLanguage == null || this.languages.get(selectedLanguage) == null){
-           this.error.setVisible(true);
-           this.error.setText("Language");
-           return;
-       }
+        String selectedLanguage = this.language.getValue();
+        if (selectedLanguage == null || this.languages.get(selectedLanguage) == null) {
+            this.error.setVisible(true);
+            this.error.setText("Language");
+            return;
+        }
 
 
         Connection connection = Singleton.getInstance().getConnection();

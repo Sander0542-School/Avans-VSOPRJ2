@@ -1,16 +1,11 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.controllers.GamesController;
 import nl.avans.vsoprj2.wordcrex.controls.information.DictionaryEntry;
-import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.Word;
 
 import java.net.URL;
@@ -40,11 +35,11 @@ public class DictionaryListController extends Controller {
         this.PopulateWordList();
     }
 
-    public DictionaryListController(){
+    public DictionaryListController() {
 
     }
 
-    private void PopulateWordList(){
+    private void PopulateWordList() {
 
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -72,7 +67,7 @@ public class DictionaryListController extends Controller {
         }
     }
 
-    private void DenyWord(DictionaryEntry dictionaryEntry){
+    private void DenyWord(DictionaryEntry dictionaryEntry) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -88,7 +83,7 @@ public class DictionaryListController extends Controller {
         this.PopulateWordList();
     }
 
-    private void AcceptWord(DictionaryEntry dictionaryEntry){
+    private void AcceptWord(DictionaryEntry dictionaryEntry) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {

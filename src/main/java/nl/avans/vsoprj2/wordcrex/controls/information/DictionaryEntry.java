@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import nl.avans.vsoprj2.wordcrex.models.Game;
 import nl.avans.vsoprj2.wordcrex.models.Word;
 
 import java.io.IOException;
@@ -25,10 +24,12 @@ public class DictionaryEntry extends AnchorPane implements Initializable {
     private Label usernameLabel;
 
     @FXML
-    private Button acceptButton;
+    public Button acceptButton;
 
     @FXML
-    private Button denyButton;
+    public Button denyButton;
+
+    private Word word;
 
 
     public DictionaryEntry() {
@@ -45,16 +46,25 @@ public class DictionaryEntry extends AnchorPane implements Initializable {
     }
 
 
-
     public DictionaryEntry(Word word) {
         this();
         this.setWord(word);
     }
 
-    public void setWord(Word word){
+    public void setWord(Word word) {
+        this.word = word;
         this.wordLabel.setText(word.getWord());
-        this.usernameLabel.setText(word.getUsername());
         this.languageLabel.setText(word.getLetterset_code());
+        this.usernameLabel.setText(word.getUsername());
+
+    }
+
+    public String getWord() {
+        return this.word.getWord();
+    }
+
+    public String getLanguage() {
+        return this.word.getLetterset_code();
     }
 
     @Override
