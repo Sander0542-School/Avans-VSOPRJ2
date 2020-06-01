@@ -7,13 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Hello world!
@@ -33,19 +29,9 @@ public class WordCrex extends Application {
         URL resource = this.getClass().getResource("/views/index.fxml");
 
         if (DEBUG_MODE) {
-            try {
-                PreparedStatement statement = Singleton.getInstance().getConnection().prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=?");
-                statement.setString(1, "jagermeester");
-                ResultSet result = statement.executeQuery();
-
-                if (result.next()) {
-                    Account account = new Account(result);
-                    Singleton.getInstance().setUser(account);
-                    resource = this.getClass().getResource("/views/games.fxml");
-                }
-            } catch (SQLException e) {
-                throw new DbLoadException(e);
-            }
+            Account account = Account.fromUsername("jagermeester");
+            Singleton.getInstance().setUser(account);
+            resource = this.getClass().getResource("/views/games.fxml");
         }
 
         Parent parent = new FXMLLoader(resource).load();
