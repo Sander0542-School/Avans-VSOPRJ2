@@ -105,12 +105,12 @@ public class DictionaryController extends Controller {
 
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE `letterset_code` = ? AND `letterset_code` = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE `word` = ? AND `letterset_code` = ?");
             statement.setString(1, this.word.getText().trim());
             statement.setString(2, this.languages.get(selectedLanguage));
 
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet == null) {
+            if (resultSet.next()) {
                 this.error.setVisible(true);
                 this.error.setText("Woord is eerder toegevoegd");
                 return;
