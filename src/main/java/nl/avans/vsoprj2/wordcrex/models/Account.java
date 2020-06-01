@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Account extends Model {
     @Column("username")
@@ -17,6 +19,74 @@ public class Account extends Model {
 
     public Account(ResultSet resultSet) {
         super(resultSet);
+    }
+
+    public List<Game> getRequestedGames() {
+        final Connection connection = Singleton.getInstance().getConnection();
+        final List<Game> result = new ArrayList<>();
+        try {
+            PreparedStatement requestedGamesStatement = connection.prepareStatement(
+                    "SELECT * FROM game " +
+                            "WHERE (username_player1 = ? OR username_player2 = ?) AND " +
+                            "game_state = 'request' AND answer_player2 = 'unknown'");
+            requestedGamesStatement.setString(1, this.getUsername());
+            requestedGamesStatement.setString(2, this.getUsername());
+
+            ResultSet resultSet = requestedGamesStatement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(new Game(resultSet));
+            }
+            return result;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Game> getPlayingGames() {
+        final Connection connection = Singleton.getInstance().getConnection();
+        final List<Game> result = new ArrayList<>();
+        try {
+            PreparedStatement playingGamesStatement = connection.prepareStatement("SELECT game.*, max(turnplayer1.turn_id) as turnplayer1, max(turnplayer2.turn_id) as turnplayer2 " +
+                    "FROM game " +
+                    "         LEFT JOIN turnplayer1 on game.game_id = turnplayer1.game_id " +
+                    "         LEFT JOIN turnplayer2 on game.game_id = turnplayer2.game_id " +
+                    "WHERE (game.username_player1 = ? OR game.username_player2 = ?) AND game.game_state = 'playing' " +
+                    "GROUP BY game.game_id;");
+
+            playingGamesStatement.setString(1, this.getUsername());
+            playingGamesStatement.setString(2, this.getUsername());
+
+            ResultSet resultSet = playingGamesStatement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(new Game(resultSet));
+            }
+            return result;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Game> getFinishedGames() {
+        final Connection connection = Singleton.getInstance().getConnection();
+        final List<Game> result = new ArrayList<>();
+        try {
+
+
+            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned');");
+            finishedGamesStatement.setString(1, this.getUsername());
+            finishedGamesStatement.setString(2, this.getUsername());
+
+            ResultSet resultSet = finishedGamesStatement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(new Game(resultSet));
+            }
+            return result;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
     }
 
     public String getUsername() {
@@ -55,7 +125,11 @@ public class Account extends Model {
         return null;
     }
 
-    //added override for combobox
+    /**
+     * Override for combobox
+     *
+     * @return the username in string format
+     */
     public String toString() {
         return this.getUsername();
     }
