@@ -31,3 +31,7 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           localDir: target/site
           remoteDir: ${{ github.run_id }}
+      - uses: scacap/action-surefire-report@v1
+        name: Publish Test Report
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

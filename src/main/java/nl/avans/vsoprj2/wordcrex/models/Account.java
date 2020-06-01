@@ -87,4 +87,43 @@ public class Account extends Model {
 
         return false;
     }
+
+    public static Account fromUsername(String username) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username = ?");
+            statement.setString(1, username);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return new Account(result);
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return null;
+    }
+
+    public static Account fromUsernamePassword(String username, String password) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username = ? AND password = ?");
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return new Account(result);
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return null;
+    }
 }
