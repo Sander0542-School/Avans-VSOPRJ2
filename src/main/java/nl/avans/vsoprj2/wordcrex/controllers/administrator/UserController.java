@@ -10,6 +10,7 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,7 +67,6 @@ public class UserController extends Controller {
             this.accountRoles.clear();
 
             while (roles.next()) {
-                System.out.println(roles.getString("role"));
                 this.accountRoles.add(Account.Role.valueOf(roles.getString("role").toUpperCase()));
             }
 
@@ -192,10 +192,33 @@ public class UserController extends Controller {
             if (dialogResult.get() == ButtonType.OK) {
                 Connection connection = Singleton.getInstance().getConnection();
                 try {
-                    PreparedStatement userStatement = connection.prepareStatement("UPDATE `accountrole` SET `role` = ? WHERE `username` = ?");
-                    //userStatement.setString(1, this.userRoleComboBox.getValue().toString());
-                    userStatement.setString(2, this.currentUser.getText());
-                    userStatement.executeUpdate();
+                    PreparedStatement oldRolesStatement = connection.prepareStatement("DELETE FROM `accountrole` WHERE `username` = ?");
+                    oldRolesStatement.setString(1, this.currentUser.getText());
+                    oldRolesStatement.executeUpdate();
+
+                    StringBuilder insertQuery = new StringBuilder("INSERT INTO `accountrole`(`username`, `role`) VALUES ");
+                    boolean firstInsert = true;
+                    if(this.checkBoxPlayer.isSelected()) {
+                        insertQuery.append(" ('").append(this.currentUser.getText()).append("', 'player')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxModerator.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'moderator')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxObserver.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'observer')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxAdministrator.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'administrator')");
+                        firstInsert = false;
+                    }
+                    insertQuery.append(";");
+                    PreparedStatement insertStatement = connection.prepareStatement(insertQuery.toString());
+
+                    if(!firstInsert)
+                    insertStatement.executeUpdate();
 
                     //reset user combobox to get the new role of the changed player
                     this.userComboBox.getItems().clear();
@@ -203,13 +226,16 @@ public class UserController extends Controller {
 
                     //reset form
                     this.currentUser.setVisible(false);
-                    //this.userRoleComboBox.setVisible(false);
+                    this.checkBoxPlayer.setVisible(false);
+                    this.checkBoxModerator.setVisible(false);
+                    this.checkBoxAdministrator.setVisible(false);
+                    this.checkBoxObserver.setVisible(false);
                     this.changeUserRoleButton.setVisible(false);
                     this.searchInput.setText("");
 
                 } catch (SQLException ex) {
                     if(WordCrex.DEBUG_MODE) {
-                        System.err.println(ex.getErrorCode());
+                        System.err.println(ex.toString());
                     } else {
                         Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het veranderen van de gebruikersrol.");
                         invalidWordDialog.setTitle("Error");
