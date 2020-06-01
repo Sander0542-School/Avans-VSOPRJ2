@@ -28,13 +28,13 @@ public class DictionaryListController extends Controller {
     }
 
     @FXML
-    private Button acce;
-
-    @FXML
     private VBox dictionaryEntryContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        String userRole = Singleton.getInstance().getUser().getRole(); // userRole.equals("administrator")
+
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
         this.PopulateWordList();
@@ -55,10 +55,14 @@ public class DictionaryListController extends Controller {
             ResultSet resultSet = statement.executeQuery();
 
             this.dictionaryEntryContainer.setVisible(false);
-            this.dictionaryEntryContainer.getChildren().removeIf(node -> node instanceof GameItem);
+            this.dictionaryEntryContainer.getChildren().removeIf(node -> node instanceof DictionaryEntry);
 
             while (resultSet.next()) {
                 DictionaryEntry dictionaryEntry = new DictionaryEntry(new Word(resultSet));
+
+                dictionaryEntry.acceptButton.setOnMouseClicked(event -> DictionaryListController.this.AcceptWord(dictionaryEntry));
+                dictionaryEntry.denyButton.setOnMouseClicked(event -> DictionaryListController.this.DenyWord(dictionaryEntry));
+
                 this.dictionaryEntryContainer.getChildren().add(dictionaryEntry);
                 this.dictionaryEntryContainer.setVisible(true);
             }
@@ -66,5 +70,37 @@ public class DictionaryListController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
+    }
+
+    private void DenyWord(DictionaryEntry dictionaryEntry){
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement newPasswordStatement = connection.prepareStatement("UPDATE `dictionary` SET `state` = ? WHERE `word` = ? AND `letterset_code` = ?;");
+            newPasswordStatement.setString(1, "denied");
+            newPasswordStatement.setString(2, dictionaryEntry.getWord());
+            newPasswordStatement.setString(3, dictionaryEntry.getLanguage());
+            newPasswordStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        this.PopulateWordList();
+    }
+
+    private void AcceptWord(DictionaryEntry dictionaryEntry){
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement newPasswordStatement = connection.prepareStatement("UPDATE `dictionary` SET `state` = ? WHERE `word` = ? AND `letterset_code` = ?;");
+            newPasswordStatement.setString(1, "accepted");
+            newPasswordStatement.setString(2, dictionaryEntry.getWord());
+            newPasswordStatement.setString(3, dictionaryEntry.getLanguage());
+            newPasswordStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        this.PopulateWordList();
     }
 }
