@@ -21,6 +21,11 @@ public class Account extends Model {
         super(resultSet);
     }
 
+    /**
+     * Fetches all the game requests you have access to
+     *
+     * @return list of the games that should be rendered in the requested games container
+     */
     public List<Game> getRequestedGames() {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
@@ -46,7 +51,7 @@ public class Account extends Model {
     /**
      * Fetches all the playing games you have access to
      *
-     * @return list of the games that should be rendered in the finished games container
+     * @return list of the games that should be rendered in the playing games container
      */
     public List<Game> getPlayingGames() {
         return this.getPlayingGames(false);
