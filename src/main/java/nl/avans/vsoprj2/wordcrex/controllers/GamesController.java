@@ -14,15 +14,11 @@ import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.game.BoardController;
 import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.controls.overview.GameItem;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Game;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,9 +34,9 @@ public class GamesController extends Controller {
     @FXML
     private VBox finishedGames;
 
-    private ResultSet requestedGamesResult;
-    private ResultSet playingGamesResult;
-    private ResultSet finishedGamesResult;
+    private List<Game> requestedGamesResult;
+    private List<Game> playingGamesResult;
+    private List<Game> finishedGamesResult;
     private final Timer autoFetch = new Timer();
 
     @Override
@@ -68,10 +64,20 @@ public class GamesController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                int originalRequestedGames = GamesController.this.requestedGamesResult.size();
+                int originalPlayingGames = GamesController.this.playingGamesResult.size();
+                int finishedGamesResult = GamesController.this.finishedGamesResult.size();
+
                 if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch running.");
                 GamesController.this.loadGames(Singleton.getInstance().getUser());
-                if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch data updated rendering.");
-                Platform.runLater(GamesController.this::renderGames);
+
+                if (originalRequestedGames != GamesController.this.requestedGamesResult.size() ||
+                        originalPlayingGames != GamesController.this.playingGamesResult.size() ||
+                        finishedGamesResult != GamesController.this.finishedGamesResult.size()) {
+                    if (WordCrex.DEBUG_MODE)
+                        System.out.println("GamesController: Autofetch data updated rendering.");
+                    Platform.runLater(GamesController.this::renderGames);
+                }
             }
         };
     }
@@ -107,101 +113,64 @@ public class GamesController extends Controller {
     private void renderGames() {
         if (this.requestedGamesResult == null || this.playingGamesResult == null || this.finishedGamesResult == null)
             return;
-        final String currentUsername = Singleton.getInstance().getUser().getUsername();
-        try {
-            //region Render requested games
-            this.gameInvites.setVisible(false);
-            this.gameInvites.getChildren().removeIf(node -> node instanceof GameItem);
+        //region Render requested games
+        this.gameInvites.setVisible(false);
+        this.gameInvites.getChildren().removeIf(node -> node instanceof GameItem);
 
-            while (this.requestedGamesResult.next()) {
-                GameItem gameItem = new GameItem(new Game(this.requestedGamesResult));
+        for (Game game : this.requestedGamesResult) {
+            GameItem gameItem = new GameItem(game);
 
-                if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
-                    this.setGameItemClick(gameItem);
-                } else {
-                    gameItem.setOnMouseClicked(event -> GamesController.this.gameRequest(gameItem));
-                }
-
-                this.gameInvites.getChildren().add(gameItem);
-                this.gameInvites.setVisible(true);
-            }
-            //endregion
-
-            //region Render playing games
-            this.gameYours.setVisible(false);
-            this.gameYours.getChildren().removeIf(node -> node instanceof GameItem);
-
-            this.gameTheirs.setVisible(false);
-            this.gameTheirs.getChildren().removeIf(node -> node instanceof GameItem);
-
-            while (this.playingGamesResult.next()) {
-                int turnplayer1 = this.playingGamesResult.getInt("turnplayer1");
-                int turnplayer2 = this.playingGamesResult.getInt("turnplayer2");
-
-                Game game = new Game(this.playingGamesResult);
-                GameItem gameItem = new GameItem(game);
+            if (Singleton.getInstance().getUser().getUsername().equals(gameItem.getGame().getUsernamePlayer1())) {
                 this.setGameItemClick(gameItem);
-
-                if ((turnplayer1 == turnplayer2) ||
-                        (game.getUsernamePlayer1().equals(currentUsername) && turnplayer1 < turnplayer2) ||
-                        (game.getUsernamePlayer2().equals(currentUsername) && turnplayer2 < turnplayer1)) {
-                    this.gameYours.getChildren().add(gameItem);
-                    this.gameYours.setVisible(true);
-                } else {
-                    this.gameTheirs.getChildren().add(gameItem);
-                    this.gameTheirs.setVisible(true);
-                }
+            } else {
+                gameItem.setOnMouseClicked(event -> GamesController.this.gameRequest(gameItem));
             }
-            //endregion
 
-            //region Render finished games
-            this.finishedGames.setVisible(false);
-            this.finishedGames.getChildren().removeIf(node -> node instanceof GameItem);
-
-            while (this.finishedGamesResult.next()) {
-                GameItem gameItem = new GameItem(new Game(this.finishedGamesResult));
-                this.setGameItemClick(gameItem);
-
-                this.finishedGames.getChildren().add(gameItem);
-                this.finishedGames.setVisible(true);
-            }
-            //endregion
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+            this.gameInvites.getChildren().add(gameItem);
         }
+        this.gameInvites.setVisible(true);
+        //endregion
+
+        //region Render playing games
+        this.gameYours.setVisible(false);
+        this.gameYours.getChildren().removeIf(node -> node instanceof GameItem);
+
+        this.gameTheirs.setVisible(false);
+        this.gameTheirs.getChildren().removeIf(node -> node instanceof GameItem);
+
+        for (Game game : this.playingGamesResult) {
+            final GameItem gameItem = new GameItem(game);
+            final boolean gameLocked = game.getTurnLocked();
+            this.setGameItemClick(gameItem);
+
+            if (gameLocked) {
+                this.gameTheirs.getChildren().add(gameItem);
+            } else {
+                this.gameYours.getChildren().add(gameItem);
+            }
+        }
+        this.gameTheirs.setVisible(true);
+        this.gameYours.setVisible(true);
+        //endregion
+
+        //region Render finished games
+        this.finishedGames.setVisible(false);
+        this.finishedGames.getChildren().removeIf(node -> node instanceof GameItem);
+
+        for (Game game : this.finishedGamesResult) {
+            GameItem gameItem = new GameItem(game);
+            this.setGameItemClick(gameItem);
+
+            this.finishedGames.getChildren().add(gameItem);
+        }
+        this.finishedGames.setVisible(true);
+        //endregion
     }
 
-    private void loadGames(Account user) {
-        final String username = user.getUsername();
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement requestedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND game_state = 'request' AND answer_player2 = 'unknown';");
-            requestedGamesStatement.setString(1, username);
-            requestedGamesStatement.setString(2, username);
-
-            this.requestedGamesResult = requestedGamesStatement.executeQuery();
-
-            PreparedStatement playingGamesStatement = connection.prepareStatement("SELECT game.*, max(turnplayer1.turn_id) as turnplayer1, max(turnplayer2.turn_id) as turnplayer2 " +
-                    "FROM game " +
-                    "         LEFT JOIN turnplayer1 on game.game_id = turnplayer1.game_id " +
-                    "         LEFT JOIN turnplayer2 on game.game_id = turnplayer2.game_id " +
-                    "WHERE (game.username_player1 = ? OR game.username_player2 = ?) AND game.game_state = 'playing' " +
-                    "GROUP BY game.game_id;");
-
-            playingGamesStatement.setString(1, username);
-            playingGamesStatement.setString(2, username);
-
-            this.playingGamesResult = playingGamesStatement.executeQuery();
-
-            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned');");
-            finishedGamesStatement.setString(1, username);
-            finishedGamesStatement.setString(2, username);
-
-            this.finishedGamesResult = finishedGamesStatement.executeQuery();
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
+    private void loadGames(Account account) {
+        this.requestedGamesResult = account.getRequestedGames();
+        this.playingGamesResult = account.getPlayingGames();
+        this.finishedGamesResult = account.getFinishedGames();
     }
 
     private void setGameItemClick(GameItem gameItem) {
@@ -235,10 +204,17 @@ public class GamesController extends Controller {
     public void handleBottomBarNavigation(Event event) {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
-        if (bottomBarItem.getId().equals("statistics")) {
-            this.autoFetch.cancel();
-            this.autoFetch.purge();
-            this.navigateTo("/views/statistics.fxml");
+        switch (bottomBarItem.getId().toLowerCase()) {
+            case "statistics":
+                this.autoFetch.cancel();
+                this.autoFetch.purge();
+                this.navigateTo("/views/statistics.fxml");
+                break;
+            case "observer":
+                this.autoFetch.cancel();
+                this.autoFetch.purge();
+                this.navigateTo("/views/observer.fxml");
+                break;
         }
     }
 

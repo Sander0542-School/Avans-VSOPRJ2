@@ -182,6 +182,16 @@ public class Game extends DbModel {
     }
 
     /**
+     * Checks if you are one of the two participants in this game
+     *
+     * @return if you are a participant this is true
+     */
+    public boolean getOwnGame() {
+        final String currentUsername = Singleton.getInstance().getUser().getUsername();
+        return this.getUsernamePlayer1().equals(currentUsername) || this.getUsernamePlayer2().equals(currentUsername);
+    }
+
+    /**
      * Sets the game state to resigned and the opponent as the winner
      */
     public void resignGame() {
