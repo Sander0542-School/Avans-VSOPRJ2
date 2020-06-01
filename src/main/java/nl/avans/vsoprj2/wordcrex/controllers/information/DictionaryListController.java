@@ -27,12 +27,18 @@ public class DictionaryListController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        String userRole = Singleton.getInstance().getUser().getRole(); // userRole.equals("administrator")
-
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
-        this.PopulateAdminWordList();
+
+        //While Debug_Mode is TRUE Singleton.getInstance().getUser().getRole() returns Null
+        //Boolean isAdministrator = Singleton.getInstance().getUser().getRole().equals("administrator");
+
+        Boolean isAdministrator = Singleton.getInstance().getUser().getRole() != null && Singleton.getInstance().getUser().getRole().equals("administrator");
+        if (isAdministrator) {
+            this.PopulateAdminWordList();
+        } else {
+            this.PopulateUserWordList();
+        }
     }
 
     public DictionaryListController() {
