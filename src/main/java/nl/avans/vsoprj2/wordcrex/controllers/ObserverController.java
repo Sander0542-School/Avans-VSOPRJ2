@@ -21,12 +21,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ObserverController extends Controller {
-
-    private final Timer autoFetch = new Timer();
     @FXML
     private VBox playingGames;
     @FXML
     private VBox finishedGames;
+
+    private final Timer autoFetch = new Timer();
     private List<Game> playingGamesResult;
     private List<Game> finishedGamesResult;
 
