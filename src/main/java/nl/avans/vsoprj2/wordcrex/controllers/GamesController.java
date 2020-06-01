@@ -194,10 +194,17 @@ public class GamesController extends Controller {
     public void handleBottomBarNavigation(Event event) {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
-        if (bottomBarItem.getId().equals("statistics")) {
-            this.autoFetch.cancel();
-            this.autoFetch.purge();
-            this.navigateTo("/views/statistics.fxml");
+        switch (bottomBarItem.getId().toLowerCase()) {
+            case "statistics":
+                this.autoFetch.cancel();
+                this.autoFetch.purge();
+                this.navigateTo("/views/statistics.fxml");
+                break;
+            case "observer":
+                this.autoFetch.cancel();
+                this.autoFetch.purge();
+                this.navigateTo("/views/observer.fxml");
+                break;
         }
     }
 
