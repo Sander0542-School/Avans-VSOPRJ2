@@ -33,7 +33,7 @@ public class LoginController extends Controller {
         if (!this.username.getText().trim().isEmpty() && !this.password.getText().trim().isEmpty()) {
             Connection connection = Singleton.getInstance().getConnection();
             try {
-                PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? && a.password=?");
+                PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=? AND a.password=?");
                 statement.setString(1, this.username.getText());
                 statement.setString(2, this.password.getText());
                 ResultSet result = statement.executeQuery();
