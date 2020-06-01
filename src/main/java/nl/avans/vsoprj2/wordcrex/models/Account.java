@@ -47,15 +47,17 @@ public class Account extends Model {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
         try {
-            PreparedStatement playingGamesStatement = connection.prepareStatement("SELECT game.*, max(turnplayer1.turn_id) as turnplayer1, max(turnplayer2.turn_id) as turnplayer2 " +
-                    "FROM game " +
-                    "         LEFT JOIN turnplayer1 on game.game_id = turnplayer1.game_id " +
-                    "         LEFT JOIN turnplayer2 on game.game_id = turnplayer2.game_id " +
-                    "WHERE (game.username_player1 = ? OR game.username_player2 = ?) AND game.game_state = 'playing' " +
-                    "GROUP BY game.game_id;");
+            PreparedStatement playingGamesStatement;
 
-            playingGamesStatement.setString(1, this.getUsername());
-            playingGamesStatement.setString(2, this.getUsername());
+            if (this.getRole().equalsIgnoreCase("observer")) {
+                playingGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game.game_state = 'playing'");
+            } else {
+                playingGamesStatement = connection.prepareStatement("SELECT * FROM game " +
+                        "WHERE (game.username_player1 = ? OR game.username_player2 = ?) AND game.game_state = 'playing'");
+
+                playingGamesStatement.setString(1, this.getUsername());
+                playingGamesStatement.setString(2, this.getUsername());
+            }
 
             ResultSet resultSet = playingGamesStatement.executeQuery();
 
