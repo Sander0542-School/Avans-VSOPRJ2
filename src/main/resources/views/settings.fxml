@@ -29,6 +29,11 @@
                         <Font name="Roboto Black" size="18.0" />
                     </font>
                 </Button>
+                <Button fx:id="btnUserOverview" visible="false" onAction="#handleUserOverviewAction" prefWidth="600" style="-fx-background-color: #201b53;-fx-padding: 10;" textFill="#ffffff" text="Gebruikers inzien">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Button>
             </VBox>
         </VBox>
     </center>

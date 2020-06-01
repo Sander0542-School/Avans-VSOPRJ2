@@ -54,4 +54,9 @@ public class Account extends Model {
 
         return null;
     }
+
+    //added override for combobox
+    public String toString() {
+        return this.getUsername();
+    }
 }
