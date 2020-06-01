@@ -47,10 +47,17 @@ public class ObserverController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
-                if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch running.");
+                int originalPlayingGames = ObserverController.this.playingGamesResult.size();
+                int originalFinishedGames = ObserverController.this.finishedGamesResult.size();
+
+                if (WordCrex.DEBUG_MODE) System.out.println("ObserverController: Autofetch running.");
                 ObserverController.this.loadGames(Singleton.getInstance().getUser());
-                if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch data updated rendering.");
-                Platform.runLater(ObserverController.this::renderGames);
+                if (originalPlayingGames != ObserverController.this.playingGamesResult.size() ||
+                        originalFinishedGames != ObserverController.this.finishedGamesResult.size()) {
+                    if (WordCrex.DEBUG_MODE)
+                        System.out.println("ObserverController: Autofetch data updated rendering.");
+                    Platform.runLater(ObserverController.this::renderGames);
+                }
             }
         };
     }
