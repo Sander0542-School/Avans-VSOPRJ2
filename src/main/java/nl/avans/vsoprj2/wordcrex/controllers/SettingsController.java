@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,8 +22,7 @@ public class SettingsController extends Controller {
         super.initialize(url, resourceBundle);
 
         this.username.setText(Singleton.getInstance().getUser().getUsername());
-        if(Singleton.getInstance().getUser().getRole() != null)
-        if(Singleton.getInstance().getUser().getRole().equals("administrator")) {
+        if (Singleton.getInstance().getUser().hasRole(Account.Role.ADMINISTRATOR)) {
             this.btnUserOverview.setVisible(true);
         }
     }

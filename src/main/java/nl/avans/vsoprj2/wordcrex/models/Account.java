@@ -1,6 +1,8 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import javafx.scene.control.Alert;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
@@ -14,8 +16,6 @@ import java.util.List;
 public class Account extends Model {
     @Column("username")
     private String username;
-    @Column("role")
-    private String role;
 
     public Account(ResultSet resultSet) {
         super(resultSet);
@@ -140,8 +140,11 @@ public class Account extends Model {
         return this.username;
     }
 
-    public String getRole() {
-        return this.role;
+    public enum Role {
+        PLAYER,
+        OBSERVER,
+        MODERATOR,
+        ADMINISTRATOR
     }
 
     public Statistic getStatistic() {
@@ -181,11 +184,36 @@ public class Account extends Model {
         return this.getUsername();
     }
 
+    public boolean hasRole(Role role) {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement userRolesStatement = connection.prepareStatement("SELECT `role` FROM `accountrole` WHERE `username` = ?");
+            userRolesStatement.setString(1, Singleton.getInstance().getUser().getUsername());
+            ResultSet roles = userRolesStatement.executeQuery();
+
+            while (roles.next()) {
+                if (Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(role)) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            if (WordCrex.DEBUG_MODE) {
+                System.err.println(ex.getErrorCode());
+            } else {
+                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de rollen.");
+                invalidWordDialog.setTitle("Error");
+                invalidWordDialog.showAndWait();
+            }
+        }
+
+        return false;
+    }
+
     public static Account fromUsername(String username) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username = ?");
             statement.setString(1, username);
             ResultSet result = statement.executeQuery();
 
@@ -204,7 +232,7 @@ public class Account extends Model {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username = ? AND a.password = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT username FROM account WHERE username = ? AND password = ?");
             statement.setString(1, username);
             statement.setString(2, password);
             ResultSet result = statement.executeQuery();
