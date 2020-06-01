@@ -15,7 +15,7 @@ public class AccountModelTest extends TestCase {
 
     public void testFromUsernamePassword() {
         String username = "jagermeester";
-        String password = "rrr";
+        String password = "123";
 
         Account account = Account.fromUsernamePassword(username, password);
 
