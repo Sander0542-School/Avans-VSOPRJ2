@@ -72,11 +72,15 @@ public class Account extends Model {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
         try {
+            PreparedStatement finishedGamesStatement;
 
-
-            PreparedStatement finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned');");
-            finishedGamesStatement.setString(1, this.getUsername());
-            finishedGamesStatement.setString(2, this.getUsername());
+            if (this.getRole().equalsIgnoreCase("observer")) {
+                finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game_state = 'finished' OR game_state = 'resigned'");
+            } else {
+                finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned')");
+                finishedGamesStatement.setString(1, this.getUsername());
+                finishedGamesStatement.setString(2, this.getUsername());
+            }
 
             ResultSet resultSet = finishedGamesStatement.executeQuery();
 
