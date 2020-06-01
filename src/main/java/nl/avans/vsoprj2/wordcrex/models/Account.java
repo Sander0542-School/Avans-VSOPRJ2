@@ -70,7 +70,7 @@ public class Account extends Model {
         try {
             PreparedStatement playingGamesStatement;
 
-            if (this.getRole().equalsIgnoreCase("observer") && observable) {
+            if (this.hasRole(Role.OBSERVER) && observable) {
                 playingGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE " +
                         "game.username_player1 != ? AND game.username_player2 != ? AND game.game_state = 'playing'");
             } else {
@@ -115,7 +115,7 @@ public class Account extends Model {
         try {
             PreparedStatement finishedGamesStatement;
 
-            if (this.getRole().equalsIgnoreCase("observer") && observable) {
+            if (this.hasRole(Role.OBSERVER) && observable) {
                 finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE username_player1 != ? " +
                         "AND username_player2 != ? AND (game_state = 'finished' OR game_state = 'resigned')");
             } else {
