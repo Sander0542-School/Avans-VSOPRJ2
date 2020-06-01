@@ -5,8 +5,8 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem;
 import nl.avans.vsoprj2.wordcrex.models.Statistic;
 
 import java.net.URL;
@@ -53,8 +53,13 @@ public class StatisticsController extends Controller {
     public void handleBottomBarNavigation(Event event) {
         BottomBarItem bottomBarItem = (BottomBarItem) event.getSource();
 
-        if (bottomBarItem.getId().equals("games")) {
-            this.navigateTo("/views/games.fxml");
+        switch (bottomBarItem.getId().toLowerCase()) {
+            case "observer":
+                this.navigateTo("/views/observer.fxml");
+                break;
+            case "games":
+                this.navigateTo("/views/games.fxml");
+                break;
         }
     }
 
