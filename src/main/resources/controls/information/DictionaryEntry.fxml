@@ -4,9 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="64.0" style="-fx-background-color: #201b53;" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal">
-    <HBox AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER_LEFT">
+    <HBox AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER">
         <Label fx:id="wordLabel" text="Word - Language" textFill="WHITE" style="-fx-font-weight: bold"/>
         <Label fx:id="languageLabel" text="Language" textFill="WHITE"/>
+        <Label fx:id="usernameLabel" text="UserName" textFill="WHITE"/>
         <Button fx:id="acceptButton" text="Accepteer" alignment="CENTER_LEFT" style="-fx-background-color: #174427;" textFill="white"/>
         <Button fx:id="denyButton" text="Weiger" alignment="CENTER_LEFT" style="-fx-background-color: #44173b;" textFill="white"/>
     </HBox>
