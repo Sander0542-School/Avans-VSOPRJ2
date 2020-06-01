@@ -135,8 +135,8 @@ public class DictionaryController extends Controller {
             }
 
             statement = connection.prepareStatement("INSERT INTO dictionary (word, letterset_code, state, username) VALUES (?,?,'pending',?)");
-            statement.setString(1, this.word.getText().trim());
-            statement.setString(2, this.languages.get(selectedLanguage).toLowerCase());
+            statement.setString(1, this.word.getText().trim().toLowerCase());
+            statement.setString(2, this.languages.get(selectedLanguage));
             statement.setString(3, this.username.getText().trim());
             int result = statement.executeUpdate();
             if (result > 0) {
