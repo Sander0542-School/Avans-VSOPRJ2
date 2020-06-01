@@ -43,13 +43,29 @@ public class Account extends Model {
         }
     }
 
+    /**
+     * Fetches all the playing games you have access to
+     *
+     * @return list of the games that should be rendered in the finished games container
+     */
     public List<Game> getPlayingGames() {
+        return this.getPlayingGames(false);
+    }
+
+    /**
+     * Fetches all the playing games you have access to
+     *
+     * @param observable if this is true the method will also return observable games
+     *
+     * @return list of the games
+     */
+    public List<Game> getPlayingGames(final boolean observable) {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
         try {
             PreparedStatement playingGamesStatement;
 
-            if (this.getRole().equalsIgnoreCase("observer")) {
+            if (this.getRole().equalsIgnoreCase("observer") && observable) {
                 playingGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game.game_state = 'playing'");
             } else {
                 playingGamesStatement = connection.prepareStatement("SELECT * FROM game " +
@@ -76,12 +92,23 @@ public class Account extends Model {
      * @return list of the games that should be rendered in the finished games container
      */
     public List<Game> getFinishedGames() {
+        return this.getFinishedGames(false);
+    }
+
+    /**
+     * Fetches all the finished games you have access to
+     *
+     * @param observable if this is true the method will also return observable games
+     *
+     * @return list of games
+     */
+    public List<Game> getFinishedGames(final boolean observable) {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
         try {
             PreparedStatement finishedGamesStatement;
 
-            if (this.getRole().equalsIgnoreCase("observer")) {
+            if (this.getRole().equalsIgnoreCase("observer") && observable) {
                 finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game_state = 'finished' OR game_state = 'resigned'");
             } else {
                 finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned')");
