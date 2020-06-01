@@ -1,6 +1,8 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import javafx.scene.control.Alert;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 import nl.avans.vsoprj2.wordcrex.models.annotations.Column;
 
@@ -65,5 +67,30 @@ public class Account extends Model {
     //added override for combobox
     public String toString() {
         return this.getUsername();
+    }
+
+    public boolean userHasRole(Role role) {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement userRolesStatement = connection.prepareStatement("SELECT `role` FROM `accountrole` WHERE `username` = ?");
+            userRolesStatement.setString(1, Singleton.getInstance().getUser().getUsername());
+            ResultSet roles = userRolesStatement.executeQuery();
+
+            while (roles.next()) {
+                if(Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(role)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException ex) {
+            if(WordCrex.DEBUG_MODE) {
+                System.err.println(ex.getErrorCode());
+            } else {
+                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de rollen.");
+                invalidWordDialog.setTitle("Error");
+                invalidWordDialog.showAndWait();
+            }
+            return false;
+        }
     }
 }
