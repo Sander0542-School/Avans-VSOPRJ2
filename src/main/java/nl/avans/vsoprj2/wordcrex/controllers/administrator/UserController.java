@@ -217,8 +217,7 @@ public class UserController extends Controller {
                     insertQuery.append(";");
                     PreparedStatement insertStatement = connection.prepareStatement(insertQuery.toString());
 
-                    if(!firstInsert)
-                    insertStatement.executeUpdate();
+                    if(!firstInsert) insertStatement.executeUpdate();
 
                     //reset user combobox to get the new role of the changed player
                     this.userComboBox.getItems().clear();
