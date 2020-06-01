@@ -35,7 +35,7 @@ public class DictionaryListController extends Controller {
     }
 
     private void PopulateWordList() {
-        Boolean isModerator = Singleton.getInstance().getUser().hasRole(Account.Role.MODERATOR);
+        boolean isModerator = Singleton.getInstance().getUser().hasRole(Account.Role.MODERATOR);
 
         Connection connection = Singleton.getInstance().getConnection();
 
