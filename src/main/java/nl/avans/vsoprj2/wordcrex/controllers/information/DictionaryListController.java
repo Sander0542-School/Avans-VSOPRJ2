@@ -30,21 +30,22 @@ public class DictionaryListController extends Controller {
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
 
-        Boolean isAdministrator = Singleton.getInstance().getUser().getRole().equals("moderator");
-        if (isAdministrator) {
-            this.PopulateAdminWordList();
-        } else {
-            this.PopulateUserWordList();
-        }
+        this.PopulateWordList();
     }
 
-    private void PopulateUserWordList() {
+    private void PopulateWordList() {
+        Boolean isModerator  = Singleton.getInstance().getUser().getRole().equals("moderator");
+
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `username` = ?;");
-            statement.setString(1, Singleton.getInstance().getUser().getUsername());
-
+            PreparedStatement statement;
+            if(isModerator ){
+                statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `state` = 'pending';");
+            }else {
+                statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `username` = ?;");
+                statement.setString(1, Singleton.getInstance().getUser().getUsername());
+            }
             ResultSet resultSet = statement.executeQuery();
 
             this.dictionaryEntryContainer.setVisible(false);
@@ -53,8 +54,14 @@ public class DictionaryListController extends Controller {
             while (resultSet.next()) {
                 DictionaryEntry dictionaryEntry = new DictionaryEntry(new Word(resultSet));
 
-                dictionaryEntry.acceptButton.setVisible(false);
-                dictionaryEntry.denyButton.setVisible(false);
+                if(isModerator ){
+                    dictionaryEntry.acceptButton.setOnMouseClicked(event -> DictionaryListController.this.ReviewWord(dictionaryEntry, true));
+                    dictionaryEntry.denyButton.setOnMouseClicked(event -> DictionaryListController.this.ReviewWord(dictionaryEntry, false));
+                }else {
+                    dictionaryEntry.acceptButton.setVisible(false);
+                    dictionaryEntry.denyButton.setVisible(false);
+                }
+
 
                 this.dictionaryEntryContainer.getChildren().add(dictionaryEntry);
                 this.dictionaryEntryContainer.setVisible(true);
@@ -65,60 +72,19 @@ public class DictionaryListController extends Controller {
         }
     }
 
-    private void PopulateAdminWordList() {
-
+    private void ReviewWord(DictionaryEntry dictionaryEntry, Boolean accept) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `state` = pending;");
-
-            ResultSet resultSet = statement.executeQuery();
-
-            this.dictionaryEntryContainer.setVisible(false);
-            this.dictionaryEntryContainer.getChildren().removeIf(node -> node instanceof DictionaryEntry);
-
-            while (resultSet.next()) {
-                DictionaryEntry dictionaryEntry = new DictionaryEntry(new Word(resultSet));
-
-                dictionaryEntry.acceptButton.setOnMouseClicked(event -> DictionaryListController.this.AcceptWord(dictionaryEntry));
-                dictionaryEntry.denyButton.setOnMouseClicked(event -> DictionaryListController.this.DenyWord(dictionaryEntry));
-
-                this.dictionaryEntryContainer.getChildren().add(dictionaryEntry);
-                this.dictionaryEntryContainer.setVisible(true);
-            }
-
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
-    }
-
-    private void DenyWord(DictionaryEntry dictionaryEntry) {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE `dictionary` SET `state` = denied WHERE `word` = ? AND `letterset_code` = ?;");
-            statement.setString(1, dictionaryEntry.getWord());
-            statement.setString(2, dictionaryEntry.getLanguage());
+            PreparedStatement statement = connection.prepareStatement("UPDATE `dictionary` SET `state` = ? WHERE `word` = ? AND `letterset_code` = ?;");
+            statement.setString(1, accept ? "accepted" : "denied");
+            statement.setString(2, dictionaryEntry.getWord());
+            statement.setString(3, dictionaryEntry.getLanguage());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
 
-        this.PopulateAdminWordList();
-    }
-
-    private void AcceptWord(DictionaryEntry dictionaryEntry) {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE `dictionary` SET `state` = accepted WHERE `word` = ? AND `letterset_code` = ?;");
-            statement.setString(1, dictionaryEntry.getWord());
-            statement.setString(2, dictionaryEntry.getLanguage());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
-
-        this.PopulateAdminWordList();
+        this.PopulateWordList();
     }
 }
