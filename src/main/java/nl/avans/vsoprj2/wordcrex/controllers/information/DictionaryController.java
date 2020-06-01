@@ -130,7 +130,7 @@ public class DictionaryController extends Controller {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 this.error.setVisible(true);
-                this.error.setText("Woord is eerder toegevoegd");
+                this.error.setText("Dit woord zit al in ons woordenboek!");
                 return;
             }
 
