@@ -22,10 +22,8 @@ public class SettingsController extends Controller {
         super.initialize(url, resourceBundle);
 
         this.username.setText(Singleton.getInstance().getUser().getUsername());
-        if (Singleton.getInstance().getUser().getRole() != null) {
-            if (Singleton.getInstance().getUser().userHasRole(Account.Role.ADMINISTRATOR)) {
-                this.btnUserOverview.setVisible(true);
-            }
+        if (Singleton.getInstance().getUser().hasRole(Account.Role.ADMINISTRATOR)) {
+            this.btnUserOverview.setVisible(true);
         }
     }
 

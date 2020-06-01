@@ -6,6 +6,7 @@ import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.information.DictionaryEntry;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 import nl.avans.vsoprj2.wordcrex.models.Word;
 
 import java.net.URL;
@@ -34,7 +35,7 @@ public class DictionaryListController extends Controller {
     }
 
     private void PopulateWordList() {
-        Boolean isModerator  = Singleton.getInstance().getUser().getRole().equals("moderator");
+        Boolean isModerator = Singleton.getInstance().getUser().hasRole(Account.Role.MODERATOR);
 
         Connection connection = Singleton.getInstance().getConnection();
 
