@@ -43,7 +43,7 @@ public class UserController extends Controller {
         this.navigateTo("/views/settings.fxml");
     }
 
-    private ArrayList<Account.Role> accountRoles;
+    private ArrayList<Account.Role> accountRoles = new ArrayList<Account.Role>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,12 +58,14 @@ public class UserController extends Controller {
     private void getUserRoles() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement usersStatement = connection.prepareStatement("SELECT `role` FROM `acountrole` WHERE `username` = ?");
-            usersStatement.setString(1, Singleton.getInstance().getUser().getUsername());
-            ResultSet users = usersStatement.executeQuery();
+            PreparedStatement userRoleStatement = connection.prepareStatement("SELECT `role` FROM `acountrole` WHERE `username` = ?");
+            userRoleStatement.setString(1, Singleton.getInstance().getUser().getUsername());
+            ResultSet roles = userRoleStatement.executeQuery();
+            this.accountRoles.clear();
 
-            while (users.next()) {
-                this.accountRoles.add(Account.Role.valueOf(users.getString("role").toUpperCase()));
+            while (roles.next()) {
+                System.out.println(roles.getString("role"));
+                this.accountRoles.add(Account.Role.valueOf(roles.getString("role").toUpperCase()));
             }
 
         } catch (SQLException ex) {
@@ -111,15 +113,23 @@ public class UserController extends Controller {
      */
     private void handleFormChanges(Account account) {
         if(account != null) {
-            this.getAllUsers();
+            this.getUserRoles();
             this.currentUser.setText(account.getUsername());
             this.currentUser.setVisible(true);
             this.changeUserRoleButton.setVisible(true);
-            //TODO check if user has role
             for (int i=0; i < this.accountRoles.size(); i++) {
                 switch (this.accountRoles.get(i)) {
-                    case Account.Role.PLAYER:
+                    case PLAYER:
                         this.checkBoxPlayer.setSelected(true);
+                        break;
+                    case MODERATOR:
+                        this.checkBoxModerator.setSelected(true);
+                        break;
+                    case OBSERVER:
+                        this.checkBoxObserver.setSelected(true);
+                        break;
+                    case ADMINISTRATOR:
+                        this.checkBoxAdministrator.setSelected(true);
                         break;
                 }
             }

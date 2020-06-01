@@ -30,7 +30,7 @@
                 </HBox>
                 <Separator />
                 <Label fx:id="currentUser" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
-                <CheckBox fx:id="checkBoxPlayer" text="player" visible="false"/>
+                <CheckBox fx:id="checkBoxPlayer" text="player" visible="false" selected="true"/>
                 <CheckBox fx:id="checkBoxModerator" text="moderator" visible="false"/>
                 <CheckBox fx:id="checkBoxObserver" text="observer" visible="false"/>
                 <CheckBox fx:id="checkBoxAdministrator" text="administrator" visible="false"/>
