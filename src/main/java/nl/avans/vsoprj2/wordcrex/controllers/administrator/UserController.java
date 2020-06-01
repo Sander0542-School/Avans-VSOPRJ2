@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController extends Controller {
+    //TODO Fix to work with multiple user roles
     @FXML
     public ComboBox userComboBox;
 
