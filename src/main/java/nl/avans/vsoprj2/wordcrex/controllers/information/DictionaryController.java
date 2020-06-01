@@ -59,10 +59,6 @@ public class DictionaryController extends Controller {
         this.username.setDisable(true);
     }
 
-
-    public DictionaryController() {
-    }
-
     private String[] Languages() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
