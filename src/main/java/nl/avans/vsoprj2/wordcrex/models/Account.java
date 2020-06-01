@@ -66,7 +66,10 @@ public class Account extends Model {
             PreparedStatement playingGamesStatement;
 
             if (this.getRole().equalsIgnoreCase("observer") && observable) {
-                playingGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game.game_state = 'playing'");
+                playingGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE " +
+                        "game.username_player1 != ? AND game.username_player2 != ? AND game.game_state = 'playing'");
+                playingGamesStatement.setString(1, this.getUsername());
+                playingGamesStatement.setString(2, this.getUsername());
             } else {
                 playingGamesStatement = connection.prepareStatement("SELECT * FROM game " +
                         "WHERE (game.username_player1 = ? OR game.username_player2 = ?) AND game.game_state = 'playing'");
@@ -109,7 +112,10 @@ public class Account extends Model {
             PreparedStatement finishedGamesStatement;
 
             if (this.getRole().equalsIgnoreCase("observer") && observable) {
-                finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE game_state = 'finished' OR game_state = 'resigned'");
+                finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE username_player1 != ? " +
+                        "AND username_player2 != ? AND (game_state = 'finished' OR game_state = 'resigned')");
+                finishedGamesStatement.setString(1, this.getUsername());
+                finishedGamesStatement.setString(2, this.getUsername());
             } else {
                 finishedGamesStatement = connection.prepareStatement("SELECT * FROM game WHERE (username_player1 = ? OR username_player2 = ?) AND (game_state = 'finished' OR game_state = 'resigned')");
                 finishedGamesStatement.setString(1, this.getUsername());
