@@ -9,6 +9,7 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -42,19 +43,19 @@ public class UserController extends Controller {
         this.navigateTo("/views/settings.fxml");
     }
 
+    private ArrayList<Account.Role> accountRoles;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
         this.getAllUsers();
-        this.getAllRoles();
     }
 
     /**
-     * TODO change to work with multiple users
-     * Get all the roles from the database and fills the comboBox
+     * Get all the roles to user currently has
      */
-    private void getAllRoles() {
+    private void getUserRoles() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement usersStatement = connection.prepareStatement("SELECT `role` FROM `acountrole` WHERE `username` = ?");
@@ -62,7 +63,7 @@ public class UserController extends Controller {
             ResultSet users = usersStatement.executeQuery();
 
             while (users.next()) {
-                //this.userRoleComboBox.getItems().add(users.getString("role"));
+                this.accountRoles.add(Account.Role.valueOf(users.getString("role").toUpperCase()));
             }
 
         } catch (SQLException ex) {
@@ -110,10 +111,18 @@ public class UserController extends Controller {
      */
     private void handleFormChanges(Account account) {
         if(account != null) {
+            this.getAllUsers();
             this.currentUser.setText(account.getUsername());
             this.currentUser.setVisible(true);
             this.changeUserRoleButton.setVisible(true);
             //TODO check if user has role
+            for (int i=0; i < this.accountRoles.size(); i++) {
+                switch (this.accountRoles.get(i)) {
+                    case Account.Role.PLAYER:
+                        this.checkBoxPlayer.setSelected(true);
+                        break;
+                }
+            }
             this.checkBoxPlayer.setVisible(true);
             this.checkBoxModerator.setVisible(true);
             this.checkBoxObserver.setVisible(true);
