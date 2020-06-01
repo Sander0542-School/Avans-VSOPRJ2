@@ -68,6 +68,11 @@ public class Account extends Model {
         }
     }
 
+    /**
+     * Fetches all the finished games you have access to
+     *
+     * @return list of the games that should be rendered in the finished games container
+     */
     public List<Game> getFinishedGames() {
         final Connection connection = Singleton.getInstance().getConnection();
         final List<Game> result = new ArrayList<>();
