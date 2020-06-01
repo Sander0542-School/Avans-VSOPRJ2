@@ -23,8 +23,15 @@ public class Account extends Model {
         return this.username;
     }
 
-    public String getRole() {
-        return this.role;
+    public Role getRole() {
+        return Role.valueOf(this.role.toUpperCase());
+    }
+
+    public enum Role {
+        PLAYER,
+        OBSERVER,
+        MODERATOR,
+        ADMINISTRATOR
     }
 
     public Statistic getStatistic() {

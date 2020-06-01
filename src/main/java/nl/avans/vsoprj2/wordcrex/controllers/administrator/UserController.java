@@ -13,12 +13,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController extends Controller {
-    //TODO Fix to work with multiple user roles
     @FXML
     public ComboBox userComboBox;
-
-    @FXML
-    public ComboBox userRoleComboBox;
 
     @FXML
     public Label currentUser;
@@ -28,6 +24,18 @@ public class UserController extends Controller {
 
     @FXML
     public TextInputControl searchInput;
+
+    @FXML
+    public CheckBox checkBoxPlayer;
+
+    @FXML
+    public CheckBox checkBoxModerator;
+
+    @FXML
+    public CheckBox checkBoxObserver;
+
+    @FXML
+    public CheckBox checkBoxAdministrator;
 
     @FXML
     private void handleBackButton() {
@@ -43,16 +51,18 @@ public class UserController extends Controller {
     }
 
     /**
+     * TODO change to work with multiple users
      * Get all the roles from the database and fills the comboBox
      */
     private void getAllRoles() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement usersStatement = connection.prepareStatement("SELECT `role` FROM `role`");
+            PreparedStatement usersStatement = connection.prepareStatement("SELECT `role` FROM `acountrole` WHERE `username` = ?");
+            usersStatement.setString(1, Singleton.getInstance().getUser().getUsername());
             ResultSet users = usersStatement.executeQuery();
 
             while (users.next()) {
-                this.userRoleComboBox.getItems().add(users.getString("role"));
+                //this.userRoleComboBox.getItems().add(users.getString("role"));
             }
 
         } catch (SQLException ex) {
@@ -101,10 +111,13 @@ public class UserController extends Controller {
     private void handleFormChanges(Account account) {
         if(account != null) {
             this.currentUser.setText(account.getUsername());
-            this.userRoleComboBox.getSelectionModel().select(account.getRole());
             this.currentUser.setVisible(true);
-            this.userRoleComboBox.setVisible(true);
             this.changeUserRoleButton.setVisible(true);
+            //TODO check if user has role
+            this.checkBoxPlayer.setVisible(true);
+            this.checkBoxModerator.setVisible(true);
+            this.checkBoxObserver.setVisible(true);
+            this.checkBoxAdministrator.setVisible(true);
         }
     }
 
@@ -144,40 +157,42 @@ public class UserController extends Controller {
 
     @FXML
     private void handleUserRoleChangeAction() {
-        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationDialog.setTitle("Gebruikersrol wijzigen");
-        confirmationDialog.setHeaderText("Weet je zeker dat je de gebruikersrol van " + this.currentUser.getText() + " wil wijzgen?");
-        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
-
-        if (dialogResult.isPresent()) {
-            if (dialogResult.get() == ButtonType.OK) {
-                Connection connection = Singleton.getInstance().getConnection();
-                try {
-                    PreparedStatement userStatement = connection.prepareStatement("UPDATE `accountrole` SET `role` = ? WHERE `username` = ?");
-                    userStatement.setString(1, this.userRoleComboBox.getValue().toString());
-                    userStatement.setString(2, this.currentUser.getText());
-                    userStatement.executeUpdate();
-
-                    //reset user combobox to get the new role of the changed player
-                    this.userComboBox.getItems().clear();
-                    this.getAllUsers();
-
-                    //reset form
-                    this.currentUser.setVisible(false);
-                    this.userRoleComboBox.setVisible(false);
-                    this.changeUserRoleButton.setVisible(false);
-                    this.searchInput.setText("");
-
-                } catch (SQLException ex) {
-                    if(WordCrex.DEBUG_MODE) {
-                        System.err.println(ex.getErrorCode());
-                    } else {
-                        Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het veranderen van de gebruikersrol.");
-                        invalidWordDialog.setTitle("Error");
-                        invalidWordDialog.showAndWait();
-                    }
-                }
-            }
-        }
+        //TODO fix to work with multiple users
+        return;
+//        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+//        confirmationDialog.setTitle("Gebruikersrol wijzigen");
+//        confirmationDialog.setHeaderText("Weet je zeker dat je de gebruikersrol van " + this.currentUser.getText() + " wil wijzgen?");
+//        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
+//
+//        if (dialogResult.isPresent()) {
+//            if (dialogResult.get() == ButtonType.OK) {
+//                Connection connection = Singleton.getInstance().getConnection();
+//                try {
+//                    PreparedStatement userStatement = connection.prepareStatement("UPDATE `accountrole` SET `role` = ? WHERE `username` = ?");
+//                    //userStatement.setString(1, this.userRoleComboBox.getValue().toString());
+//                    userStatement.setString(2, this.currentUser.getText());
+//                    userStatement.executeUpdate();
+//
+//                    //reset user combobox to get the new role of the changed player
+//                    this.userComboBox.getItems().clear();
+//                    this.getAllUsers();
+//
+//                    //reset form
+//                    this.currentUser.setVisible(false);
+//                    //this.userRoleComboBox.setVisible(false);
+//                    this.changeUserRoleButton.setVisible(false);
+//                    this.searchInput.setText("");
+//
+//                } catch (SQLException ex) {
+//                    if(WordCrex.DEBUG_MODE) {
+//                        System.err.println(ex.getErrorCode());
+//                    } else {
+//                        Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het veranderen van de gebruikersrol.");
+//                        invalidWordDialog.setTitle("Error");
+//                        invalidWordDialog.showAndWait();
+//                    }
+//                }
+//            }
+//        }
     }
 }
