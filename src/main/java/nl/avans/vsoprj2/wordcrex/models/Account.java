@@ -14,8 +14,6 @@ import java.sql.SQLException;
 public class Account extends Model {
     @Column("username")
     private String username;
-    @Column("role")
-    private String role;
 
     public Account(ResultSet resultSet) {
         super(resultSet);
@@ -23,10 +21,6 @@ public class Account extends Model {
 
     public String getUsername() {
         return this.username;
-    }
-
-    public Role getRole() {
-        return Role.valueOf(this.role.toUpperCase());
     }
 
     public enum Role {
@@ -69,7 +63,7 @@ public class Account extends Model {
         return this.getUsername();
     }
 
-    public boolean userHasRole(Role role) {
+    public boolean hasRole(Role role) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement userRolesStatement = connection.prepareStatement("SELECT `role` FROM `accountrole` WHERE `username` = ?");
@@ -77,20 +71,20 @@ public class Account extends Model {
             ResultSet roles = userRolesStatement.executeQuery();
 
             while (roles.next()) {
-                if(Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(role)) {
+                if (Account.Role.valueOf(roles.getString("role").toUpperCase()).equals(role)) {
                     return true;
                 }
             }
-            return false;
         } catch (SQLException ex) {
-            if(WordCrex.DEBUG_MODE) {
+            if (WordCrex.DEBUG_MODE) {
                 System.err.println(ex.getErrorCode());
             } else {
                 Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de rollen.");
                 invalidWordDialog.setTitle("Error");
                 invalidWordDialog.showAndWait();
             }
-            return false;
         }
+
+        return false;
     }
 }
