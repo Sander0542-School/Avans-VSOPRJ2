@@ -18,7 +18,7 @@
 
     <BottomBarItem fx:id="observer" label="Observeren">
         <image>
-            <Image url="@/images/drawables/show_chart.png"/>
+            <Image url="@/images/drawables/search.png"/>
         </image>
     </BottomBarItem>
 </fx:root>
