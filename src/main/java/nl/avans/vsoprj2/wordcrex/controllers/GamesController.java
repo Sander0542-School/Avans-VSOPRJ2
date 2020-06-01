@@ -64,10 +64,20 @@ public class GamesController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                int originalRequestedGames = GamesController.this.requestedGamesResult.size();
+                int originalPlayingGames = GamesController.this.playingGamesResult.size();
+                int finishedGamesResult = GamesController.this.finishedGamesResult.size();
+
                 if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch running.");
                 GamesController.this.loadGames(Singleton.getInstance().getUser());
-                if (WordCrex.DEBUG_MODE) System.out.println("GamesController: Autofetch data updated rendering.");
-                Platform.runLater(GamesController.this::renderGames);
+
+                if (originalRequestedGames != GamesController.this.requestedGamesResult.size() ||
+                        originalPlayingGames != GamesController.this.playingGamesResult.size() ||
+                        finishedGamesResult != GamesController.this.finishedGamesResult.size()) {
+                    if (WordCrex.DEBUG_MODE)
+                        System.out.println("GamesController: Autofetch data updated rendering.");
+                    Platform.runLater(GamesController.this::renderGames);
+                }
             }
         };
     }
