@@ -31,7 +31,7 @@
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Handleiding" />
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Spelregels" />
                 <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="FAQ" />
-                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Woordenboek" />
+                <Button prefWidth="300" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Woordenboek"  onAction="#handleDictionary"/>
             </HBox>
 
             <Label alignment="CENTER" prefHeight="25" text="Wettelijke documenten" textFill="#201b53">/

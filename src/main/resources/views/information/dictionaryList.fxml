@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController">
+    <top>
+        <AppBar title="Woordenboek inzendingen" backButton="true" onBackButtonEvent="#handleBackButton"/>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: #FFBB00; -fx-background: #FFBB00;">
+                <VBox spacing="10" style="-fx-background-color: #FFBB00;" fx:id="dictionaryEntryContainer"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
