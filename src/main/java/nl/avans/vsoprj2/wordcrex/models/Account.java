@@ -59,4 +59,43 @@ public class Account extends Model {
     public String toString() {
         return this.getUsername();
     }
+
+    public static Account fromUsername(String username) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username = ?");
+            statement.setString(1, username);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return new Account(result);
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return null;
+    }
+
+    public static Account fromUsernamePassword(String username, String password) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username = ? AND a.password = ?");
+            statement.setString(1, username);
+            statement.setString(1, password);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return new Account(result);
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return null;
+    }
 }
