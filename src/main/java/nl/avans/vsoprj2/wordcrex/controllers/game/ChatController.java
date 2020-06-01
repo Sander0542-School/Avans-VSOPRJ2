@@ -48,6 +48,7 @@ public class ChatController extends Controller {
     public void setGame(Game game) {
         if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
+        this.chatMessageInput.setVisible(this.game.getOwnGame());
         this.fetch();
         this.render();
         this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
