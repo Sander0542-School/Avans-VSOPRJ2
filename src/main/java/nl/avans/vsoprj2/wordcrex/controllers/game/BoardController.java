@@ -32,13 +32,13 @@ public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
-    private Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
-    private ArrayList<Letter> currentLetters = new ArrayList<>();
-    private ContextMenu gameOptionsMenu = new ContextMenu();
+    private final ArrayList<Letter> currentLetters = new ArrayList<>();
+    private final ContextMenu gameOptionsMenu = new ContextMenu();
     private HashMap<Character, Integer> symbolValues;
 
     private int turnId;
@@ -752,15 +752,10 @@ public class BoardController extends Controller {
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO `handletter` (`game_id`,`turn_id`,`letter_id`) VALUES ");
 
-            int handletterCount = 0;
             for (Letter letter : this.currentLetters) {
-                if (handletterCount > 0) {
-                    sb.append(",");
-                }
-//                sb.append(String.format("(%s, %s, %s)", this.game.getGameId(), currentTurn, letter.getLetterId()));
-                sb.append("(").append(this.game.getGameId()).append(", ").append(currentTurn).append(",").append(letter.getLetterId()).append(")");
-                handletterCount++;
+                sb.append(String.format("(%s, %s, %s),", this.game.getGameId(), currentTurn, letter.getLetterId()));
             }
+            sb.setLength(sb.length() - 1);
             sb.append(";");
 
             PreparedStatement statement = connection.prepareStatement(sb.toString());
