@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
@@ -30,18 +32,23 @@ public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
+    private Timer timer = new Timer();
 
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
     private ArrayList<Letter> currentLetters = new ArrayList<>();
     private ContextMenu gameOptionsMenu = new ContextMenu();
+    private HashMap<Character, Integer> symbolValues;
+
+    private int turnId;
+    private int playerOneScore;
+    private int playerTwoScore;
 
     @FXML
     private GridPane gameGrid;
     @FXML
     private HBox lettertiles;
-
     @FXML
     private Label player1Name;
     @FXML
@@ -53,8 +60,6 @@ public class BoardController extends Controller {
     @FXML
     private ImageView shuffleReturnImage;
 
-    private HashMap<Character, Integer> symbolValues;
-
     /**
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
@@ -63,20 +68,52 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
-
         this.turnLocked = this.game.getTurnLocked();
-
         this.symbolValues = this.getSymbolValues();
+        this.turnId = this.game.getCurrentTurn();
 
         this.board.loadLetters(game, this.symbolValues);
-
         this.loadBoard();
 
-        this.loadPlayerData();
+        this.fetchPlayerData();
+        this.renderPlayerData();
 
         this.loadHandLetters();
+        this.displayLetters();
+
+        this.timer.scheduleAtFixedRate(this.createTimerTask(), 0, 10000);
 
         if (game.getCurrentTurn() == 0) this.createNewTurn(false);
+    }
+
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if (BoardController.this.turnLocked) {
+                    if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
+
+                    int originalPlayerOneScore = BoardController.this.playerOneScore;
+                    int originalPlayerTwoScore = BoardController.this.playerTwoScore;
+                    int newTurnId = BoardController.this.game.getCurrentTurn();
+                    BoardController.this.board.loadLetters(BoardController.this.game, BoardController.this.symbolValues);
+                    BoardController.this.loadHandLetters();
+                    BoardController.this.fetchPlayerData();
+
+                    if (BoardController.this.playerOneScore != originalPlayerOneScore ||
+                            BoardController.this.playerTwoScore != originalPlayerTwoScore ||
+                            BoardController.this.turnId != newTurnId) {
+                        Platform.runLater(() -> {
+                            if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task rendering data");
+                            BoardController.this.turnId = newTurnId;
+                            BoardController.this.loadBoard();
+                            BoardController.this.renderPlayerData();
+                            BoardController.this.displayLetters();
+                        });
+                    }
+                }
+            }
+        };
     }
 
     private List<BoardTile> getUnconfirmedTiles() {
@@ -104,12 +141,17 @@ public class BoardController extends Controller {
         }
     }
 
-    public void loadPlayerData() {
+    private void fetchPlayerData() {
+        this.playerOneScore = this.game.getPlayerScore(true);
+        this.playerTwoScore = this.game.getPlayerScore(false);
+    }
+
+    private void renderPlayerData() {
         this.player1Name.setText(this.game.getUsernamePlayer1());
         this.player2Name.setText(this.game.getUsernamePlayer2());
 
-        this.player1Score.setText(String.valueOf(this.game.getPlayerScore(true)));
-        this.player2Score.setText(String.valueOf(this.game.getPlayerScore(false)));
+        this.player1Score.setText(String.valueOf(this.playerOneScore));
+        this.player2Score.setText(String.valueOf(this.playerTwoScore));
     }
 
     private void endGame() {
@@ -158,11 +200,15 @@ public class BoardController extends Controller {
 
     @FXML
     private void handleBackButton() {
+        this.timer.cancel();
+        this.timer.purge();
         this.navigateTo("/views/games.fxml");
     }
 
     @FXML
     private void handleScoreboardAction() {
+        this.timer.cancel();
+        this.timer.purge();
         this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
@@ -179,6 +225,8 @@ public class BoardController extends Controller {
 
     @FXML
     private void handleChatAction() {
+        this.timer.cancel();
+        this.timer.purge();
         this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {
@@ -760,8 +808,6 @@ public class BoardController extends Controller {
             while (result.next()) {
                 this.currentLetters.add(new Letter(result));
             }
-
-            this.displayLetters();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }

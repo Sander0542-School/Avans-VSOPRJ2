@@ -18,8 +18,11 @@ public class Board {
     private final Tile[][] tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {
-        Connection connection = Singleton.getInstance().getConnection();
+        this.loadTiles();
+    }
 
+    public void loadTiles() {
+        Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
             ResultSet result = statement.executeQuery();
@@ -41,6 +44,8 @@ public class Board {
 
     public void loadLetters(Game game, HashMap<Character, Integer> symbolValues) {
         Connection connection = Singleton.getInstance().getConnection();
+
+        this.loadTiles();
 
         String table = Singleton.getInstance().getUser().getUsername().equals(game.getUsernamePlayer1()) ? "gelegdplayer1" : "gelegdplayer2";
 
