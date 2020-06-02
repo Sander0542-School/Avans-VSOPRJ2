@@ -41,12 +41,15 @@ public class DictionaryListController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            String query = "SELECT `word`, `letterset_code`, `state`, `username` FROM `dictionary` WHERE `username` = ?";
+            PreparedStatement statement;
+
             if (isModerator) {
-                query += " OR `state` = 'pending';";
+                statement = connection.prepareStatement("SELECT `word`, `letterset_code`, `state`, `username` FROM `dictionary` WHERE `state` = 'pending';");
+            } else {
+                statement = connection.prepareStatement("SELECT `word`, `letterset_code`, `state`, `username` FROM `dictionary` WHERE `username` = ?;");
+                statement.setString(1, Singleton.getInstance().getUser().getUsername());
             }
 
-            PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
             this.dictionaryEntryContainer.setVisible(false);
