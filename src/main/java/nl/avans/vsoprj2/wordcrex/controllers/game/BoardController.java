@@ -41,6 +41,8 @@ public class BoardController extends Controller {
     private GridPane gameGrid;
     @FXML
     private HBox lettertiles;
+    @FXML
+    private Label boardScore;
 
     @FXML
     private Label player1Name;
@@ -205,6 +207,8 @@ public class BoardController extends Controller {
             alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
             alert.showAndWait();
         }
+
+        this.updatePoints();
     }
 
     private void giveNewLetterInHand() {
@@ -311,12 +315,21 @@ public class BoardController extends Controller {
     private void updatePoints() {
         List<List<BoardTile>> words = this.getWords();
 
-        //TODO() Hide point count on layout
+        this.boardScore.setVisible(false);
 
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            //TODO() Show point count on layout
+            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+            this.boardScore.setText(String.valueOf(points.points));
+
+            this.boardScore.setVisible(true);
         }
     }
 
@@ -731,6 +744,8 @@ public class BoardController extends Controller {
                 this.selectLetter(lettertile);
             }
             this.moveTileFromToBoard = false;
+
+            this.updatePoints();
         });
     }
 
@@ -788,6 +803,8 @@ public class BoardController extends Controller {
             }
 
             this.updateShuffleReturnButton();
+
+            this.updatePoints();
         });
     }
 
@@ -806,6 +823,8 @@ public class BoardController extends Controller {
         }
 
         this.updateShuffleReturnButton();
+
+        this.updatePoints();
     }
 
     private void gridSizeChanged() {
@@ -990,6 +1009,8 @@ public class BoardController extends Controller {
                 turnBoardLetterStatement.executeUpdate();
 
                 this.createNewTurn(false);
+
+                this.updatePoints();
             }
 
         } catch (SQLException e) {
