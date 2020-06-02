@@ -91,6 +91,7 @@ public class BoardController extends Controller {
 
         this.loadHandLetters();
         this.displayLetters();
+        this.updateShuffleReturnButton();
     }
 
     private TimerTask createTimerTask() {
