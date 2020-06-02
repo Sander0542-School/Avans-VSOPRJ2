@@ -6,7 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.gameboard.*?>
+<?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" style="-fx-background-color: #201b53" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+    <stylesheets>
+        <URL value="@/styles/context-menu.css"/>
+    </stylesheets>
 
     <top>
         <AnchorPane prefHeight="64.0" style="-fx-background-color: #1b1744;">
@@ -71,7 +75,7 @@
                 <ImageView fx:id="shuffleReturnImage" onMouseClicked="#handleShuffleReturnAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" onMouseClicked="#handlePassGameAction" fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" onMouseClicked="#handlePassGame" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
@@ -89,7 +93,7 @@
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
                     <Image url="@/images/drawables/chat_bubble_outline.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleGameOptionsMenu">
                     <Image url="@/images/drawables/more_horiz.png"/>
                 </ImageView>
             </HBox>

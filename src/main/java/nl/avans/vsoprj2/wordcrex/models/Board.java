@@ -140,10 +140,10 @@ public class Board {
     public boolean hasConfirmedSurroundingTile(int x, int y) {
         List<Tile> surroundTiles = new ArrayList<>();
 
-        surroundTiles.add(this.getTile(x - 1, y - 1));
-        surroundTiles.add(this.getTile(x - 1, y + 1));
-        surroundTiles.add(this.getTile(x + 1, y + 1));
-        surroundTiles.add(this.getTile(x + 1, y - 1));
+        surroundTiles.add(this.getTile(x, y - 1));
+        surroundTiles.add(this.getTile(x, y + 1));
+        surroundTiles.add(this.getTile(x + 1, y));
+        surroundTiles.add(this.getTile(x + 1, y));
 
         surroundTiles.removeIf(tile -> !tile.hasLetter() || !tile.isConfirmed());
 

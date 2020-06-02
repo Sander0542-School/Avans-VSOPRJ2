@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.information.AccountController">
+    <top>
+        <AppBar title="Wachtwoord wijzigen" backButton="true" onBackButtonEvent="#handleBackButton"/>
+    </top>
+
+    <center>
+        <VBox VBox.vgrow="ALWAYS" style="-fx-background-color: #ffbb00;">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15"/>
+            </padding>
+            <VBox alignment="CENTER">
+                <Label fx:id="username" textFill="#201b53">
+                    <font>
+                        <Font name="Roboto Black" size="18.0" />
+                    </font>
+                </Label>
+                <VBox spacing="25" maxWidth="600" alignment="CENTER">
+                    <Label fx:id="errorLabel" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
+                    <PasswordField fx:id="oldPassword" promptText="Oude wachtwoord" prefWidth="600"/>
+                    <PasswordField fx:id="newPassword" promptText="Nieuw wachtwoord" prefWidth="600"/>
+                    <PasswordField fx:id="confirmNewPassword" promptText="Herhaal nieuw wachtwoord" prefWidth="600"/>
+                    <Button onAction="#handleChangePasswordAction" prefWidth="600" prefHeight="50" style="-fx-background-color: #201b53; -fx-font-weight: bold" textFill="WHITE" text="Wijzig wachtwoord"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
