@@ -1,12 +1,13 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -43,13 +44,13 @@ public class DictionaryController extends Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         this.language.getItems().removeAll(this.language.getItems());
-        this.language.getItems().addAll(this.Languages());
+        this.language.getItems().addAll(this.languages());
 
         this.username.setText(Singleton.getInstance().getUser().getUsername());
         this.username.setDisable(true);
     }
 
-    private String[] Languages() {
+    private String[] languages() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset");
@@ -66,19 +67,13 @@ public class DictionaryController extends Controller {
             }
             return returnValue;
         } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
-    }
+            WordCrex.handleException(e);
 
-    public void getPending(String word, String code) {
-        Connection connection = Singleton.getInstance().getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE word = ? AND letterset_code = ? AND state = 'pending'");
-            statement.setString(1, word);
-            statement.setString(2, code);
-            ResultSet result = statement.executeQuery();
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de verschillende talen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
+
+            return new String[0];
         }
     }
 
@@ -121,8 +116,11 @@ public class DictionaryController extends Controller {
                 this.error.setText("Inzending verstuurd");
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
-        }
+            WordCrex.handleException(e);
 
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Oei. Het woord kon niet worden toegevoegd aan de database. Probeer het opnieuw!");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
+        }
     }
 }
