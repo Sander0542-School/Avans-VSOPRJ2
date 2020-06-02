@@ -366,8 +366,6 @@ public class BoardController extends Controller {
 
         List<List<BoardTile>> words = new ArrayList<>();
 
-        Coordinates coordinates;
-
         if (orientation == null) {
             return null;
         }
@@ -378,21 +376,12 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), false));
                 break;
             case VERTICAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
-
-                words.add(this.findWord(unconfirmedTiles.get(0), false));
-
-                for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                    words.add(this.findWord(this.getBoardTile(coordinates.minX, y), true));
-                }
-                break;
             case HORIZONTAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
+                boolean horizontal = orientation == Orientation.HORIZONTAL;
+                words.add(this.findWord(unconfirmedTiles.get(0), horizontal));
 
-                words.add(this.findWord(unconfirmedTiles.get(0), true));
-
-                for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                    words.add(this.findWord(this.getBoardTile(x, coordinates.maxY), false));
+                for (BoardTile boardTile : unconfirmedTiles) {
+                    words.add(this.findWord(boardTile, !horizontal));
                 }
                 break;
         }
