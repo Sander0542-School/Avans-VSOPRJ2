@@ -208,7 +208,7 @@ public class BoardController extends Controller {
             alert.showAndWait();
         }
 
-        this.updatePoints();
+        this.boardScore.setVisible(false);
     }
 
     private void giveNewLetterInHand() {
@@ -953,7 +953,7 @@ public class BoardController extends Controller {
 
             boardPlayerStatement.executeUpdate();
 
-            this.updatePoints();
+            this.boardScore.setVisible(false);
 
             StringBuilder turnPlayerQueryBuilder = new StringBuilder();
 
