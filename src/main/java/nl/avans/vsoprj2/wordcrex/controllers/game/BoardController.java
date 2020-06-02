@@ -34,13 +34,15 @@ public class BoardController extends Controller {
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
-    private ArrayList<Letter> currentLetters = new ArrayList<>();
-    private ContextMenu gameOptionsMenu = new ContextMenu();
+    private final ArrayList<Letter> currentLetters = new ArrayList<>();
+    private final ContextMenu gameOptionsMenu = new ContextMenu();
 
     @FXML
     private GridPane gameGrid;
     @FXML
     private HBox lettertiles;
+    @FXML
+    private Label boardScore;
 
     @FXML
     private Label player1Name;
@@ -205,6 +207,8 @@ public class BoardController extends Controller {
             alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
             alert.showAndWait();
         }
+
+        this.boardScore.setVisible(false);
     }
 
     private void giveNewLetterInHand() {
@@ -308,27 +312,24 @@ public class BoardController extends Controller {
         }
     }
 
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
-    }
-
     private void updatePoints() {
         List<List<BoardTile>> words = this.getWords();
 
-        //TODO() Hide point count on layout
+        this.boardScore.setVisible(false);
 
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            //TODO() Show point count on layout
+            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+            this.boardScore.setText(String.valueOf(points.points));
+
+            this.boardScore.setVisible(true);
         }
     }
 
@@ -365,8 +366,6 @@ public class BoardController extends Controller {
 
         List<List<BoardTile>> words = new ArrayList<>();
 
-        Coordinates coordinates;
-
         if (orientation == null) {
             return null;
         }
@@ -377,21 +376,12 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), false));
                 break;
             case VERTICAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
-
-                words.add(this.findWord(unconfirmedTiles.get(0), false));
-
-                for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                    words.add(this.findWord(this.getBoardTile(coordinates.minX, y), true));
-                }
-                break;
             case HORIZONTAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
+                boolean horizontal = orientation == Orientation.HORIZONTAL;
+                words.add(this.findWord(unconfirmedTiles.get(0), horizontal));
 
-                words.add(this.findWord(unconfirmedTiles.get(0), true));
-
-                for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                    words.add(this.findWord(this.getBoardTile(x, coordinates.maxY), false));
+                for (BoardTile boardTile : unconfirmedTiles) {
+                    words.add(this.findWord(boardTile, !horizontal));
                 }
                 break;
         }
@@ -719,6 +709,7 @@ public class BoardController extends Controller {
 
             this.displayLetters();
             this.updateShuffleReturnButton();
+            this.updatePoints();
         }
     }
 
@@ -743,6 +734,8 @@ public class BoardController extends Controller {
                 this.selectLetter(lettertile);
             }
             this.moveTileFromToBoard = false;
+
+            this.updatePoints();
         });
     }
 
@@ -800,6 +793,8 @@ public class BoardController extends Controller {
             }
 
             this.updateShuffleReturnButton();
+
+            this.updatePoints();
         });
     }
 
@@ -818,6 +813,8 @@ public class BoardController extends Controller {
         }
 
         this.updateShuffleReturnButton();
+
+        this.updatePoints();
     }
 
     private void gridSizeChanged() {
@@ -945,6 +942,8 @@ public class BoardController extends Controller {
             PreparedStatement boardPlayerStatement = connection.prepareStatement(boardPlayerQueryBuilder.toString());
 
             boardPlayerStatement.executeUpdate();
+
+            this.boardScore.setVisible(false);
 
             StringBuilder turnPlayerQueryBuilder = new StringBuilder();
 

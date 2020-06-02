@@ -59,11 +59,18 @@
     </top>
 
     <center>
-        <GridPane fx:id="gameGrid" hgap="2" vgap="2" alignment="CENTER">
-            <padding>
-                <Insets bottom="4" left="4" right="4" top="4"/>
-            </padding>
-        </GridPane>
+        <AnchorPane>
+            <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" fx:id="gameGrid" hgap="2" vgap="2" alignment="CENTER">
+                <padding>
+                    <Insets bottom="4" left="4" right="4" top="4"/>
+                </padding>
+            </GridPane>
+            <Label visible="false" fx:id="boardScore" text="15" textFill="black" prefHeight="16" style="-fx-background-radius: 9; -fx-background-color: yellow; -fx-border-radius: 9; -fx-border-color: black; -fx-padding: 2">
+                <font>
+                    <Font name="Roboto Black"/>
+                </font>
+            </Label>
+        </AnchorPane>
     </center>
 
     <bottom>
