@@ -1,6 +1,7 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
@@ -19,11 +20,6 @@ import java.util.ResourceBundle;
 public class DictionaryListController extends Controller {
 
     @FXML
-    private void handleBackButton() {
-        this.navigateTo("/views/information.fxml");
-    }
-
-    @FXML
     private VBox dictionaryEntryContainer;
 
     @Override
@@ -31,22 +27,29 @@ public class DictionaryListController extends Controller {
         super.initialize(url, resourceBundle);
         this.dictionaryEntryContainer.managedProperty().bind(this.dictionaryEntryContainer.visibleProperty());
 
-        this.PopulateWordList();
+        this.loadWords();
     }
 
-    private void PopulateWordList() {
+    @FXML
+    private void handleBackButton() {
+        this.navigateTo("/views/information.fxml");
+    }
+
+    private void loadWords() {
         boolean isModerator = Singleton.getInstance().getUser().hasRole(Account.Role.MODERATOR);
 
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
             PreparedStatement statement;
-            if(isModerator ){
-                statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `state` = 'pending';");
-            }else {
-                statement = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `username` = ?;");
+
+            if (isModerator) {
+                statement = connection.prepareStatement("SELECT `word`, `letterset_code`, `state`, `username` FROM `dictionary` WHERE `state` = 'pending';");
+            } else {
+                statement = connection.prepareStatement("SELECT `word`, `letterset_code`, `state`, `username` FROM `dictionary` WHERE `username` = ?;");
                 statement.setString(1, Singleton.getInstance().getUser().getUsername());
             }
+
             ResultSet resultSet = statement.executeQuery();
 
             this.dictionaryEntryContainer.setVisible(false);
@@ -55,14 +58,13 @@ public class DictionaryListController extends Controller {
             while (resultSet.next()) {
                 DictionaryEntry dictionaryEntry = new DictionaryEntry(new Word(resultSet));
 
-                if(isModerator ){
-                    dictionaryEntry.acceptButton.setOnMouseClicked(event -> DictionaryListController.this.ReviewWord(dictionaryEntry, true));
-                    dictionaryEntry.denyButton.setOnMouseClicked(event -> DictionaryListController.this.ReviewWord(dictionaryEntry, false));
-                }else {
+                if (isModerator) {
+                    dictionaryEntry.acceptButton.setOnMouseClicked(event -> DictionaryListController.this.reviewWord(dictionaryEntry, true));
+                    dictionaryEntry.denyButton.setOnMouseClicked(event -> DictionaryListController.this.reviewWord(dictionaryEntry, false));
+                } else {
                     dictionaryEntry.acceptButton.setVisible(false);
                     dictionaryEntry.denyButton.setVisible(false);
                 }
-
 
                 this.dictionaryEntryContainer.getChildren().add(dictionaryEntry);
                 this.dictionaryEntryContainer.setVisible(true);
@@ -73,7 +75,7 @@ public class DictionaryListController extends Controller {
         }
     }
 
-    private void ReviewWord(DictionaryEntry dictionaryEntry, Boolean accept) {
+    private void reviewWord(DictionaryEntry dictionaryEntry, boolean accept) {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -81,11 +83,18 @@ public class DictionaryListController extends Controller {
             statement.setString(1, accept ? "accepted" : "denied");
             statement.setString(2, dictionaryEntry.getWord());
             statement.setString(3, dictionaryEntry.getLanguage());
-            statement.executeUpdate();
+
+            if (statement.executeUpdate() > 0) {
+                this.loadWords();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Het woord %s kon niet worden %s", dictionaryEntry.getWord(), accept ? "geaccepteerd" : "afgekeurd"));
+                alert.setTitle("Er is een fout opgetreden");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
 
-        this.PopulateWordList();
     }
 }
