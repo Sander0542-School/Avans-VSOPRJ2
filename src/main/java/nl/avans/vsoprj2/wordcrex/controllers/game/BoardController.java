@@ -156,6 +156,8 @@ public class BoardController extends Controller {
                 this.gameGrid.add(boardTile, x - 1, y - 1);
             }
         }
+
+        this.gridSizeChanged();
     }
 
     /**
