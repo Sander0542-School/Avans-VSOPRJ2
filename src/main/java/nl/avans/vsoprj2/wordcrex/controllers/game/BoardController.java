@@ -84,7 +84,7 @@ public class BoardController extends Controller {
         this.turnId = this.game.getCurrentTurn();
 
         this.board.loadLetters(this.game, this.symbolValues);
-        this.loadBoard();
+        this.renderBoard();
 
         this.fetchPlayerData();
         this.renderPlayerData();
@@ -94,6 +94,11 @@ public class BoardController extends Controller {
         this.updateShuffleReturnButton();
     }
 
+    /**
+     * TimerTask refreshes the board if the score or turn id has changed. Only when turn is locked in the client!!!
+     *
+     * @return TimerTask to refresh board
+     */
     private TimerTask createTimerTask() {
         return new TimerTask() {
             @Override
@@ -115,7 +120,7 @@ public class BoardController extends Controller {
                         Platform.runLater(() -> {
                             if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task rendering data");
                             BoardController.this.turnId = newTurnId;
-                            BoardController.this.loadBoard();
+                            BoardController.this.renderBoard();
                             BoardController.this.renderPlayerData();
                             BoardController.this.displayLetters();
                         });
@@ -138,7 +143,10 @@ public class BoardController extends Controller {
         return tiles;
     }
 
-    private void loadBoard() {
+    /**
+     * Renders all the tiles to the board and adds click event handler to them
+     */
+    private void renderBoard() {
         this.gameGrid.getChildren().clear();
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
@@ -150,11 +158,17 @@ public class BoardController extends Controller {
         }
     }
 
+    /**
+     * Fetches the player score and saves it in a variable
+     */
     private void fetchPlayerData() {
         this.playerOneScore = this.game.getPlayerScore(true);
         this.playerTwoScore = this.game.getPlayerScore(false);
     }
 
+    /**
+     * Renders the player score from the variables to the GUI
+     */
     private void renderPlayerData() {
         this.player1Name.setText(this.game.getUsernamePlayer1());
         this.player2Name.setText(this.game.getUsernamePlayer2());
