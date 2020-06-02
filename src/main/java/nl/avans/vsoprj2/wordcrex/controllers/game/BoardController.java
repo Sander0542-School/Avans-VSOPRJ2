@@ -991,7 +991,6 @@ public class BoardController extends Controller {
             PreparedStatement boardPlayerStatement = connection.prepareStatement(boardPlayerQueryBuilder.toString());
 
             boardPlayerStatement.executeUpdate();
-            this.loadAndRenderGame();
 
             this.boardScore.setVisible(false);
 
@@ -1052,7 +1051,7 @@ public class BoardController extends Controller {
 
                 this.createNewTurn(false);
             }
-
+            this.loadAndRenderGame();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
