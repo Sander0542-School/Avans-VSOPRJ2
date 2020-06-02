@@ -106,6 +106,7 @@ public class BoardController extends Controller {
                     BoardController.this.board.loadLetters(BoardController.this.game, BoardController.this.symbolValues);
                     BoardController.this.loadHandLetters();
                     BoardController.this.fetchPlayerData();
+                    BoardController.this.turnLocked = BoardController.this.game.getTurnLocked();
 
                     if (BoardController.this.playerOneScore != originalPlayerOneScore ||
                             BoardController.this.playerTwoScore != originalPlayerTwoScore ||
