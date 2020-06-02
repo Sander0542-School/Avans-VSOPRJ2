@@ -18,8 +18,11 @@ public class Board {
     private final Tile[][] tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {
-        Connection connection = Singleton.getInstance().getConnection();
+        this.loadTiles();
+    }
 
+    public void loadTiles() {
+        Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
             ResultSet result = statement.executeQuery();
@@ -41,6 +44,8 @@ public class Board {
 
     public void loadLetters(Game game, HashMap<Character, Integer> symbolValues) {
         Connection connection = Singleton.getInstance().getConnection();
+
+        this.loadTiles();
 
         String table = Singleton.getInstance().getUser().getUsername().equals(game.getUsernamePlayer1()) ? "gelegdplayer1" : "gelegdplayer2";
 
@@ -142,10 +147,10 @@ public class Board {
 
         surroundTiles.add(this.getTile(x, y - 1));
         surroundTiles.add(this.getTile(x, y + 1));
-        surroundTiles.add(this.getTile(x + 1, y));
+        surroundTiles.add(this.getTile(x - 1, y));
         surroundTiles.add(this.getTile(x + 1, y));
 
-        surroundTiles.removeIf(tile -> !tile.hasLetter() || !tile.isConfirmed());
+        surroundTiles.removeIf(tile -> tile == null || !tile.hasLetter() || !tile.isConfirmed());
 
         return surroundTiles.size() > 0;
     }
