@@ -953,6 +953,8 @@ public class BoardController extends Controller {
 
             boardPlayerStatement.executeUpdate();
 
+            this.updatePoints();
+
             StringBuilder turnPlayerQueryBuilder = new StringBuilder();
 
             turnPlayerQueryBuilder.append("SELECT (`cp`.`score` + `cp`.`bonus`) as cp_score, `cp`.`turnaction_type` as cp_turntype, (`op`.`score` + `op`.`bonus`) as op_score, `op`.`turnaction_type` as op_turntype FROM `");
@@ -1009,8 +1011,6 @@ public class BoardController extends Controller {
                 turnBoardLetterStatement.executeUpdate();
 
                 this.createNewTurn(false);
-
-                this.updatePoints();
             }
 
         } catch (SQLException e) {
