@@ -709,7 +709,7 @@ public class BoardController extends Controller {
 
             this.displayLetters();
             this.updateShuffleReturnButton();
-            this.updatepoints();
+            this.updatePoints();
         }
     }
 
