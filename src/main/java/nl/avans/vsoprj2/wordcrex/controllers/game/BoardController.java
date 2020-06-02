@@ -184,7 +184,7 @@ public class BoardController extends Controller {
 
             StringBuilder turnPlayerQueryBuilder2 = new StringBuilder();
 
-            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id` FROM `");
+            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id`, `cp`.`turnaction_type` as cp_type, `op`.`turnaction_type` as op_type FROM `");
             turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
             turnPlayerQueryBuilder2.append("` cp INNER JOIN `");
             turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
@@ -197,7 +197,11 @@ public class BoardController extends Controller {
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
             if (turnPlayerResultSet2.next()) {
-                this.giveNewLetterInHand();
+                if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
+                    this.giveNewLetterInHand();
+                } else {
+                    this.createNewTurn(false);
+                }
             }
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
