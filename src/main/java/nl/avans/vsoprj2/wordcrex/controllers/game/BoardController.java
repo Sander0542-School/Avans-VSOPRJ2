@@ -203,7 +203,9 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            throw new DbLoadException(e);
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Kon het spel niet beëindigen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
