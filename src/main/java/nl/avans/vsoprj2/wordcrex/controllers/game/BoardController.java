@@ -68,11 +68,20 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
-        this.turnLocked = this.game.getTurnLocked();
         this.symbolValues = this.getSymbolValues();
+
+        this.loadAndRenderGame();
+
+        this.timer.scheduleAtFixedRate(this.createTimerTask(), 0, 10000);
+
+        if (game.getCurrentTurn() == 0) this.createNewTurn(false);
+    }
+
+    private void loadAndRenderGame() {
+        this.turnLocked = this.game.getTurnLocked();
         this.turnId = this.game.getCurrentTurn();
 
-        this.board.loadLetters(game, this.symbolValues);
+        this.board.loadLetters(this.game, this.symbolValues);
         this.loadBoard();
 
         this.fetchPlayerData();
@@ -80,10 +89,6 @@ public class BoardController extends Controller {
 
         this.loadHandLetters();
         this.displayLetters();
-
-        this.timer.scheduleAtFixedRate(this.createTimerTask(), 0, 10000);
-
-        if (game.getCurrentTurn() == 0) this.createNewTurn(false);
     }
 
     private TimerTask createTimerTask() {
@@ -332,6 +337,7 @@ public class BoardController extends Controller {
                 } else {
                     //Throws alert if word is not correct
                     Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "Dit is geen geldig woord.\nProbeer een ander woord.");
+                    invalidWordDialog.setHeaderText(null);
                     invalidWordDialog.setTitle("Fout Woord");
                     invalidWordDialog.showAndWait();
                 }
@@ -376,6 +382,7 @@ public class BoardController extends Controller {
 
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
+            this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
                 this.giveNewLetterInHand();
             }
@@ -705,9 +712,9 @@ public class BoardController extends Controller {
      *
      * @param isPassedTurn this should be true if the turn is passed
      */
-    private void handOutLetters(boolean isPassedTurn) {
+    private void handOutLetters(int currentTurn, boolean isPassedTurn) {
+        if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Handing out new letters");
         Connection connection = Singleton.getInstance().getConnection();
-        int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
         this.currentLetters.clear();
 
@@ -746,6 +753,7 @@ public class BoardController extends Controller {
                 if (handletterCount > 0) {
                     sb.append(",");
                 }
+//                sb.append(String.format("(%s, %s, %s)", this.game.getGameId(), currentTurn, letter.getLetterId()));
                 sb.append("(").append(this.game.getGameId()).append(", ").append(currentTurn).append(",").append(letter.getLetterId()).append(")");
                 handletterCount++;
             }
@@ -798,6 +806,9 @@ public class BoardController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         this.currentLetters.clear();
+
+        System.out.println(this.game.getGameId());
+        System.out.println(currentTurn);
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
@@ -975,6 +986,7 @@ public class BoardController extends Controller {
             PreparedStatement boardPlayerStatement = connection.prepareStatement(boardPlayerQueryBuilder.toString());
 
             boardPlayerStatement.executeUpdate();
+            this.loadAndRenderGame();
 
             StringBuilder turnPlayerQueryBuilder = new StringBuilder();
 
@@ -1103,6 +1115,7 @@ public class BoardController extends Controller {
      * Creates a new turn in the database
      */
     private void createNewTurn(boolean isPassedTurn) {
+        if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Creating a new turn id");
         Connection connection = Singleton.getInstance().getConnection();
         try {
             int newTurnId = this.game.getCurrentTurn() + 1;
@@ -1112,7 +1125,7 @@ public class BoardController extends Controller {
             newTurnStatement.setInt(2, newTurnId);
             newTurnStatement.executeUpdate();
 
-            this.handOutLetters(isPassedTurn);
+            this.handOutLetters(newTurnId, isPassedTurn);
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
