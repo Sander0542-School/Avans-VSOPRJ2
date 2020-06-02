@@ -809,9 +809,6 @@ public class BoardController extends Controller {
         int currentTurn = this.game.getCurrentTurn();
         this.currentLetters.clear();
 
-        System.out.println(this.game.getGameId());
-        System.out.println(currentTurn);
-
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `handletter` hl INNER JOIN letter l ON hl.letter_id = l.letter_id AND hl.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE hl.game_id = ? AND hl.turn_id = ? LIMIT 7");
             statement.setInt(1, this.game.getGameId());
