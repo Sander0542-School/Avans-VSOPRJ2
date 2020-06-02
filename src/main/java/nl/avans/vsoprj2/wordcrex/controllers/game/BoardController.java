@@ -390,7 +390,7 @@ public class BoardController extends Controller {
 
             StringBuilder turnPlayerQueryBuilder2 = new StringBuilder();
 
-            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id` FROM `");
+            turnPlayerQueryBuilder2.append("SELECT `cp`.`game_id`, `cp`.`turn_id`, `cp`.`turnaction_type` as cp_type, `op`.`turnaction_type` as op_type FROM `");
             turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer1" : "turnplayer2");
             turnPlayerQueryBuilder2.append("` cp INNER JOIN `");
             turnPlayerQueryBuilder2.append(isPlayer1 ? "turnplayer2" : "turnplayer1");
@@ -404,7 +404,11 @@ public class BoardController extends Controller {
 
             this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
-                this.giveNewLetterInHand();
+                if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
+                    this.giveNewLetterInHand();
+                } else {
+                    this.setBoardPassWinner(!isPlayer1);
+                }
             }
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -414,6 +418,27 @@ public class BoardController extends Controller {
         }
 
         this.boardScore.setVisible(false);
+    }
+
+    private void setBoardPassWinner(boolean isPlayer1) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            StringBuilder turnBoardLetterQueryBuilder = new StringBuilder();
+            turnBoardLetterQueryBuilder.append("INSERT INTO `turnboardletter` (`game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y`) SELECT `game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y` FROM `");
+            turnBoardLetterQueryBuilder.append(isPlayer1 ? "boardplayer1" : "boardplayer2");
+            turnBoardLetterQueryBuilder.append("` WHERE `game_id` = ? AND `turn_id` = ?;");
+
+            PreparedStatement turnBoardLetterStatement = connection.prepareStatement(turnBoardLetterQueryBuilder.toString());
+            turnBoardLetterStatement.setInt(1, this.game.getGameId());
+            turnBoardLetterStatement.setInt(2, this.game.getCurrentTurn());
+
+            turnBoardLetterStatement.executeUpdate();
+
+            this.createNewTurn(false);
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
     }
 
     private void giveNewLetterInHand() {
