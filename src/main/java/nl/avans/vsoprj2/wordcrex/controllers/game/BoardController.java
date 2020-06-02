@@ -34,8 +34,8 @@ public class BoardController extends Controller {
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
-    private ArrayList<Letter> currentLetters = new ArrayList<>();
-    private ContextMenu gameOptionsMenu = new ContextMenu();
+    private final ArrayList<Letter> currentLetters = new ArrayList<>();
+    private final ContextMenu gameOptionsMenu = new ContextMenu();
 
     @FXML
     private GridPane gameGrid;
@@ -306,18 +306,6 @@ public class BoardController extends Controller {
                 });
                 break;
         }
-    }
-
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
     }
 
     private void updatePoints() {
