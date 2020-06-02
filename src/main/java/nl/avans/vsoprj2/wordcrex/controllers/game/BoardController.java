@@ -200,7 +200,7 @@ public class BoardController extends Controller {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
                 } else {
-                    this.createNewTurn(false);
+                    this.setBoardPassWinner(isPlayer1);
                 }
             }
         } catch (SQLException e) {
@@ -208,6 +208,27 @@ public class BoardController extends Controller {
             alert.setTitle("Game pass");
             alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
             alert.showAndWait();
+        }
+    }
+
+    private void setBoardPassWinner(boolean isPlayer1) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            StringBuilder turnBoardLetterQueryBuilder = new StringBuilder();
+            turnBoardLetterQueryBuilder.append("INSERT INTO `turnboardletter` (`game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y`) SELECT `game_id`, `turn_id`, `letter_id`, `tile_x`, `tile_y` FROM `");
+            turnBoardLetterQueryBuilder.append(isPlayer1 ? "boardplayer1" : "boardplayer2");
+            turnBoardLetterQueryBuilder.append("` WHERE `game_id` = ? AND `turn_id` = ?;");
+
+            PreparedStatement turnBoardLetterStatement = connection.prepareStatement(turnBoardLetterQueryBuilder.toString());
+            turnBoardLetterStatement.setInt(1, this.game.getGameId());
+            turnBoardLetterStatement.setInt(2, this.game.getCurrentTurn());
+
+            turnBoardLetterStatement.executeUpdate();
+
+            this.createNewTurn(false);
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
         }
     }
 
