@@ -150,7 +150,7 @@ public class Board {
         surroundTiles.add(this.getTile(x - 1, y));
         surroundTiles.add(this.getTile(x + 1, y));
 
-        surroundTiles.removeIf(tile -> !tile.hasLetter() || !tile.isConfirmed());
+        surroundTiles.removeIf(tile -> tile == null || !tile.hasLetter() || !tile.isConfirmed());
 
         return surroundTiles.size() > 0;
     }
