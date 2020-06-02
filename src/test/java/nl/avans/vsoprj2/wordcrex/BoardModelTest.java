@@ -64,10 +64,6 @@ public class BoardModelTest extends TestCase {
         assertEquals(y, coordinate.getY());
     }
 
-    public void testTestTest() {
-        assertEquals(0, 1);
-    }
-
     public void testConfirmedTile() {
         Board board = new Board();
 
