@@ -34,8 +34,8 @@ public class ChatController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::handleSendMessage);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::handleSendMessage);
     }
 
     /**
@@ -48,6 +48,7 @@ public class ChatController extends Controller {
     public void setGame(Game game) {
         if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
+        this.chatMessageInput.setVisible(this.game.getOwnGame());
         this.fetch();
         this.render();
         this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
@@ -118,7 +119,8 @@ public class ChatController extends Controller {
      * Handles the delete button event to remove all messages for this game.
      */
     @FXML
-    private void deleteMessagesHandler() {
+    private void handleDeleteMessage() {
+        if (!this.game.getOwnGame()) return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alle berichten verwijderen");
         alert.setContentText("Weet je zeker dat je alle berichten wilt verwijderen?");
@@ -149,7 +151,8 @@ public class ChatController extends Controller {
      *
      * @param keyEvent - KeyEvent send by Java FXML
      */
-    private void sendMessageHandler(KeyEvent keyEvent) {
+    private void handleSendMessage(KeyEvent keyEvent) {
+        if (!this.game.getOwnGame()) return;
         Account user = Singleton.getInstance().getUser();
         String messageContent = this.chatMessageInput.getText().trim();
 

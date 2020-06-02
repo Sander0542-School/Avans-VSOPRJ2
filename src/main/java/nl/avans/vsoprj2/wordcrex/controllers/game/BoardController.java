@@ -290,6 +290,7 @@ public class BoardController extends Controller {
 
         switch (menuItem.getId()) {
             case "geef op":
+                if (!this.game.getOwnGame()) return;
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Het spel opgeven");
                 alert.setHeaderText(null);

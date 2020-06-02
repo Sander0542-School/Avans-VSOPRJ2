@@ -9,15 +9,14 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController extends Controller {
     @FXML
     public ComboBox userComboBox;
-
-    @FXML
-    public ComboBox userRoleComboBox;
 
     @FXML
     public Label currentUser;
@@ -29,29 +28,46 @@ public class UserController extends Controller {
     public TextInputControl searchInput;
 
     @FXML
+    public CheckBox checkBoxPlayer;
+
+    @FXML
+    public CheckBox checkBoxModerator;
+
+    @FXML
+    public CheckBox checkBoxObserver;
+
+    @FXML
+    public CheckBox checkBoxAdministrator;
+
+    @FXML
     private void handleBackButton() {
         this.navigateTo("/views/settings.fxml");
     }
+
+    private ArrayList<Account.Role> accountRoles = new ArrayList<Account.Role>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
         this.getAllUsers();
-        this.getAllRoles();
     }
 
     /**
-     * Get all the roles from the database and fills the comboBox
+     * Get all the roles of a selected or searched user
+     *
+     * @param username - selected or searched username
      */
-    private void getAllRoles() {
+    private void getUserRoles(String username) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement usersStatement = connection.prepareStatement("SELECT `role` FROM `role`");
-            ResultSet users = usersStatement.executeQuery();
+            PreparedStatement userRoleStatement = connection.prepareStatement("SELECT `role` FROM `accountrole` WHERE `username` = ?");
+            userRoleStatement.setString(1, username);
+            ResultSet roles = userRoleStatement.executeQuery();
+            this.accountRoles.clear();
 
-            while (users.next()) {
-                this.userRoleComboBox.getItems().add(users.getString("role"));
+            while (roles.next()) {
+                this.accountRoles.add(Account.Role.valueOf(roles.getString("role").toUpperCase()));
             }
 
         } catch (SQLException ex) {
@@ -71,7 +87,7 @@ public class UserController extends Controller {
     private void getAllUsers() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            PreparedStatement usersStatement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username ");
+            PreparedStatement usersStatement = connection.prepareStatement("SELECT * FROM `account`");
             ResultSet users = usersStatement.executeQuery();
 
             while (users.next()) {
@@ -99,11 +115,35 @@ public class UserController extends Controller {
      */
     private void handleFormChanges(Account account) {
         if(account != null) {
+            this.checkBoxPlayer.setSelected(false);
+            this.checkBoxModerator.setSelected(false);
+            this.checkBoxObserver.setSelected(false);
+            this.checkBoxAdministrator.setSelected(false);
+
+            this.getUserRoles(account.getUsername());
             this.currentUser.setText(account.getUsername());
-            this.userRoleComboBox.getSelectionModel().select(account.getRole());
             this.currentUser.setVisible(true);
-            this.userRoleComboBox.setVisible(true);
             this.changeUserRoleButton.setVisible(true);
+            for (int i=0; i < this.accountRoles.size(); i++) {
+                switch (this.accountRoles.get(i)) {
+                    case PLAYER:
+                        this.checkBoxPlayer.setSelected(true);
+                        break;
+                    case MODERATOR:
+                        this.checkBoxModerator.setSelected(true);
+                        break;
+                    case OBSERVER:
+                        this.checkBoxObserver.setSelected(true);
+                        break;
+                    case ADMINISTRATOR:
+                        this.checkBoxAdministrator.setSelected(true);
+                        break;
+                }
+            }
+            this.checkBoxPlayer.setVisible(true);
+            this.checkBoxModerator.setVisible(true);
+            this.checkBoxObserver.setVisible(true);
+            this.checkBoxAdministrator.setVisible(true);
         }
     }
 
@@ -118,7 +158,7 @@ public class UserController extends Controller {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             this.userComboBox.getSelectionModel().select(null);
-            PreparedStatement userStatement = connection.prepareStatement("SELECT a.username, ar.role FROM account a INNER JOIN accountrole ar ON a.username = ar.username WHERE a.username=?");
+            PreparedStatement userStatement = connection.prepareStatement("SELECT username FROM account WHERE username=?");
             userStatement.setString(1, this.searchInput.getText().trim());
             ResultSet user = userStatement.executeQuery();
 
@@ -152,10 +192,32 @@ public class UserController extends Controller {
             if (dialogResult.get() == ButtonType.OK) {
                 Connection connection = Singleton.getInstance().getConnection();
                 try {
-                    PreparedStatement userStatement = connection.prepareStatement("UPDATE `accountrole` SET `role` = ? WHERE `username` = ?");
-                    userStatement.setString(1, this.userRoleComboBox.getValue().toString());
-                    userStatement.setString(2, this.currentUser.getText());
-                    userStatement.executeUpdate();
+                    PreparedStatement oldRolesStatement = connection.prepareStatement("DELETE FROM `accountrole` WHERE `username` = ?");
+                    oldRolesStatement.setString(1, this.currentUser.getText());
+                    oldRolesStatement.executeUpdate();
+
+                    StringBuilder insertQuery = new StringBuilder("INSERT INTO `accountrole`(`username`, `role`) VALUES ");
+                    boolean firstInsert = true;
+                    if(this.checkBoxPlayer.isSelected()) {
+                        insertQuery.append(" ('").append(this.currentUser.getText()).append("', 'player')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxModerator.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'moderator')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxObserver.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'observer')");
+                        firstInsert = false;
+                    }
+                    if(this.checkBoxAdministrator.isSelected()) {
+                        insertQuery.append(firstInsert ? "" : ",").append(" ('").append(this.currentUser.getText()).append("', 'administrator')");
+                        firstInsert = false;
+                    }
+                    insertQuery.append(";");
+                    PreparedStatement insertStatement = connection.prepareStatement(insertQuery.toString());
+
+                    if(!firstInsert) insertStatement.executeUpdate();
 
                     //reset user combobox to get the new role of the changed player
                     this.userComboBox.getItems().clear();
@@ -163,13 +225,16 @@ public class UserController extends Controller {
 
                     //reset form
                     this.currentUser.setVisible(false);
-                    this.userRoleComboBox.setVisible(false);
+                    this.checkBoxPlayer.setVisible(false);
+                    this.checkBoxModerator.setVisible(false);
+                    this.checkBoxAdministrator.setVisible(false);
+                    this.checkBoxObserver.setVisible(false);
                     this.changeUserRoleButton.setVisible(false);
                     this.searchInput.setText("");
 
                 } catch (SQLException ex) {
                     if(WordCrex.DEBUG_MODE) {
-                        System.err.println(ex.getErrorCode());
+                        System.err.println(ex.toString());
                     } else {
                         Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het veranderen van de gebruikersrol.");
                         invalidWordDialog.setTitle("Error");
