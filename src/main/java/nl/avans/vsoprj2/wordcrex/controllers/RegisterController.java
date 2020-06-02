@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.WordCrex;
@@ -92,8 +93,8 @@ public class RegisterController extends Controller {
     }
 
     @FXML
-    private void handleEnterReleased() {
-        this.handleRegisterAction();
+    private void handleEnterReleased(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) this.handleRegisterAction();
     }
 
     private void showErrorMessage(String message) {

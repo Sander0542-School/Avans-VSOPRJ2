@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -16,14 +17,13 @@ import nl.avans.vsoprj2.wordcrex.models.Game;
 import java.net.URL;
 import java.sql.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
     private List<ChatMessage> chatMessages = new ArrayList<>();
+    private Timer autoFetch = new Timer();
 
     @FXML
     private ScrollPane chatScrollContainer;
@@ -34,8 +34,8 @@ public class ChatController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::handleSendMessage);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::handleSendMessage);
     }
 
     /**
@@ -48,8 +48,30 @@ public class ChatController extends Controller {
     public void setGame(Game game) {
         if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
+        this.chatMessageInput.setVisible(this.game.getOwnGame());
         this.fetch();
         this.render();
+        this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
+    }
+
+    /**
+     * Creates a TimerTask to automatically fetch and rerender chat messages if the data is changed.
+     *
+     * @return TimerTask
+     */
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if (WordCrex.DEBUG_MODE) System.out.println("ChatController: Autofetch running.");
+                int originalSize = ChatController.this.chatMessages.size();
+                ChatController.this.fetch();
+                if (ChatController.this.chatMessages.size() != originalSize) {
+                    if (WordCrex.DEBUG_MODE) System.out.println("ChatController: Autofetch data updated rendering.");
+                    Platform.runLater(ChatController.this::render);
+                }
+            }
+        };
     }
 
     /**
@@ -63,6 +85,8 @@ public class ChatController extends Controller {
             statement.setInt(1, this.game.getGameId());
             ResultSet resultSet = statement.executeQuery();
 
+            this.chatMessages.clear();
+
             while (resultSet.next()) {
                 this.chatMessages.add(new ChatMessage(resultSet));
             }
@@ -72,7 +96,11 @@ public class ChatController extends Controller {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
-            //TODO(Daan) navigate back to board
+            try {
+                this.navigateBackToGame();
+            } catch (Exception ignore) {
+                // Ignore exception
+            }
         }
     }
 
@@ -93,7 +121,8 @@ public class ChatController extends Controller {
      * Handles the delete button event to remove all messages for this game.
      */
     @FXML
-    private void deleteMessagesHandler() {
+    private void handleDeleteMessage() {
+        if (!this.game.getOwnGame()) return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alle berichten verwijderen");
         alert.setContentText("Weet je zeker dat je alle berichten wilt verwijderen?");
@@ -107,7 +136,6 @@ public class ChatController extends Controller {
                     PreparedStatement statement = connection.prepareStatement("DELETE FROM chatline WHERE game_id = ?");
                     statement.setInt(1, this.game.getGameId());
                     statement.execute();
-                    this.chatMessages.clear();
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
@@ -127,7 +155,8 @@ public class ChatController extends Controller {
      *
      * @param keyEvent - KeyEvent send by Java FXML
      */
-    private void sendMessageHandler(KeyEvent keyEvent) {
+    private void handleSendMessage(KeyEvent keyEvent) {
+        if (!this.game.getOwnGame()) return;
         Account user = Singleton.getInstance().getUser();
         String messageContent = this.chatMessageInput.getText().trim();
 
@@ -151,7 +180,6 @@ public class ChatController extends Controller {
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
-                    this.navigateBackToGame();
                 }
             }
             keyEvent.consume();
@@ -160,6 +188,8 @@ public class ChatController extends Controller {
 
     @FXML
     private void navigateBackToGame() {
+        this.autoFetch.cancel();
+        this.autoFetch.purge();
         this.navigateTo("/views/game/board.fxml", new NavigationListener() {
             @Override
             public void beforeNavigate(Controller controller) {

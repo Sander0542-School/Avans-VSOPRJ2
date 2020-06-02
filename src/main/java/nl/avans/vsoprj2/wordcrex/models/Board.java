@@ -1,98 +1,175 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Board {
-    public enum TileType {
-        NORMAL,
-        START,
-        TWOLETTER,
-        THREEWORD,
-        FOURLETTER,
-        FOURWORD,
-        SIXLETTER
-    }
+    public static final int BOARD_SIZE = 15;
 
-    public static final int BOARD_SIZE = 14;
-
-    private Tile[][] grid;
-    private Map<String, TileType> predefinedTileTypes = new HashMap<>();
+    private final Tile[][] tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {
-        this.populatePredefinedTileTypes();
-        this.grid = this.newBoard();
+        this.loadTiles();
     }
 
-    private void populatePredefinedTileTypes() {
-        String[] TWOLETTER = {"2,1", "6,1", "8,1", "12,1", "8,3", "6,6", "8,6", "2,7", "12,7", "6,8", "8,8", "8,11", "2,13", "6,13", "8,13", "12,13"};
-        String[] THREEWORD = {"4,0", "10,0", "0,2", "14,2", "3,4", "11,4", "3,10", "11,10", "0,12", "14,12", "4,14", "10,14"};
-        String[] FOURLETTER = {"7,0", "3,2", "11,2", "5,3", "9,3", "1,4", "13,4", "7,5", "7,9", "1,10", "13,10", "5,11", "9,11", "3,12", "11,12", "7,14"};
-        String[] FOURWORD = {"0,7", "14,7"};
-        String[] SIXLETTER = {"0,0", "14,0", "4,5", "10,5", "1,6", "13,6", "1,8", "13,8", "4,9", "10,9", "14,14", "0,14"};
+    public void loadTiles() {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
+            ResultSet result = statement.executeQuery();
 
-        this.predefinedTileTypes.put("6,6", TileType.START);
+            while (result.next()) {
+                int xCord = result.getInt("x");
+                int yCord = result.getInt("y");
+                Tile.TileType type = Tile.TileType.fromDatabase(result.getString("tile_type"));
 
-        for (String key : TWOLETTER) {
-            this.predefinedTileTypes.put(key, TileType.TWOLETTER);
-        }
+                Tile tile = new Tile(type);
 
-        for (String key : THREEWORD) {
-            this.predefinedTileTypes.put(key, TileType.THREEWORD);
-        }
-
-        for (String key : FOURLETTER) {
-            this.predefinedTileTypes.put(key, TileType.FOURLETTER);
-        }
-
-        for (String key : FOURWORD) {
-            this.predefinedTileTypes.put(key, TileType.FOURWORD);
-        }
-
-        for (String key : SIXLETTER) {
-            this.predefinedTileTypes.put(key, TileType.SIXLETTER);
-        }
-    }
-
-    private Tile[][] newBoard() {
-        Tile[][] newGrid = new Tile[BOARD_SIZE][BOARD_SIZE];
-
-        for (int x = 0; x < BOARD_SIZE; x++) {
-            for (int y = 0; y < BOARD_SIZE; y++) {
-                newGrid[x][y] = new Tile(x, y, this.getTileType(x, y));
+                this.setTile(xCord, yCord, tile);
             }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
         }
-        return newGrid;
     }
 
-    private TileType getTileType(int x, int y) {
-        return this.predefinedTileTypes.getOrDefault(x + "," + y, TileType.NORMAL);
+    public void loadLetters(Game game, HashMap<Character, Integer> symbolValues) {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        this.loadTiles();
+
+        String table = Singleton.getInstance().getUser().getUsername().equals(game.getUsernamePlayer1()) ? "gelegdplayer1" : "gelegdplayer2";
+
+        int currentTurnId = game.getCurrentTurn();
+        int playerLastTurn = 0;
+        int turnId = 0;
+
+        try {
+            PreparedStatement playerStatement = connection.prepareStatement(String.format("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `%s` WHERE `game_id` = ? ORDER BY `turn_id` DESC LIMIT 1;", table));
+            playerStatement.setInt(1, game.getGameId());
+
+            ResultSet playerResult = playerStatement.executeQuery();
+
+            if (playerResult.next()) {
+                playerLastTurn = playerResult.getInt("turn_id");
+            }
+
+            PreparedStatement gelegdstatement = connection.prepareStatement("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
+            gelegdstatement.setInt(1, game.getGameId());
+
+            ResultSet gelegdResult = gelegdstatement.executeQuery();
+
+            while (gelegdResult.next()) {
+                String[] letters = gelegdResult.getString("woorddeel").split(",");
+                int[] xCords = Arrays.stream(gelegdResult.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+                int[] yCords = Arrays.stream(gelegdResult.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+
+                turnId = gelegdResult.getInt("turn_id");
+
+                for (int i = 0; i < letters.length; i++) {
+                    char letter = letters[i].charAt(0);
+                    int xCord = xCords[i];
+                    int yCord = yCords[i];
+
+                    Tile tile = this.getTile(xCord, yCord);
+
+                    tile.setConfirmed(true);
+                    tile.setHighlighted(gelegdResult.isLast() && turnId == playerLastTurn);
+                    tile.setLetter(letter, symbolValues.get(letter));
+                }
+            }
+
+            if (playerLastTurn > turnId) {
+                String[] letters = playerResult.getString("woorddeel").split(",");
+                int[] xCords = Arrays.stream(playerResult.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+                int[] yCords = Arrays.stream(playerResult.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
+
+                for (int i = 0; i < letters.length; i++) {
+                    char letter = letters[i].charAt(0);
+                    int xCord = xCords[i];
+                    int yCord = yCords[i];
+
+                    Tile tile = this.getTile(xCord, yCord);
+
+                    tile.setConfirmed(true);
+                    tile.setHighlighted(true);
+                    tile.setLetter(letter, symbolValues.get(letter));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+    }
+
+    public void setTile(int x, int y, Tile tile) {
+        if (x > 0 && x <= BOARD_SIZE && y > 0 && y <= BOARD_SIZE) {
+            this.tiles[x - 1][y - 1] = tile;
+        }
     }
 
     public Tile getTile(int x, int y) {
-        if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
-            return null;
+        if (x > 0 && x <= BOARD_SIZE && y > 0 && y <= BOARD_SIZE) {
+            return this.tiles[x - 1][y - 1];
         }
 
-        return this.grid[x][y];
+        return null;
     }
 
-    public boolean hasValue(int x, int y) {
-        return this.getValue(x, y) != null;
+    public Coordinate getCoordinate(Tile tile) {
+        for (int row = 1; row <= BOARD_SIZE; row++) {
+            for (int column = 1; column <= BOARD_SIZE; column++) {
+                Tile columnTile = this.getTile(row, column);
+
+                if (tile.equals(columnTile)) {
+                    return new Coordinate(row, column);
+                }
+            }
+        }
+
+        return null;
     }
 
-    public Character getValue(int x, int y) {
-        Tile tile = this.getTile(x, y);
-
-        return tile == null ? null : tile.getValue();
+    public Tile[][] getTiles() {
+        return this.tiles;
     }
 
-    public Tile[][] getGrid() {
-        return this.grid;
+    public boolean hasConfirmedSurroundingTile(int x, int y) {
+        List<Tile> surroundTiles = new ArrayList<>();
+
+        surroundTiles.add(this.getTile(x, y - 1));
+        surroundTiles.add(this.getTile(x, y + 1));
+        surroundTiles.add(this.getTile(x - 1, y));
+        surroundTiles.add(this.getTile(x + 1, y));
+
+        surroundTiles.removeIf(tile -> tile == null || !tile.hasLetter() || !tile.isConfirmed());
+
+        return surroundTiles.size() > 0;
     }
 
-    public void setValue(int x, int y, Character Value) {
-        this.grid[x][y].setValue(Value);
-    }
+    public static class Coordinate {
+        private final int x;
+        private final int y;
 
+        public Coordinate(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return this.x;
+        }
+
+        public int getY() {
+            return this.y;
+        }
+    }
 }
