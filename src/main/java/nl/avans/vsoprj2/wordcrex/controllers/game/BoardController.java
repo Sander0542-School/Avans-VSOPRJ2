@@ -1,5 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
+import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile;
 import nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile;
@@ -30,18 +32,25 @@ public class BoardController extends Controller {
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
+    private final Timer timer = new Timer();
 
     private LetterTile selectedLetter;
     private boolean moveTileFromToBoard = false;
     private BoardTile previousBoardTile;
-    private ArrayList<Letter> currentLetters = new ArrayList<>();
-    private ContextMenu gameOptionsMenu = new ContextMenu();
+    private final ArrayList<Letter> currentLetters = new ArrayList<>();
+    private final ContextMenu gameOptionsMenu = new ContextMenu();
+    private HashMap<Character, Integer> symbolValues;
+
+    private int turnId;
+    private int playerOneScore;
+    private int playerTwoScore;
 
     @FXML
     private GridPane gameGrid;
     @FXML
     private HBox lettertiles;
-
+    @FXML
+    private Label boardScore;
     @FXML
     private Label player1Name;
     @FXML
@@ -53,8 +62,6 @@ public class BoardController extends Controller {
     @FXML
     private ImageView shuffleReturnImage;
 
-    private HashMap<Character, Integer> symbolValues;
-
     /**
      * This method needs to be called in the BeforeNavigation.
      * See following link : https://github.com/daanh432/Avans-VSOPRJ2/pull/35#discussion_r420678493
@@ -63,23 +70,67 @@ public class BoardController extends Controller {
      */
     public void setGame(Game game) {
         this.game = game;
-
-        this.turnLocked = this.game.getTurnLocked();
-
         this.symbolValues = this.getSymbolValues();
 
-        this.board.loadLetters(game, this.symbolValues);
+        this.loadAndRenderGame();
 
-        this.loadBoard();
-
-        this.loadPlayerData();
-
-        this.loadHandLetters();
+        this.timer.scheduleAtFixedRate(this.createTimerTask(), 0, 10000);
 
         if (game.getCurrentTurn() == 0) this.createNewTurn(false);
     }
 
-    public List<BoardTile> getUnconfirmedTiles() {
+    private void loadAndRenderGame() {
+        this.turnLocked = this.game.getTurnLocked();
+        this.turnId = this.game.getCurrentTurn();
+
+        this.board.loadLetters(this.game, this.symbolValues);
+        this.renderBoard();
+
+        this.fetchPlayerData();
+        this.renderPlayerData();
+
+        this.loadHandLetters();
+        this.displayLetters();
+        this.updateShuffleReturnButton();
+    }
+
+    /**
+     * TimerTask refreshes the board if the score or turn id has changed. Only when turn is locked in the client!!!
+     *
+     * @return TimerTask to refresh board
+     */
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if (BoardController.this.turnLocked) {
+                    if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
+
+                    int originalPlayerOneScore = BoardController.this.playerOneScore;
+                    int originalPlayerTwoScore = BoardController.this.playerTwoScore;
+                    int newTurnId = BoardController.this.game.getCurrentTurn();
+                    BoardController.this.board.loadLetters(BoardController.this.game, BoardController.this.symbolValues);
+                    BoardController.this.loadHandLetters();
+                    BoardController.this.fetchPlayerData();
+                    BoardController.this.turnLocked = BoardController.this.game.getTurnLocked();
+
+                    if (BoardController.this.playerOneScore != originalPlayerOneScore ||
+                            BoardController.this.playerTwoScore != originalPlayerTwoScore ||
+                            BoardController.this.turnId != newTurnId) {
+                        Platform.runLater(() -> {
+                            if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task rendering data");
+                            BoardController.this.turnId = newTurnId;
+                            BoardController.this.renderBoard();
+                            BoardController.this.renderPlayerData();
+                            BoardController.this.displayLetters();
+                        });
+                    }
+                }
+            }
+        };
+    }
+
+    private List<BoardTile> getUnconfirmedTiles() {
         List<BoardTile> tiles = new ArrayList<>();
 
         for (Node node : this.gameGrid.getChildren()) {
@@ -92,7 +143,10 @@ public class BoardController extends Controller {
         return tiles;
     }
 
-    public void loadBoard() {
+    /**
+     * Renders all the tiles to the board and adds click event handler to them
+     */
+    private void renderBoard() {
         this.gameGrid.getChildren().clear();
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
@@ -102,20 +156,30 @@ public class BoardController extends Controller {
                 this.gameGrid.add(boardTile, x - 1, y - 1);
             }
         }
-    }
 
-    public void loadPlayerData() {
-        this.player1Name.setText(this.game.getUsernamePlayer1());
-        this.player2Name.setText(this.game.getUsernamePlayer2());
-
-        this.player1Score.setText(String.valueOf(this.game.getPlayerScore(true)));
-        this.player2Score.setText(String.valueOf(this.game.getPlayerScore(false)));
+        this.gridSizeChanged();
     }
 
     /**
-     * @param winner - Account model
+     * Fetches the player score and saves it in a variable
      */
-    public void endGame() {
+    private void fetchPlayerData() {
+        this.playerOneScore = this.game.getPlayerScore(true);
+        this.playerTwoScore = this.game.getPlayerScore(false);
+    }
+
+    /**
+     * Renders the player score from the variables to the GUI
+     */
+    private void renderPlayerData() {
+        this.player1Name.setText(this.game.getUsernamePlayer1());
+        this.player2Name.setText(this.game.getUsernamePlayer2());
+
+        this.player1Score.setText(String.valueOf(this.playerOneScore));
+        this.player2Score.setText(String.valueOf(this.playerTwoScore));
+    }
+
+    private void endGame() {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
@@ -159,6 +223,148 @@ public class BoardController extends Controller {
         });
     }
 
+    @FXML
+    private void handleBackButton() {
+        this.timer.cancel();
+        this.timer.purge();
+        this.navigateTo("/views/games.fxml");
+    }
+
+    @FXML
+    private void handleScoreboardAction() {
+        this.timer.cancel();
+        this.timer.purge();
+        this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ScoreboardController scoreboardController = (ScoreboardController) controller;
+                scoreboardController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+
+    @FXML
+    private void handleChatAction() {
+        this.timer.cancel();
+        this.timer.purge();
+        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
+            @Override
+            public void beforeNavigate(Controller controller) {
+                ChatController chatController = (ChatController) controller;
+                chatController.setGame(BoardController.this.game);
+            }
+
+            @Override
+            public void afterNavigate(Controller controller) {
+
+            }
+        });
+    }
+
+    @FXML
+    private void handleGameOptionsMenu(MouseEvent event) {
+        this.gameOptionsMenu.show(this.getStage(), event.getScreenX(), event.getScreenY());
+    }
+
+    @FXML
+    private void gameOptionsMenuEventHandler(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+
+        switch (menuItem.getId()) {
+            case "geef op":
+                if (!this.game.getOwnGame()) return;
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Het spel opgeven");
+                alert.setHeaderText(null);
+                alert.setContentText("Weet je zeker dat je wilt opgeven?");
+                ButtonType okButton = new ButtonType("Ja", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("Nee", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(okButton, noButton);
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        this.game.resignGame();
+                        this.navigateTo("/views/games.fxml");
+                    }
+                });
+                break;
+        }
+    }
+
+    @FXML
+    private void handleShuffleReturnAction() {
+        if (this.getUnconfirmedTiles().isEmpty()) {
+            //shuffle
+            this.displayLetters();
+        } else {
+            //return letters
+            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
+                boardTile.setLetterTile(null);
+                boardTile.updateBackgroundColor();
+                this.moveTileFromToBoard = false;
+
+                if (this.selectedLetter != null) {
+                    this.selectedLetter.deselectLetter();
+                    this.selectedLetter = null;
+                }
+            }
+
+            this.displayLetters();
+            this.updateShuffleReturnButton();
+        }
+    }
+
+    @FXML
+    private void handleLettertilesClick() {
+        if (this.turnLocked) return;
+
+        if (this.selectedLetter != null && this.moveTileFromToBoard) {
+            this.previousBoardTile.setLetterTile(null);
+            this.previousBoardTile.updateBackgroundColor();
+            this.moveTileFromToBoard = false;
+
+            this.lettertiles.getChildren().add(this.selectedLetter);
+
+            this.selectedLetter.deselectLetter();
+            this.selectedLetter = null;
+        }
+
+        this.updateShuffleReturnButton();
+    }
+
+    /**
+     * Play button event, asks player if they want to play a turn
+     */
+    @FXML
+    private void confirmLettersButtonClicked() {
+        if (this.turnLocked) return;
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Bevestig Woord");
+        confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
+        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
+
+        if (dialogResult.isPresent()) {
+            if (dialogResult.get() == ButtonType.OK) {
+                List<List<BoardTile>> words = this.getWords();
+                if (this.checkWords(words)) {
+                    int turn = this.game.getCurrentTurn();
+                    this.createNewPlayerTurn(turn);
+                    this.createNewPlayerBoard(turn, this.getUnconfirmedTiles());
+                } else {
+                    //Throws alert if word is not correct
+                    Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "Dit is geen geldig woord.\nProbeer een ander woord.");
+                    invalidWordDialog.setHeaderText(null);
+                    invalidWordDialog.setTitle("Fout Woord");
+                    invalidWordDialog.showAndWait();
+                }
+            }
+        }
+    }
+
     private void passGame() {
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -196,6 +402,7 @@ public class BoardController extends Controller {
 
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
+            this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
@@ -209,6 +416,8 @@ public class BoardController extends Controller {
             alert.setHeaderText("Je hebt deze beurt al iets gedaan. Je kunt niet opnieuw passen.");
             alert.showAndWait();
         }
+
+        this.boardScore.setVisible(false);
     }
 
     private void setBoardPassWinner(boolean isPlayer1) {
@@ -253,7 +462,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public boolean isExistingWord(String word) {
+    private boolean isExistingWord(String word) {
         Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT EXISTS(SELECT * FROM dictionary WHERE word = ? AND letterset_code = ? AND state = 'accepted');");
@@ -264,72 +473,6 @@ public class BoardController extends Controller {
             return result.getBoolean(1);
         } catch (SQLException e) {
             throw new DbLoadException(e);
-        }
-    }
-
-    @FXML
-    private void handleBackButton() {
-        this.navigateTo("/views/games.fxml");
-    }
-
-    @FXML
-    private void handleScoreboardAction() {
-        this.navigateTo("/views/game/scoreboard.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                ScoreboardController scoreboardController = (ScoreboardController) controller;
-                scoreboardController.setGame(BoardController.this.game);
-            }
-
-            @Override
-            public void afterNavigate(Controller controller) {
-
-            }
-        });
-    }
-
-    @FXML
-    private void handleChatAction() {
-        this.navigateTo("/views/game/chat.fxml", new NavigationListener() {
-            @Override
-            public void beforeNavigate(Controller controller) {
-                ChatController chatController = (ChatController) controller;
-                chatController.setGame(BoardController.this.game);
-            }
-
-            @Override
-            public void afterNavigate(Controller controller) {
-
-            }
-        });
-    }
-
-    @FXML
-    private void handleGameOptionsMenu(MouseEvent event) {
-        this.gameOptionsMenu.show(this.getStage(), event.getScreenX(), event.getScreenY());
-    }
-
-    @FXML
-    private void gameOptionsMenuEventHandler(ActionEvent event) {
-        MenuItem menuItem = (MenuItem) event.getSource();
-
-        switch (menuItem.getId()) {
-            case "geef op":
-                if (!this.game.getOwnGame()) return;
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Het spel opgeven");
-                alert.setHeaderText(null);
-                alert.setContentText("Weet je zeker dat je wilt opgeven?");
-                ButtonType okButton = new ButtonType("Ja", ButtonBar.ButtonData.YES);
-                ButtonType noButton = new ButtonType("Nee", ButtonBar.ButtonData.NO);
-                alert.getButtonTypes().setAll(okButton, noButton);
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        this.game.resignGame();
-                        this.navigateTo("/views/games.fxml");
-                    }
-                });
-                break;
         }
     }
 
@@ -348,12 +491,21 @@ public class BoardController extends Controller {
     private void updatePoints() {
         List<List<BoardTile>> words = this.getWords();
 
-        //TODO() Hide point count on layout
+        this.boardScore.setVisible(false);
 
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            //TODO() Show point count on layout
+            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+            this.boardScore.setText(String.valueOf(points.points));
+
+            this.boardScore.setVisible(true);
         }
     }
 
@@ -390,8 +542,6 @@ public class BoardController extends Controller {
 
         List<List<BoardTile>> words = new ArrayList<>();
 
-        Coordinates coordinates;
-
         if (orientation == null) {
             return null;
         }
@@ -402,21 +552,12 @@ public class BoardController extends Controller {
                 words.add(this.findWord(unconfirmedTiles.get(0), false));
                 break;
             case VERTICAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
-
-                words.add(this.findWord(unconfirmedTiles.get(0), false));
-
-                for (int y = coordinates.minY; y <= coordinates.maxY; y++) {
-                    words.add(this.findWord(this.getBoardTile(coordinates.minX, y), true));
-                }
-                break;
             case HORIZONTAL:
-                coordinates = this.getCoordinates(unconfirmedTiles);
+                boolean horizontal = orientation == Orientation.HORIZONTAL;
+                words.add(this.findWord(unconfirmedTiles.get(0), horizontal));
 
-                words.add(this.findWord(unconfirmedTiles.get(0), true));
-
-                for (int x = coordinates.minX; x <= coordinates.maxX; x++) {
-                    words.add(this.findWord(this.getBoardTile(x, coordinates.maxY), false));
+                for (BoardTile boardTile : unconfirmedTiles) {
+                    words.add(this.findWord(boardTile, !horizontal));
                 }
                 break;
         }
@@ -426,7 +567,7 @@ public class BoardController extends Controller {
         return words.size() > 0 ? words : null;
     }
 
-    public Coordinates getCoordinates(List<BoardTile> tiles) {
+    private Coordinates getCoordinates(List<BoardTile> tiles) {
         Coordinates coordinates = null;
 
         for (BoardTile boardTile : tiles) {
@@ -447,7 +588,7 @@ public class BoardController extends Controller {
         return coordinates;
     }
 
-    public Points calculatePoints(List<List<BoardTile>> words) {
+    private Points calculatePoints(List<List<BoardTile>> words) {
         Points points = new Points();
 
         for (List<BoardTile> word : words) {
@@ -491,7 +632,7 @@ public class BoardController extends Controller {
         return points;
     }
 
-    public List<String> getWordsFromList(List<List<BoardTile>> words) {
+    private List<String> getWordsFromList(List<List<BoardTile>> words) {
         List<String> wordsString = new ArrayList<>();
 
         for (List<BoardTile> word : words) {
@@ -522,7 +663,7 @@ public class BoardController extends Controller {
         }
     }
 
-    public List<BoardTile> findWord(BoardTile boardTile, boolean horizontal) {
+    private List<BoardTile> findWord(BoardTile boardTile, boolean horizontal) {
         List<BoardTile> wordTiles = new ArrayList<>();
         BoardTile firstTile = boardTile;
         int i = 1;
@@ -611,10 +752,14 @@ public class BoardController extends Controller {
         }
     }
 
-    //hand out letters (previous turn winner)
-    public void handOutLetters(boolean isPassedTurn) {
+    /**
+     * hand out letters (previous turn winner)
+     *
+     * @param isPassedTurn this should be true if the turn is passed
+     */
+    private void handOutLetters(int currentTurn, boolean isPassedTurn) {
+        if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Handing out new letters");
         Connection connection = Singleton.getInstance().getConnection();
-        int currentTurn = this.game.getCurrentTurn();
         int extraLetters = 7;
         this.currentLetters.clear();
 
@@ -642,20 +787,16 @@ public class BoardController extends Controller {
             }
         }
 
-        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters));
+        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters, this.currentLetters));
 
         try {
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO `handletter` (`game_id`,`turn_id`,`letter_id`) VALUES ");
 
-            int handletterCount = 0;
             for (Letter letter : this.currentLetters) {
-                if (handletterCount > 0) {
-                    sb.append(",");
-                }
-                sb.append("(").append(this.game.getGameId()).append(", ").append(currentTurn).append(",").append(letter.getLetterId()).append(")");
-                handletterCount++;
+                sb.append(String.format("(%s, %s, %s),", this.game.getGameId(), currentTurn, letter.getLetterId()));
             }
+            sb.setLength(sb.length() - 1);
             sb.append(";");
 
             PreparedStatement statement = connection.prepareStatement(sb.toString());
@@ -670,12 +811,31 @@ public class BoardController extends Controller {
         }
     }
 
-    public ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
+    /**
+     * Gets random letters from the pool
+     *
+     * @param extraLetters amount of letters to be returned
+     *
+     * @return ArrayList of Letters
+     */
+    private ArrayList<Letter> getRandomLettersFromPool(int extraLetters, List<Letter> currentLetters) {
         Connection connection = Singleton.getInstance().getConnection();
         ArrayList<Letter> letters = new ArrayList<>();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ORDER BY RAND() LIMIT ?");
+            StringBuilder queryBuilder = new StringBuilder();
+
+            queryBuilder.append("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ");
+
+            if (currentLetters.size() > 0) {
+                queryBuilder.append("AND l.letter_id NOT IN (");
+                queryBuilder.append(currentLetters.stream().map(letter -> String.valueOf(letter.getLetterId())).collect(Collectors.joining(",")));
+                queryBuilder.append(") ");
+            }
+
+            queryBuilder.append("ORDER BY RAND() LIMIT ?");
+
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
             statement.setInt(1, this.game.getGameId());
             statement.setInt(2, extraLetters);
             ResultSet result = statement.executeQuery();
@@ -691,8 +851,10 @@ public class BoardController extends Controller {
         return letters;
     }
 
-    //get handed out letters (handed out by previous turn winner)
-    public void loadHandLetters() {
+    /**
+     * get handed out letters (handed out by previous turn winner)
+     */
+    private void loadHandLetters() {
         Connection connection = Singleton.getInstance().getConnection();
         int currentTurn = this.game.getCurrentTurn();
         this.currentLetters.clear();
@@ -706,8 +868,6 @@ public class BoardController extends Controller {
             while (result.next()) {
                 this.currentLetters.add(new Letter(result));
             }
-
-            this.displayLetters();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
@@ -724,29 +884,6 @@ public class BoardController extends Controller {
         }
     }
 
-    @FXML
-    private void handleShuffleReturnAction() {
-        if (this.getUnconfirmedTiles().isEmpty()) {
-            //shuffle
-            this.displayLetters();
-        } else {
-            //return letters
-            for (BoardTile boardTile : this.getUnconfirmedTiles()) {
-                boardTile.setLetterTile(null);
-                boardTile.updateBackgroundColor();
-                this.moveTileFromToBoard = false;
-
-                if (this.selectedLetter != null) {
-                    this.selectedLetter.deselectLetter();
-                    this.selectedLetter = null;
-                }
-            }
-
-            this.displayLetters();
-            this.updateShuffleReturnButton();
-        }
-    }
-
     private void updateShuffleReturnButton() {
         if (this.getUnconfirmedTiles().isEmpty()) {
             this.shuffleReturnImage.setImage(new Image("/images/drawables/shuffle.png"));
@@ -755,6 +892,11 @@ public class BoardController extends Controller {
         }
     }
 
+    /**
+     * Sets the click event handler on the entered letterTile
+     *
+     * @param lettertile the tile to add the click event handler to
+     */
     private void setLetterTileClick(LetterTile lettertile) {
         lettertile.setOnMouseClicked(event -> {
             if (this.turnLocked) return;
@@ -768,9 +910,16 @@ public class BoardController extends Controller {
                 this.selectLetter(lettertile);
             }
             this.moveTileFromToBoard = false;
+
+            this.updatePoints();
         });
     }
 
+    /**
+     * Selects the letter
+     *
+     * @param lettertile letter to select
+     */
     private void selectLetter(LetterTile lettertile) {
         if (this.selectedLetter != null) {
             this.selectedLetter.deselectLetter();
@@ -780,6 +929,11 @@ public class BoardController extends Controller {
         lettertile.selectLetter();
     }
 
+    /**
+     * Add click handler to boardTile
+     *
+     * @param boardTile tile to add the click handler to
+     */
     private void setBoardTileClick(BoardTile boardTile) {
         boardTile.setOnMouseClicked(event -> {
             if (this.turnLocked) return;
@@ -825,24 +979,9 @@ public class BoardController extends Controller {
             }
 
             this.updateShuffleReturnButton();
+
+            this.updatePoints();
         });
-    }
-
-    public void handleLettertilesClick() {
-        if (this.turnLocked) return;
-
-        if (this.selectedLetter != null && this.moveTileFromToBoard) {
-            this.previousBoardTile.setLetterTile(null);
-            this.previousBoardTile.updateBackgroundColor();
-            this.moveTileFromToBoard = false;
-
-            this.lettertiles.getChildren().add(this.selectedLetter);
-
-            this.selectedLetter.deselectLetter();
-            this.selectedLetter = null;
-        }
-
-        this.updateShuffleReturnButton();
     }
 
     private void gridSizeChanged() {
@@ -869,76 +1008,6 @@ public class BoardController extends Controller {
 
         this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
         this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
-    }
-
-    private enum Orientation {
-        SINGLE_TILE,
-        HORIZONTAL,
-        VERTICAL
-    }
-
-    private static class Coordinates {
-        public int minX;
-        public int maxX;
-
-        public int minY;
-        public int maxY;
-
-        public Coordinates(int minX, int maxX, int minY, int maxY) {
-            this.minX = minX;
-            this.maxX = maxX;
-            this.minY = minY;
-            this.maxY = maxY;
-        }
-    }
-
-    private static class Points {
-        private int points = 0;
-        private int bonus = 0;
-
-        public void addPoints(int points) {
-            this.points += points;
-        }
-
-        public void addBonus(int bonus) {
-            this.bonus += bonus;
-        }
-
-        public int getPoints() {
-            return this.points;
-        }
-
-        public int getBonus() {
-            return this.bonus;
-        }
-    }
-
-    /**
-     * Play button event, asks player if they want to play a turn
-     */
-    @FXML
-    private void confirmLettersButtonClicked() {
-        if (this.turnLocked) return;
-        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationDialog.setTitle("Bevestig Woord");
-        confirmationDialog.setHeaderText("Weet je zeker dat je dit woord wil spelen?");
-        Optional<ButtonType> dialogResult = confirmationDialog.showAndWait();
-
-        if (dialogResult.isPresent()) {
-            if (dialogResult.get() == ButtonType.OK) {
-                List<List<BoardTile>> words = this.getWords();
-                if (this.checkWords(words)) {
-                    int turn = this.game.getCurrentTurn();
-                    this.createNewPlayerTurn(turn);
-                    this.createNewPlayerBoard(turn, this.getUnconfirmedTiles());
-                } else {
-                    //Throws alert if word is not correct
-                    Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "Dit is geen geldig woord.\nProbeer een ander woord.");
-                    invalidWordDialog.setTitle("Fout Woord");
-                    invalidWordDialog.showAndWait();
-                }
-            }
-        }
     }
 
     private void createNewPlayerBoard(int turn, List<BoardTile> boardTiles) {
@@ -970,6 +1039,8 @@ public class BoardController extends Controller {
             PreparedStatement boardPlayerStatement = connection.prepareStatement(boardPlayerQueryBuilder.toString());
 
             boardPlayerStatement.executeUpdate();
+
+            this.boardScore.setVisible(false);
 
             StringBuilder turnPlayerQueryBuilder = new StringBuilder();
 
@@ -1028,7 +1099,7 @@ public class BoardController extends Controller {
 
                 this.createNewTurn(false);
             }
-
+            this.loadAndRenderGame();
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
@@ -1098,6 +1169,7 @@ public class BoardController extends Controller {
      * Creates a new turn in the database
      */
     private void createNewTurn(boolean isPassedTurn) {
+        if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Creating a new turn id");
         Connection connection = Singleton.getInstance().getConnection();
         try {
             int newTurnId = this.game.getCurrentTurn() + 1;
@@ -1107,9 +1179,51 @@ public class BoardController extends Controller {
             newTurnStatement.setInt(2, newTurnId);
             newTurnStatement.executeUpdate();
 
-            this.handOutLetters(isPassedTurn);
+            this.handOutLetters(newTurnId, isPassedTurn);
         } catch (SQLException e) {
             throw new DbLoadException(e);
+        }
+    }
+
+    private enum Orientation {
+        SINGLE_TILE,
+        HORIZONTAL,
+        VERTICAL
+    }
+
+    private static class Coordinates {
+        public int minX;
+        public int maxX;
+
+        public int minY;
+        public int maxY;
+
+        public Coordinates(int minX, int maxX, int minY, int maxY) {
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minY = minY;
+            this.maxY = maxY;
+        }
+    }
+
+    private static class Points {
+        private int points = 0;
+        private int bonus = 0;
+
+        public void addPoints(int points) {
+            this.points += points;
+        }
+
+        public void addBonus(int bonus) {
+            this.bonus += bonus;
+        }
+
+        public int getPoints() {
+            return this.points;
+        }
+
+        public int getBonus() {
+            return this.bonus;
         }
     }
 }
