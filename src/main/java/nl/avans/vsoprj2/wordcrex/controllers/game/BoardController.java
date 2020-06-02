@@ -407,7 +407,7 @@ public class BoardController extends Controller {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
                 } else {
-                    this.setBoardPassWinner(isPlayer1);
+                    this.setBoardPassWinner(!isPlayer1);
                 }
             }
         } catch (SQLException e) {
