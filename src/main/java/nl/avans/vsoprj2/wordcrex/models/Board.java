@@ -1,7 +1,8 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import javafx.scene.control.Alert;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +39,11 @@ public class Board {
             }
 
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de verschillende tiles.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
@@ -106,7 +111,11 @@ public class Board {
                 }
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de gelegde letters.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
