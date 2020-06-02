@@ -746,7 +746,7 @@ public class BoardController extends Controller {
             }
         }
 
-        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters));
+        this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters, this.currentLetters));
 
         try {
             StringBuilder sb = new StringBuilder();
@@ -777,12 +777,24 @@ public class BoardController extends Controller {
      *
      * @return ArrayList of Letters
      */
-    private ArrayList<Letter> getRandomLettersFromPool(int extraLetters) {
+    private ArrayList<Letter> getRandomLettersFromPool(int extraLetters, List<Letter> currentLetters) {
         Connection connection = Singleton.getInstance().getConnection();
         ArrayList<Letter> letters = new ArrayList<>();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ORDER BY RAND() LIMIT ?");
+            StringBuilder queryBuilder = new StringBuilder();
+
+            queryBuilder.append("SELECT l.letter_id, l.game_id, l.symbol_letterset_code, l.symbol, s.value FROM `pot` p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ? ");
+
+            if (currentLetters.size() > 0) {
+                queryBuilder.append("AND l.letter_id NOT IN (");
+                queryBuilder.append(currentLetters.stream().map(letter -> String.valueOf(letter.getLetterId())).collect(Collectors.joining(",")));
+                queryBuilder.append(") ");
+            }
+
+            queryBuilder.append("ORDER BY RAND() LIMIT ?");
+
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
             statement.setInt(1, this.game.getGameId());
             statement.setInt(2, extraLetters);
             ResultSet result = statement.executeQuery();
