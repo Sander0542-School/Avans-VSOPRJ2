@@ -51,7 +51,7 @@ public class BoardModelTest extends TestCase {
     }
 
     public void testCoordinateOfTile() {
-        Board board = new Board();
+        Board board = new Board(test);
 
         int x = 3;
         int y = 5;
