@@ -3,7 +3,7 @@ package nl.avans.vsoprj2.wordcrex.models;
 import javafx.scene.paint.Color;
 
 public class Tile {
-    private TileType tileType;
+    private final TileType tileType;
 
     private Character letter;
     private Integer worth;
