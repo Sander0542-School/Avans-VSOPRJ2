@@ -128,6 +128,7 @@ public class BoardController extends Controller {
 
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setHeaderText(null);
                         alert.setTitle("Het spel is afgelopen");
                         alert.showAndWait();
 
