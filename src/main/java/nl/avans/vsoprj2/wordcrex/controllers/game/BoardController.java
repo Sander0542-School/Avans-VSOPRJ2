@@ -1060,9 +1060,6 @@ public class BoardController extends Controller {
             item.setId(item.getText().toLowerCase());
             item.setOnAction(BoardController.this::gameOptionsMenuEventHandler);
         }
-
-        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
-        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
     private void createNewPlayerBoard(int turn, List<BoardTile> boardTiles) {
