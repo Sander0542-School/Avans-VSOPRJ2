@@ -103,6 +103,33 @@ public class BoardController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                final Game.GameState gameState = BoardController.this.game.getCurrentState();
+                if (BoardController.this.game.getOwnGame() && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                    BoardController.this.timer.cancel();
+                    BoardController.this.timer.purge();
+
+                    String message;
+                    switch (gameState) {
+                        case FINISHED:
+                            message = "Een speler heeft het spel gewonnen.";
+                            break;
+                        case RESIGNED:
+                            message = "Een speler heeft opgegeven.";
+                            break;
+                        default:
+                            message = "";
+                    }
+                    String finalMessage = message;
+
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setTitle("Het spel is afgelopen");
+                        alert.showAndWait();
+
+                        BoardController.this.navigateTo("/views/games.fxml");
+                    });
+                }
+
                 if (BoardController.this.turnLocked) {
                     if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
 
