@@ -315,6 +315,7 @@ public class BoardController extends Controller {
 
             this.displayLetters();
             this.updateShuffleReturnButton();
+            this.updatePoints();
         }
     }
 
@@ -334,6 +335,7 @@ public class BoardController extends Controller {
         }
 
         this.updateShuffleReturnButton();
+        this.updatePoints();
     }
 
     /**
@@ -474,18 +476,6 @@ public class BoardController extends Controller {
         } catch (SQLException e) {
             throw new DbLoadException(e);
         }
-    }
-
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
     }
 
     private void updatePoints() {
