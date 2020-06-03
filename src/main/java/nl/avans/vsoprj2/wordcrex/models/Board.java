@@ -113,7 +113,7 @@ public class Board {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de gelegde letters.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de gelegde letters.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
