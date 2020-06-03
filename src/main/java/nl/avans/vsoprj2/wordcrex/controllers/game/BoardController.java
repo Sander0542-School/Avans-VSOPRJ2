@@ -524,13 +524,8 @@ public class BoardController extends Controller {
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+            this.setBoardScorePosition();
 
-            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
-
-            double margin = boardTile.getHeight() - 6;
-            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
-            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
             this.boardScore.setText(String.valueOf(points.points));
 
             this.boardScore.setVisible(true);
@@ -1052,7 +1047,15 @@ public class BoardController extends Controller {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
 
-        this.updatePoints();
+    }
+
+    private void setBoardScorePosition() {
+        Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+        BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+        double margin = boardTile.getHeight() - 6;
+        this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+        this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
     }
 
     @Override
