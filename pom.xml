@@ -57,6 +57,7 @@
     </dependencies>
 
     <build>
+        <finalName>WordCrex</finalName>
         <plugins>
             <plugin>
                 <groupId>org.openjfx</groupId>
