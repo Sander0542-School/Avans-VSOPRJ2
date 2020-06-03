@@ -300,6 +300,7 @@ public class BoardController extends Controller {
         if (this.getUnconfirmedTiles().isEmpty()) {
             //shuffle
             this.displayLetters();
+            this.selectedLetter = null;
         } else {
             //return letters
             for (BoardTile boardTile : this.getUnconfirmedTiles()) {
