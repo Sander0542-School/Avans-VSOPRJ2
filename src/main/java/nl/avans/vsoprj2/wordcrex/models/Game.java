@@ -118,12 +118,12 @@ public class Game extends DbModel {
         Connection connection = Singleton.getInstance().getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT `state` FROM `game` WHERE game_id = ?;");
+            PreparedStatement statement = connection.prepareStatement("SELECT `game_state` FROM `game` WHERE game_id = ?;");
             statement.setInt(1, this.getGameId());
 
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return GameState.valueOf(rs.getString("state").toUpperCase());
+                return GameState.valueOf(rs.getString("game_state").toUpperCase());
             }
 
         } catch (SQLException e) {
