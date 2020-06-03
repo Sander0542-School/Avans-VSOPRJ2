@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BoardController extends Controller {
+    private static final double DISABLED_OPACITY = 0.5;
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
@@ -48,6 +49,10 @@ public class BoardController extends Controller {
 
     @FXML
     private Label potSizeLabel;
+    @FXML
+    private ImageView passTurnButton;
+    @FXML
+    private ImageView playTurnButton;
     @FXML
     private GridPane gameGrid;
     @FXML
@@ -106,6 +111,33 @@ public class BoardController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                final Game.GameState gameState = BoardController.this.game.getCurrentState();
+                if (BoardController.this.game.getOwnGame() && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                    BoardController.this.timer.cancel();
+                    BoardController.this.timer.purge();
+
+                    String message;
+                    switch (gameState) {
+                        case FINISHED:
+                            message = "Een speler heeft het spel gewonnen.";
+                            break;
+                        case RESIGNED:
+                            message = "Een speler heeft opgegeven.";
+                            break;
+                        default:
+                            message = "";
+                    }
+                    String finalMessage = message;
+
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setTitle("Het spel is afgelopen");
+                        alert.showAndWait();
+
+                        BoardController.this.navigateTo("/views/games.fxml");
+                    });
+                }
+
                 if (BoardController.this.turnLocked) {
                     if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
 
@@ -151,6 +183,16 @@ public class BoardController extends Controller {
      */
     private void renderBoard() {
         this.gameGrid.getChildren().clear();
+
+        if (this.turnLocked) {
+            this.passTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.playTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.lettertiles.setOpacity(BoardController.DISABLED_OPACITY);
+        } else {
+            this.passTurnButton.setOpacity(1.0);
+            this.playTurnButton.setOpacity(1.0);
+            this.lettertiles.setOpacity(1.0);
+        }
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
             for (int y = 1; y <= Board.BOARD_SIZE; y++) {
