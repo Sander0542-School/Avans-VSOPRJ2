@@ -204,6 +204,52 @@ public class Game extends DbModel {
         this.save();
     }
 
+    /**
+     * Fetches the amount of pool letters left in the game
+     *
+     * @return amount of pool letters in this game
+     */
+    public int getAmountOfPoolLetters() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(l.letter_id) AS amountOfPoolLetters FROM pot p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ?");
+            statement.setInt(1, this.getGameId());
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("amountOfPoolLetters");
+            }
+            return 0;
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Checks if both players have passed 3 times in a row
+     *
+     * @return if both players passsed 3 times in a row this returns true
+     */
+    public boolean passedThreeTimesInARow() {
+        Connection connection = Singleton.getInstance().getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT t1.turnaction_type as playerOneTurnType, t2.turnaction_type as playerTwoTurnType FROM `turn` t INNER JOIN `turnplayer1` t1 ON t.turn_id = t1.turn_id AND t.game_id = t1.game_id INNER JOIN `turnplayer2` t2 ON t.turn_id = t2.turn_id AND t.game_id = t2.game_id WHERE t.game_id = ? ORDER BY t.turn_id DESC LIMIT 3");
+            statement.setInt(1, this.getGameId());
+            ResultSet resultSet = statement.executeQuery();
+
+            int times = 0;
+            while (resultSet.next()) {
+                if (resultSet.getString("playerOneTurnType").equalsIgnoreCase("pass") || resultSet.getString("playerTwoTurnType").equalsIgnoreCase("pass")) {
+                    times++;
+                }
+            }
+            return times == 3;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public enum GameState {
         REQUEST,
         PLAYING,

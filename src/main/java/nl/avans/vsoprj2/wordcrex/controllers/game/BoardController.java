@@ -445,23 +445,10 @@ public class BoardController extends Controller {
     }
 
     private void giveNewLetterInHand() {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(l.letter_id) AS amountOfPoolLetters FROM pot p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ?");
-            statement.setInt(1, this.game.getGameId());
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                if (resultSet.getInt("amountOfPoolLetters") <= 7) {
-                    this.endGame();
-                } else {
-                    this.createNewTurn(true);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+        if (this.game.getAmountOfPoolLetters() < 7 || (this.game.passedThreeTimesInARow() && WordCrex.DEBUG_MODE)) {
+            this.endGame();
+        } else {
+            this.createNewTurn(true);
         }
     }
 
@@ -779,6 +766,9 @@ public class BoardController extends Controller {
         }
 
         this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters, this.currentLetters));
+
+        // End game finally implemented...
+        if (this.currentLetters.isEmpty()) this.endGame();
 
         try {
             StringBuilder sb = new StringBuilder();
