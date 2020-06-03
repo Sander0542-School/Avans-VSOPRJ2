@@ -14,11 +14,31 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class DictionaryController extends Controller {
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField word;
+    @FXML
+    private Label error;
+    @FXML
+    private ComboBox<String> languagesBox;
+
+    private HashMap<String, String> languages;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        this.languages = this.getLanguages();
+
+        this.languagesBox.getItems().addAll(this.languages.keySet());
+
+        this.username.setText(Singleton.getInstance().getUser().getUsername());
+    }
+
     @FXML
     private void handleBackButton() {
         this.navigateTo("/views/information.fxml");
@@ -29,91 +49,60 @@ public class DictionaryController extends Controller {
         this.navigateTo("/views/information/dictionaryList.fxml");
     }
 
-    @FXML
-    private TextField username;
-    @FXML
-    private TextField word;
-    @FXML
-    private Label error;
-    @FXML
-    private ComboBox<String> language;
-
-    private final Dictionary<String, String> languages = new Hashtable<String, String>();
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        this.language.getItems().removeAll(this.language.getItems());
-        this.language.getItems().addAll(this.languages());
-
-        this.username.setText(Singleton.getInstance().getUser().getUsername());
-        this.username.setDisable(true);
-    }
-
-    private String[] languages() {
+    private HashMap<String, String> getLanguages() {
         Connection connection = Singleton.getInstance().getConnection();
+
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM letterset");
+            PreparedStatement statement = connection.prepareStatement("SELECT `code`, `description` FROM `letterset`");
             ResultSet result = statement.executeQuery();
 
-            result.last();
-
-            String[] returnValue = new String[result.getRow()];
-            result.beforeFirst();
+            HashMap<String, String> languages = new HashMap<>();
 
             while (result.next()) {
-                returnValue[result.getRow() - 1] = result.getString(2);
-                this.languages.put(result.getString(2), result.getString(1));
+                languages.put(result.getString("description"), result.getString("code"));
             }
-            return returnValue;
+
+            return languages;
         } catch (SQLException e) {
-            WordCrex.handleException(e);
-
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de verschillende talen.");
-            errorAlert.setHeaderText(null);
-            errorAlert.showAndWait();
-
-            return new String[0];
+            throw new DbLoadException(e);
         }
     }
 
     public void submit() {
-
         if (this.word.getText().trim().isEmpty()) {
-            this.error.setVisible(true);
-            this.error.setText("Voer een woord in");
+            this.showError("Voer een woord in");
             return;
         }
 
-        String selectedLanguage = this.language.getValue();
+        String selectedLanguage = this.languagesBox.getValue();
+
         if (selectedLanguage == null || this.languages.get(selectedLanguage) == null) {
-            this.error.setVisible(true);
-            this.error.setText("Selecteer een taal");
+            this.showError("Selecteer een taal");
             return;
         }
-
 
         Connection connection = Singleton.getInstance().getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM dictionary WHERE `word` = ? AND `letterset_code` = ?");
-            statement.setString(1, this.word.getText().trim().toLowerCase());
-            statement.setString(2, this.languages.get(selectedLanguage));
 
-            ResultSet resultSet = statement.executeQuery();
+        try {
+            PreparedStatement selectWord = connection.prepareStatement("SELECT * FROM `dictionary` WHERE `word` = ? AND `letterset_code` = ?");
+            selectWord.setString(1, this.word.getText().trim().toLowerCase());
+            selectWord.setString(2, this.languages.get(selectedLanguage));
+
+            ResultSet resultSet = selectWord.executeQuery();
             if (resultSet.next()) {
-                this.error.setVisible(true);
-                this.error.setText("Dit woord zit al in ons woordenboek!");
+                this.showError("Dit woord zit al in ons woordenboek!");
                 return;
             }
 
-            statement = connection.prepareStatement("INSERT INTO dictionary (word, letterset_code, state, username) VALUES (?,?,'pending',?)");
-            statement.setString(1, this.word.getText().trim().toLowerCase());
-            statement.setString(2, this.languages.get(selectedLanguage));
-            statement.setString(3, this.username.getText().trim());
-            int result = statement.executeUpdate();
+            PreparedStatement insertWord = connection.prepareStatement("INSERT INTO `dictionary` (`word`, `letterset_code`, `state`, `username`) VALUES (?, ?, 'pending', ?);");
+            insertWord.setString(1, this.word.getText().trim().toLowerCase());
+            insertWord.setString(2, this.languages.get(selectedLanguage));
+            insertWord.setString(3, Singleton.getInstance().getUser().getUsername());
+
+            int result = insertWord.executeUpdate();
+
             if (result > 0) {
-                this.error.setVisible(true);
-                this.error.setText("Inzending verstuurd");
+                this.showError("Inzending verstuurd");
             }
         } catch (SQLException e) {
             WordCrex.handleException(e);
@@ -122,5 +111,9 @@ public class DictionaryController extends Controller {
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
+
+    private void showError(String message) {
+        this.error.setText(message);
+        this.error.setVisible(true);
     }
 }

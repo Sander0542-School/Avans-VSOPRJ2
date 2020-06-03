@@ -19,15 +19,13 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    private List<String> usernameslist = new ArrayList<>();
+    private final List<String> usernameslist = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccountsContainer;
 
     @FXML
     private Label highScoreLabel;
-
-    private Statistic statistic;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -40,8 +38,8 @@ public class NewController extends Controller {
     }
 
     private void loadHighScore() {
-        this.statistic = Singleton.getInstance().getUser().getStatistic();
-        this.highScoreLabel.setText(this.statistic.getTopGameScore().toString());
+        Statistic statistic = Singleton.getInstance().getUser().getStatistic();
+        this.highScoreLabel.setText(statistic.getTopGameScore().toString());
     }
 
     private void loadAccounts() {

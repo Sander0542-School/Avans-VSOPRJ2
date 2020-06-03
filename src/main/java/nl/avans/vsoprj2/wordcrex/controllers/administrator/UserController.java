@@ -8,15 +8,16 @@ import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController extends Controller {
-    @FXML
-    public ComboBox userComboBox;
+    private final ArrayList<Account.Role> accountRoles = new ArrayList<>();
 
     @FXML
     public Label currentUser;
@@ -44,7 +45,8 @@ public class UserController extends Controller {
         this.navigateTo("/views/settings.fxml");
     }
 
-    private ArrayList<Account.Role> accountRoles = new ArrayList<Account.Role>();
+    @FXML
+    public ComboBox<Account> userComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -115,7 +117,6 @@ public class UserController extends Controller {
      */
     private void handleFormChanges(Account account) {
         if(account != null) {
-            this.checkBoxPlayer.setSelected(false);
             this.checkBoxModerator.setSelected(false);
             this.checkBoxObserver.setSelected(false);
             this.checkBoxAdministrator.setSelected(false);
@@ -124,8 +125,8 @@ public class UserController extends Controller {
             this.currentUser.setText(account.getUsername());
             this.currentUser.setVisible(true);
             this.changeUserRoleButton.setVisible(true);
-            for (int i=0; i < this.accountRoles.size(); i++) {
-                switch (this.accountRoles.get(i)) {
+            for (Account.Role accountRole : this.accountRoles) {
+                switch (accountRole) {
                     case PLAYER:
                         this.checkBoxPlayer.setSelected(true);
                         break;
@@ -150,21 +151,23 @@ public class UserController extends Controller {
     @FXML
     private void handleUserSelection() {
         this.searchInput.setText("");
-        this.handleFormChanges((Account) this.userComboBox.getValue());
+        this.handleFormChanges(this.userComboBox.getValue());
     }
 
     @FXML
     private void handleUserSearch() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
-            this.userComboBox.getSelectionModel().select(null);
             PreparedStatement userStatement = connection.prepareStatement("SELECT username FROM account WHERE username=?");
             userStatement.setString(1, this.searchInput.getText().trim());
             ResultSet user = userStatement.executeQuery();
+            this.userComboBox.getSelectionModel().select(null);
 
             if (user.next()) {
-                Account account = new Account(user);
-                this.handleFormChanges(account);
+                if(!user.getString("username").equals(Singleton.getInstance().getUser().getUsername())) {
+                    Account account = new Account(user);
+                    this.handleFormChanges(account);
+                }
             } else {
                 Alert invalidWordDialog = new Alert(Alert.AlertType.WARNING, "De gebruiker die je probeert te zoeken bestaat niet!");
                 invalidWordDialog.setTitle("Pas op");
