@@ -300,6 +300,7 @@ public class BoardController extends Controller {
         if (this.getUnconfirmedTiles().isEmpty()) {
             //shuffle
             this.displayLetters();
+            this.selectedLetter = null;
         } else {
             //return letters
             for (BoardTile boardTile : this.getUnconfirmedTiles()) {
@@ -404,7 +405,6 @@ public class BoardController extends Controller {
 
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
-            this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
@@ -412,6 +412,7 @@ public class BoardController extends Controller {
                     this.setBoardPassWinner(!isPlayer1);
                 }
             }
+            this.loadAndRenderGame();
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game pass");
@@ -857,10 +858,36 @@ public class BoardController extends Controller {
         this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
         Collections.shuffle(this.currentLetters);
 
+        Connection connection = Singleton.getInstance().getConnection();
+
+        List<Integer> playedTiles = new ArrayList<>();
+
+        try {
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT `letter_id` FROM `");
+            query.append(Singleton.getInstance().getUser().getUsername().equals(this.game.getUsernamePlayer1()) ? "boardplayer1" : "boardplayer2");
+            query.append("` WHERE `game_id` = ? AND `turn_id` = ?");
+
+            PreparedStatement statement = connection.prepareStatement(query.toString());
+
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, this.game.getCurrentTurn());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                playedTiles.add(resultSet.getInt("letter_id"));
+            }
+        } catch (SQLException e) {
+
+        }
+
         for (Letter letter : this.currentLetters) {
-            LetterTile letterTile = new LetterTile(letter);
-            this.setLetterTileClick(letterTile);
-            this.lettertiles.getChildren().add(letterTile);
+            if (!playedTiles.contains(letter.getLetterId())) {
+                LetterTile letterTile = new LetterTile(letter);
+                this.setLetterTileClick(letterTile);
+                this.lettertiles.getChildren().add(letterTile);
+            }
         }
     }
 
