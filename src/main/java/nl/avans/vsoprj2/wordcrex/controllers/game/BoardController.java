@@ -45,7 +45,6 @@ public class BoardController extends Controller {
     private int turnId;
     private int playerOneScore;
     private int playerTwoScore;
-    private int potSize;
 
     @FXML
     private Label potSizeLabel;
@@ -226,8 +225,8 @@ public class BoardController extends Controller {
     }
 
     private void renderAndFetchRemainingTiles() {
-        this.potSize = this.game.getAmountOfPoolLetters();
-        this.potSizeLabel.setText(this.potSize + " tegels resterend");
+        int potSize = this.game.getAmountOfPoolLetters();
+        this.potSizeLabel.setText(potSize + " tegels resterend");
     }
 
     private void endGame() {
