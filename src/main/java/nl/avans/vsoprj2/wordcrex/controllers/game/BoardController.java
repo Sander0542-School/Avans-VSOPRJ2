@@ -1043,6 +1043,8 @@ public class BoardController extends Controller {
         for (Node node : this.gameGrid.getChildren()) {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
+
+        this.updatePoints();
     }
 
     @Override
