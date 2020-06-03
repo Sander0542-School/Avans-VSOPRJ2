@@ -26,14 +26,13 @@ public class LoginController extends Controller {
 
         if (!this.username.getText().trim().isEmpty() && !this.password.getText().trim().isEmpty()) {
             Account account = Account.fromUsernamePassword(this.username.getText(), this.password.getText());
-          
+
             if (account != null) {
                 Singleton.getInstance().setUser(account);
                 this.navigateTo("/views/games.fxml");
             } else {
                 this.showIncorrectAuthError();
             }
-          
         } else {
             this.showIncorrectAuthError();
         }
