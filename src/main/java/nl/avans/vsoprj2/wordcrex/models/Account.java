@@ -55,7 +55,7 @@ public class Account extends Model {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de aangevraagde spellen.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de aangevraagde spellen.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
 
@@ -106,7 +106,7 @@ public class Account extends Model {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de lopende spellen.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de lopende spellen.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
 
@@ -157,7 +157,7 @@ public class Account extends Model {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van de afgelopen spellen.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de afgelopen spellen.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
 
@@ -198,7 +198,7 @@ public class Account extends Model {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van je statistieken.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van je statistieken.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
@@ -221,7 +221,7 @@ public class Account extends Model {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het ophalen van je rollen.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van je rollen.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
