@@ -1,0 +1,1298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>nl.avans.vsoprj2.wordcrex</OriginalElement>
+  <nodes>
+    <node x="4114.719019576782" y="2648.0">nl.avans.vsoprj2.wordcrex.utils.NumberUtil</node>
+    <node x="6662.227320519865" y="3836.0">nl.avans.vsoprj2.wordcrex.models.Account.Role</node>
+    <node x="3896.7190195767816" y="2605.0">nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Coordinates</node>
+    <node x="7965.004403853199" y="5005.0">nl.avans.vsoprj2.wordcrex.controllers.StatisticsController</node>
+    <node x="5185.263691757324" y="2111.0">nl.avans.vsoprj2.wordcrex.controllers.settings.AccountController</node>
+    <node x="7263.025383108445" y="3805.0">nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem</node>
+    <node x="1130.065217391304" y="1163.0">nl.avans.vsoprj2.wordcrex.models.Tile.TileType</node>
+    <node x="0.0" y="5431.0">nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar</node>
+    <node x="826.2795928971509" y="3816.0">nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow</node>
+    <node x="5936.792537911169" y="5016.0">nl.avans.vsoprj2.wordcrex.controllers.ObserverController</node>
+    <node x="5455.700009164685" y="3805.0">nl.avans.vsoprj2.wordcrex.controls.overview.GameItem</node>
+    <node x="841.0" y="5431.0">nl.avans.vsoprj2.wordcrex.controls.authentication.LogoBanner</node>
+    <node x="4966.263691757324" y="2100.0">nl.avans.vsoprj2.wordcrex.controllers.IndexController</node>
+    <node x="2384.4610265046713" y="3144.0">nl.avans.vsoprj2.wordcrex.controllers.game.BoardController</node>
+    <node x="2105.1814336075204" y="2497.0">nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile</node>
+    <node x="6132.005709473978" y="712.0">nl.avans.vsoprj2.wordcrex.WordCrex</node>
+    <node x="4729.263691757324" y="2100.0">nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener</node>
+    <node x="2590.0288021854776" y="1075.0">nl.avans.vsoprj2.wordcrex.models.ScoreboardRound</node>
+    <node x="3400.7190195767816" y="2024.0">nl.avans.vsoprj2.wordcrex.controllers.RegisterController</node>
+    <node x="734.4208147448958" y="2605.0">nl.avans.vsoprj2.wordcrex.models.ChatMessage</node>
+    <node x="351.2795928971509" y="702.0">nl.avans.vsoprj2.wordcrex.models.DbModel</node>
+    <node x="540.2795928971509" y="3758.0">nl.avans.vsoprj2.wordcrex.BoardModelTest</node>
+    <node x="7363.004403853199" y="2013.0">nl.avans.vsoprj2.wordcrex.controllers.information.AccountController</node>
+    <node x="2514.049564238152" y="2616.0">nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Points</node>
+    <node x="3881.322062435287" y="1991.0">nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController</node>
+    <node x="1106.7763645635023" y="636.0">nl.avans.vsoprj2.wordcrex.models.Tile</node>
+    <node x="0.0" y="3761.0">nl.avans.vsoprj2.wordcrex.controls.information.DictionaryEntry</node>
+    <node x="1783.8760282021149" y="2004.0">nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile</node>
+    <node x="348.0" y="5431.0">nl.avans.vsoprj2.wordcrex.controls.overview.GameTitle</node>
+    <node x="3228.2190195767816" y="2518.0">nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController</node>
+    <node x="6625.5764227956115" y="2015.0">nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount</node>
+    <node x="6405.29563545868" y="5071.0">nl.avans.vsoprj2.wordcrex.controllers.SettingsController</node>
+    <node x="6152.824024412793" y="2518.0">nl.avans.vsoprj2.wordcrex.models.Account</node>
+    <node x="230.5642604698487" y="5093.0">nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController</node>
+    <node x="1946.1814336075204" y="1260.0">nl.avans.vsoprj2.wordcrex.models.Letter</node>
+    <node x="1425.440217391304" y="2627.0">nl.avans.vsoprj2.wordcrex.models.Board.Coordinate</node>
+    <node x="7521.025383108445" y="3825.0">nl.avans.vsoprj2.wordcrex.controllers.LoginController</node>
+    <node x="2892.0288021854776" y="1948.0">nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow</node>
+    <node x="3683.7190195767816" y="2605.0">nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Orientation</node>
+    <node x="4417.518569126332" y="1140.0">nl.avans.vsoprj2.wordcrex.models.Game</node>
+    <node x="120.16666666666697" y="2584.0">nl.avans.vsoprj2.wordcrex.models.Word</node>
+    <node x="7629.004403853199" y="2046.0">nl.avans.vsoprj2.wordcrex.Colors</node>
+    <node x="2870.433233932871" y="0.0">nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException</node>
+    <node x="1359.065217391304" y="1993.0">nl.avans.vsoprj2.wordcrex.models.Board</node>
+    <node x="4262.046163010838" y="679.0">nl.avans.vsoprj2.wordcrex.models.Game.GameState</node>
+    <node x="1461.890827939922" y="0.0">nl.avans.vsoprj2.wordcrex.models.annotations.Column</node>
+    <node x="5924.324024412793" y="0.0">nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException</node>
+    <node x="281.41666666666697" y="229.0">nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey</node>
+    <node x="5735.3590314912635" y="3890.0">nl.avans.vsoprj2.wordcrex.AccountModelTest</node>
+    <node x="6661.985852849985" y="2539.0">nl.avans.vsoprj2.wordcrex.controllers.game.NewController</node>
+    <node x="5385.263691757324" y="2111.0">nl.avans.vsoprj2.wordcrex.controllers.information.PanelController</node>
+    <node x="7306.154403853199" y="5062.0">nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBar</node>
+    <node x="2435.4814336075206" y="679.0">nl.avans.vsoprj2.wordcrex.models.ScoreboardRound.TurnActionType</node>
+    <node x="5959.324024412793" y="143.0">nl.avans.vsoprj2.wordcrex.Singleton</node>
+    <node x="8038.025383108445" y="2659.0">nl.avans.vsoprj2.wordcrex.ColorUtilTest</node>
+    <node x="2675.7163021854776" y="175.0">nl.avans.vsoprj2.wordcrex.models.Model</node>
+    <node x="4836.014630002855" y="1261.0">nl.avans.vsoprj2.wordcrex.controllers.Controller</node>
+    <node x="4685.263691757324" y="4961.0">nl.avans.vsoprj2.wordcrex.controllers.GamesController</node>
+    <node x="6713.727320519865" y="4961.0">nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController</node>
+    <node x="4462.435235792998" y="2100.0">nl.avans.vsoprj2.wordcrex.controllers.InformationController</node>
+    <node x="4568.420743039375" y="690.0">nl.avans.vsoprj2.wordcrex.models.Game.Answer</node>
+    <node x="1584.0711445278193" y="4984.0">nl.avans.vsoprj2.wordcrex.controllers.game.ChatController</node>
+    <node x="631.0" y="5431.0">nl.avans.vsoprj2.wordcrex.WordCrexTest</node>
+    <node x="6988.214042807311" y="2035.0">nl.avans.vsoprj2.wordcrex.models.Statistic</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Tile">
+      <point x="-72.83783783783838" y="-783.5" />
+      <point x="2504.123188666833" y="2964.0" />
+      <point x="2094.6814336075204" y="2964.0" />
+      <point x="2094.6814336075204" y="985.0" />
+      <point x="1273.2763645635023" y="985.0" />
+      <point x="55.5" y="134.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.SettingsController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="-30.0" y="-102.5" />
+      <point x="6495.29563545868" y="4901.0" />
+      <point x="6465.324024412793" y="4901.0" />
+      <point x="6465.324024412793" y="1708.0" />
+      <point x="5054.418476156701" y="1708.0" />
+      <point x="79.90384615384619" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="87.1875" y="-80.5" />
+      <point x="457.2517604698487" y="4901.0" />
+      <point x="793.7795928971509" y="4901.0" />
+      <point x="793.7795928971509" y="3084.0" />
+      <point x="6165.407357746127" y="3084.0" />
+      <point x="-138.41666666666652" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.models.Account.Role">
+      <point x="37.74999999999977" y="167.5" />
+      <point x="6341.574024412793" y="3114.0" />
+      <point x="6779.227320519865" y="3114.0" />
+      <point x="39.0" y="-91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.RegisterController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="80.0" y="-113.5" />
+      <point x="3600.7190195767816" y="1848.0" />
+      <point x="4883.956937695162" y="1848.0" />
+      <point x="-90.55769230769238" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="70.0" y="167.5" />
+      <point x="3438.2190195767816" y="2954.0" />
+      <point x="2639.393458937104" y="2954.0" />
+      <point x="62.432432432432506" y="-783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="52.3125" y="-80.5" />
+      <point x="422.3767604698487" y="4891.0" />
+      <point x="529.7795928971509" y="4891.0" />
+      <point x="529.7795928971509" y="1808.0" />
+      <point x="4841.341553079777" y="1808.0" />
+      <point x="-133.17307692307713" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.settings.AccountController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="0.0" y="-26.5" />
+      <point x="5275.263691757324" y="1898.0" />
+      <point x="5011.8030915413165" y="1898.0" />
+      <point x="37.28846153846143" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="-122.10714285714266" y="-212.5" />
+      <point x="4694.6565489001805" y="4891.0" />
+      <point x="2625.0860265046713" y="4891.0" />
+      <point x="48.125" y="783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.WordCrex" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="0.0" y="-58.5" />
+      <point x="6217.505709473978" y="596.0" />
+      <point x="6053.889241804098" y="596.0" />
+      <point x="7.565217391304486" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="156.0810810810808" y="-783.5" />
+      <point x="2733.042107585752" y="3044.0" />
+      <point x="4338.219019576782" y="3044.0" />
+      <point x="4338.219019576782" y="1798.0" />
+      <point x="4645.935235792998" y="1798.0" />
+      <point x="4645.935235792998" y="1035.0" />
+      <point x="6179.505709473978" y="1035.0" />
+      <point x="-38.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound">
+      <point x="-93.33333333333303" y="-167.5" />
+      <point x="3274.8856862434486" y="2367.0" />
+      <point x="2881.5288021854776" y="2367.0" />
+      <point x="2881.5288021854776" y="1668.0" />
+      <point x="2719.5288021854776" y="1668.0" />
+      <point x="0.0" y="276.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.SettingsController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="-90.0" y="-102.5" />
+      <point x="6435.29563545868" y="4901.0" />
+      <point x="6291.24069107946" y="4901.0" />
+      <point x="-12.583333333333485" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBar" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="95.19999999999982" y="-111.5" />
+      <point x="7520.354403853198" y="4931.0" />
+      <point x="8227.525383108445" y="4931.0" />
+      <point x="8227.525383108445" y="396.0" />
+      <point x="6121.976198325837" y="396.0" />
+      <point x="75.6521739130435" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBar" target="nl.avans.vsoprj2.wordcrex.models.Account.Role">
+      <point x="-95.19999999999996" y="-111.5" />
+      <point x="7329.9544038531985" y="4891.0" />
+      <point x="6805.227320519865" y="4891.0" />
+      <point x="65.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.AccountController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="0.0" y="-124.5" />
+      <point x="7485.504403853199" y="1035.0" />
+      <point x="6274.505709473978" y="1035.0" />
+      <point x="57.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.BoardModelTest" target="nl.avans.vsoprj2.wordcrex.models.Tile.TileType">
+      <point x="-48.600000000000364" y="-169.5" />
+      <point x="613.179592897151" y="1798.0" />
+      <point x="1156.065217391304" y="1798.0" />
+      <point x="-78.0" y="188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Model" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="62.25" y="-79.5" />
+      <point x="2862.4663021854776" y="123.0" />
+      <point x="2964.0332339328716" y="123.0" />
+      <point x="-10.399999999999636" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Orientation" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="48.25" y="80.5" />
+      <point x="3828.4690195767816" y="2994.0" />
+      <point x="2681.0150805587255" y="2994.0" />
+      <point x="104.05405405405418" y="-783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="86.66666666666697" y="-211.5" />
+      <point x="4601.685235792998" y="1025.0" />
+      <point x="6160.505709473978" y="1025.0" />
+      <point x="-57.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile" target="nl.avans.vsoprj2.wordcrex.models.Tile">
+      <point x="19.83333333333303" y="-188.5" />
+      <point x="2244.0147669408534" y="2367.0" />
+      <point x="2386.6814336075204" y="2367.0" />
+      <point x="2386.6814336075204" y="975.0" />
+      <point x="1295.476364563502" y="975.0" />
+      <point x="77.69999999999982" y="134.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.SettingsController" target="nl.avans.vsoprj2.wordcrex.models.Account.Role">
+      <point x="90.0" y="-102.5" />
+      <point x="6615.29563545868" y="4921.0" />
+      <point x="6701.227320519865" y="4921.0" />
+      <point x="-39.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile" target="nl.avans.vsoprj2.wordcrex.Colors">
+      <point x="99.16666666666697" y="-188.5" />
+      <point x="2323.3481002741873" y="2477.0" />
+      <point x="7659.171070519866" y="2477.0" />
+      <point x="-60.333333333333485" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.information.DictionaryEntry" target="nl.avans.vsoprj2.wordcrex.models.Word">
+      <point x="-59.5" y="-166.5" />
+      <point x="59.5" y="3124.0" />
+      <point x="143.5" y="3124.0" />
+      <point x="-46.666666666666515" y="101.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.models.Account.Role">
+      <point x="122.0625" y="-80.5" />
+      <point x="492.1267604698487" y="4911.0" />
+      <point x="6675.227320519865" y="4911.0" />
+      <point x="-65.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBar" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="-47.59999999999991" y="-111.5" />
+      <point x="7377.554403853199" y="4881.0" />
+      <point x="6935.424459473978" y="4881.0" />
+      <point x="6935.424459473978" y="3084.0" />
+      <point x="6417.074024412793" y="3084.0" />
+      <point x="113.24999999999977" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="8.535714285714675" y="-189.5" />
+      <point x="1712.106858813534" y="4901.0" />
+      <point x="1719.565217391304" y="4901.0" />
+      <point x="1719.565217391304" y="1718.0" />
+      <point x="4447.987319126332" y="1718.0" />
+      <point x="-67.03125" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem">
+      <point x="122.10714285714266" y="-212.5" />
+      <point x="4938.870834614466" y="4931.0" />
+      <point x="7286.825383108445" y="4931.0" />
+      <point x="-95.20000000000005" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile" target="nl.avans.vsoprj2.wordcrex.models.Letter">
+      <point x="-59.5" y="-133.5" />
+      <point x="1843.3760282021149" y="1678.0" />
+      <point x="1959.9814336075206" y="1678.0" />
+      <point x="-55.19999999999982" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="81.33333333333326" y="-146.5" />
+      <point x="4084.65539576862" y="1868.0" />
+      <point x="4905.264630002855" y="1868.0" />
+      <point x="-69.25" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.utils.NumberUtil">
+      <point x="145.67567567567585" y="-783.5" />
+      <point x="2722.636702180347" y="3034.0" />
+      <point x="4221.219019576782" y="3034.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.StatisticsController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="52.59999999999991" y="-168.5" />
+      <point x="8149.104403853198" y="4921.0" />
+      <point x="8216.525383108445" y="4921.0" />
+      <point x="8216.525383108445" y="1658.0" />
+      <point x="5107.687706925932" y="1658.0" />
+      <point x="133.17307692307713" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="98.625" y="-157.5" />
+      <point x="6166.917537911169" y="4901.0" />
+      <point x="6225.092736907956" y="4901.0" />
+      <point x="6225.092736907956" y="3124.0" />
+      <point x="6266.074024412793" y="3124.0" />
+      <point x="-37.75" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="75.3125" y="-212.5" />
+      <point x="6909.539820519865" y="4911.0" />
+      <point x="7146.025383108445" y="4911.0" />
+      <point x="7146.025383108445" y="3084.0" />
+      <point x="7618.504403853199" y="3084.0" />
+      <point x="7618.504403853199" y="1025.0" />
+      <point x="6293.505709473978" y="1025.0" />
+      <point x="76.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.LoginController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="0.0" y="-102.5" />
+      <point x="7641.025383108445" y="3114.0" />
+      <point x="7994.531314099959" y="3114.0" />
+      <point x="7994.531314099959" y="1668.0" />
+      <point x="5097.033860772086" y="1668.0" />
+      <point x="122.51923076923094" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="76.82142857142844" y="-189.5" />
+      <point x="1780.3925730992478" y="4881.0" />
+      <point x="2432.5860265046713" y="4881.0" />
+      <point x="-144.375" y="783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.Singleton" target="nl.avans.vsoprj2.wordcrex.exceptions.DbConnectionException">
+      <point x="0.0" y="-111.5" />
+      <point x="0.0" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.DbModel" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-13.08333333333303" y="-68.5" />
+      <point x="416.6962595638179" y="616.0" />
+      <point x="420.91666666666697" y="616.0" />
+      <point x="420.91666666666697" y="93.0" />
+      <point x="2901.633233932871" y="93.0" />
+      <point x="-72.80000000000018" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Orientation">
+      <point x="93.6486486486483" y="-783.5" />
+      <point x="2670.6096751533196" y="2984.0" />
+      <point x="3731.9690195767816" y="2984.0" />
+      <point x="-48.25" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="46.96428571428578" y="-212.5" />
+      <point x="4863.727977471609" y="4871.0" />
+      <point x="5009.2646300028555" y="4871.0" />
+      <point x="5009.2646300028555" y="2457.0" />
+      <point x="5989.8590314912635" y="2457.0" />
+      <point x="5989.8590314912635" y="1045.0" />
+      <point x="6198.505709473978" y="1045.0" />
+      <point x="-19.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.WordCrex" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="19.0" y="58.5" />
+      <point x="6236.505709473978" y="1055.0" />
+      <point x="6267.678786397054" y="1055.0" />
+      <point x="6267.678786397054" y="2367.0" />
+      <point x="6234.131716720485" y="2367.0" />
+      <point x="-69.69230769230762" y="-167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Board">
+      <point x="-166.48648648648668" y="-783.5" />
+      <point x="2410.4745400181846" y="3054.0" />
+      <point x="1752.565217391304" y="3054.0" />
+      <point x="1752.565217391304" y="2477.0" />
+      <point x="1634.502717391304" y="2477.0" />
+      <point x="105.9375" y="144.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.BoardModelTest" target="nl.avans.vsoprj2.wordcrex.models.Board.Coordinate">
+      <point x="97.19999999999982" y="-169.5" />
+      <point x="758.9795928971507" y="3074.0" />
+      <point x="1463.690217391304" y="3074.0" />
+      <point x="-38.25" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.SettingsController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="30.0" y="-102.5" />
+      <point x="6555.29563545868" y="4901.0" />
+      <point x="6574.0438140999595" y="4901.0" />
+      <point x="6574.0438140999595" y="466.0" />
+      <point x="6084.150111369315" y="466.0" />
+      <point x="37.82608695652152" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-145.28571428571468" y="-144.5" />
+      <point x="1383.2795031055894" y="1778.0" />
+      <point x="924.5642604698487" y="1778.0" />
+      <point x="924.5642604698487" y="103.0" />
+      <point x="2922.433233932871" y="103.0" />
+      <point x="-52.0" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="-139.38461538461524" y="-167.5" />
+      <point x="6164.439409028178" y="2457.0" />
+      <point x="6011.8590314912635" y="2457.0" />
+      <point x="6011.8590314912635" y="1758.0" />
+      <point x="4582.049819126332" y="1758.0" />
+      <point x="67.03125" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.RegisterController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="0.0" y="-113.5" />
+      <point x="3520.7190195767816" y="1678.0" />
+      <point x="3165.5288021854776" y="1678.0" />
+      <point x="3165.5288021854776" y="1005.0" />
+      <point x="3187.5288021854776" y="1005.0" />
+      <point x="3187.5288021854776" y="586.0" />
+      <point x="6008.497937456271" y="586.0" />
+      <point x="-37.826086956521976" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Tile.TileType" target="nl.avans.vsoprj2.wordcrex.models.Tile">
+      <point x="-69.33333333333303" y="-188.5" />
+      <point x="1164.731884057971" y="1055.0" />
+      <point x="1206.676364563502" y="1055.0" />
+      <point x="-11.100000000000364" y="134.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Game.GameState">
+      <point x="41.62162162162167" y="-783.5" />
+      <point x="2618.582648126293" y="2934.0" />
+      <point x="3217.7190195767816" y="2934.0" />
+      <point x="3217.7190195767816" y="1005.0" />
+      <point x="4285.796163010838" y="1005.0" />
+      <point x="-71.25" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Word" target="nl.avans.vsoprj2.wordcrex.models.DbModel">
+      <point x="-35.0" y="-101.5" />
+      <point x="155.16666666666697" y="2477.0" />
+      <point x="194.5295928971509" y="2477.0" />
+      <point x="194.5295928971509" y="1045.0" />
+      <point x="364.36292623048394" y="1045.0" />
+      <point x="-65.41666666666697" y="68.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="17.4375" y="-80.5" />
+      <point x="387.5017604698487" y="4881.0" />
+      <point x="518.7795928971509" y="4881.0" />
+      <point x="518.7795928971509" y="536.0" />
+      <point x="5970.67185049975" y="536.0" />
+      <point x="-75.6521739130435" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="21.66666666666697" y="-211.5" />
+      <point x="4536.685235792998" y="985.0" />
+      <point x="4557.920743039375" y="985.0" />
+      <point x="4557.920743039375" y="606.0" />
+      <point x="6023.62837223888" y="606.0" />
+      <point x="-22.695652173913004" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.InformationController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="0.0" y="-37.5" />
+      <point x="4559.935235792998" y="1898.0" />
+      <point x="4937.226168464394" y="1898.0" />
+      <point x="-37.28846153846143" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow" target="nl.avans.vsoprj2.wordcrex.models.ChatMessage">
+      <point x="0.0" y="-111.5" />
+      <point x="945.2795928971509" y="3064.0" />
+      <point x="883.5874814115627" y="3064.0" />
+      <point x="59.66666666666697" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="93.33333333333303" y="-167.5" />
+      <point x="3461.5523529101147" y="2377.0" />
+      <point x="3662.2190195767816" y="2377.0" />
+      <point x="3662.2190195767816" y="1858.0" />
+      <point x="4894.610783849009" y="1858.0" />
+      <point x="-79.90384615384619" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="92.9230769230769" y="-167.5" />
+      <point x="6396.74710133587" y="2437.0" />
+      <point x="6563.0438140999595" y="2437.0" />
+      <point x="6563.0438140999595" y="93.0" />
+      <point x="3047.2332339328714" y="93.0" />
+      <point x="72.80000000000018" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="187.29729729729752" y="-783.5" />
+      <point x="2764.258323801969" y="3074.0" />
+      <point x="4369.435235792998" y="3074.0" />
+      <point x="4369.435235792998" y="2407.0" />
+      <point x="4837.763691757324" y="2407.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.models.Board.Coordinate">
+      <point x="-21.1875" y="144.5" />
+      <point x="1507.377717391304" y="2477.0" />
+      <point x="1501.940217391304" y="2477.0" />
+      <point x="0.0" y="-58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.AccountModelTest" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="0.0" y="-37.5" />
+      <point x="5851.8590314912635" y="3104.0" />
+      <point x="6215.74069107946" y="3104.0" />
+      <point x="-88.08333333333348" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="105.4375" y="-212.5" />
+      <point x="6939.664820519865" y="4921.0" />
+      <point x="7252.525383108445" y="4921.0" />
+      <point x="7252.525383108445" y="3104.0" />
+      <point x="7820.504403853199" y="3104.0" />
+      <point x="7820.504403853199" y="416.0" />
+      <point x="6106.845763543228" y="416.0" />
+      <point x="60.521739130434526" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="-32.875" y="-157.5" />
+      <point x="6035.417537911169" y="4771.0" />
+      <point x="5978.8590314912635" y="4771.0" />
+      <point x="5978.8590314912635" y="1778.0" />
+      <point x="4557.674819126332" y="1778.0" />
+      <point x="42.65625" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="54.79166666666697" y="-157.5" />
+      <point x="6123.084204577837" y="4731.0" />
+      <point x="6052.424248882568" y="4731.0" />
+      <point x="6052.424248882568" y="606.0" />
+      <point x="6046.324024412793" y="606.0" />
+      <point x="0.0" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound.TurnActionType">
+      <point x="-20.810810810810835" y="-783.5" />
+      <point x="2556.1502156938604" y="2914.0" />
+      <point x="2454.2522669408545" y="2914.0" />
+      <point x="2454.2522669408545" y="1005.0" />
+      <point x="2471.6481002741875" y="1005.0" />
+      <point x="-72.33333333333303" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="-42.67857142857156" y="-189.5" />
+      <point x="1660.8925730992478" y="4861.0" />
+      <point x="1074.779592897151" y="4861.0" />
+      <point x="1074.779592897151" y="546.0" />
+      <point x="5978.237067891054" y="546.0" />
+      <point x="-68.08695652173901" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.NewController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="-106.66666666666652" y="-146.5" />
+      <point x="6683.319186183318" y="2427.0" />
+      <point x="6552.0438140999595" y="2427.0" />
+      <point x="6552.0438140999595" y="1698.0" />
+      <point x="5065.072322310547" y="1698.0" />
+      <point x="90.55769230769238" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.NewController" target="nl.avans.vsoprj2.wordcrex.models.Statistic">
+      <point x="106.66666666666674" y="-146.5" />
+      <point x="6896.652519516652" y="2467.0" />
+      <point x="7075.214042807311" y="2467.0" />
+      <point x="0.0" y="102.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.DbModel" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="65.41666666666697" y="-68.5" />
+      <point x="495.1962595638179" y="526.0" />
+      <point x="5963.106633108445" y="526.0" />
+      <point x="-83.21739130434798" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile" target="nl.avans.vsoprj2.wordcrex.models.Tile.TileType">
+      <point x="-19.83333333333303" y="-188.5" />
+      <point x="2204.3481002741873" y="2357.0" />
+      <point x="2375.6814336075204" y="2357.0" />
+      <point x="2375.6814336075204" y="1668.0" />
+      <point x="1312.065217391304" y="1668.0" />
+      <point x="78.0" y="188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.NewController" target="nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount">
+      <point x="-21.333333333333258" y="-146.5" />
+      <point x="6768.652519516652" y="2407.0" />
+      <point x="6690.3264227956115" y="2407.0" />
+      <point x="-64.75" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.RegisterController" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-80.0" y="-113.5" />
+      <point x="3440.7190195767816" y="1688.0" />
+      <point x="3154.5288021854776" y="1688.0" />
+      <point x="3154.5288021854776" y="123.0" />
+      <point x="2984.833233932871" y="123.0" />
+      <point x="10.399999999999636" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game.Answer" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="0.0" y="80.5" />
+      <point x="4654.420743039375" y="1005.0" />
+      <point x="4580.018569126332" y="1005.0" />
+      <point x="65.0" y="-211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="23.230769230769283" y="-167.5" />
+      <point x="6327.054793643562" y="2407.0" />
+      <point x="6509.324024412793" y="2407.0" />
+      <point x="6509.324024412793" y="496.0" />
+      <point x="6061.454459195402" y="496.0" />
+      <point x="15.130434782608518" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="0.0" y="-211.5" />
+      <point x="4515.018569126332" y="103.0" />
+      <point x="3026.433233932871" y="103.0" />
+      <point x="52.0" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="-65.75" y="-212.5" />
+      <point x="4751.013691757324" y="4861.0" />
+      <point x="4402.435235792998" y="4861.0" />
+      <point x="4402.435235792998" y="1778.0" />
+      <point x="4521.112319126332" y="1778.0" />
+      <point x="6.09375" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="-54.79166666666697" y="-157.5" />
+      <point x="6013.500871244503" y="4781.0" />
+      <point x="5724.8590314912635" y="4781.0" />
+      <point x="5724.8590314912635" y="2357.0" />
+      <point x="4924.563691757324" y="2357.0" />
+      <point x="86.80000000000018" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.ColorUtilTest" target="nl.avans.vsoprj2.wordcrex.Colors">
+      <point x="0.0" y="-26.5" />
+      <point x="8116.525383108445" y="2447.0" />
+      <point x="7779.837737186532" y="2447.0" />
+      <point x="60.333333333333485" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.models.Model">
+      <point x="-23.230769230769056" y="-167.5" />
+      <point x="6280.593255182024" y="2387.0" />
+      <point x="6487.324024412793" y="2387.0" />
+      <point x="6487.324024412793" y="516.0" />
+      <point x="2837.566302185478" y="516.0" />
+      <point x="37.350000000000364" y="79.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.IndexController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="0.0" y="-37.5" />
+      <point x="5059.763691757324" y="1928.0" />
+      <point x="4979.841553079778" y="1928.0" />
+      <point x="5.326923076923322" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.controls.overview.GameItem">
+      <point x="-98.625" y="-157.5" />
+      <point x="5969.667537911169" y="4801.0" />
+      <point x="5604.450009164685" y="4801.0" />
+      <point x="29.75" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="59.75" y="-189.5" />
+      <point x="1763.3211445278193" y="4871.0" />
+      <point x="2353.6814336075204" y="4871.0" />
+      <point x="2353.6814336075204" y="2387.0" />
+      <point x="4750.963691757323" y="2387.0" />
+      <point x="-86.80000000000018" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.LoginController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="-80.0" y="-102.5" />
+      <point x="7561.025383108445" y="3064.0" />
+      <point x="6442.24069107946" y="3064.0" />
+      <point x="138.41666666666697" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound">
+      <point x="20.810810810810835" y="-783.5" />
+      <point x="2597.771837315482" y="2914.0" />
+      <point x="2674.549564238152" y="2914.0" />
+      <point x="2674.549564238152" y="1688.0" />
+      <point x="2615.9288021854773" y="1688.0" />
+      <point x="-103.60000000000036" y="276.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.DbModel" target="nl.avans.vsoprj2.wordcrex.models.annotations.PrimaryKey">
+      <point x="-65.41666666666697" y="-68.5" />
+      <point x="364.36292623048394" y="616.0" />
+      <point x="340.41666666666697" y="616.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.models.Word">
+      <point x="-52.3125" y="-80.5" />
+      <point x="317.7517604698487" y="4921.0" />
+      <point x="248.5" y="4921.0" />
+      <point x="248.5" y="3124.0" />
+      <point x="236.83333333333348" y="3124.0" />
+      <point x="46.666666666666515" y="101.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Points">
+      <point x="-10.405405405405872" y="-783.5" />
+      <point x="2566.5556210992654" y="2904.0" />
+      <point x="2539.049564238152" y="2904.0" />
+      <point x="-50.0" y="69.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem" target="nl.avans.vsoprj2.wordcrex.Colors">
+      <point x="0.0" y="-122.5" />
+      <point x="7382.025383108445" y="3094.0" />
+      <point x="7719.504403853199" y="3094.0" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.BoardModelTest" target="nl.avans.vsoprj2.wordcrex.models.Tile">
+      <point x="-97.19999999999982" y="-169.5" />
+      <point x="564.5795928971511" y="3124.0" />
+      <point x="602.179592897151" y="3124.0" />
+      <point x="602.179592897151" y="1788.0" />
+      <point x="935.5642604698487" y="1788.0" />
+      <point x="935.5642604698487" y="1015.0" />
+      <point x="1117.8763645635026" y="1015.0" />
+      <point x="-99.89999999999964" y="134.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.overview.GameItem" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="-79.33333333333348" y="-122.5" />
+      <point x="5495.366675831351" y="3074.0" />
+      <point x="5116.940492082674" y="3074.0" />
+      <point x="5116.940492082674" y="2367.0" />
+      <point x="4451.935235792998" y="2367.0" />
+      <point x="4451.935235792998" y="1788.0" />
+      <point x="4533.299819126332" y="1788.0" />
+      <point x="18.28125" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-81.33333333333326" y="-146.5" />
+      <point x="3921.988729101954" y="1668.0" />
+      <point x="3176.5288021854776" y="1668.0" />
+      <point x="3176.5288021854776" y="113.0" />
+      <point x="3005.633233932871" y="113.0" />
+      <point x="31.199999999999818" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile">
+      <point x="-41.62162162162167" y="-783.5" />
+      <point x="2535.3394048830496" y="2934.0" />
+      <point x="2303.5147669408534" y="2934.0" />
+      <point x="79.33333333333303" y="188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.controls.gamechat.ChatRow">
+      <point x="-76.82142857142844" y="-189.5" />
+      <point x="1626.749715956391" y="4881.0" />
+      <point x="885.7795928971509" y="4881.0" />
+      <point x="-59.5" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.gameboard.BoardTile" target="nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile">
+      <point x="-59.5" y="-188.5" />
+      <point x="2164.6814336075204" y="2467.0" />
+      <point x="1998.0760282021147" y="2467.0" />
+      <point x="95.19999999999982" y="133.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="110.96428571428532" y="-189.5" />
+      <point x="1814.5354302421047" y="4901.0" />
+      <point x="4717.0571587493405" y="4901.0" />
+      <point x="4717.0571587493405" y="3094.0" />
+      <point x="6190.574024412793" y="3094.0" />
+      <point x="-113.25" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController">
+      <point x="52.027027027026634" y="-783.5" />
+      <point x="2628.988053531698" y="2944.0" />
+      <point x="3298.2190195767816" y="2944.0" />
+      <point x="-70.0" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="76.70833333333303" y="-157.5" />
+      <point x="6145.000871244503" y="4901.0" />
+      <point x="6142.324024412793" y="4901.0" />
+      <point x="6142.324024412793" y="1055.0" />
+      <point x="6217.505709473978" y="1055.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.AccountController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="-81.66666666666674" y="-124.5" />
+      <point x="7403.837737186532" y="1678.0" />
+      <point x="5086.380014618239" y="1678.0" />
+      <point x="111.86538461538476" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.ChatMessage" target="nl.avans.vsoprj2.wordcrex.models.DbModel">
+      <point x="-44.75" y="-80.5" />
+      <point x="779.1708147448958" y="2457.0" />
+      <point x="818.4208147448958" y="2457.0" />
+      <point x="818.4208147448958" y="1055.0" />
+      <point x="416.6962595638179" y="1055.0" />
+      <point x="-13.08333333333303" y="68.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="28.17857142857156" y="-212.5" />
+      <point x="4844.942263185895" y="4861.0" />
+      <point x="4998.2646300028555" y="4861.0" />
+      <point x="4998.2646300028555" y="2447.0" />
+      <point x="5576.042537911169" y="2447.0" />
+      <point x="5576.042537911169" y="616.0" />
+      <point x="6031.193589630185" y="616.0" />
+      <point x="-15.130434782608518" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.overview.GameItem" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="79.33333333333348" y="-122.5" />
+      <point x="5654.033342498018" y="3074.0" />
+      <point x="5713.8590314912635" y="3074.0" />
+      <point x="5713.8590314912635" y="2467.0" />
+      <point x="6044.8590314912635" y="2467.0" />
+      <point x="6044.8590314912635" y="616.0" />
+      <point x="6038.758807021489" y="616.0" />
+      <point x="-7.565217391304486" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="-31.111111111111313" y="-167.5" />
+      <point x="3337.1079084656703" y="2347.0" />
+      <point x="3143.5288021854776" y="2347.0" />
+      <point x="3143.5288021854776" y="995.0" />
+      <point x="3165.5288021854776" y="995.0" />
+      <point x="3165.5288021854776" y="576.0" />
+      <point x="6000.932720064967" y="576.0" />
+      <point x="-45.39130434782601" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="45.1875" y="-212.5" />
+      <point x="6879.414820519865" y="4901.0" />
+      <point x="6946.424459473978" y="4901.0" />
+      <point x="6946.424459473978" y="3074.0" />
+      <point x="7352.504403853199" y="3074.0" />
+      <point x="7352.504403853199" y="1688.0" />
+      <point x="5075.726168464394" y="1688.0" />
+      <point x="101.21153846153857" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Model" target="nl.avans.vsoprj2.wordcrex.models.annotations.Column">
+      <point x="-62.25" y="-79.5" />
+      <point x="2737.9663021854776" y="73.0" />
+      <point x="1551.140827939922" y="73.0" />
+      <point x="29.75" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.NewController" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="64.0" y="-146.5" />
+      <point x="6853.985852849985" y="2437.0" />
+      <point x="6895.0764227956115" y="2437.0" />
+      <point x="6895.0764227956115" y="83.0" />
+      <point x="3068.0332339328716" y="83.0" />
+      <point x="93.60000000000036" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBar" target="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem">
+      <point x="47.60000000000002" y="-111.5" />
+      <point x="7472.754403853199" y="4861.0" />
+      <point x="7429.625383108445" y="4861.0" />
+      <point x="47.59999999999991" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="31.2162162162158" y="-783.5" />
+      <point x="2608.177242720887" y="2924.0" />
+      <point x="2859.5288021854776" y="2924.0" />
+      <point x="2859.5288021854776" y="566.0" />
+      <point x="5993.367502673663" y="566.0" />
+      <point x="-52.956521739130494" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="15.0625" y="-212.5" />
+      <point x="6849.289820519865" y="4921.0" />
+      <point x="6839.727320519865" y="4921.0" />
+      <point x="6839.727320519865" y="3094.0" />
+      <point x="6391.907357746127" y="3094.0" />
+      <point x="88.08333333333371" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game.GameState" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="71.25" y="91.5" />
+      <point x="4428.296163010838" y="925.0" />
+      <point x="4493.351902459664" y="925.0" />
+      <point x="-21.66666666666697" y="-211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="0.0" y="-146.5" />
+      <point x="4003.322062435287" y="1658.0" />
+      <point x="3195.0940195767816" y="1658.0" />
+      <point x="3195.0940195767816" y="596.0" />
+      <point x="6016.063154847576" y="596.0" />
+      <point x="-30.26086956521749" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound.TurnActionType">
+      <point x="-97.125" y="-276.5" />
+      <point x="2622.4038021854776" y="1005.0" />
+      <point x="2543.9814336075206" y="1005.0" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.models.Tile">
+      <point x="-48.42857142857156" y="-144.5" />
+      <point x="1480.1366459627325" y="1758.0" />
+      <point x="1093.344810288455" y="1758.0" />
+      <point x="1093.344810288455" y="1025.0" />
+      <point x="1140.0763645635025" y="1025.0" />
+      <point x="-77.69999999999982" y="134.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.Singleton" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="22.695652173913004" y="111.5" />
+      <point x="6069.019676586706" y="486.0" />
+      <point x="6520.324024412793" y="486.0" />
+      <point x="6520.324024412793" y="2417.0" />
+      <point x="6350.285562874332" y="2417.0" />
+      <point x="46.461538461538794" y="-167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.LoginController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="80.0" y="-102.5" />
+      <point x="7721.025383108445" y="3124.0" />
+      <point x="8205.525383108445" y="3124.0" />
+      <point x="8205.525383108445" y="406.0" />
+      <point x="6114.410980934532" y="406.0" />
+      <point x="68.08695652173901" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem">
+      <point x="120.54166666666697" y="-157.5" />
+      <point x="6188.834204577837" y="4941.0" />
+      <point x="7334.425383108444" y="4941.0" />
+      <point x="-47.59999999999991" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.models.Statistic">
+      <point x="139.38461538461524" y="-167.5" />
+      <point x="6443.208639797408" y="2457.0" />
+      <point x="7040.414042807311" y="2457.0" />
+      <point x="-34.80000000000018" y="102.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.DbModel" target="nl.avans.vsoprj2.wordcrex.models.Model">
+      <point x="39.25" y="-68.5" />
+      <point x="469.0295928971509" y="486.0" />
+      <point x="2713.066302185478" y="486.0" />
+      <point x="-87.14999999999964" y="79.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="-120.54166666666697" y="-157.5" />
+      <point x="5947.750871244503" y="4811.0" />
+      <point x="2721.3360265046713" y="4811.0" />
+      <point x="144.375" y="783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Points" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="50.0" y="69.5" />
+      <point x="2639.049564238152" y="2904.0" />
+      <point x="2587.3664319100762" y="2904.0" />
+      <point x="10.405405405404963" y="-783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="0.0" y="-167.5" />
+      <point x="3368.2190195767816" y="1728.0" />
+      <point x="4460.174819126332" y="1728.0" />
+      <point x="-54.84375" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-17.4375" y="-80.5" />
+      <point x="352.6267604698487" y="4911.0" />
+      <point x="270.91666666666697" y="4911.0" />
+      <point x="270.91666666666697" y="83.0" />
+      <point x="2880.833233932871" y="83.0" />
+      <point x="-93.60000000000036" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.controls.overview.GameItem">
+      <point x="65.75" y="-212.5" />
+      <point x="4882.513691757324" y="4881.0" />
+      <point x="5485.450009164685" y="4881.0" />
+      <point x="-89.25" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.StatisticsController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="105.19999999999982" y="-168.5" />
+      <point x="8201.704403853199" y="4941.0" />
+      <point x="8327.448010198616" y="4941.0" />
+      <point x="8327.448010198616" y="386.0" />
+      <point x="6129.541415717141" y="386.0" />
+      <point x="83.21739130434798" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.DbModel" target="nl.avans.vsoprj2.wordcrex.models.annotations.Column">
+      <point x="-39.25" y="-68.5" />
+      <point x="390.5295928971509" y="616.0" />
+      <point x="409.91666666666697" y="616.0" />
+      <point x="409.91666666666697" y="73.0" />
+      <point x="1491.640827939922" y="73.0" />
+      <point x="-29.75" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.models.Game.Answer">
+      <point x="43.33333333333303" y="-211.5" />
+      <point x="4558.351902459664" y="995.0" />
+      <point x="4597.087409706042" y="995.0" />
+      <point x="-57.33333333333303" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Coordinates">
+      <point x="124.86486486486501" y="-783.5" />
+      <point x="2701.8258913695363" y="3014.0" />
+      <point x="3995.7190195767816" y="3014.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="-72.33333333333348" y="-37.5" />
+      <point x="4765.43035842399" y="1908.0" />
+      <point x="4947.880014618239" y="1908.0" />
+      <point x="-26.634615384615245" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController.Coordinates" target="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+      <point x="66.0" y="80.5" />
+      <point x="4061.7190195767816" y="3024.0" />
+      <point x="2712.2312967749413" y="3024.0" />
+      <point x="135.27027027026998" y="-783.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.Controller" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="-5.326923076922867" y="90.5" />
+      <point x="4969.187706925932" y="1928.0" />
+      <point x="4910.097025090657" y="1928.0" />
+      <point x="72.33333333333303" y="-37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="176.89189189189165" y="-783.5" />
+      <point x="2753.852918396563" y="3064.0" />
+      <point x="4359.0298303875925" y="3064.0" />
+      <point x="4359.0298303875925" y="1888.0" />
+      <point x="4926.572322310547" y="1888.0" />
+      <point x="-47.94230769230762" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="-28.17857142857156" y="-212.5" />
+      <point x="4788.585120328752" y="4841.0" />
+      <point x="4706.0571587493405" y="4841.0" />
+      <point x="4706.0571587493405" y="2417.0" />
+      <point x="4881.163691757323" y="2417.0" />
+      <point x="43.40000000000009" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.models.Tile.TileType">
+      <point x="96.85714285714312" y="-144.5" />
+      <point x="1625.4223602484471" y="1728.0" />
+      <point x="1208.065217391304" y="1728.0" />
+      <point x="-26.0" y="188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.StatisticsController" target="nl.avans.vsoprj2.wordcrex.models.Statistic">
+      <point x="0.0" y="-168.5" />
+      <point x="8096.504403853199" y="4831.0" />
+      <point x="8027.525383108445" y="4831.0" />
+      <point x="8027.525383108445" y="2457.0" />
+      <point x="7144.814042807311" y="2457.0" />
+      <point x="69.59999999999991" y="102.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account.Role" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="-39.0" y="-91.5" />
+      <point x="6701.227320519865" y="3124.0" />
+      <point x="6316.407357746127" y="3124.0" />
+      <point x="12.583333333333485" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Account" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="-46.46153846153857" y="-167.5" />
+      <point x="6257.362485951255" y="2377.0" />
+      <point x="6476.324024412793" y="2377.0" />
+      <point x="6476.324024412793" y="1045.0" />
+      <point x="6255.505709473978" y="1045.0" />
+      <point x="38.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController">
+      <point x="-48.125" y="783.5" />
+      <point x="2528.8360265046713" y="4891.0" />
+      <point x="1797.4640016706762" y="4891.0" />
+      <point x="93.89285714285688" y="-189.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="145.28571428571468" y="-144.5" />
+      <point x="1673.8509316770187" y="1698.0" />
+      <point x="4423.612319126332" y="1698.0" />
+      <point x="-91.40625" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryListController" target="nl.avans.vsoprj2.wordcrex.controls.information.DictionaryEntry">
+      <point x="-87.1875" y="-80.5" />
+      <point x="282.8767604698487" y="4931.0" />
+      <point x="178.5" y="4931.0" />
+      <point x="59.5" y="166.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="-9.392857142856883" y="-212.5" />
+      <point x="4807.370834614467" y="4831.0" />
+      <point x="4781.2646300028555" y="4831.0" />
+      <point x="4781.2646300028555" y="2427.0" />
+      <point x="5163.763691757324" y="2427.0" />
+      <point x="5163.763691757324" y="1918.0" />
+      <point x="4990.495399233624" y="1918.0" />
+      <point x="15.98076923076951" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.StatisticsController" target="nl.avans.vsoprj2.wordcrex.controls.navigation.BottomBarItem">
+      <point x="-105.20000000000005" y="-168.5" />
+      <point x="7991.304403853199" y="4851.0" />
+      <point x="7477.2253831084445" y="4851.0" />
+      <point x="95.20000000000005" y="122.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.AccountController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="81.66666666666652" y="-124.5" />
+      <point x="7567.171070519866" y="1928.0" />
+      <point x="7519.882792807311" y="1928.0" />
+      <point x="7519.882792807311" y="426.0" />
+      <point x="6099.280546151924" y="426.0" />
+      <point x="52.956521739130494" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="103.32142857142844" y="-212.5" />
+      <point x="4920.085120328752" y="4901.0" />
+      <point x="6011.8590314912635" y="4901.0" />
+      <point x="6011.8590314912635" y="3114.0" />
+      <point x="6240.907357746127" y="3114.0" />
+      <point x="-62.916666666666515" y="167.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.models.Game.Answer">
+      <point x="-46.96428571428578" y="-212.5" />
+      <point x="4769.799406043037" y="4851.0" />
+      <point x="4468.246852004085" y="4851.0" />
+      <point x="4468.246852004085" y="2377.0" />
+      <point x="4711.754076372708" y="2377.0" />
+      <point x="57.33333333333303" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound" target="nl.avans.vsoprj2.wordcrex.models.Model">
+      <point x="32.375" y="-276.5" />
+      <point x="2751.9038021854776" y="516.0" />
+      <point x="2787.766302185478" y="516.0" />
+      <point x="-12.449999999999818" y="79.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.BoardModelTest" target="nl.avans.vsoprj2.wordcrex.models.Board">
+      <point x="48.600000000000364" y="-169.5" />
+      <point x="710.3795928971513" y="3124.0" />
+      <point x="675.3874814115625" y="3124.0" />
+      <point x="675.3874814115625" y="2477.0" />
+      <point x="1422.627717391304" y="2477.0" />
+      <point x="-105.9375" y="144.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.administrator.UserController" target="nl.avans.vsoprj2.wordcrex.models.Account.Role">
+      <point x="-105.4375" y="-212.5" />
+      <point x="6728.789820519865" y="4921.0" />
+      <point x="6727.227320519865" y="4921.0" />
+      <point x="-13.0" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.information.PanelController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="0.0" y="-26.5" />
+      <point x="5475.263691757324" y="1888.0" />
+      <point x="5022.456937695162" y="1888.0" />
+      <point x="47.94230769230762" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.models.ChatMessage">
+      <point x="-110.96428571428532" y="-189.5" />
+      <point x="1592.606858813534" y="4901.0" />
+      <point x="804.7795928971509" y="4901.0" />
+      <point x="804.7795928971509" y="3064.0" />
+      <point x="764.2541480782288" y="3064.0" />
+      <point x="-59.66666666666697" y="80.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.models.DbModel">
+      <point x="-86.66666666666697" y="-211.5" />
+      <point x="4428.351902459664" y="955.0" />
+      <point x="469.0295928971509" y="955.0" />
+      <point x="39.25" y="68.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Game">
+      <point x="72.83783783783747" y="-783.5" />
+      <point x="2649.7988643425088" y="2964.0" />
+      <point x="3651.2190195767816" y="2964.0" />
+      <point x="3651.2190195767816" y="1748.0" />
+      <point x="4484.549819126332" y="1748.0" />
+      <point x="-30.46875" y="211.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound">
+      <point x="60.25" y="-189.5" />
+      <point x="3072.7788021854776" y="1648.0" />
+      <point x="2823.128802185478" y="1648.0" />
+      <point x="103.60000000000036" y="276.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller.NavigationListener">
+      <point x="124.44444444444434" y="-167.5" />
+      <point x="3492.663464021226" y="2397.0" />
+      <point x="4794.363691757324" y="2397.0" />
+      <point x="-43.40000000000009" y="37.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Letter" target="nl.avans.vsoprj2.wordcrex.models.Model">
+      <point x="34.5" y="-91.5" />
+      <point x="2049.6814336075204" y="1005.0" />
+      <point x="2056.253842040979" y="1005.0" />
+      <point x="2056.253842040979" y="506.0" />
+      <point x="2762.8663021854773" y="506.0" />
+      <point x="-37.350000000000364" y="79.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ScoreboardController" target="nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow">
+      <point x="-62.222222222222626" y="-167.5" />
+      <point x="3305.996797354559" y="2357.0" />
+      <point x="3012.5288021854776" y="2357.0" />
+      <point x="0.0" y="189.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="-96.85714285714312" y="-144.5" />
+      <point x="1431.708074534161" y="1768.0" />
+      <point x="1082.344810288455" y="1768.0" />
+      <point x="1082.344810288455" y="556.0" />
+      <point x="5985.802285282358" y="556.0" />
+      <point x="-60.52173913043498" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.controls.gameboard.LetterTile">
+      <point x="-135.27027027027088" y="-783.5" />
+      <point x="2441.6907562344004" y="3024.0" />
+      <point x="1844.8195850632292" y="3024.0" />
+      <point x="1844.8195850632292" y="2477.0" />
+      <point x="1807.676028202115" y="2477.0" />
+      <point x="-95.19999999999982" y="133.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound.TurnActionType" target="nl.avans.vsoprj2.wordcrex.models.ScoreboardRound">
+      <point x="72.33333333333303" y="91.5" />
+      <point x="2616.3147669408536" y="995.0" />
+      <point x="2687.1538021854776" y="995.0" />
+      <point x="-32.375" y="-276.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Board.Coordinate" target="nl.avans.vsoprj2.wordcrex.models.Board">
+      <point x="-51.0" y="-58.5" />
+      <point x="1450.940217391304" y="2477.0" />
+      <point x="1465.002717391304" y="2477.0" />
+      <point x="-63.5625" y="144.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Letter">
+      <point x="-93.64864864864921" y="-783.5" />
+      <point x="2483.312377856022" y="2984.0" />
+      <point x="2054.677693171337" y="2984.0" />
+      <point x="2054.677693171337" y="1688.0" />
+      <point x="2042.7814336075207" y="1688.0" />
+      <point x="27.600000000000364" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Board.Coordinate">
+      <point x="-187.29729729729752" y="-783.5" />
+      <point x="2389.6637292073738" y="3074.0" />
+      <point x="1540.190217391304" y="3074.0" />
+      <point x="38.25" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Tile" target="nl.avans.vsoprj2.wordcrex.models.Tile.TileType">
+      <point x="11.100000000000364" y="134.5" />
+      <point x="1228.8763645635026" y="1055.0" />
+      <point x="1234.065217391304" y="1055.0" />
+      <point x="0.0" y="-188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.models.Game.GameState">
+      <point x="-43.33333333333303" y="-211.5" />
+      <point x="4471.685235792998" y="935.0" />
+      <point x="4380.796163010838" y="935.0" />
+      <point x="23.75" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.WordCrex">
+      <point x="-25.607142857143117" y="-189.5" />
+      <point x="1677.9640016706762" y="4851.0" />
+      <point x="1348.565217391304" y="4851.0" />
+      <point x="1348.565217391304" y="1015.0" />
+      <point x="6141.505709473978" y="1015.0" />
+      <point x="-76.0" y="58.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Statistic" target="nl.avans.vsoprj2.wordcrex.models.Model">
+      <point x="-43.5" y="-102.5" />
+      <point x="7031.714042807311" y="446.0" />
+      <point x="2887.3663021854773" y="446.0" />
+      <point x="87.14999999999964" y="79.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.NewController" target="nl.avans.vsoprj2.wordcrex.Singleton">
+      <point x="-64.0" y="-146.5" />
+      <point x="6725.985852849985" y="2417.0" />
+      <point x="6615.0764227956115" y="2417.0" />
+      <point x="6615.0764227956115" y="456.0" />
+      <point x="6091.715328760619" y="456.0" />
+      <point x="45.39130434782601" y="111.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.GamesController" target="nl.avans.vsoprj2.wordcrex.models.Game.GameState">
+      <point x="-103.32142857142844" y="-212.5" />
+      <point x="4713.442263185895" y="4881.0" />
+      <point x="4380.435235792998" y="4881.0" />
+      <point x="4380.435235792998" y="1005.0" />
+      <point x="4333.296163010838" y="1005.0" />
+      <point x="-23.75" y="91.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.ChatController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="42.67857142857156" y="-189.5" />
+      <point x="1746.249715956391" y="4901.0" />
+      <point x="1741.565217391304" y="4901.0" />
+      <point x="1741.565217391304" y="1828.0" />
+      <point x="4862.64924538747" y="1828.0" />
+      <point x="-111.86538461538476" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.models.Tile.TileType">
+      <point x="-145.67567567567585" y="-783.5" />
+      <point x="2431.2853508289954" y="3034.0" />
+      <point x="1773.3760282021149" y="3034.0" />
+      <point x="1773.3760282021149" y="1688.0" />
+      <point x="1260.065217391304" y="1688.0" />
+      <point x="26.0" y="188.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.ObserverController" target="nl.avans.vsoprj2.wordcrex.controllers.Controller">
+      <point x="32.875" y="-157.5" />
+      <point x="6101.167537911169" y="4741.0" />
+      <point x="6033.8590314912635" y="4741.0" />
+      <point x="6033.8590314912635" y="1738.0" />
+      <point x="5043.764630002855" y="1738.0" />
+      <point x="69.25" y="90.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController" target="nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException">
+      <point x="-31.216216216216708" y="-783.5" />
+      <point x="2545.7448102884546" y="2924.0" />
+      <point x="2364.6814336075204" y="2924.0" />
+      <point x="2364.6814336075204" y="1688.0" />
+      <point x="2424.9814336075206" y="1688.0" />
+      <point x="2424.9814336075206" y="113.0" />
+      <point x="2943.2332339328714" y="113.0" />
+      <point x="-31.199999999999818" y="26.5" />
+    </edge>
+    <edge source="nl.avans.vsoprj2.wordcrex.models.Game" target="nl.avans.vsoprj2.wordcrex.models.Account">
+      <point x="79.21875" y="211.5" />
+      <point x="4594.237319126332" y="1728.0" />
+      <point x="6245.678786397054" y="1728.0" />
+      <point x="6245.678786397054" y="2347.0" />
+      <point x="6187.670178258947" y="2347.0" />
+      <point x="-116.15384615384619" y="-167.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4" x="5412.789682539682" y="2961.833333333334" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
