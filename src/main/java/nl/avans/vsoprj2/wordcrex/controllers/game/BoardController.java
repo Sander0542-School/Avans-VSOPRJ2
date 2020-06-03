@@ -1047,6 +1047,7 @@ public class BoardController extends Controller {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
 
+        this.setBoardScorePosition();
     }
 
     private void setBoardScorePosition() {
