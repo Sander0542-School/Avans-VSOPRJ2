@@ -45,7 +45,6 @@ public class BoardController extends Controller {
     private int turnId;
     private int playerOneScore;
     private int playerTwoScore;
-    private int potSize;
 
     @FXML
     private Label potSizeLabel;
@@ -112,7 +111,7 @@ public class BoardController extends Controller {
             @Override
             public void run() {
                 final Game.GameState gameState = BoardController.this.game.getCurrentState();
-                if (BoardController.this.game.getOwnGame() && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                if (BoardController.this.game.getOwnGame() && BoardController.this.game.getGameState() != gameState && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
                     BoardController.this.timer.cancel();
                     BoardController.this.timer.purge();
 
@@ -131,6 +130,7 @@ public class BoardController extends Controller {
 
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setHeaderText(null);
                         alert.setTitle("Het spel is afgelopen");
                         alert.showAndWait();
 
@@ -225,8 +225,8 @@ public class BoardController extends Controller {
     }
 
     private void renderAndFetchRemainingTiles() {
-        this.potSize = this.game.getAmountOfPoolLetters();
-        this.potSizeLabel.setText(this.potSize + " tegels resterend");
+        int potSize = this.game.getAmountOfPoolLetters();
+        this.potSizeLabel.setText(potSize + " tegels resterend");
     }
 
     private void endGame() {
@@ -525,13 +525,8 @@ public class BoardController extends Controller {
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+            this.setBoardScorePosition();
 
-            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
-
-            double margin = boardTile.getHeight() - 6;
-            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
-            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
             this.boardScore.setText(String.valueOf(points.points));
 
             this.boardScore.setVisible(true);
@@ -1052,6 +1047,21 @@ public class BoardController extends Controller {
         for (Node node : this.gameGrid.getChildren()) {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
+
+        this.setBoardScorePosition();
+    }
+
+    private void setBoardScorePosition() {
+        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
+
+        if (!unconfirmedTiles.isEmpty()) {
+            Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+        }
     }
 
     @Override
@@ -1067,9 +1077,6 @@ public class BoardController extends Controller {
             item.setId(item.getText().toLowerCase());
             item.setOnAction(BoardController.this::gameOptionsMenuEventHandler);
         }
-
-        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
-        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
     private void createNewPlayerBoard(int turn, List<BoardTile> boardTiles) {
