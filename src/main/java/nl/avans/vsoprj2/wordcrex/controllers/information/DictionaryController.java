@@ -107,7 +107,7 @@ public class DictionaryController extends Controller {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Oei. Het woord kon niet worden toegevoegd aan de database. Probeer het opnieuw!");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Oei, het woord kon niet worden toegevoegd aan het woordenboek. Probeer het opnieuw!");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
