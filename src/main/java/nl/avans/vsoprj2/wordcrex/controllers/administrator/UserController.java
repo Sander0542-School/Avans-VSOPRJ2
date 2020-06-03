@@ -115,7 +115,6 @@ public class UserController extends Controller {
      */
     private void handleFormChanges(Account account) {
         if(account != null) {
-            this.checkBoxPlayer.setSelected(false);
             this.checkBoxModerator.setSelected(false);
             this.checkBoxObserver.setSelected(false);
             this.checkBoxAdministrator.setSelected(false);
