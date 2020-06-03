@@ -98,7 +98,7 @@ public class ScoreboardController extends Controller {
         } catch (SQLException e) {
             WordCrex.handleException(e);
 
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Iets is er fout gegaan bij het laden van de punten.");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het laden van de punten.");
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
