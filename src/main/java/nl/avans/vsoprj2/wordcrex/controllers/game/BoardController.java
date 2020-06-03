@@ -108,6 +108,33 @@ public class BoardController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                final Game.GameState gameState = BoardController.this.game.getCurrentState();
+                if (BoardController.this.game.getOwnGame() && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                    BoardController.this.timer.cancel();
+                    BoardController.this.timer.purge();
+
+                    String message;
+                    switch (gameState) {
+                        case FINISHED:
+                            message = "Een speler heeft het spel gewonnen.";
+                            break;
+                        case RESIGNED:
+                            message = "Een speler heeft opgegeven.";
+                            break;
+                        default:
+                            message = "";
+                    }
+                    String finalMessage = message;
+
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setTitle("Het spel is afgelopen");
+                        alert.showAndWait();
+
+                        BoardController.this.navigateTo("/views/games.fxml");
+                    });
+                }
+
                 if (BoardController.this.turnLocked) {
                     if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
 
@@ -896,7 +923,7 @@ public class BoardController extends Controller {
             while (resultSet.next()) {
                 playedTiles.add(resultSet.getInt("letter_id"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
 
         }
 
@@ -1176,8 +1203,7 @@ public class BoardController extends Controller {
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
                 if (otherPlayerTurnResultSet.getInt("score") == points.getPoints()) {
-                    String updateBonusQuery = (isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?") +
-                            " WHERE `game_id` = ? AND `turn_id` = ?";
+                    String updateBonusQuery = "UPDATE `" + (isPlayer1 ? "turnplayer2" : "turnplayer1") + "` SET `bonus` = ? WHERE `game_id` = ? AND `turn_id` = ?;";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
                     updateBonusStatement.setInt(2, this.game.getGameId());

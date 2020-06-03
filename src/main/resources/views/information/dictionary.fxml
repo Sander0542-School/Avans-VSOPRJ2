@@ -9,7 +9,7 @@
         <AppBar title="Woordenboek" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
     <center>
-            <VBox fx:id="settings" alignment="CENTER" fillWidth="false" spacing="10">
+            <VBox alignment="CENTER" fillWidth="false" spacing="10">
                 <Label fx:id="error" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
                 <Label prefWidth="500" text="Gebruikersnaam:"/>
                 <TextField fx:id="username" prefWidth="500" disable="true"/>

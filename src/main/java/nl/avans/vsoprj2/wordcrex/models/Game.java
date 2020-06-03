@@ -114,6 +114,25 @@ public class Game extends DbModel {
         return 0;
     }
 
+    public GameState getCurrentState() {
+        Connection connection = Singleton.getInstance().getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT `state` FROM `game` WHERE game_id = ?;");
+            statement.setInt(1, this.getGameId());
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return GameState.valueOf(rs.getString("state").toUpperCase());
+            }
+
+        } catch (SQLException e) {
+            throw new DbLoadException(e);
+        }
+
+        return GameState.REQUEST;
+    }
+
     public int getPlayerScore(boolean isPlayer1) {
         Connection connection = Singleton.getInstance().getConnection();
 

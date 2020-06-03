@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-    private Timer autoFetch = new Timer();
+    private final List<ChatMessage> chatMessages = new ArrayList<>();
+    private final Timer autoFetch = new Timer();
 
     @FXML
     private ScrollPane chatScrollContainer;
