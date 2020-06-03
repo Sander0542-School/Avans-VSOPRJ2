@@ -29,7 +29,7 @@ public class WordCrex extends Application {
         URL resource = this.getClass().getResource("/views/index.fxml");
 
         if (DEBUG_MODE) {
-            Account account = Account.fromUsername("jagermeester");
+            Account account = Account.fromUsername("sander");
             Singleton.getInstance().setUser(account);
             resource = this.getClass().getResource("/views/games.fxml");
         }
