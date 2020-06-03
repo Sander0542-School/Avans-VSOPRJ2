@@ -11,9 +11,9 @@
     <center>
         <VBox alignment="TOP_CENTER">
             <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 100 0 0 0;">
-                <Label textAlignment="LEFT" prefWidth="600" text="Gebruikersnaam" textFill="#201b53">
+                <Label prefWidth="600" text="Gebruikersnaam" textFill="#201b53">
                     <font>
-                        <Font name="Roboto Black" size="18.0" />
+                        <Font name="Roboto Black" size="18.0"/>
                     </font>
                 </Label>
                 <TextField editable="false" text="John Doe">
@@ -23,9 +23,9 @@
                 </TextField>
             </VBox>
             <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 20 0 0 0;">
-                <Label textAlignment="LEFT" prefWidth="600" text="Wachtwoord" textFill="#201b53">
+                <Label prefWidth="600" text="Wachtwoord" textFill="#201b53">
                     <font>
-                        <Font name="Roboto Black" size="18.0" />
+                        <Font name="Roboto Black" size="18.0"/>
                     </font>
                 </Label>
                 <PasswordField>
@@ -35,9 +35,9 @@
                 </PasswordField>
             </VBox>
             <VBox maxWidth="600" alignment="TOP_CENTER" style="-fx-background-color: #ffbb00;-fx-padding: 20 0 0 0;">
-                <Label textAlignment="LEFT" prefWidth="600" text="Herhaal wachtwoord" textFill="#201b53">
+                <Label prefWidth="600" text="Herhaal wachtwoord" textFill="#201b53">
                     <font>
-                        <Font name="Roboto Black" size="18.0" />
+                        <Font name="Roboto Black" size="18.0"/>
                     </font>
                 </Label>
                 <PasswordField>

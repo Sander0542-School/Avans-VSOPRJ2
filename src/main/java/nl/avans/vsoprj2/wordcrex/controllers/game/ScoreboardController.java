@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ScoreboardController extends Controller {
     private Game game;
-    private List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
+    private final List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
 
     @FXML
     private Circle imagePlayerOne;
