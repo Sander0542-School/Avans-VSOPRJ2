@@ -114,7 +114,7 @@ public class BoardController extends Controller {
                             message = "Een speler heeft het spel gewonnen";
                             break;
                         case RESIGNED:
-                            message = "Een speler heeft spel verlaten.";
+                            message = "Een speler heeft opgegeven.";
                             break;
                         default:
                             message = "";
