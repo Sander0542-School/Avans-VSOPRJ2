@@ -44,7 +44,10 @@ public class BoardController extends Controller {
     private int turnId;
     private int playerOneScore;
     private int playerTwoScore;
+    private int potSize;
 
+    @FXML
+    private Label potSizeLabel;
     @FXML
     private GridPane gameGrid;
     @FXML
@@ -166,6 +169,7 @@ public class BoardController extends Controller {
     private void fetchPlayerData() {
         this.playerOneScore = this.game.getPlayerScore(true);
         this.playerTwoScore = this.game.getPlayerScore(false);
+        this.potSize = this.game.getAmountOfPoolLetters();
     }
 
     /**
@@ -177,6 +181,8 @@ public class BoardController extends Controller {
 
         this.player1Score.setText(String.valueOf(this.playerOneScore));
         this.player2Score.setText(String.valueOf(this.playerTwoScore));
+
+        this.potSizeLabel.setText(this.potSize + " tegels resterend");
     }
 
     private void endGame() {
