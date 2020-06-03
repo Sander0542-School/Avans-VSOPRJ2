@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
+import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -31,11 +32,8 @@ public class DictionaryController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         this.languages = this.getLanguages();
-
         this.languagesBox.getItems().addAll(this.languages.keySet());
-
         this.username.setText(Singleton.getInstance().getUser().getUsername());
     }
 
@@ -64,6 +62,8 @@ public class DictionaryController extends Controller {
 
             return languages;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -111,6 +111,7 @@ public class DictionaryController extends Controller {
             errorAlert.setHeaderText(null);
             errorAlert.showAndWait();
         }
+    }
 
     private void showError(String message) {
         this.error.setText(message);

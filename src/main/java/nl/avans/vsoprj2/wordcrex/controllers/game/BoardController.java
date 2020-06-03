@@ -888,6 +888,8 @@ public class BoardController extends Controller {
             }
 
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 
@@ -943,8 +945,8 @@ public class BoardController extends Controller {
             while (resultSet.next()) {
                 playedTiles.add(resultSet.getInt("letter_id"));
             }
-        } catch (SQLException ignored) {
-
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
         }
 
         for (Letter letter : this.currentLetters) {
