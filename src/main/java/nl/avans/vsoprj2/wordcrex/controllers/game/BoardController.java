@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BoardController extends Controller {
+    private static final double DISABLED_OPACITY = 0.5;
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
@@ -45,6 +46,10 @@ public class BoardController extends Controller {
     private int playerOneScore;
     private int playerTwoScore;
 
+    @FXML
+    private ImageView passTurnButton;
+    @FXML
+    private ImageView playTurnButton;
     @FXML
     private GridPane gameGrid;
     @FXML
@@ -175,6 +180,16 @@ public class BoardController extends Controller {
      */
     private void renderBoard() {
         this.gameGrid.getChildren().clear();
+
+        if (this.turnLocked) {
+            this.passTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.playTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.lettertiles.setOpacity(BoardController.DISABLED_OPACITY);
+        } else {
+            this.passTurnButton.setOpacity(1.0);
+            this.playTurnButton.setOpacity(1.0);
+            this.lettertiles.setOpacity(1.0);
+        }
 
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
             for (int y = 1; y <= Board.BOARD_SIZE; y++) {
