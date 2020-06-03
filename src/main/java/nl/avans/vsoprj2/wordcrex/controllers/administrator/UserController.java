@@ -157,11 +157,13 @@ public class UserController extends Controller {
     private void handleUserSearch() {
         Connection connection = Singleton.getInstance().getConnection();
         try {
+            //TODO gebruiker bestaat niet error
             this.userComboBox.getSelectionModel().select(null);
             PreparedStatement userStatement = connection.prepareStatement("SELECT username FROM account WHERE username=?");
             userStatement.setString(1, this.searchInput.getText().trim());
             ResultSet user = userStatement.executeQuery();
 
+            //TODO check of de gebruiker klopt
             if (user.next()) {
                 Account account = new Account(user);
                 this.handleFormChanges(account);
