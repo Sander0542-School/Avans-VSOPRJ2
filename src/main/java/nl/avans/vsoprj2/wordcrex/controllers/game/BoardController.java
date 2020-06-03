@@ -111,7 +111,7 @@ public class BoardController extends Controller {
                     String message;
                     switch (gameState) {
                         case FINISHED:
-                            message = "Een speler heeft het spel gewonnen";
+                            message = "Een speler heeft het spel gewonnen.";
                             break;
                         case RESIGNED:
                             message = "Een speler heeft opgegeven.";
