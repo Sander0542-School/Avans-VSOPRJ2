@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * Hello world!
  */
 public class WordCrex extends Application {
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public static void main(String[] args) {
         launch(args);
