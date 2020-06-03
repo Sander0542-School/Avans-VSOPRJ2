@@ -109,7 +109,7 @@ public class BoardController extends Controller {
             @Override
             public void run() {
                 final Game.GameState gameState = BoardController.this.game.getCurrentState();
-                if (BoardController.this.game.getOwnGame() && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                if (BoardController.this.game.getOwnGame() && BoardController.this.game.getGameState() != gameState && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
                     BoardController.this.timer.cancel();
                     BoardController.this.timer.purge();
 
