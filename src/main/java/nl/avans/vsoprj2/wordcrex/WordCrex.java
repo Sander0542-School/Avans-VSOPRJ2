@@ -18,11 +18,6 @@ public class WordCrex extends Application {
         launch(args);
     }
 
-    /**
-     * @param stage
-     *
-     * @throws Exception
-     */
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("WordCrex");
