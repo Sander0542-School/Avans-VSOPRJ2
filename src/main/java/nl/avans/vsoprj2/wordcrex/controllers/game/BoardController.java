@@ -444,7 +444,7 @@ public class BoardController extends Controller {
     }
 
     private void giveNewLetterInHand() {
-        if (this.game.getAmountOfPoolLetters() <= 7 || this.game.passedThreeTimesInARow()) {
+        if (this.game.getAmountOfPoolLetters() < 7 || (this.game.passedThreeTimesInARow() && WordCrex.DEBUG_MODE)) {
             this.endGame();
         } else {
             this.createNewTurn(true);
