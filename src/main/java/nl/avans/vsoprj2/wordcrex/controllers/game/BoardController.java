@@ -45,7 +45,10 @@ public class BoardController extends Controller {
     private int turnId;
     private int playerOneScore;
     private int playerTwoScore;
+    private int potSize;
 
+    @FXML
+    private Label potSizeLabel;
     @FXML
     private ImageView passTurnButton;
     @FXML
@@ -220,6 +223,11 @@ public class BoardController extends Controller {
 
         this.player1Score.setText(String.valueOf(this.playerOneScore));
         this.player2Score.setText(String.valueOf(this.playerTwoScore));
+    }
+
+    private void renderAndFetchRemainingTiles() {
+        this.potSize = this.game.getAmountOfPoolLetters();
+        this.potSizeLabel.setText(this.potSize + " tegels resterend");
     }
 
     private void endGame() {
@@ -901,6 +909,7 @@ public class BoardController extends Controller {
     }
 
     private void displayLetters() {
+        this.renderAndFetchRemainingTiles();
         this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
         Collections.shuffle(this.currentLetters);
 
