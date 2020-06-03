@@ -768,7 +768,10 @@ public class BoardController extends Controller {
         this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters, this.currentLetters));
 
         // End game finally implemented...
-        if (this.currentLetters.isEmpty()) this.endGame();
+        if (this.currentLetters.isEmpty()) {
+            this.endGame();
+            return;
+        }
 
         try {
             StringBuilder sb = new StringBuilder();
