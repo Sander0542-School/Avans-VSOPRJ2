@@ -11,9 +11,6 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.net.URL;
 
-/**
- * Hello world!
- */
 public class WordCrex extends Application {
     public static final boolean DEBUG_MODE = true;
 
