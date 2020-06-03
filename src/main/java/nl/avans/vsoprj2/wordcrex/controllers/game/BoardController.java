@@ -1051,12 +1051,16 @@ public class BoardController extends Controller {
     }
 
     private void setBoardScorePosition() {
-        Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
-        BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
 
-        double margin = boardTile.getHeight() - 6;
-        this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
-        this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+        if (!unconfirmedTiles.isEmpty()) {
+            Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+        }
     }
 
     @Override
