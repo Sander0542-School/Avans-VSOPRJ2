@@ -134,7 +134,7 @@ public class BoardController extends Controller {
                         alert.setTitle("Het spel is afgelopen");
                         alert.showAndWait();
 
-                        BoardController.this.navigateTo("/views/games.fxml");
+                        BoardController.this.navigateTo(BoardController.this.game.getOwnGame() ? "/views/games.fxml" : "/views/observer.fxml");
                     });
                 }
 
@@ -277,7 +277,8 @@ public class BoardController extends Controller {
     private void handleBackButton() {
         this.timer.cancel();
         this.timer.purge();
-        this.navigateTo("/views/games.fxml");
+
+        this.navigateTo(this.game.getOwnGame() ? "/views/games.fxml" : "/views/observer.fxml");
     }
 
     @FXML
