@@ -405,7 +405,6 @@ public class BoardController extends Controller {
 
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
-            this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
@@ -413,6 +412,7 @@ public class BoardController extends Controller {
                     this.setBoardPassWinner(!isPlayer1);
                 }
             }
+            this.loadAndRenderGame();
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game pass");
