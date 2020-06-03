@@ -476,18 +476,6 @@ public class BoardController extends Controller {
         }
     }
 
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
-    }
-
     private void updatePoints() {
         List<List<BoardTile>> words = this.getWords();
 
