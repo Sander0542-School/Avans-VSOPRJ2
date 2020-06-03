@@ -48,7 +48,7 @@
 
                 </HBox>
 
-                <Label fx:id="player2Name" textFill="WHITE" prefWidth="156" alignment="CENTER_LEFT">
+                <Label fx:id="player2Name" textFill="WHITE" prefWidth="156">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>

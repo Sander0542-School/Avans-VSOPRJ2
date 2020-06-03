@@ -890,7 +890,7 @@ public class BoardController extends Controller {
             while (resultSet.next()) {
                 playedTiles.add(resultSet.getInt("letter_id"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
 
         }
 
@@ -1170,8 +1170,7 @@ public class BoardController extends Controller {
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
                 if (otherPlayerTurnResultSet.getInt("score") == points.getPoints()) {
-                    String updateBonusQuery = (isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?") +
-                            " WHERE `game_id` = ? AND `turn_id` = ?";
+                    String updateBonusQuery = "UPDATE `" + (isPlayer1 ? "turnplayer2" : "turnplayer1") + "` SET `bonus` = ? WHERE `game_id` = ? AND `turn_id` = ?;";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
                     updateBonusStatement.setInt(2, this.game.getGameId());
