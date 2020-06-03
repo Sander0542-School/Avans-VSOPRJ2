@@ -133,7 +133,6 @@ public class BoardController extends Controller {
                 if (BoardController.this.turnLocked) {
                     if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
 
-
                     int originalPlayerOneScore = BoardController.this.playerOneScore;
                     int originalPlayerTwoScore = BoardController.this.playerTwoScore;
                     int newTurnId = BoardController.this.game.getCurrentTurn();
