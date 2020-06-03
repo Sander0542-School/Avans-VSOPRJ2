@@ -169,7 +169,6 @@ public class BoardController extends Controller {
     private void fetchPlayerData() {
         this.playerOneScore = this.game.getPlayerScore(true);
         this.playerTwoScore = this.game.getPlayerScore(false);
-        this.potSize = this.game.getAmountOfPoolLetters();
     }
 
     /**
@@ -181,7 +180,10 @@ public class BoardController extends Controller {
 
         this.player1Score.setText(String.valueOf(this.playerOneScore));
         this.player2Score.setText(String.valueOf(this.playerTwoScore));
+    }
 
+    private void renderAndFetchRemainingTiles() {
+        this.potSize = this.game.getAmountOfPoolLetters();
         this.potSizeLabel.setText(this.potSize + " tegels resterend");
     }
 
@@ -864,6 +866,7 @@ public class BoardController extends Controller {
     }
 
     private void displayLetters() {
+        this.renderAndFetchRemainingTiles();
         this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
         Collections.shuffle(this.currentLetters);
 
