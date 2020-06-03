@@ -55,6 +55,12 @@
                 </Label>
 
             </HBox>
+
+            <Label fx:id="potSizeLabel" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                <font>
+                    <Font name="Roboto" size="18.0"/>
+                </font>
+            </Label>
         </AnchorPane>
     </top>
 
