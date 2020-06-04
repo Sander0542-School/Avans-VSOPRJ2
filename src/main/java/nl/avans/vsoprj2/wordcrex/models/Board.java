@@ -66,6 +66,7 @@ public class Board {
 
             if (playerResult.next()) {
                 playerLastTurn = playerResult.getInt("turn_id");
+                if (!game.getOwnGame()) playerLastTurn--;
             }
 
             PreparedStatement gelegdstatement = connection.prepareStatement("SELECT `woorddeel`, `turn_id`, `x-waarden`, `y-waarden` FROM `gelegd` WHERE `game_id` = ?");
@@ -93,7 +94,7 @@ public class Board {
                 }
             }
 
-            if (playerLastTurn > turnId) {
+            if (playerLastTurn > turnId && game.getOwnGame()) {
                 String[] letters = playerResult.getString("woorddeel").split(",");
                 int[] xCords = Arrays.stream(playerResult.getString("x-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
                 int[] yCords = Arrays.stream(playerResult.getString("y-waarden").split(",")).mapToInt(Integer::parseInt).toArray();
