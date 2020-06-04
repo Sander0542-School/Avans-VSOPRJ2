@@ -1,10 +1,12 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class ScoreboardController extends Controller {
     private Game game;
-    private List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
+    private final List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
 
     @FXML
     private Circle imagePlayerOne;
@@ -66,13 +68,13 @@ public class ScoreboardController extends Controller {
                     "`t`.`turn_id`," +
                     "`h`.`inhoud` as hand_inhoud," +
                     "`tp1`.`username_player1`," +
-                    "`gp1`.`woorddeel` as woorddeel1," +
+                    "IFNULL(`gp1`.`woorddeel`, 'pass') as woorddeel1," +
                     "`tp1`.`bonus`     as bonus1," +
                     "`tp1`.`score`     as score1," +
                     "(SELECT SUM(`score`) + SUM(`bonus`) FROM `turnplayer1` WHERE `game_id` = `t`.`game_id` AND `turn_id` <= `t`.turn_id) as totaal_score1," +
                     "`tp1`.`turnaction_type` as turntype1," +
                     "`tp2`.`username_player2`," +
-                    "`gp2`.`woorddeel` as woorddeel2," +
+                    "IFNULL(`gp2`.`woorddeel`, 'pass') as woorddeel2," +
                     "`tp2`.`bonus`     as bonus2," +
                     "`tp2`.`score`     as score2," +
                     "(SELECT SUM(`score`) + SUM(`bonus`) FROM `turnplayer2` WHERE `game_id` = `t`.`game_id` AND `turn_id` <= `t`.turn_id) as totaal_score2," +
@@ -80,9 +82,9 @@ public class ScoreboardController extends Controller {
                     "FROM `turn` t " +
                     "INNER JOIN `hand` h ON `t`.`game_id` = `h`.`game_id` AND `t`.`turn_id` = `h`.`turn_id` " +
                     "INNER JOIN `turnplayer1` tp1 ON `tp1`.`game_id` = `t`.`game_id` AND `tp1`.`turn_id` = `t`.`turn_id` " +
-                    "INNER JOIN `gelegdplayer1` gp1 ON `gp1`.`game_id` = `tp1`.`game_id` AND `gp1`.`turn_id` = `tp1`.`turn_id` " +
+                    "LEFT OUTER JOIN `gelegdplayer1` gp1 ON `gp1`.`game_id` = `tp1`.`game_id` AND `gp1`.`turn_id` = `tp1`.`turn_id` " +
                     "INNER JOIN `turnplayer2` tp2 ON `tp2`.`game_id` = `t`.`game_id` AND `tp2`.`turn_id` = `t`.`turn_id` " +
-                    "INNER JOIN `gelegdplayer2` gp2 ON `gp2`.`game_id` = `tp2`.`game_id` AND `gp2`.`turn_id` = `tp2`.`turn_id` " +
+                    "LEFT OUTER JOIN `gelegdplayer2` gp2 ON `gp2`.`game_id` = `tp2`.`game_id` AND `gp2`.`turn_id` = `tp2`.`turn_id` " +
                     "WHERE `t`.`game_id` = ? " +
                     "ORDER BY `t`.`turn_id` DESC");
 
@@ -94,7 +96,11 @@ public class ScoreboardController extends Controller {
                 this.scoreboardRounds.add(new ScoreboardRound(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het laden van de punten.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

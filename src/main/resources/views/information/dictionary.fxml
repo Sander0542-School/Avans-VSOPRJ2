@@ -4,24 +4,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import nl.avans.vsoprj2.wordcrex.controls.navigation.AppBar?>
-<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffbb00;" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController">
     <top>
-        <AppBar title="WoordenBoek" backButton="true" onBackButtonEvent="#handleBackButton"/>
+        <AppBar title="Woordenboek" backButton="true" onBackButtonEvent="#handleBackButton"/>
     </top>
     <center>
-        <VBox alignment="CENTER" fillWidth="false" spacing="10">
-            <Label prefWidth="500" text="Username:" />
-            <TextField prefWidth="500"/>
-            <Label prefWidth="500" text="Woord:" />
-            <TextField prefWidth="500" />
-            <Label prefWidth="500" text="Toevoegen of Verwijderen:" />
-            <RadioButton prefWidth="500" text="Toevoegen" />
-            <RadioButton prefWidth="500" text="Verwijderen" />
-            <Label prefWidth="500" text="Taal:" />
-            <ComboBox prefWidth="500" promptText="Kies een taal" />
-            <Label prefWidth="500" text="Comment:" />
-            <TextField prefWidth="500"/>
-            <Button prefWidth="500" text="Insturen" alignment="CENTER_LEFT" style="-fx-background-color: #1b1744;" textFill="white"/>
-        </VBox>
+            <VBox alignment="CENTER" fillWidth="false" spacing="10">
+                <Label fx:id="error" visible="false" style="-fx-font-weight: bold;-fx-font-size: 15px;"/>
+                <Label prefWidth="500" text="Gebruikersnaam:"/>
+                <TextField fx:id="username" prefWidth="500" disable="true"/>
+                <Label prefWidth="500" text="Woord:"/>
+                <TextField fx:id="word" prefWidth="500"/>
+                <Label prefWidth="500" text="Taal:"/>
+                <ComboBox fx:id="languagesBox" prefWidth="500" promptText="Kies een taal"/>
+                <Button onAction="#submit" prefWidth="500" text="Insturen" style="-fx-background-color: #1b1744;" textFill="white"/>
+                <Separator/>
+                <Button onAction="#handleListButton" prefWidth="500" text="Inzendingen" style="-fx-background-color: #1b1744;" textFill="white"/>
+            </VBox>
+
     </center>
 </BorderPane>

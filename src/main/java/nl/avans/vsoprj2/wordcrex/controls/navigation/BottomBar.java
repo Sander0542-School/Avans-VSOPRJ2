@@ -1,11 +1,14 @@
 package nl.avans.vsoprj2.wordcrex.controls.navigation;
 
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.models.Account;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,7 +16,10 @@ import java.util.ResourceBundle;
 
 public class BottomBar extends HBox implements Initializable {
 
-    private EventHandler barItemEventHandler = null;
+    @FXML
+    private BottomBarItem observer;
+
+    private EventHandler<MouseEvent> barItemEventHandler = null;
 
     public BottomBar() {
         super();
@@ -30,12 +36,7 @@ public class BottomBar extends HBox implements Initializable {
 
         for(Node child : this.getChildren()) {
             if (child instanceof BottomBarItem) {
-                child.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        BottomBar.this.barItemClicked(event);
-                    }
-                });
+                child.setOnMouseClicked(BottomBar.this::barItemClicked);
             }
         }
     }
@@ -62,16 +63,16 @@ public class BottomBar extends HBox implements Initializable {
         }
     }
 
-    public void setOnBarItemClicked(EventHandler eventHandler) {
-        this.barItemEventHandler = eventHandler;
+    public EventHandler<MouseEvent> getOnBarItemClicked() {
+        return this.barItemEventHandler;
     }
 
-    public EventHandler getOnBarItemClicked() {
-        return this.barItemEventHandler;
+    public void setOnBarItemClicked(EventHandler<MouseEvent> eventHandler) {
+        this.barItemEventHandler = eventHandler;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.observer.setVisible(Singleton.getInstance().getUser().hasRole(Account.Role.OBSERVER));
     }
 }

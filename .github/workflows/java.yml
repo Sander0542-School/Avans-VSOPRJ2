@@ -14,17 +14,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Get Maven Dependencies from cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 11.0.6
       - name: Compile
         run: mvn -B compile --file pom.xml
       - name: Run Tests
         run: mvn -B site --file pom.xml
-      - uses: sebastianpopp/ftp-action@releases/v2
-        name: Upload Report to Server
-        if: always()
+      - name: Publish Test Report
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Report to Server
+        uses: sebastianpopp/ftp-action@releases/v2
         with:
           host: tommyhosewol.com
           user: github_actions

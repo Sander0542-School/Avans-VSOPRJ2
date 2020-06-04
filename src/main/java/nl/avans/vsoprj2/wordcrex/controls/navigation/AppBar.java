@@ -26,7 +26,7 @@ public class AppBar extends AnchorPane implements Initializable {
     @FXML
     private ImageView deleteButton;
 
-    private ContextMenu optionsMenu = new ContextMenu();
+    private final ContextMenu optionsMenu = new ContextMenu();
 
     private EventHandler<MouseEvent> backButtonEventHandler;
     private EventHandler<MouseEvent> deleteButtonEventHandler;
@@ -123,7 +123,7 @@ public class AppBar extends AnchorPane implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Settings"));
+        this.optionsMenu.getItems().addAll(new MenuItem("Info"), new MenuItem("Instellingen"));
 
         for (MenuItem item : this.optionsMenu.getItems()) {
             item.setId(item.getText().toLowerCase());

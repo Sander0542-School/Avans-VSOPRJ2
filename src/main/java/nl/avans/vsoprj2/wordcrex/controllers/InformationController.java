@@ -7,4 +7,9 @@ public class InformationController extends Controller {
     private void handleBackButton() {
         this.navigateTo("/views/games.fxml");
     }
+
+    @FXML
+    private void handleDictionary() {
+        this.navigateTo("/views/information/dictionary.fxml");
+    }
 }

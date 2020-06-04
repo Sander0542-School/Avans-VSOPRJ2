@@ -1,7 +1,8 @@
 package nl.avans.vsoprj2.wordcrex.models;
 
+import javafx.scene.control.Alert;
 import nl.avans.vsoprj2.wordcrex.Singleton;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +19,11 @@ public class Board {
     private final Tile[][] tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {
-        Connection connection = Singleton.getInstance().getConnection();
+        this.loadTiles();
+    }
 
+    public void loadTiles() {
+        Connection connection = Singleton.getInstance().getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM tile");
             ResultSet result = statement.executeQuery();
@@ -35,12 +39,18 @@ public class Board {
             }
 
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de verschillende tiles.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
     public void loadLetters(Game game, HashMap<Character, Integer> symbolValues) {
         Connection connection = Singleton.getInstance().getConnection();
+
+        this.loadTiles();
 
         String table = Singleton.getInstance().getUser().getUsername().equals(game.getUsernamePlayer1()) ? "gelegdplayer1" : "gelegdplayer2";
 
@@ -101,7 +111,11 @@ public class Board {
                 }
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de gelegde letters.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
@@ -140,12 +154,12 @@ public class Board {
     public boolean hasConfirmedSurroundingTile(int x, int y) {
         List<Tile> surroundTiles = new ArrayList<>();
 
-        surroundTiles.add(this.getTile(x - 1, y - 1));
-        surroundTiles.add(this.getTile(x - 1, y + 1));
-        surroundTiles.add(this.getTile(x + 1, y + 1));
-        surroundTiles.add(this.getTile(x + 1, y - 1));
+        surroundTiles.add(this.getTile(x, y - 1));
+        surroundTiles.add(this.getTile(x, y + 1));
+        surroundTiles.add(this.getTile(x - 1, y));
+        surroundTiles.add(this.getTile(x + 1, y));
 
-        surroundTiles.removeIf(tile -> !tile.hasLetter() || !tile.isConfirmed());
+        surroundTiles.removeIf(tile -> tile == null || !tile.hasLetter() || !tile.isConfirmed());
 
         return surroundTiles.size() > 0;
     }

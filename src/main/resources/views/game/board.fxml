@@ -6,7 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import nl.avans.vsoprj2.wordcrex.controls.gameboard.*?>
+<?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" style="-fx-background-color: #201b53" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="nl.avans.vsoprj2.wordcrex.controllers.game.BoardController">
+    <stylesheets>
+        <URL value="@/styles/context-menu.css"/>
+    </stylesheets>
 
     <top>
         <AnchorPane prefHeight="64.0" style="-fx-background-color: #1b1744;">
@@ -44,34 +48,47 @@
 
                 </HBox>
 
-                <Label fx:id="player2Name" textFill="WHITE" prefWidth="156" alignment="CENTER_LEFT">
+                <Label fx:id="player2Name" textFill="WHITE" prefWidth="156">
                     <font>
                         <Font name="Roboto Black" size="18.0"/>
                     </font>
                 </Label>
 
             </HBox>
+
+            <Label fx:id="potSizeLabel" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                <font>
+                    <Font name="Roboto Black" size="18.0"/>
+                </font>
+            </Label>
         </AnchorPane>
     </top>
 
     <center>
-        <GridPane fx:id="gameGrid" hgap="2" vgap="2" alignment="CENTER">
-            <padding>
-                <Insets bottom="4" left="4" right="4" top="4"/>
-            </padding>
-        </GridPane>
+        <AnchorPane>
+            <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" fx:id="gameGrid" hgap="2" vgap="2" alignment="CENTER">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20"/>
+                </padding>
+            </GridPane>
+            <Label visible="false" fx:id="boardScore" text="15" textFill="black" prefHeight="16" style="-fx-background-radius: 9; -fx-background-color: yellow; -fx-border-radius: 9; -fx-border-color: black; -fx-padding: 2">
+                <font>
+                    <Font name="Roboto Black"/>
+                </font>
+            </Label>
+        </AnchorPane>
     </center>
 
     <bottom>
         <HBox alignment="CENTER" prefHeight="64.0" spacing="64.0" style="-fx-background-color: #1b1744;">
             <HBox alignment="CENTER_RIGHT" prefWidth="136.0" spacing="32.0">
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#confirmLettersButtonClicked">
+                <ImageView fx:id="playTurnButton" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#confirmLettersButtonClicked">
                     <Image url="@/images/drawables/play_arrow.png"/>
                 </ImageView>
                 <ImageView fx:id="shuffleReturnImage" onMouseClicked="#handleShuffleReturnAction" pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/shuffle.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" onMouseClicked="#passGameClick" fitHeight="24.0" fitWidth="24.0">
+                <ImageView fx:id="passTurnButton" pickOnBounds="true" onMouseClicked="#handlePassGame" fitHeight="24.0" fitWidth="24.0">
                     <Image url="@/images/drawables/block.png"/>
                 </ImageView>
 
@@ -89,7 +106,7 @@
                 <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleChatAction">
                     <Image url="@/images/drawables/chat_bubble_outline.png"/>
                 </ImageView>
-                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0">
+                <ImageView pickOnBounds="true" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#handleGameOptionsMenu">
                     <Image url="@/images/drawables/more_horiz.png"/>
                 </ImageView>
             </HBox>

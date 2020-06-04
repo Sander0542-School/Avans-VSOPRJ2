@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-    private Timer autoFetch = new Timer();
+    private final List<ChatMessage> chatMessages = new ArrayList<>();
+    private final Timer autoFetch = new Timer();
 
     @FXML
     private ScrollPane chatScrollContainer;
@@ -34,8 +34,8 @@ public class ChatController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::sendMessageHandler);
-        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::sendMessageHandler);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_PRESSED, this::handleSendMessage);
+        this.chatMessageInput.addEventFilter(KeyEvent.KEY_RELEASED, this::handleSendMessage);
     }
 
     /**
@@ -48,6 +48,7 @@ public class ChatController extends Controller {
     public void setGame(Game game) {
         if (game == null) throw new IllegalArgumentException("Game may not be null");
         this.game = game;
+        this.chatMessageInput.setVisible(this.game.getOwnGame());
         this.fetch();
         this.render();
         this.autoFetch.scheduleAtFixedRate(this.createTimerTask(), 5000, 5000);
@@ -90,6 +91,8 @@ public class ChatController extends Controller {
                 this.chatMessages.add(new ChatMessage(resultSet));
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
@@ -118,7 +121,8 @@ public class ChatController extends Controller {
      * Handles the delete button event to remove all messages for this game.
      */
     @FXML
-    private void deleteMessagesHandler() {
+    private void handleDeleteMessage() {
+        if (!this.game.getOwnGame()) return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alle berichten verwijderen");
         alert.setContentText("Weet je zeker dat je alle berichten wilt verwijderen?");
@@ -135,6 +139,8 @@ public class ChatController extends Controller {
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
@@ -149,7 +155,8 @@ public class ChatController extends Controller {
      *
      * @param keyEvent - KeyEvent send by Java FXML
      */
-    private void sendMessageHandler(KeyEvent keyEvent) {
+    private void handleSendMessage(KeyEvent keyEvent) {
+        if (!this.game.getOwnGame()) return;
         Account user = Singleton.getInstance().getUser();
         String messageContent = this.chatMessageInput.getText().trim();
 
@@ -168,6 +175,8 @@ public class ChatController extends Controller {
                     this.render();
                     this.chatMessageInput.setText("");
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();
