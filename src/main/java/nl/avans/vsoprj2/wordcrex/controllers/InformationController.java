@@ -1,7 +1,6 @@
 package nl.avans.vsoprj2.wordcrex.controllers;
 
 import javafx.fxml.FXML;
-import nl.avans.vsoprj2.wordcrex.controllers.information.DictionaryController;
 
 public class InformationController extends Controller {
     @FXML

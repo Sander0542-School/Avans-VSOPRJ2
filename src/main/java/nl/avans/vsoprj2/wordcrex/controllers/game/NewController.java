@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -18,15 +19,13 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class NewController extends Controller {
-    private List<String> usernameslist = new ArrayList<>();
+    private final List<String> usernameslist = new ArrayList<>();
 
     @FXML
     private VBox suggestedAccountsContainer;
 
     @FXML
     private Label highScoreLabel;
-
-    private Statistic statistic;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,8 +38,8 @@ public class NewController extends Controller {
     }
 
     private void loadHighScore() {
-        this.statistic = Singleton.getInstance().getUser().getStatistic();
-        this.highScoreLabel.setText(this.statistic.getTopGameScore().toString());
+        Statistic statistic = Singleton.getInstance().getUser().getStatistic();
+        this.highScoreLabel.setText(statistic.getTopGameScore().toString());
     }
 
     private void loadAccounts() {
@@ -65,6 +64,8 @@ public class NewController extends Controller {
                 this.suggestedAccountsContainer.setVisible(true);
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -139,6 +140,8 @@ public class NewController extends Controller {
                 lettersStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 

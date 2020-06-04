@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 public class ChatController extends Controller {
     private Game game;
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-    private Timer autoFetch = new Timer();
+    private final List<ChatMessage> chatMessages = new ArrayList<>();
+    private final Timer autoFetch = new Timer();
 
     @FXML
     private ScrollPane chatScrollContainer;
@@ -91,6 +91,8 @@ public class ChatController extends Controller {
                 this.chatMessages.add(new ChatMessage(resultSet));
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "De berichten konden niet worden opgehaald.\nProbeer het later opnieuw.");
             errorAlert.setTitle("Chat Geschiedenis");
             errorAlert.showAndWait();
@@ -137,6 +139,8 @@ public class ChatController extends Controller {
                     this.fetch();
                     this.render();
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets foutgegaan bij het verwijderen van de berichten.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Alle berichten verwijderen");
                     errorAlert.showAndWait();
@@ -171,6 +175,8 @@ public class ChatController extends Controller {
                     this.render();
                     this.chatMessageInput.setText("");
                 } catch (SQLException e) {
+                    WordCrex.handleException(e);
+
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het versturen van je bericht.\nProbeer het later opnieuw.");
                     errorAlert.setTitle("Versturen bericht");
                     errorAlert.showAndWait();

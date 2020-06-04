@@ -19,7 +19,7 @@ public class BottomBar extends HBox implements Initializable {
     @FXML
     private BottomBarItem observer;
 
-    private EventHandler barItemEventHandler = null;
+    private EventHandler<MouseEvent> barItemEventHandler = null;
 
     public BottomBar() {
         super();
@@ -36,12 +36,7 @@ public class BottomBar extends HBox implements Initializable {
 
         for(Node child : this.getChildren()) {
             if (child instanceof BottomBarItem) {
-                child.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        BottomBar.this.barItemClicked(event);
-                    }
-                });
+                child.setOnMouseClicked(BottomBar.this::barItemClicked);
             }
         }
     }
@@ -68,12 +63,12 @@ public class BottomBar extends HBox implements Initializable {
         }
     }
 
-    public void setOnBarItemClicked(EventHandler eventHandler) {
-        this.barItemEventHandler = eventHandler;
+    public EventHandler<MouseEvent> getOnBarItemClicked() {
+        return this.barItemEventHandler;
     }
 
-    public EventHandler getOnBarItemClicked() {
-        return this.barItemEventHandler;
+    public void setOnBarItemClicked(EventHandler<MouseEvent> eventHandler) {
+        this.barItemEventHandler = eventHandler;
     }
 
     @Override

@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BoardController extends Controller {
+    private static final double DISABLED_OPACITY = 0.5;
     private Game game;
     private final Board board = new Board();
     private boolean turnLocked;
@@ -45,6 +46,12 @@ public class BoardController extends Controller {
     private int playerOneScore;
     private int playerTwoScore;
 
+    @FXML
+    private Label potSizeLabel;
+    @FXML
+    private ImageView passTurnButton;
+    @FXML
+    private ImageView playTurnButton;
     @FXML
     private GridPane gameGrid;
     @FXML
@@ -103,6 +110,34 @@ public class BoardController extends Controller {
         return new TimerTask() {
             @Override
             public void run() {
+                final Game.GameState gameState = BoardController.this.game.getCurrentState();
+                if (BoardController.this.game.getOwnGame() && BoardController.this.game.getGameState() != gameState && (gameState == Game.GameState.FINISHED || gameState == Game.GameState.RESIGNED)) {
+                    BoardController.this.timer.cancel();
+                    BoardController.this.timer.purge();
+
+                    String message;
+                    switch (gameState) {
+                        case FINISHED:
+                            message = "Een speler heeft het spel gewonnen.";
+                            break;
+                        case RESIGNED:
+                            message = "Een speler heeft opgegeven.";
+                            break;
+                        default:
+                            message = "";
+                    }
+                    String finalMessage = message;
+
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, finalMessage);
+                        alert.setHeaderText(null);
+                        alert.setTitle("Het spel is afgelopen");
+                        alert.showAndWait();
+
+                        BoardController.this.navigateTo(BoardController.this.game.getOwnGame() ? "/views/games.fxml" : "/views/observer.fxml");
+                    });
+                }
+
                 if (BoardController.this.turnLocked) {
                     if (WordCrex.DEBUG_MODE) System.out.println("BoardController: Timer task loading data");
 
@@ -149,6 +184,16 @@ public class BoardController extends Controller {
     private void renderBoard() {
         this.gameGrid.getChildren().clear();
 
+        if (this.turnLocked) {
+            this.passTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.playTurnButton.setOpacity(BoardController.DISABLED_OPACITY);
+            this.lettertiles.setOpacity(BoardController.DISABLED_OPACITY);
+        } else {
+            this.passTurnButton.setOpacity(1.0);
+            this.playTurnButton.setOpacity(1.0);
+            this.lettertiles.setOpacity(1.0);
+        }
+
         for (int x = 1; x <= Board.BOARD_SIZE; x++) {
             for (int y = 1; y <= Board.BOARD_SIZE; y++) {
                 BoardTile boardTile = new BoardTile(this.board.getTile(x, y));
@@ -179,6 +224,11 @@ public class BoardController extends Controller {
         this.player2Score.setText(String.valueOf(this.playerTwoScore));
     }
 
+    private void renderAndFetchRemainingTiles() {
+        int potSize = this.game.getAmountOfPoolLetters();
+        this.potSizeLabel.setText(potSize + " tegels resterend");
+    }
+
     private void endGame() {
         Connection connection = Singleton.getInstance().getConnection();
 
@@ -201,7 +251,11 @@ public class BoardController extends Controller {
                 }
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Kon het spel niet beëindigen.\nProbeer het opnieuw.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
@@ -227,7 +281,7 @@ public class BoardController extends Controller {
     private void handleBackButton() {
         this.timer.cancel();
         this.timer.purge();
-        this.navigateTo("/views/games.fxml");
+        this.navigateTo(this.game.getOwnGame() ? "/views/games.fxml" : "/views/observer.fxml");
     }
 
     @FXML
@@ -300,6 +354,7 @@ public class BoardController extends Controller {
         if (this.getUnconfirmedTiles().isEmpty()) {
             //shuffle
             this.displayLetters();
+            this.selectedLetter = null;
         } else {
             //return letters
             for (BoardTile boardTile : this.getUnconfirmedTiles()) {
@@ -315,6 +370,7 @@ public class BoardController extends Controller {
 
             this.displayLetters();
             this.updateShuffleReturnButton();
+            this.updatePoints();
         }
     }
 
@@ -334,6 +390,7 @@ public class BoardController extends Controller {
         }
 
         this.updateShuffleReturnButton();
+        this.updatePoints();
     }
 
     /**
@@ -402,7 +459,6 @@ public class BoardController extends Controller {
 
             ResultSet turnPlayerResultSet2 = turnPlayerStatement2.executeQuery();
 
-            this.loadAndRenderGame();
             if (turnPlayerResultSet2.next()) {
                 if (turnPlayerResultSet2.getString("cp_type").equals("pass") && turnPlayerResultSet2.getString("op_type").equals("pass")) {
                     this.giveNewLetterInHand();
@@ -410,6 +466,7 @@ public class BoardController extends Controller {
                     this.setBoardPassWinner(!isPlayer1);
                 }
             }
+            this.loadAndRenderGame();
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game pass");
@@ -437,28 +494,17 @@ public class BoardController extends Controller {
 
             this.createNewTurn(false);
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
 
     private void giveNewLetterInHand() {
-        Connection connection = Singleton.getInstance().getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(l.letter_id) AS amountOfPoolLetters FROM pot p INNER JOIN letter l ON p.letter_id = l.letter_id AND p.game_id = l.game_id INNER JOIN symbol s ON l.symbol_letterset_code = s.letterset_code AND l.symbol = s.symbol WHERE p.game_id = ?");
-            statement.setInt(1, this.game.getGameId());
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                if (resultSet.getInt("amountOfPoolLetters") <= 7) {
-                    this.endGame();
-                } else {
-                    this.createNewTurn(true);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DbLoadException(e);
+        if (this.game.getAmountOfPoolLetters() < 7 || (this.game.passedThreeTimesInARow() && WordCrex.DEBUG_MODE)) {
+            this.endGame();
+        } else {
+            this.createNewTurn(true);
         }
     }
 
@@ -472,20 +518,10 @@ public class BoardController extends Controller {
             result.next();
             return result.getBoolean(1);
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
-    }
-
-    private void tilePlaced(Tile placedTile) {
-//        unconfirmedTiles.add(placedTile);
-
-        this.updatePoints();
-    }
-
-    private void tileRemoved(Tile placedTile) {
-//        unconfirmedTiles.remove(placedTile);
-
-        this.updatePoints();
     }
 
     private void updatePoints() {
@@ -496,13 +532,8 @@ public class BoardController extends Controller {
         if (this.checkWords(words)) {
             Points points = this.calculatePoints(words);
 
-            Coordinates coordinates = this.getCoordinates(this.getUnconfirmedTiles());
+            this.setBoardScorePosition();
 
-            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
-
-            double margin = boardTile.getHeight() - 6;
-            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
-            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
             this.boardScore.setText(String.valueOf(points.points));
 
             this.boardScore.setVisible(true);
@@ -659,6 +690,8 @@ public class BoardController extends Controller {
 
             return symbolValues;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -783,11 +816,19 @@ public class BoardController extends Controller {
                 }
 
             } catch (SQLException e) {
+                WordCrex.handleException(e);
+
                 throw new DbLoadException(e);
             }
         }
 
         this.currentLetters.addAll(this.getRandomLettersFromPool(extraLetters, this.currentLetters));
+
+        // End game finally implemented...
+        if (this.currentLetters.isEmpty()) {
+            this.endGame();
+            return;
+        }
 
         try {
             StringBuilder sb = new StringBuilder();
@@ -807,6 +848,8 @@ public class BoardController extends Controller {
                 this.displayLetters();
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -845,6 +888,8 @@ public class BoardController extends Controller {
             }
 
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 
@@ -869,18 +914,47 @@ public class BoardController extends Controller {
                 this.currentLetters.add(new Letter(result));
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
 
     private void displayLetters() {
+        this.renderAndFetchRemainingTiles();
         this.lettertiles.getChildren().removeIf(node -> node instanceof LetterTile);
         Collections.shuffle(this.currentLetters);
 
+        Connection connection = Singleton.getInstance().getConnection();
+
+        List<Integer> playedTiles = new ArrayList<>();
+
+        try {
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT `letter_id` FROM `");
+            query.append(Singleton.getInstance().getUser().getUsername().equals(this.game.getUsernamePlayer1()) ? "boardplayer1" : "boardplayer2");
+            query.append("` WHERE `game_id` = ? AND `turn_id` = ?");
+
+            PreparedStatement statement = connection.prepareStatement(query.toString());
+
+            statement.setInt(1, this.game.getGameId());
+            statement.setInt(2, this.game.getCurrentTurn());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                playedTiles.add(resultSet.getInt("letter_id"));
+            }
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
+        }
+
         for (Letter letter : this.currentLetters) {
-            LetterTile letterTile = new LetterTile(letter);
-            this.setLetterTileClick(letterTile);
-            this.lettertiles.getChildren().add(letterTile);
+            if (!playedTiles.contains(letter.getLetterId())) {
+                LetterTile letterTile = new LetterTile(letter);
+                this.setLetterTileClick(letterTile);
+                this.lettertiles.getChildren().add(letterTile);
+            }
         }
     }
 
@@ -990,6 +1064,21 @@ public class BoardController extends Controller {
         for (Node node : this.gameGrid.getChildren()) {
             ((BoardTile) node).setSize(size / (Board.BOARD_SIZE + 1));
         }
+
+        this.setBoardScorePosition();
+    }
+
+    private void setBoardScorePosition() {
+        List<BoardTile> unconfirmedTiles = this.getUnconfirmedTiles();
+
+        if (!unconfirmedTiles.isEmpty()) {
+            Coordinates coordinates = this.getCoordinates(unconfirmedTiles);
+            BoardTile boardTile = this.getBoardTile(coordinates.maxX, coordinates.maxY);
+
+            double margin = boardTile.getHeight() - 6;
+            this.boardScore.setLayoutX(boardTile.getLayoutX() + margin);
+            this.boardScore.setLayoutY(boardTile.getLayoutY() + margin);
+        }
     }
 
     @Override
@@ -1005,9 +1094,6 @@ public class BoardController extends Controller {
             item.setId(item.getText().toLowerCase());
             item.setOnAction(BoardController.this::gameOptionsMenuEventHandler);
         }
-
-        this.gameGrid.widthProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
-        this.gameGrid.heightProperty().addListener((observable, oldValue, newValue) -> this.gridSizeChanged());
     }
 
     private void createNewPlayerBoard(int turn, List<BoardTile> boardTiles) {
@@ -1101,6 +1187,8 @@ public class BoardController extends Controller {
             }
             this.loadAndRenderGame();
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -1151,8 +1239,7 @@ public class BoardController extends Controller {
             if (otherPlayerTurnResultSet.next()) {
                 //If players have the same score.. the first player gets the bonus
                 if (otherPlayerTurnResultSet.getInt("score") == points.getPoints()) {
-                    String updateBonusQuery = (isPlayer1 ? "UPDATE `turnplayer2` SET `bonus` = ?" : "UPDATE `turnplayer1` SET `bonus` = ?") +
-                            " WHERE `game_id` = ? AND `turn_id` = ?";
+                    String updateBonusQuery = "UPDATE `" + (isPlayer1 ? "turnplayer2" : "turnplayer1") + "` SET `bonus` = ? WHERE `game_id` = ? AND `turn_id` = ?;";
                     PreparedStatement updateBonusStatement = connection.prepareStatement(updateBonusQuery);
                     updateBonusStatement.setInt(1, 5);
                     updateBonusStatement.setInt(2, this.game.getGameId());
@@ -1161,6 +1248,8 @@ public class BoardController extends Controller {
                 }
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -1181,7 +1270,11 @@ public class BoardController extends Controller {
 
             this.handOutLetters(newTurnId, isPassedTurn);
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Nieuwe ronde al gestart");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

@@ -1,10 +1,12 @@
 package nl.avans.vsoprj2.wordcrex.controllers.information;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
 
@@ -30,11 +32,8 @@ public class DictionaryController extends Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         this.languages = this.getLanguages();
-
         this.languagesBox.getItems().addAll(this.languages.keySet());
-
         this.username.setText(Singleton.getInstance().getUser().getUsername());
     }
 
@@ -63,6 +62,8 @@ public class DictionaryController extends Controller {
 
             return languages;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -104,7 +105,11 @@ public class DictionaryController extends Controller {
                 this.showError("Inzending verstuurd");
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Oei, het woord kon niet worden toegevoegd aan het woordenboek. Probeer het opnieuw!");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

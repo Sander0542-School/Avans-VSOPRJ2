@@ -26,7 +26,7 @@ public class AppBar extends AnchorPane implements Initializable {
     @FXML
     private ImageView deleteButton;
 
-    private ContextMenu optionsMenu = new ContextMenu();
+    private final ContextMenu optionsMenu = new ContextMenu();
 
     private EventHandler<MouseEvent> backButtonEventHandler;
     private EventHandler<MouseEvent> deleteButtonEventHandler;

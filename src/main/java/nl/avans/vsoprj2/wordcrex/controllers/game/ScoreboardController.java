@@ -1,10 +1,12 @@
 package nl.avans.vsoprj2.wordcrex.controllers.game;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.scoreboard.RoundRow;
 import nl.avans.vsoprj2.wordcrex.models.Game;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class ScoreboardController extends Controller {
     private Game game;
-    private List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
+    private final List<ScoreboardRound> scoreboardRounds = new ArrayList<>();
 
     @FXML
     private Circle imagePlayerOne;
@@ -94,7 +96,11 @@ public class ScoreboardController extends Controller {
                 this.scoreboardRounds.add(new ScoreboardRound(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het laden van de punten.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

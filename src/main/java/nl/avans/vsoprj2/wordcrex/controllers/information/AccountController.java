@@ -7,12 +7,8 @@ import javafx.scene.control.PasswordField;
 import nl.avans.vsoprj2.wordcrex.Singleton;
 import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
-import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
-import nl.avans.vsoprj2.wordcrex.models.Account;
 
-import javax.xml.transform.Result;
 import java.net.URL;
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,14 +79,12 @@ public class AccountController extends Controller {
             Alert invalidWordDialog = new Alert(Alert.AlertType.INFORMATION, "Je wachtwoord is succesvol geüpdate!");
             invalidWordDialog.setTitle("Succes");
             invalidWordDialog.showAndWait();
-        } catch (SQLException ex) {
-            if(WordCrex.DEBUG_MODE) {
-                System.err.println(ex.getErrorCode());
-            } else {
-                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan tijdens het wijzigen van je wachtwoord.");
-                invalidWordDialog.setTitle("Error");
-                invalidWordDialog.showAndWait();
-            }
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan tijds het wijzigen van je wachtwoord.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
