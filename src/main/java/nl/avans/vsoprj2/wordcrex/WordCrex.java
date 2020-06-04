@@ -12,7 +12,7 @@ import nl.avans.vsoprj2.wordcrex.models.Account;
 import java.net.URL;
 
 public class WordCrex extends Application {
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public static void handleException(Throwable e) {
         if (WordCrex.DEBUG_MODE) throw new RuntimeException(e);
