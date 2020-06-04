@@ -108,6 +108,8 @@ public class Game extends DbModel {
             }
 
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 
@@ -149,7 +151,9 @@ public class Game extends DbModel {
             resultSet.next();
             return resultSet.getInt("total_score");
         } catch (SQLException ex) {
-            throw new DbLoadException(ex);
+            WordCrex.handleException(ex);
+
+            return 0;
         }
     }
 
@@ -195,7 +199,8 @@ public class Game extends DbModel {
             }
             return false;
         } catch (SQLException e) {
-            if (WordCrex.DEBUG_MODE) System.err.println("Game: couldn't determine if turn is locked or not.");
+            WordCrex.handleException(e);
+
             return true;
         }
     }

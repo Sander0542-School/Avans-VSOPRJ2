@@ -160,7 +160,6 @@ public class GamesController extends Controller {
         for (Game game : this.finishedGamesResult) {
             GameItem gameItem = new GameItem(game);
             this.setGameItemClick(gameItem);
-
             this.finishedGames.getChildren().add(gameItem);
         }
         this.finishedGames.setVisible(true);

@@ -22,6 +22,15 @@ public class Account extends Model {
     }
 
     /**
+     * Fetches all the playing games you have access to
+     *
+     * @return list of the games that should be rendered in the playing games container
+     */
+    public List<Game> getPlayingGames() {
+        return this.getPlayingGames(false);
+    }
+
+    /**
      * Fetches all the game requests you have access to
      *
      * @return list of the games that should be rendered in the requested games container
@@ -44,17 +53,23 @@ public class Account extends Model {
             }
             return result;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de aangevraagde spellen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
+
             return new ArrayList<>();
         }
     }
 
     /**
-     * Fetches all the playing games you have access to
+     * Fetches all the finished games you have access to
      *
-     * @return list of the games that should be rendered in the playing games container
+     * @return list of the games that should be rendered in the finished games container
      */
-    public List<Game> getPlayingGames() {
-        return this.getPlayingGames(false);
+    public List<Game> getFinishedGames() {
+        return this.getFinishedGames(false);
     }
 
     /**
@@ -89,17 +104,25 @@ public class Account extends Model {
             }
             return result;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de lopende spellen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
+
             return new ArrayList<>();
         }
     }
 
-    /**
-     * Fetches all the finished games you have access to
-     *
-     * @return list of the games that should be rendered in the finished games container
-     */
-    public List<Game> getFinishedGames() {
-        return this.getFinishedGames(false);
+    public String getUsername() {
+        return this.username;
+    }
+
+    public enum Role {
+        PLAYER,
+        OBSERVER,
+        MODERATOR,
+        ADMINISTRATOR
     }
 
     /**
@@ -132,19 +155,23 @@ public class Account extends Model {
             }
             return result;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de afgelopen spellen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
+
             return new ArrayList<>();
         }
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public enum Role {
-        PLAYER,
-        OBSERVER,
-        MODERATOR,
-        ADMINISTRATOR
+    /**
+     * Override for combobox
+     *
+     * @return the username in string format
+     */
+    public String toString() {
+        return this.getUsername();
     }
 
     public Statistic getStatistic() {
@@ -168,20 +195,15 @@ public class Account extends Model {
 
             if (resultSet.next()) return new Statistic(resultSet);
 
-        } catch (SQLException ex) {
-            throw new DbLoadException(ex);
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van je statistieken.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
 
         return null;
-    }
-
-    /**
-     * Override for combobox
-     *
-     * @return the username in string format
-     */
-    public String toString() {
-        return this.getUsername();
     }
 
     public boolean hasRole(Role role) {
@@ -196,14 +218,12 @@ public class Account extends Model {
                     return true;
                 }
             }
-        } catch (SQLException ex) {
-            if (WordCrex.DEBUG_MODE) {
-                System.err.println(ex.getErrorCode());
-            } else {
-                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van de rollen.");
-                invalidWordDialog.setTitle("Error");
-                invalidWordDialog.showAndWait();
-            }
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan bij het ophalen van je rollen.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
 
         return false;
@@ -242,7 +262,9 @@ public class Account extends Model {
             }
 
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            return null;
         }
 
         return null;

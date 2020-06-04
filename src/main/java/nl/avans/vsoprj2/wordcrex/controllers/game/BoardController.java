@@ -251,7 +251,11 @@ public class BoardController extends Controller {
                 }
             }
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Kon het spel niet beëindigen.\nProbeer het opnieuw.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 
@@ -277,7 +281,6 @@ public class BoardController extends Controller {
     private void handleBackButton() {
         this.timer.cancel();
         this.timer.purge();
-
         this.navigateTo(this.game.getOwnGame() ? "/views/games.fxml" : "/views/observer.fxml");
     }
 
@@ -491,6 +494,8 @@ public class BoardController extends Controller {
 
             this.createNewTurn(false);
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -513,6 +518,8 @@ public class BoardController extends Controller {
             result.next();
             return result.getBoolean(1);
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -683,6 +690,8 @@ public class BoardController extends Controller {
 
             return symbolValues;
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -807,6 +816,8 @@ public class BoardController extends Controller {
                 }
 
             } catch (SQLException e) {
+                WordCrex.handleException(e);
+
                 throw new DbLoadException(e);
             }
         }
@@ -837,6 +848,8 @@ public class BoardController extends Controller {
                 this.displayLetters();
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -875,6 +888,8 @@ public class BoardController extends Controller {
             }
 
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 
@@ -899,6 +914,8 @@ public class BoardController extends Controller {
                 this.currentLetters.add(new Letter(result));
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -928,8 +945,8 @@ public class BoardController extends Controller {
             while (resultSet.next()) {
                 playedTiles.add(resultSet.getInt("letter_id"));
             }
-        } catch (SQLException ignored) {
-
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
         }
 
         for (Letter letter : this.currentLetters) {
@@ -1170,6 +1187,8 @@ public class BoardController extends Controller {
             }
             this.loadAndRenderGame();
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -1229,6 +1248,8 @@ public class BoardController extends Controller {
                 }
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -1249,7 +1270,11 @@ public class BoardController extends Controller {
 
             this.handOutLetters(newTurnId, isPassedTurn);
         } catch (SQLException e) {
-            throw new DbLoadException(e);
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Nieuwe ronde al gestart");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

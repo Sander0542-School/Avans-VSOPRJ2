@@ -79,14 +79,12 @@ public class AccountController extends Controller {
             Alert invalidWordDialog = new Alert(Alert.AlertType.INFORMATION, "Je wachtwoord is succesvol geüpdate!");
             invalidWordDialog.setTitle("Succes");
             invalidWordDialog.showAndWait();
-        } catch (SQLException ex) {
-            if(WordCrex.DEBUG_MODE) {
-                System.err.println(ex.getErrorCode());
-            } else {
-                Alert invalidWordDialog = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan tijdens het wijzigen van je wachtwoord.");
-                invalidWordDialog.setTitle("Error");
-                invalidWordDialog.showAndWait();
-            }
+        } catch (SQLException e) {
+            WordCrex.handleException(e);
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Er is iets fout gegaan tijds het wijzigen van je wachtwoord.");
+            errorAlert.setHeaderText(null);
+            errorAlert.showAndWait();
         }
     }
 

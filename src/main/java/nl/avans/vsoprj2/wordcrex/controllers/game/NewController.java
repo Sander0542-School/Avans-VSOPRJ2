@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import nl.avans.vsoprj2.wordcrex.Singleton;
+import nl.avans.vsoprj2.wordcrex.WordCrex;
 import nl.avans.vsoprj2.wordcrex.controllers.Controller;
 import nl.avans.vsoprj2.wordcrex.controls.games.SuggestedAccount;
 import nl.avans.vsoprj2.wordcrex.exceptions.DbLoadException;
@@ -63,6 +64,8 @@ public class NewController extends Controller {
                 this.suggestedAccountsContainer.setVisible(true);
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
     }
@@ -137,6 +140,8 @@ public class NewController extends Controller {
                 lettersStatement.executeUpdate();
             }
         } catch (SQLException e) {
+            WordCrex.handleException(e);
+
             throw new DbLoadException(e);
         }
 
